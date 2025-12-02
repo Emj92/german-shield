@@ -32,13 +32,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle('dark', newTheme === 'dark')
   }
 
-  // Context immer bereitstellen, damit useTheme() nicht crashed
-  // Aber suppressHydrationWarning verwenden um Mismatch zu vermeiden
+  // Context immer bereitstellen, auch vor Mount
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div suppressHydrationWarning>
-        {children}
-      </div>
+      {children}
     </ThemeContext.Provider>
   )
 }
