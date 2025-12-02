@@ -8,13 +8,13 @@
 $FTP_HOST = "s321.goserver.host"
 $FTP_USER = "web44f2"
 $FTP_PASS = "Erolfni1992ft-!"
-$LOCAL_PLUGIN = "german-shield"
+$LOCAL_PLUGIN = "germanfence"
 
 # ========================================
 # SCRIPT
 # ========================================
 
-Write-Host "German Shield Server-Update" -ForegroundColor Cyan
+Write-Host "GermanFence Server-Update" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -25,38 +25,41 @@ if (-not (Test-Path $winscpPath)) {
     exit 1
 }
 
-# WinSCP Script
+Write-Host "Lade Plugin auf Server hoch..." -ForegroundColor Yellow
+Write-Host ""
+
+# FTP startet direkt in /wp-content/plugins/ - daher kein cd noetig!
 $scriptContent = @"
 option batch on
 option confirm off
 open ftp://${FTP_USER}:${FTP_PASS}@${FTP_HOST}
 
-# Synchronisiere Ordner (ueberspringt fehlende Dateien)
-synchronize remote -delete ${LOCAL_PLUGIN}/ german-shield/ -filemask="|.git*;*.md"
+# Synchronisiere Ordner (FTP-Root = plugins-Verzeichnis)
+synchronize remote -delete ${LOCAL_PLUGIN}/ germanfence/ -filemask="|.git*;*.md;*.log;.gitignore"
 
 close
 exit
 "@
 
-$scriptFile = "winscp-upload.txt"
+$scriptFile = "winscp-upload-temp.txt"
 $scriptContent | Out-File -FilePath $scriptFile -Encoding ASCII
-
-Write-Host "Lade Plugin hoch..." -ForegroundColor Yellow
-Write-Host ""
 
 & $winscpPath /script=$scriptFile
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
+    Write-Host "================================" -ForegroundColor Green
     Write-Host "Plugin erfolgreich aktualisiert!" -ForegroundColor Green
+    Write-Host "================================" -ForegroundColor Green
     Write-Host ""
     Write-Host "Naechste Schritte:" -ForegroundColor Cyan
-    Write-Host "1. WordPress Admin -> German Shield" -ForegroundColor White
-    Write-Host "2. Pruefe ob alles funktioniert" -ForegroundColor White
+    Write-Host "1. WordPress Admin -> Plugins" -ForegroundColor White
+    Write-Host "2. GermanFence aktivieren/neu laden" -ForegroundColor White
     Write-Host ""
 } else {
     Write-Host ""
     Write-Host "Upload fehlgeschlagen!" -ForegroundColor Red
+    Write-Host ""
 }
 
 Remove-Item $scriptFile -ErrorAction SilentlyContinue

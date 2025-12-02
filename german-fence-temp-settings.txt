@@ -1,0 +1,193 @@
+ERSETZT AB ZEILE 541 bis 656:
+
+                        <div class="german-shield-settings-grid">
+                            <!-- Zeile 1: Honeypot + JavaScript -->
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="honeypot_enabled" value="1" <?php checked($settings['honeypot_enabled'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Honeypot</h3>
+                                    <p>Unsichtbares Feld, das nur Bots ausfüllen. Sehr effektiv und benutzerfreundlich.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="javascript_check" value="1" <?php checked($settings['javascript_check'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>JavaScript-Prüfung</h3>
+                                    <p>Stellt sicher, dass JavaScript aktiviert ist. Blockiert einfache Bots.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Honeypot-Einstellungen (full-width UNTER Honeypot) -->
+                        <div class="german-shield-subsetting" id="honeypot-settings" style="<?php echo $settings['honeypot_enabled'] !== '1' ? 'display:none;' : ''; ?>">
+                            <h3 style="margin-bottom: 20px;">🍯 Honeypot-Verwaltung</h3>
+                            
+                            <div class="setting-row" style="margin-bottom: 25px;">
+                                <label style="display: block; margin-bottom: 10px;"><strong>Anzahl aktiver Honeypots:</strong></label>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <input 
+                                        type="range" 
+                                        name="honeypot_count" 
+                                        id="honeypot-count-slider"
+                                        min="1" 
+                                        max="10" 
+                                        value="<?php echo esc_attr($settings['honeypot_count'] ?? 3); ?>"
+                                        style="flex: 1; max-width: 300px;"
+                                    >
+                                    <span id="honeypot-count-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 50px;">
+                                        <?php echo esc_html($settings['honeypot_count'] ?? 3); ?>
+                                    </span>
+                                </div>
+                                <p class="description" style="margin-top: 5px;">
+                                    Mehr Honeypots = besserer Schutz, aber minimal höherer Performance-Impact
+                                </p>
+                            </div>
+                            
+                            <div class="setting-row">
+                                <label style="display: block; margin-bottom: 15px;"><strong>Honeypot-Feldnamen:</strong></label>
+                                <div id="honeypot-fields-list">
+                                    <?php 
+                                    $honeypot_fields = $settings['honeypot_fields'] ?? array();
+                                    $honeypot_count = intval($settings['honeypot_count'] ?? 3);
+                                    
+                                    if (empty($honeypot_fields) || count($honeypot_fields) < $honeypot_count) {
+                                        $default_names = array(
+                                            'website_url', 'homepage_link', 'user_website', 'site_url',
+                                            'contact_url', 'company_site', 'web_address', 'url_field',
+                                            'business_url', 'personal_site'
+                                        );
+                                        $honeypot_fields = array();
+                                        for ($i = 0; $i < $honeypot_count; $i++) {
+                                            $base_name = $default_names[$i % count($default_names)];
+                                            $honeypot_fields[] = $base_name . '_' . substr(md5(time() . $i), 0, 6);
+                                        }
+                                    }
+                                    
+                                    $honeypot_fields = array_slice($honeypot_fields, 0, $honeypot_count);
+                                    
+                                    foreach ($honeypot_fields as $index => $field_name): 
+                                    ?>
+                                    <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #F2F5F8; border: 1px solid #c3cbd5; border-radius: 6px; margin-bottom: 10px;">
+                                        <span style="min-width: 30px; font-weight: 600; color: #646970;">#<?php echo $index + 1; ?></span>
+                                        <input 
+                                            type="text" 
+                                            name="honeypot_fields[]" 
+                                            value="<?php echo esc_attr($field_name); ?>"
+                                            style="flex: 1; padding: 8px 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            placeholder="feldname"
+                                        >
+                                        <button 
+                                            type="button" 
+                                            class="regenerate-honeypot-btn"
+                                            data-index="<?php echo $index; ?>"
+                                            style="padding: 8px 12px; background: #22D6DD; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;"
+                                            title="Neu generieren"
+                                        >
+                                            <span class="dashicons dashicons-update"></span>
+                                        </button>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <p class="description" style="margin-top: 10px;">
+                                    💡 <strong>Tipp:</strong> Benutze realistische Feldnamen wie "website_url" oder "contact_link". 
+                                    Das <span class="dashicons dashicons-update" style="font-size: 14px;"></span> Symbol generiert einen neuen zufälligen Namen.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="german-shield-settings-grid">
+                            <!-- Zeile 2: User-Agent + Tippgeschwindigkeit -->
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="user_agent_check" value="1" <?php checked($settings['user_agent_check'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>User-Agent-Prüfung</h3>
+                                    <p>Blockiert bekannte Bot User-Agents.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="typing_speed_check" value="1" <?php checked($settings['typing_speed_check'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Tippgeschwindigkeit-Analyse</h3>
+                                    <p>Erkennt unnatürlich schnelle Bot-Eingaben.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Zeile 3: Timestamp + Kommentar-Bots -->
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="timestamp_enabled" value="1" <?php checked($settings['timestamp_enabled'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Timestamp-Prüfung</h3>
+                                    <p>Blockiert Formulare, die zu schnell oder zu langsam ausgefüllt werden.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="german-shield-setting">
+                                <label class="german-shield-toggle">
+                                    <input type="checkbox" name="block_comment_bots" value="1" <?php checked(isset($settings['block_comment_bots']) && $settings['block_comment_bots'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Kommentar-Bots blockieren</h3>
+                                    <p>Blockiert automatisierte Bot-Kommentare durch erweiterte Anti-Spam-Prüfungen.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timestamp-Einstellungen (full-width UNTER Timestamp) -->
+                        <div class="german-shield-subsetting" id="timestamp-settings" style="<?php echo $settings['timestamp_enabled'] !== '1' ? 'display:none;' : ''; ?>">
+                            <h3 style="margin-bottom: 20px;">⏱️ Timestamp-Einstellungen</h3>
+                            
+                            <div class="setting-row" style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 10px;"><strong>Minimale Ausfüllzeit (Sekunden):</strong></label>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <input 
+                                        type="number" 
+                                        name="timestamp_min"
+                                        min="1" 
+                                        max="60" 
+                                        value="<?php echo esc_attr($settings['timestamp_min'] ?? 3); ?>"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 16px;"
+                                    >
+                                    <span style="color: #646970;">Sekunden</span>
+                                </div>
+                                <p class="description" style="margin-top: 5px;">
+                                    Formulare, die schneller ausgefüllt werden, werden blockiert. Empfohlen: 3-5 Sekunden
+                                </p>
+                            </div>
+                            
+                            <div class="setting-row">
+                                <label style="display: block; margin-bottom: 10px;"><strong>Maximale Formular-Gültigkeit (Sekunden):</strong></label>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <input 
+                                        type="number" 
+                                        name="timestamp_max"
+                                        min="60" 
+                                        max="86400" 
+                                        value="<?php echo esc_attr($settings['timestamp_max'] ?? 3600); ?>"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 16px;"
+                                    >
+                                    <span style="color: #646970;">Sekunden (<?php echo esc_html(round(($settings['timestamp_max'] ?? 3600) / 60)); ?> Min)</span>
+                                </div>
+                                <p class="description" style="margin-top: 5px;">
+                                    Formulare, die nach dieser Zeit abgesendet werden, sind ungültig. Empfohlen: 3600 (1 Stunde)
+                                </p>
+                            </div>
+                        </div>
+

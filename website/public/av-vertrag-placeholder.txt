@@ -1,0 +1,11 @@
+Platzhalter für AV-Vertrag PDF
+
+WICHTIG: Ersetze diese Datei durch die echte av-vertrag.pdf!
+
+Anleitung:
+1. Konvertiere germanfence/data/AV-VERTRAG.md zu PDF
+2. Speichere als website/public/av-vertrag.pdf
+3. Lösche diese Platzhalter-Datei
+
+Die PDF wird unter /av-vertrag.pdf erreichbar sein.
+
