@@ -286,7 +286,10 @@ body.germanfence-dark-mode .germanfence-subsetting {
     border-color: #3c434a !important;
 }
 
-body.germanfence-dark-mode #phrase-settings,
+body.germanfence-dark-mode #phrase-settings {
+    background: #1D2327 !important;
+}
+
 /* 2-spaltig Layout für Settings */
 .germanfence-settings-grid {
     display: grid;

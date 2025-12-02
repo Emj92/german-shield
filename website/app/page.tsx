@@ -33,10 +33,12 @@ export default function Home() {
                 Login
               </Button>
             </Link>
-            <Button className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
-              <Download className="mr-2 h-4 w-4" />
-              Download
-            </Button>
+            <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+              <Button className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
+                <Download className="mr-2 h-4 w-4" />
+                Download
+              </Button>
+            </a>
           </nav>
         </div>
       </header>

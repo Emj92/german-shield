@@ -1,0 +1,58 @@
+name: Build & Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggert bei Tags wie v1.0.0, v1.0.1, etc.
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Get Version from Tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Plugin ZIP
+        run: |
+          cd germanfence
+          zip -r ../germanfence-v${{ steps.version.outputs.VERSION }}.zip . \
+            -x "*.git*" \
+            -x "node_modules/*" \
+            -x ".DS_Store" \
+            -x "*.log" \
+            -x ".env*"
+          cd ..
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: GermanFence v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## 🎉 GermanFence v${{ steps.version.outputs.VERSION }}
+            
+            ### 📦 Installation
+            1. ZIP herunterladen
+            2. WordPress Admin → Plugins → Installieren → Plugin hochladen
+            3. ZIP hochladen und aktivieren
+            
+            ### 📋 Changelog
+            Siehe [CHANGELOG.md](https://github.com/Emj92/german-shield/blob/main/germanfence/CHANGELOG.md)
+            
+            ### 🔒 Systemanforderungen
+            - WordPress: 5.0+
+            - PHP: 7.4+
+            
+            ### 📞 Support
+            support@germanfence.de
+          files: |
+            germanfence-v${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

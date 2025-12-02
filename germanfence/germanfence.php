@@ -64,17 +64,12 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 $myUpdateChecker->setBranch('main');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
-// Schnellerer Update-Check für Testing (5 Minuten statt 12 Stunden)
-// Für Production: Kommentar entfernen
-$myUpdateChecker->checkForUpdates();
-add_filter('puc_check_now-german-fence', '__return_true');
-
-// Update-Intervall auf 5 Minuten setzen (nur für Testing!)
-// Standard ist 12 Stunden - für Production diese Zeile auskommentieren
-add_filter('puc_request_info_query_args-german-fence', function($queryArgs) {
-    $queryArgs['update_check_interval'] = 300; // 5 Minuten = 300 Sekunden
-    return $queryArgs;
-});
+// Testing: Schneller Update-Check (5 Min statt 12h)
+// Für Production diese Zeilen auskommentieren
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    $myUpdateChecker->checkForUpdates();
+    add_filter('puc_check_now-german-fence', '__return_true');
+}
 // ============================================
 
 // Include required files
