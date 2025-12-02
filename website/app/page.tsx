@@ -395,7 +395,7 @@ export default function Home() {
               Jetzt kaufen
             </Button>
             <Link href="/login">
-              <Button size="lg" className="bg-white text-black hover:bg-[#F06292] hover:text-white border-2 border-white px-8 py-6 text-lg transition-all">
+              <Button size="lg" variant="outline" className="bg-transparent text-[#F06292] border-2 border-[#F06292] hover:bg-[#F06292] hover:text-white px-8 py-6 text-lg transition-all">
                 <LogIn className="mr-2 h-5 w-5" />
                 Zum Dashboard
               </Button>
@@ -466,8 +466,13 @@ export default function Home() {
             <p className="text-slate-400">© 2024-2025 GermanFence. Alle Rechte vorbehalten.</p>
             <div className="flex items-center gap-2 text-slate-400">
               <span>Made with</span>
-              <span className="text-[#F06292]">❤️</span>
-              <span>in Germany 🇩🇪</span>
+              <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#F06292] hover:text-[#F06292]/80 transition">
+                ❤️
+              </a>
+              <span>in Germany 🇩🇪 by</span>
+              <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#22D6DD] hover:text-[#22D6DD]/80 transition font-semibold">
+                Meindl Webdesign
+              </a>
             </div>
           </div>
         </div>
