@@ -53,6 +53,11 @@ define('GERMANFENCE_PLUGIN_FILE', __FILE__);
 // ============================================
 require_once plugin_dir_path(__FILE__) . 'lib/plugin-update-checker/plugin-update-checker.php';
 
+// Parsedown laden falls nicht vorhanden
+if (!class_exists('Parsedown')) {
+    require_once plugin_dir_path(__FILE__) . 'lib/plugin-update-checker/Parsedown.php';
+}
+
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
@@ -63,14 +68,6 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 
 $myUpdateChecker->setBranch('main');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
-
-// Parsedown-Fehler vermeiden: Keine Release-Notes parsen
-add_filter('puc_retain_plugin_info-german-fence', function($pluginInfo, $result) {
-    if (isset($result->body)) {
-        unset($result->body); // Release-Notes deaktivieren
-    }
-    return $pluginInfo;
-}, 10, 2);
 // ============================================
 
 // Include required files
