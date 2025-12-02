@@ -34,10 +34,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  // Context immer bereitstellen, auch vor Mount
+  // Context immer bereitstellen damit useTheme() nicht crashed
+  // Aber children nur rendern wenn mounted um Theme-Flash zu vermeiden
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      {mounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
     </ThemeContext.Provider>
   )
 }

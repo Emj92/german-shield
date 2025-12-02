@@ -395,7 +395,7 @@ export default function Home() {
               Jetzt kaufen
             </Button>
             <Link href="/login">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg">
+              <Button size="lg" className="bg-white text-black hover:bg-[#F06292] hover:text-white border-2 border-white px-8 py-6 text-lg transition-all">
                 <LogIn className="mr-2 h-5 w-5" />
                 Zum Dashboard
               </Button>
@@ -456,8 +456,8 @@ export default function Home() {
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Support Center</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">FAQ</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Kontakt</a></li>
-                <li><a href="#" className="hover:text-[#22D6DD] transition">Impressum</a></li>
-                <li><a href="#" className="hover:text-[#22D6DD] transition">Datenschutz</a></li>
+                <li><Link href="/impressum" className="hover:text-[#22D6DD] transition">Impressum</Link></li>
+                <li><Link href="/datenschutz" className="hover:text-[#22D6DD] transition">Datenschutz</Link></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">AGB</a></li>
               </ul>
             </div>
