@@ -360,11 +360,11 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>White-Label Rechte</span>
+                    <span>White-Label Option</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Reselling erlaubt</span>
+                    <span>Client-Projekte</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
@@ -376,7 +376,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>ThemeForest-kompatibel</span>
+                    <span>Premium Templates</span>
                   </li>
                 </ul>
                 <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
@@ -470,7 +470,7 @@ export default function Home() {
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Kontakt</a></li>
                 <li><Link href="/impressum" className="hover:text-[#22D6DD] transition">Impressum</Link></li>
                 <li><Link href="/datenschutz" className="hover:text-[#22D6DD] transition">Datenschutz</Link></li>
-                <li><a href="#" className="hover:text-[#22D6DD] transition">AGB</a></li>
+                <li><Link href="/agb" className="hover:text-[#22D6DD] transition">AGB</Link></li>
               </ul>
             </div>
           </div>

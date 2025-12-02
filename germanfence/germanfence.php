@@ -64,12 +64,13 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 $myUpdateChecker->setBranch('main');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
-// Testing: Schneller Update-Check (5 Min statt 12h)
-// Für Production diese Zeilen auskommentieren
-if (defined('WP_DEBUG') && WP_DEBUG) {
-    $myUpdateChecker->checkForUpdates();
-    add_filter('puc_check_now-german-fence', '__return_true');
-}
+// Parsedown-Fehler vermeiden: Keine Release-Notes parsen
+add_filter('puc_retain_plugin_info-german-fence', function($pluginInfo, $result) {
+    if (isset($result->body)) {
+        unset($result->body); // Release-Notes deaktivieren
+    }
+    return $pluginInfo;
+}, 10, 2);
 // ============================================
 
 // Include required files
