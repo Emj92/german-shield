@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertCircle } from 'lucide-react'
+import { Shield, AlertCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -36,6 +37,8 @@ export default function LoginPage() {
         return
       }
 
+      // Refresh und redirect
+      router.refresh()
       router.push('/dashboard')
     } catch (err) {
       setError('Ein Fehler ist aufgetreten')
@@ -44,19 +47,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">
-          <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-[#22D6DD] shadow-lg shadow-[#22D6DD]/20">
-            <Shield className="w-8 h-8 text-white" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary shadow-lg shadow-primary/20">
+            <Shield className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-white">GermanFence</h1>
-          <p className="text-muted-foreground">Admin Portal</p>
+          <h1 className="text-3xl font-bold">German Fence</h1>
+          <p className="text-muted-foreground">Portal</p>
         </div>
 
         {/* Login Card */}
-        <Card className="border-slate-700">
+        <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Willkommen zurück</CardTitle>
             <CardDescription>
@@ -66,7 +69,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="flex items-center gap-2 p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
                   <AlertCircle className="w-4 h-4" />
                   {error}
                 </div>
@@ -81,26 +84,38 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-900/50"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="password">Passwort</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-slate-900/50"
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5]"
+                className="w-full"
                 disabled={loading}
               >
                 {loading ? 'Wird geladen...' : 'Anmelden'}
@@ -109,7 +124,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center text-sm">
               <span className="text-muted-foreground">Noch kein Account? </span>
-              <Link href="/register" className="text-[#22D6DD] hover:text-[#1EBEC5] font-medium">
+              <Link href="/register" className="text-primary hover:underline font-medium">
                 Jetzt registrieren
               </Link>
             </div>
@@ -118,14 +133,14 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2024 GermanFence. Alle Rechte vorbehalten.</p>
+          <p>© 2024 German Fence. Alle Rechte vorbehalten.</p>
           <p className="mt-1">
             Made with ♥ by{' '}
             <a
               href="https://www.meindl-webdesign.de"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#22D6DD] hover:text-[#1EBEC5]"
+              className="text-primary hover:underline"
             >
               Meindl Webdesign
             </a>
@@ -135,4 +150,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

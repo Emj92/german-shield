@@ -14,6 +14,12 @@ export interface SessionUser {
   role: string
 }
 
+export interface User {
+  userId: string
+  email: string
+  role: 'ADMIN' | 'USER'
+}
+
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12)
 }
@@ -91,5 +97,16 @@ export async function requireAdmin(): Promise<SessionUser> {
     throw new Error('Forbidden')
   }
   return session
+}
+
+export async function getUser(): Promise<User | null> {
+  const session = await getSession()
+  if (!session) return null
+  
+  return {
+    userId: session.id,
+    email: session.email,
+    role: session.role as 'ADMIN' | 'USER',
+  }
 }
 

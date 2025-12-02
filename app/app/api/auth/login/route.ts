@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import { SignJWT } from 'jose'
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+  process.env.NEXTAUTH_SECRET || 'fallback-secret-change-in-production'
 )
 
 export async function POST(request: NextRequest) {
@@ -66,11 +66,12 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    response.cookies.set('auth-token', token, {
+    response.cookies.set('session', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 Tage
+      path: '/',
     })
 
     return response

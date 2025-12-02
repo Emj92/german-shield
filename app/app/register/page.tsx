@@ -1,13 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertCircle } from 'lucide-react'
+import { Shield, AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
+
+type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -15,8 +17,79 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>('weak')
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null)
+
+  // Passwort-Stärke berechnen
+  useEffect(() => {
+    if (password.length === 0) {
+      setPasswordStrength('weak')
+      return
+    }
+
+    let strength = 0
+    
+    // Länge
+    if (password.length >= 8) strength++
+    if (password.length >= 12) strength++
+    
+    // Großbuchstaben
+    if (/[A-Z]/.test(password)) strength++
+    
+    // Kleinbuchstaben
+    if (/[a-z]/.test(password)) strength++
+    
+    // Zahlen
+    if (/[0-9]/.test(password)) strength++
+    
+    // Sonderzeichen
+    if (/[^A-Za-z0-9]/.test(password)) strength++
+
+    if (strength <= 2) setPasswordStrength('weak')
+    else if (strength <= 3) setPasswordStrength('medium')
+    else if (strength <= 4) setPasswordStrength('strong')
+    else setPasswordStrength('very-strong')
+  }, [password])
+
+  // Passwort-Übereinstimmung prüfen
+  useEffect(() => {
+    if (confirmPassword.length === 0) {
+      setPasswordsMatch(null)
+      return
+    }
+    setPasswordsMatch(password === confirmPassword)
+  }, [password, confirmPassword])
+
+  const getStrengthColor = () => {
+    switch (passwordStrength) {
+      case 'weak': return 'bg-red-500'
+      case 'medium': return 'bg-yellow-500'
+      case 'strong': return 'bg-blue-500'
+      case 'very-strong': return 'bg-green-500'
+    }
+  }
+
+  const getStrengthWidth = () => {
+    switch (passwordStrength) {
+      case 'weak': return 'w-1/4'
+      case 'medium': return 'w-2/4'
+      case 'strong': return 'w-3/4'
+      case 'very-strong': return 'w-full'
+    }
+  }
+
+  const getStrengthLabel = () => {
+    switch (passwordStrength) {
+      case 'weak': return 'Schwach'
+      case 'medium': return 'Mittel'
+      case 'strong': return 'Stark'
+      case 'very-strong': return 'Sehr stark'
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,8 +100,8 @@ export default function RegisterPage() {
       return
     }
 
-    if (password.length < 8) {
-      setError('Passwort muss mindestens 8 Zeichen lang sein')
+    if (passwordStrength === 'weak') {
+      setError('Bitte wähle ein stärkeres Passwort')
       return
     }
 
@@ -49,7 +122,7 @@ export default function RegisterPage() {
         return
       }
 
-      router.push('/dashboard')
+      router.push('/login?registered=true')
     } catch (err) {
       setError('Ein Fehler ist aufgetreten')
       setLoading(false)
@@ -57,98 +130,199 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">
-          <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-[#22D6DD] shadow-lg shadow-[#22D6DD]/20">
-            <Shield className="w-8 h-8 text-white" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary shadow-lg shadow-primary/20">
+            <Shield className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-white">GermanFence</h1>
-          <p className="text-muted-foreground">Admin Portal</p>
+          <h1 className="text-3xl font-bold">German Fence</h1>
+          <p className="text-muted-foreground">Portal</p>
         </div>
 
         {/* Register Card */}
-        <Card className="border-slate-700">
+        <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Account erstellen</CardTitle>
             <CardDescription>
-              Registriere dich für das GermanFence Portal
+              Erstelle deinen Account um loszulegen
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="flex items-center gap-2 p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
                   <AlertCircle className="w-4 h-4" />
                   {error}
                 </div>
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Name (optional)</Label>
                 <Input
                   id="name"
                   type="text"
                   placeholder="Max Mustermann"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
-                  className="bg-slate-900/50"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">E-Mail</Label>
+                <Label htmlFor="email">E-Mail *</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="max@example.com"
+                  placeholder="kontakt@beispiel.de"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-900/50"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Passwort</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-slate-900/50"
-                />
+                <Label htmlFor="password">Passwort *</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Passwort-Stärke-Anzeige */}
+                {password.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground">Passwort-Stärke:</span>
+                      <span className={`font-medium ${
+                        passwordStrength === 'weak' ? 'text-red-500' :
+                        passwordStrength === 'medium' ? 'text-yellow-500' :
+                        passwordStrength === 'strong' ? 'text-blue-500' :
+                        'text-green-500'
+                      }`}>
+                        {getStrengthLabel()}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full transition-all duration-300 ${getStrengthColor()} ${getStrengthWidth()}`}
+                      />
+                    </div>
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <div className="flex items-center gap-1">
+                        {password.length >= 8 ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <X className="h-3 w-3 text-red-500" />
+                        )}
+                        <span>Mindestens 8 Zeichen</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {/[A-Z]/.test(password) ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <X className="h-3 w-3 text-red-500" />
+                        )}
+                        <span>Großbuchstaben</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {/[0-9]/.test(password) ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <X className="h-3 w-3 text-red-500" />
+                        )}
+                        <span>Zahlen</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {/[^A-Za-z0-9]/.test(password) ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <X className="h-3 w-3 text-red-500" />
+                        )}
+                        <span>Sonderzeichen</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Passwort bestätigen</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="bg-slate-900/50"
-                />
+                <Label htmlFor="confirmPassword">Passwort bestätigen *</Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className={`pr-10 ${
+                      passwordsMatch === null ? '' :
+                      passwordsMatch ? 'border-green-500' : 'border-red-500'
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Passwort-Übereinstimmung */}
+                {passwordsMatch !== null && (
+                  <div className={`flex items-center gap-2 text-xs ${
+                    passwordsMatch ? 'text-green-500' : 'text-red-500'
+                  }`}>
+                    {passwordsMatch ? (
+                      <>
+                        <Check className="h-3 w-3" />
+                        <span>Passwörter stimmen überein</span>
+                      </>
+                    ) : (
+                      <>
+                        <X className="h-3 w-3" />
+                        <span>Passwörter stimmen nicht überein</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5]"
-                disabled={loading}
+                className="w-full"
+                disabled={loading || !passwordsMatch || passwordStrength === 'weak'}
               >
                 {loading ? 'Wird erstellt...' : 'Account erstellen'}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Bereits registriert? </span>
-              <Link href="/login" className="text-[#22D6DD] hover:text-[#1EBEC5] font-medium">
+              <span className="text-muted-foreground">Bereits einen Account? </span>
+              <Link href="/login" className="text-primary hover:underline font-medium">
                 Jetzt anmelden
               </Link>
             </div>
@@ -157,21 +331,9 @@ export default function RegisterPage() {
 
         {/* Footer */}
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2024 GermanFence. Alle Rechte vorbehalten.</p>
-          <p className="mt-1">
-            Made with ♥ by{' '}
-            <a
-              href="https://www.meindl-webdesign.de"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#22D6DD] hover:text-[#1EBEC5]"
-            >
-              Meindl Webdesign
-            </a>
-          </p>
+          <p>© 2024 German Fence. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </div>
   )
 }
-

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.cookies.get('auth-token')?.value
+    const token = request.cookies.get('session')?.value
 
     if (token) {
       // Lösche Session aus DB
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Lösche Cookie
     const response = NextResponse.json({ success: true })
-    response.cookies.delete('auth-token')
+    response.cookies.delete('session')
 
     return response
   } catch (error) {

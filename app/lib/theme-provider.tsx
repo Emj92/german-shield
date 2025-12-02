@@ -17,7 +17,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
-    // Lade Theme aus localStorage
+    // Lade Theme aus localStorage beim Mount
     const savedTheme = localStorage.getItem('theme') as Theme
     if (savedTheme) {
       setTheme(savedTheme)
@@ -32,8 +32,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle('dark', newTheme === 'dark')
   }
 
+  // Verhindere Hydration-Fehler: Rendere nur wenn mounted
   if (!mounted) {
-    return null
+    return <>{children}</>
   }
 
   return (
