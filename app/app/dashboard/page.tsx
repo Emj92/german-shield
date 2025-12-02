@@ -5,7 +5,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Shield, AlertTriangle, CheckCircle, Activity } from 'lucide-react'
 import { prisma } from '@/lib/db'
 
-async function getDashboardData(userId: string, isAdmin: boolean) {
+type AdminDashboardData = {
+  totalUsers: number
+  totalInstallations: number
+  recentTickets: number
+  totalBlocks: number
+}
+
+type UserDashboardData = {
+  installations: number
+  invoices: number
+  tickets: number
+}
+
+async function getDashboardData(userId: string, isAdmin: boolean): Promise<AdminDashboardData | UserDashboardData> {
   if (isAdmin) {
     // Admin: Globale Statistiken
     const [totalUsers, totalInstallations, recentTickets, totalBlocks] = await Promise.all([
@@ -66,7 +79,7 @@ export default async function DashboardPage() {
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('totalUsers' in data ? data.totalUsers : 0)}</div>
+                <div className="text-2xl font-bold">{'totalUsers' in data ? data.totalUsers : 0}</div>
                 <p className="text-xs text-muted-foreground">Registrierte Benutzer</p>
               </CardContent>
             </Card>
@@ -77,7 +90,7 @@ export default async function DashboardPage() {
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('totalInstallations' in data ? data.totalInstallations : 0)}</div>
+                <div className="text-2xl font-bold">{'totalInstallations' in data ? data.totalInstallations : 0}</div>
                 <p className="text-xs text-muted-foreground">Aktive Installationen</p>
               </CardContent>
             </Card>
@@ -88,7 +101,7 @@ export default async function DashboardPage() {
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('recentTickets' in data ? data.recentTickets : 0)}</div>
+                <div className="text-2xl font-bold">{'recentTickets' in data ? data.recentTickets : 0}</div>
                 <p className="text-xs text-muted-foreground">Offene Tickets</p>
               </CardContent>
             </Card>
@@ -99,7 +112,9 @@ export default async function DashboardPage() {
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('totalBlocks' in data ? data.totalBlocks : 0).toLocaleString()}</div>
+                <div className="text-2xl font-bold">
+                  {('totalBlocks' in data ? data.totalBlocks : 0).toLocaleString()}
+                </div>
                 <p className="text-xs text-muted-foreground">Gesamt blockiert</p>
               </CardContent>
             </Card>
@@ -113,7 +128,7 @@ export default async function DashboardPage() {
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('installations' in data ? data.installations : 0)}</div>
+                <div className="text-2xl font-bold">{'installations' in data ? data.installations : 0}</div>
                 <p className="text-xs text-muted-foreground">Aktive Seiten</p>
               </CardContent>
             </Card>
@@ -124,7 +139,7 @@ export default async function DashboardPage() {
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('invoices' in data ? data.invoices : 0)}</div>
+                <div className="text-2xl font-bold">{'invoices' in data ? data.invoices : 0}</div>
                 <p className="text-xs text-muted-foreground">Rechnungen</p>
               </CardContent>
             </Card>
@@ -135,7 +150,7 @@ export default async function DashboardPage() {
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{('tickets' in data ? data.tickets : 0)}</div>
+                <div className="text-2xl font-bold">{'tickets' in data ? data.tickets : 0}</div>
                 <p className="text-xs text-muted-foreground">Ihre Tickets</p>
               </CardContent>
             </Card>
