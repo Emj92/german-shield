@@ -48,6 +48,23 @@ define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
 
+// ============================================
+// AUTO-UPDATE von GitHub
+// ============================================
+require_once plugin_dir_path(__FILE__) . 'lib/plugin-update-checker/plugin-update-checker.php';
+
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+    'https://github.com/Emj92/german-shield/',
+    __FILE__,
+    'german-fence'
+);
+
+$myUpdateChecker->setBranch('main');
+$myUpdateChecker->getVcsApi()->enableReleaseAssets();
+// ============================================
+
 // Include required files
 // Load translations first
 require_once GERMANFENCE_PLUGIN_DIR . 'languages/translations.php';
