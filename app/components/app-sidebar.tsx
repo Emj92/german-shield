@@ -42,11 +42,6 @@ interface AppSidebarProps {
 export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname()
   const { theme, toggleTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
 
   // User-Navigation
   const userNav = [
@@ -123,11 +118,8 @@ export function AppSidebar({ user }: AppSidebarProps) {
               size="sm"
               className="flex-1"
               onClick={toggleTheme}
-              disabled={!mounted}
             >
-              {!mounted ? (
-                <Moon className="h-4 w-4" />
-              ) : theme === 'dark' ? (
+              {theme === 'dark' ? (
                 <Sun className="h-4 w-4" />
               ) : (
                 <Moon className="h-4 w-4" />

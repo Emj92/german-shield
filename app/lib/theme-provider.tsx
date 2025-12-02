@@ -32,11 +32,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle('dark', newTheme === 'dark')
   }
 
-  // Verhindere Hydration-Fehler: Rendere nur wenn mounted
-  if (!mounted) {
-    return <>{children}</>
-  }
-
+  // Context immer bereitstellen, aber Theme erst nach Mount anzeigen
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

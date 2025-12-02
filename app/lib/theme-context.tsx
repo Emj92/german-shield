@@ -34,11 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  // Verhindere Hydration-Fehler: Rendere children auch wenn nicht mounted
-  if (!mounted) {
-    return <>{children}</>
-  }
-
+  // Context immer bereitstellen, auch vor Mount
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
