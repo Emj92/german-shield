@@ -21,8 +21,10 @@ model User {
   updatedAt     DateTime  @updatedAt
   
   // Relations
-  installations Installation[]
-  sessions      Session[]
+  installations  Installation[]
+  sessions       Session[]
+  invoices       Invoice[]
+  supportTickets SupportTicket[]
   
   @@map("users")
 }
@@ -127,4 +129,147 @@ model TelemetryEvent {
   @@index([timestamp])
   
   @@map("telemetry_events")
+}
+
+// Invoice Model (Rechnungen für User)
+model Invoice {
+  id            String   @id @default(cuid())
+  userId        String
+  invoiceNumber String   @unique
+  amount        Float
+  currency      String   @default("EUR")
+  status        InvoiceStatus @default(PAID)
+  pdfUrl        String?  // URL zum PDF
+  description   String?
+  issuedAt      DateTime @default(now())
+  dueAt         DateTime?
+  paidAt        DateTime?
+  createdAt     DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([invoiceNumber])
+  @@map("invoices")
+}
+
+enum InvoiceStatus {
+  PAID
+  PENDING
+  OVERDUE
+  CANCELLED
+}
+
+// Support Ticket Model
+model SupportTicket {
+  id          String   @id @default(cuid())
+  userId      String
+  subject     String
+  category    TicketCategory
+  message     String   @db.Text
+  status      TicketStatus @default(OPEN)
+  priority    TicketPriority @default(NORMAL)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  closedAt    DateTime?
+  
+  // Relations
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments TicketAttachment[]
+  responses   TicketResponse[]
+  
+  @@index([userId])
+  @@index([status])
+  @@index([category])
+  @@map("support_tickets")
+}
+
+enum TicketCategory {
+  FEHLER      // Bug/Fehler
+  VORSCHLAG   // Feature-Vorschlag
+  HILFE       // Hilfestellung
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// Support Ticket Attachments (Bilder)
+model TicketAttachment {
+  id        String   @id @default(cuid())
+  ticketId  String
+  filename  String
+  fileUrl   String
+  fileSize  Int      // in bytes
+  mimeType  String
+  createdAt DateTime @default(now())
+  
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  @@index([ticketId])
+  @@map("ticket_attachments")
+}
+
+// Ticket Responses (Admin-Antworten)
+model TicketResponse {
+  id        String   @id @default(cuid())
+  ticketId  String
+  authorId  String   // User ID (Admin oder User)
+  message   String   @db.Text
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  @@index([ticketId])
+  @@map("ticket_responses")
+}
+
+// News Model (Roadmap, Updates, Infos)
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  type        NewsType @default(INFO)
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([isPublished])
+  @@index([publishedAt])
+  @@map("news")
+}
+
+enum NewsType {
+  INFO        // Allgemeine Info
+  UPDATE      // Plugin-Update
+  ROADMAP     // Roadmap-Item
+  MAINTENANCE // Wartungsarbeiten
+}
+
+// Plugin Release Model (für Downloads)
+model PluginRelease {
+  id          String   @id @default(cuid())
+  version     String   @unique
+  downloadUrl String
+  changelog   String   @db.Text
+  fileSize    Int      // in bytes
+  isStable    Boolean  @default(true)
+  releaseDate DateTime @default(now())
+  createdAt   DateTime @default(now())
+  
+  @@index([version])
+  @@index([isStable])
+  @@map("plugin_releases")
 }
