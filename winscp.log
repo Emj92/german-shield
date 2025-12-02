@@ -1,0 +1,109 @@
+. 2025-11-28 11:14:00.077 --------------------------------------------------------------------------
+. 2025-11-28 11:14:00.083 WinSCP Version 6.5.5 (Build 16453 2025-11-19) (OS 10.0.26100 – Windows 11 Pro)
+. 2025-11-28 11:14:00.083 Configuration: HKCU\Software\Martin Prikryl\WinSCP 2\
+. 2025-11-28 11:14:00.083 Log level: Normal
+. 2025-11-28 11:14:00.083 Local account: CODEKINGMOBIL\emein
+. 2025-11-28 11:14:00.083 Working directory: C:\Users\emein\Desktop\German-Shield
+. 2025-11-28 11:14:00.083 Process ID: 7752
+. 2025-11-28 11:14:00.122 Ancestor processes: WinSCP, powershell, Cursor, Cursor, explorer, ...
+. 2025-11-28 11:14:00.122 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=6.5.5 /consoleinstance=_1844_910 "/script=winscp-upload.txt" "/log=winscp.log" 
+. 2025-11-28 11:14:00.125 Time zone: Current: GMT+1, Standard: GMT+1 (Mitteleuropäische Zeit), DST: GMT+2 (Mitteleuropäische Sommerzeit), DST Start: 30.03.2025, DST End: 26.10.2025
+. 2025-11-28 11:14:00.125 Login time: Freitag, 28. November 2025 11:14:00
+. 2025-11-28 11:14:00.125 --------------------------------------------------------------------------
+. 2025-11-28 11:14:00.125 Script: Retrospectively logging previous script records:
+> 2025-11-28 11:14:00.125 Script: option batch on
+< 2025-11-28 11:14:00.125 Script: batch           on        
+> 2025-11-28 11:14:00.125 Script: option confirm off
+< 2025-11-28 11:14:00.125 Script: confirm         off       
+> 2025-11-28 11:14:00.125 Script: open ftp://web44f2:***@s321.goserver.host
+. 2025-11-28 11:14:00.125 --------------------------------------------------------------------------
+. 2025-11-28 11:14:00.125 Session name: web44f2@s321.goserver.host (Ad-Hoc site)
+. 2025-11-28 11:14:00.125 Host name: s321.goserver.host (Port: 21)
+. 2025-11-28 11:14:00.125 User name: web44f2 (Password: Yes, Key file: No, Passphrase: No)
+. 2025-11-28 11:14:00.125 Transfer Protocol: FTP
+. 2025-11-28 11:14:00.125 Ping type: Dummy, Ping interval: 30 sec; Timeout: 15 sec
+. 2025-11-28 11:14:00.125 Disable Nagle: No
+. 2025-11-28 11:14:00.125 Proxy: None
+. 2025-11-28 11:14:00.125 Send buffer: 262144
+. 2025-11-28 11:14:00.125 UTF: Auto
+. 2025-11-28 11:14:00.125 FTPS: None [Client certificate: No]
+. 2025-11-28 11:14:00.125 FTP: Passive: Yes [Force IP: Auto]; MLSD: Auto [List all: Auto]; HOST: Auto
+. 2025-11-28 11:14:00.125 Local directory: default, Remote directory: home, Update: Yes, Cache: Yes
+. 2025-11-28 11:14:00.125 Cache directory changes: Yes, Permanent: Yes
+. 2025-11-28 11:14:00.125 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2025-11-28 11:14:00.125 Timezone offset: 0h 0m
+. 2025-11-28 11:14:00.125 --------------------------------------------------------------------------
+< 2025-11-28 11:14:00.150 Script: Verbindung mit s321.goserver.host wird hergestellt …
+. 2025-11-28 11:14:00.150 Verbindung mit s321.goserver.host wird hergestellt …
+. 2025-11-28 11:14:00.183 Verbunden mit s321.goserver.host. Willkommensnachricht wird erwartet …
+< 2025-11-28 11:14:00.364 220 webgo s321.goserver.host FTP Server ready.
+> 2025-11-28 11:14:00.364 USER web44f2
+< 2025-11-28 11:14:00.379 331 Password required for web44f2
+> 2025-11-28 11:14:00.379 PASS ***************
+< 2025-11-28 11:14:00.426 230 Access granted for web44f2.
+> 2025-11-28 11:14:00.426 SYST
+< 2025-11-28 11:14:00.447 215 UNIX Type: L8
+> 2025-11-28 11:14:00.447 FEAT
+< 2025-11-28 11:14:00.473 211-Features:
+< 2025-11-28 11:14:00.473  AUTH TLS
+< 2025-11-28 11:14:00.473  CCC
+< 2025-11-28 11:14:00.473  CLNT
+< 2025-11-28 11:14:00.473  EPRT
+< 2025-11-28 11:14:00.473  EPSV
+< 2025-11-28 11:14:00.473  HOST
+< 2025-11-28 11:14:00.473  LANG ja-JP;it-IT;ru-RU;zh-TW;bg-BG;en-US;es-ES;ko-KR;zh-CN;fr-FR
+< 2025-11-28 11:14:00.473  MDTM
+< 2025-11-28 11:14:00.473  MFF modify;UNIX.group;UNIX.mode;
+< 2025-11-28 11:14:00.473  MFMT
+< 2025-11-28 11:14:00.505  MLST modify*;perm*;size*;type*;unique*;UNIX.group*;UNIX.groupname*;UNIX.mode*;UNIX.owner*;UNIX.ownername*;
+< 2025-11-28 11:14:00.505  PBSZ
+< 2025-11-28 11:14:00.505  PROT
+< 2025-11-28 11:14:00.505  RANG STREAM
+< 2025-11-28 11:14:00.505  REST STREAM
+< 2025-11-28 11:14:00.505  SITE MKDIR
+< 2025-11-28 11:14:00.505  SITE RMDIR
+< 2025-11-28 11:14:00.505  SITE SYMLINK
+< 2025-11-28 11:14:00.505  SITE UTIME
+< 2025-11-28 11:14:00.505  SIZE
+< 2025-11-28 11:14:00.505  SSCN
+< 2025-11-28 11:14:00.505  TVFS
+< 2025-11-28 11:14:00.505  UTF8
+< 2025-11-28 11:14:00.505 211 End
+> 2025-11-28 11:14:00.505 CLNT WinSCP-release-6.5.5
+< 2025-11-28 11:14:00.505 200 OK
+> 2025-11-28 11:14:00.505 OPTS UTF8 ON
+< 2025-11-28 11:14:00.531 200 UTF8 set to on
+< 2025-11-28 11:14:00.531 Script: Verbunden
+. 2025-11-28 11:14:00.531 Verbunden
+. 2025-11-28 11:14:00.531 --------------------------------------------------------------------------
+. 2025-11-28 11:14:00.531 Using FTP protocol.
+. 2025-11-28 11:14:00.531 Doing startup conversation with host.
+< 2025-11-28 11:14:00.531 Script: Die Sitzung wird gestartet …
+> 2025-11-28 11:14:00.531 PWD
+< 2025-11-28 11:14:00.559 257 "/" is the current directory
+. 2025-11-28 11:14:00.559 Getting current directory name.
+. 2025-11-28 11:14:00.559 Startup conversation with host finished.
+< 2025-11-28 11:14:00.559 Script: Sitzung gestartet.
+< 2025-11-28 11:14:00.561 Script: Aktive Sitzung: [1] web44f2@s321.goserver.host
+> 2025-11-28 11:14:00.561 Script: put -delete german-shield/* german-shield/
+. 2025-11-28 11:14:00.564 Copying 13 files/directories to remote directory "german-shield/" - total size: 3.760
+. 2025-11-28 11:14:00.564   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0001; Resume: S (102400); CalcS: No; Mask: 
+. 2025-11-28 11:14:00.564   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2025-11-28 11:14:00.564   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2025-11-28 11:14:00.566 File: '.gitignore' [2025-11-27T21:37:55.748Z] [578]
+* 2025-11-28 11:14:00.570 (EOSError) Systemfehler. Code: 2.
+* 2025-11-28 11:14:00.570 Das System kann die angegebene Datei nicht finden
+. 2025-11-28 11:14:00.570 Asking user:
+. 2025-11-28 11:14:00.570 Datei oder Verzeichnis „.gitignore“ ist nicht vorhanden. ("Systemfehler. Code: 2.
+. 2025-11-28 11:14:00.570 Das System kann die angegebene Datei nicht finden")
+< 2025-11-28 11:14:00.570 Script: Datei oder Verzeichnis „.gitignore“ ist nicht vorhanden.
+< 2025-11-28 11:14:00.570 Script: Systemfehler. Code: 2.
+< 2025-11-28 11:14:00.570 Das System kann die angegebene Datei nicht finden
+. 2025-11-28 11:14:00.573 Answer: Abort
+* 2025-11-28 11:14:00.579 (ESkipFile) Datei oder Verzeichnis „.gitignore“ ist nicht vorhanden.
+* 2025-11-28 11:14:00.579 Systemfehler. Code: 2.
+* 2025-11-28 11:14:00.579 Das System kann die angegebene Datei nicht finden
+. 2025-11-28 11:14:00.579 Copying finished: Transferred: 0, Elapsed: 0:00:00, CPS: 0/s
+. 2025-11-28 11:14:00.579 Script: Failed
+> 2025-11-28 11:14:00.581 Script: close
+. 2025-11-28 11:14:00.583 Verbindung zur Gegenstelle abgebrochen

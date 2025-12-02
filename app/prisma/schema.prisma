@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Model (Admin + Plugin-Nutzer)
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  installations Installation[]
+  sessions      Session[]
+  
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+// Session Model (für Auth)
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+// Installation Model (Plugin-Installationen)
+model Installation {
+  id            String   @id @default(cuid())
+  userId        String
+  siteUrl       String
+  siteName      String?
+  apiKey        String   @unique
+  version       String
+  isActive      Boolean  @default(true)
+  lastSeen      DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  statistics Statistic[]
+  
+  @@map("installations")
+}
+
+// Statistic Model (Spam-Statistiken pro Installation)
+model Statistic {
+  id             String   @id @default(cuid())
+  installationId String
+  date           DateTime @default(now())
+  
+  // Counters
+  totalBlocked   Int      @default(0)
+  totalLegitimate Int     @default(0)
+  blockedByType  Json?    // { "honeypot": 10, "timestamp": 5, ... }
+  blockedByCountry Json?  // { "CN": 5, "RU": 3, ... }
+  
+  createdAt      DateTime @default(now())
+  
+  installation Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+  
+  @@map("statistics")
+}
+
+// Global Stats (für Admin-Dashboard)
+model GlobalStat {
+  id                String   @id @default(cuid())
+  date              DateTime @unique @default(now())
+  totalInstallations Int     @default(0)
+  activeInstallations Int    @default(0)
+  totalBlocked      Int      @default(0)
+  totalLegitimate   Int      @default(0)
+  
+  @@map("global_stats")
+}
+
+// Telemetry Event (Anonymisierte Spam-Daten für Muster-Erkennung)
+// DSGVO-konform: Nur in Deutschland (Hetzner), nur zur Gefahrenabwehr
+model TelemetryEvent {
+  id              String   @id @default(cuid())
+  installationId  String?  // Optional: Kann null sein wenn Installation gelöscht
+  
+  // Anonymisierte Daten
+  ipHash          String   // SHA-256 Hash der IP (nicht umkehrbar)
+  countryCode     String?  // ISO 2-letter code (DE, US, CN, ...)
+  
+  // Block-Details
+  blockMethod     String   // honeypot, timestamp, geo, phrase, user_agent, ...
+  blockReason     String?  // Detaillierter Grund
+  
+  // Spam-Indikatoren (KEINE persönlichen Daten!)
+  emailDomainHash String?  // SHA-256 Hash nur der Domain (@example.com)
+  spamDomains     Json?    // Array von Spam-Domains aus UA/Content
+  userAgentHash   String?  // SHA-256 Hash des User-Agents
+  
+  // Metadata
+  timestamp       DateTime @default(now())
+  date            DateTime @default(now()) @db.Date // Für Aggregation
+  
+  // Indices für Performance
+  @@index([installationId])
+  @@index([countryCode])
+  @@index([blockMethod])
+  @@index([date])
+  @@index([timestamp])
+  
+  @@map("telemetry_events")
+}
