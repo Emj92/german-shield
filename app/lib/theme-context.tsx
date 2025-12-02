@@ -34,10 +34,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  // Context immer bereitstellen, auch vor Mount
+  // Context immer bereitstellen, damit useTheme() nicht crashed
+  // Aber suppressHydrationWarning verwenden um Mismatch zu vermeiden
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <div suppressHydrationWarning>
+        {children}
+      </div>
     </ThemeContext.Provider>
   )
 }

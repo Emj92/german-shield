@@ -20,28 +20,23 @@ export default function NewSupportTicketPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
     
+    // Fehler zu Beginn zurücksetzen
+    setError('')
+    
     // Validiere Dateien
-    let hasError = false
     const validFiles = selectedFiles.filter(file => {
       if (file.size > 3 * 1024 * 1024) {
         setError(`Datei ${file.name} ist zu groß (max. 3MB)`)
-        hasError = true
         return false
       }
       if (!['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(file.type)) {
         setError(`Datei ${file.name} hat ein ungültiges Format`)
-        hasError = true
         return false
       }
       return true
     })
 
     setFiles(prev => [...prev, ...validFiles].slice(0, 3))
-    
-    // Nur Fehler löschen wenn keine Validierungsfehler aufgetreten sind
-    if (!hasError) {
-      setError('')
-    }
   }
 
   const removeFile = (index: number) => {
