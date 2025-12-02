@@ -40,7 +40,7 @@ export default function LoginPage() {
       // Refresh und redirect
       router.refresh()
       router.push('/dashboard')
-    } catch (err) {
+    } catch {
       setError('Ein Fehler ist aufgetreten')
       setLoading(false)
     }

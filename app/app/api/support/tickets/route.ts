@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       data: {
         userId: user.userId,
         subject,
-        category: category as any,
+        category: category as 'FEHLER' | 'VORSCHLAG' | 'HILFE',
         message,
         status: 'OPEN',
         priority: 'NORMAL',
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const user = await getUser()
     

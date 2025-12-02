@@ -54,8 +54,7 @@ export async function getSession(): Promise<SessionUser | null> {
   if (!token) return null
 
   try {
-    const verified = await jwtVerify(token, JWT_SECRET)
-    const userId = verified.payload.userId as string
+    await jwtVerify(token, JWT_SECRET)
 
     const session = await prisma.session.findUnique({
       where: { token },
@@ -72,7 +71,7 @@ export async function getSession(): Promise<SessionUser | null> {
       name: session.user.name,
       role: session.user.role,
     }
-  } catch (error) {
+  } catch {
     return null
   }
 }

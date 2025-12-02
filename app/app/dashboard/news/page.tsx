@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Newspaper, Rocket, Info, Wrench } from 'lucide-react'
 import { prisma } from '@/lib/db'
 

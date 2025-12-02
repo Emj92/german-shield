@@ -65,7 +65,7 @@ export default function NewSupportTicketPage() {
       }
 
       router.push('/dashboard/support')
-    } catch (err) {
+    } catch {
       setError('Fehler beim Erstellen des Tickets. Bitte versuchen Sie es erneut.')
     } finally {
       setIsLoading(false)
@@ -112,7 +112,7 @@ export default function NewSupportTicketPage() {
               <select
                 id="category"
                 value={category}
-                onChange={(e) => setCategory(e.target.value as any)}
+                onChange={(e) => setCategory(e.target.value as 'FEHLER' | 'VORSCHLAG' | 'HILFE')}
                 className="w-full rounded-md border border-input bg-background px-3 py-2"
                 required
               >

@@ -123,7 +123,7 @@ export default function RegisterPage() {
       }
 
       router.push('/login?registered=true')
-    } catch (err) {
+    } catch {
       setError('Ein Fehler ist aufgetreten')
       setLoading(false)
     }
