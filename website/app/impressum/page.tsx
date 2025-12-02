@@ -29,7 +29,7 @@ export default function ImpressumPage() {
 
             <h2>Kontakt</h2>
             <p>
-              E-Mail: kontakt@meindl-webdesign.de<br />
+              E-Mail: support@germanfence.de<br />
               Mobil: +49 (0) 151 222 62 199<br />
               Tel: +49 (0) 7022 263 57 55
             </p>

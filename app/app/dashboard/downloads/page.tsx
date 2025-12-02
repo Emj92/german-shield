@@ -105,13 +105,49 @@ export default async function DownloadsPage() {
         )}
 
         {releases.length === 0 && (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Download className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium">Keine Downloads verfügbar</p>
-              <p className="text-sm text-muted-foreground">
-                Plugin-Versionen werden hier angezeigt
-              </p>
+          <Card className="border-primary">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-6 w-6 text-primary" />
+                    German Fence Plugin
+                  </CardTitle>
+                  <CardDescription>
+                    Aktuelle Version herunterladen
+                  </CardDescription>
+                </div>
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+                  <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+                    <Download className="mr-2 h-5 w-5" />
+                    Jetzt herunterladen
+                  </a>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="prose prose-sm dark:prose-invert">
+                  <h3 className="font-semibold">Installationsanleitung:</h3>
+                  <ol className="text-sm space-y-2">
+                    <li>Plugin-ZIP-Datei herunterladen</li>
+                    <li>In WordPress: Plugins → Installieren → Plugin hochladen</li>
+                    <li>ZIP-Datei auswählen und hochladen</li>
+                    <li>Plugin aktivieren und konfigurieren</li>
+                  </ol>
+                </div>
+                <div className="bg-muted p-4 rounded-lg">
+                  <p className="text-sm font-medium mb-2">Benötigen Sie Hilfe?</p>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Unser Support-Team steht Ihnen gerne zur Verfügung
+                  </p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="mailto:support@germanfence.de">
+                      Support kontaktieren
+                    </a>
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         )}

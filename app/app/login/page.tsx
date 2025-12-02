@@ -80,7 +80,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="kontakt@meindl-webdesign.de"
+                  placeholder="support@germanfence.de"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

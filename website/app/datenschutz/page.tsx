@@ -37,7 +37,7 @@ export default function DatenschutzPage() {
               Oberensingerstr 70<br />
               72622 Nürtingen<br /><br />
               Telefon: 0151 222 62 199<br />
-              E-Mail: kontakt@meindl-webdesign.de
+              E-Mail: support@germanfence.de
             </p>
 
             <h2>2. Hosting und Content Delivery Networks (CDN)</h2>
@@ -114,7 +114,7 @@ export default function DatenschutzPage() {
               Oberensingerstr 70<br />
               72622 Nürtingen<br /><br />
               Telefon: 0151 222 62 199<br />
-              E-Mail: kontakt@meindl-webdesign.de
+              E-Mail: support@germanfence.de
             </p>
 
             <p>

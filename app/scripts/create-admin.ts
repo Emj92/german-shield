@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  const email = 'kontakt@meindl-webdesign.de'
+  const email = 'support@germanfence.de'
   const password = 'Erolfni1992'
   const name = 'Admin'
 

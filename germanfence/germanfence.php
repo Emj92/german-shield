@@ -4,8 +4,8 @@
  * Plugin URI: https://germanfence.de
  * Description: Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪
  * Version: 1.0.0 Beta
- * Author: GermanProWeb
- * Author URI: https://meindl-webdesign.de
+ * Author: GermanFence Team
+ * Author URI: https://germanfence.de
  * License: GPL v2 or later + Proprietary
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: germanfence
@@ -200,6 +200,14 @@ function germanfence_update_database() {
 register_deactivation_hook(__FILE__, 'germanfence_deactivate');
 function germanfence_deactivate() {
     // Cleanup if needed
+}
+
+// Add "Get Pro" button to plugin action links
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'germanfence_add_action_links');
+function germanfence_add_action_links($links) {
+    $pro_link = '<a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; font-weight: bold;">Get Pro</a>';
+    array_unshift($links, $pro_link);
+    return $links;
 }
 
 // Custom update command

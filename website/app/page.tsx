@@ -58,10 +58,12 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button size="lg" className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white px-8 py-6 text-lg">
-              <Download className="mr-2 h-5 w-5" />
-              Plugin herunterladen
-            </Button>
+            <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+              <Button size="lg" className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white px-8 py-6 text-lg">
+                <Download className="mr-2 h-5 w-5" />
+                Plugin herunterladen
+              </Button>
+            </a>
             <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10 px-8 py-6 text-lg">
               <Shield className="mr-2 h-5 w-5" />
               Live Demo
@@ -273,10 +275,12 @@ export default function Home() {
                     <span>Lifetime Updates</span>
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD] hover:text-white">
-                  <Download className="mr-2 h-4 w-4" />
-                  Jetzt kaufen
-                </Button>
+                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
+                  <Button variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD] hover:text-white">
+                    <Download className="mr-2 h-4 w-4" />
+                    Jetzt kaufen
+                  </Button>
+                </a>
               </CardContent>
             </Card>
 
@@ -325,9 +329,11 @@ export default function Home() {
                     <span>Rechnungen & Downloads</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
-                  Jetzt kaufen
-                </Button>
+                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
+                  <Button className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
+                    Jetzt kaufen
+                  </Button>
+                </a>
               </CardContent>
             </Card>
 
@@ -371,9 +377,11 @@ export default function Home() {
                     <span>ThemeForest-kompatibel</span>
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full border-2 border-[#F06292] text-[#F06292] hover:bg-[#F06292] hover:text-white">
-                  Jetzt kaufen
-                </Button>
+                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
+                  <Button variant="outline" className="w-full border-2 border-[#F06292] text-[#F06292] hover:bg-[#F06292] hover:text-white">
+                    Jetzt kaufen
+                  </Button>
+                </a>
               </CardContent>
             </Card>
           </div>
@@ -390,10 +398,12 @@ export default function Home() {
             Lifetime-Lizenz sichern und Spam für immer blockieren!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
-              <Download className="mr-2 h-5 w-5" />
-              Jetzt kaufen
-            </Button>
+            <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+              <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
+                <Download className="mr-2 h-5 w-5" />
+                Jetzt kaufen
+              </Button>
+            </a>
             <Link href="/login">
               <Button size="lg" className="bg-[#F06292] text-white hover:bg-[#E91E63] hover:scale-105 px-8 py-6 text-lg transition-all shadow-lg">
                 <LogIn className="mr-2 h-5 w-5" />
