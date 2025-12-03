@@ -29,13 +29,13 @@ export default function Home() {
             <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
             <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="border-[#22D6DD] text-[#22D6DD] transition-transform hover:-translate-y-1">
+              <Button variant="outline" className="border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1">
                 <LogIn className="mr-2 h-4 w-4" />
                 Portal Login
               </Button>
             </a>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button className="bg-[#22D6DD] text-white transition-transform hover:-translate-y-1">
+              <Button className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-4 w-4" />
                 Download
               </Button>
@@ -62,12 +62,12 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button size="lg" className="bg-[#22D6DD] text-white px-8 py-6 text-lg transition-transform hover:-translate-y-1">
+              <Button size="lg" className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white px-8 py-6 text-lg transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
                 Plugin herunterladen
               </Button>
             </a>
-            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10 px-8 py-6 text-lg transition-transform hover:-translate-y-1">
+            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] px-8 py-6 text-lg transition-transform hover:-translate-y-1">
               <Shield className="mr-2 h-5 w-5" />
               Live Demo
             </Button>
@@ -263,7 +263,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
-                  <Button variant="outline" className="w-full border-slate-300 text-slate-700 transition-transform hover:-translate-y-1">
+                  <Button variant="outline" className="w-full border-slate-300 text-slate-700 hover:border-slate-300 hover:text-slate-700 transition-transform hover:-translate-y-1">
                     <Download className="mr-2 h-4 w-4" />
                     Kostenlos testen
                   </Button>
@@ -412,13 +412,13 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button size="lg" className="bg-white text-[#22D6DD] px-8 py-6 text-lg font-semibold transition-transform hover:-translate-y-1">
+              <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-white hover:text-[#22D6DD] px-8 py-6 text-lg font-semibold transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
                 Jetzt kaufen
               </Button>
             </a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#F06292] text-white px-8 py-6 text-lg shadow-lg transition-transform hover:-translate-y-1">
+              <Button size="lg" className="bg-[#F06292] text-white hover:bg-[#F06292] hover:text-white px-8 py-6 text-lg shadow-lg transition-transform hover:-translate-y-1">
                 <LogIn className="mr-2 h-5 w-5" />
                 Zum Portal
               </Button>
