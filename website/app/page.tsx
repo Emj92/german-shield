@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BuyButton } from "@/components/BuyButton";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Image 
-              src="/screenshots/logo_klein.png" 
+              src="/germanfence_logo.png" 
               alt="GermanFence" 
               width={40} 
               height={40}
@@ -28,13 +29,13 @@ export default function Home() {
             <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
             <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
             <Link href="/login">
-              <Button variant="outline" className="border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD] hover:text-white">
+              <Button variant="outline" className="border-[#22D6DD] text-[#22D6DD] transition-transform hover:-translate-y-1">
                 <LogIn className="mr-2 h-4 w-4" />
                 Login
               </Button>
             </Link>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
+              <Button className="bg-[#22D6DD] text-white transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-4 w-4" />
                 Download
               </Button>
@@ -61,12 +62,12 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button size="lg" className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white px-8 py-6 text-lg">
+              <Button size="lg" className="bg-[#22D6DD] text-white px-8 py-6 text-lg transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
                 Plugin herunterladen
               </Button>
             </a>
-            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10 px-8 py-6 text-lg">
+            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10 px-8 py-6 text-lg transition-transform hover:-translate-y-1">
               <Shield className="mr-2 h-5 w-5" />
               Live Demo
             </Button>
@@ -277,12 +278,12 @@ export default function Home() {
                     <span>Lifetime Updates</span>
                   </li>
                 </ul>
-                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
-                  <Button variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD] hover:text-white">
-                    <Download className="mr-2 h-4 w-4" />
-                    Jetzt kaufen
-                  </Button>
-                </a>
+                <BuyButton 
+                  packageType="single" 
+                  price={19} 
+                  variant="outline"
+                  className="w-full border-[#22D6DD] text-[#22D6DD] transition-transform hover:-translate-y-1"
+                />
               </CardContent>
             </Card>
 
@@ -331,11 +332,11 @@ export default function Home() {
                     <span>Rechnungen & Downloads</span>
                   </li>
                 </ul>
-                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
-                  <Button className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
-                    Jetzt kaufen
-                  </Button>
-                </a>
+                <BuyButton 
+                  packageType="freelancer" 
+                  price={39}
+                  className="w-full bg-[#22D6DD] text-white transition-transform hover:-translate-y-1"
+                />
               </CardContent>
             </Card>
 
@@ -379,11 +380,12 @@ export default function Home() {
                     <span>Premium Templates</span>
                   </li>
                 </ul>
-                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
-                  <Button variant="outline" className="w-full border-2 border-[#F06292] text-[#F06292] hover:bg-[#F06292] hover:text-white">
-                    Jetzt kaufen
-                  </Button>
-                </a>
+                <BuyButton 
+                  packageType="unlimited" 
+                  price={99}
+                  variant="outline"
+                  className="w-full border-2 border-[#F06292] text-[#F06292] transition-transform hover:-translate-y-1"
+                />
               </CardContent>
             </Card>
           </div>
@@ -401,13 +403,13 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
+              <Button size="lg" className="bg-white text-[#22D6DD] px-8 py-6 text-lg font-semibold transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
                 Jetzt kaufen
               </Button>
             </a>
             <Link href="/login">
-              <Button size="lg" className="bg-[#F06292] text-white hover:bg-[#E91E63] hover:scale-105 px-8 py-6 text-lg transition-all shadow-lg">
+              <Button size="lg" className="bg-[#F06292] text-white px-8 py-6 text-lg shadow-lg transition-transform hover:-translate-y-1">
                 <LogIn className="mr-2 h-5 w-5" />
                 Zum Dashboard
               </Button>

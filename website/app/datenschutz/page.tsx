@@ -190,6 +190,167 @@ export default function DatenschutzPage() {
               Diese Website verwendet keine Social-Media-Plugins oder externe Tracking-Tools.
             </p>
 
+            <h2>7. Datenverarbeitung durch GermanFence WordPress Plugin</h2>
+            
+            <h3>Art und Umfang der Datenverarbeitung</h3>
+            <p>
+              Das GermanFence WordPress Plugin verarbeitet folgende Daten zum Schutz vor Spam und missbräuchlichen 
+              Formulareinreichungen:
+            </p>
+            <ul>
+              <li><strong>IP-Adressen:</strong> Zur Identifizierung und Blockierung von Spam-Quellen sowie für GEO-Blocking</li>
+              <li><strong>Zeitstempel:</strong> Zur Erkennung automatisierter Bot-Submissions</li>
+              <li><strong>User-Agent-Strings:</strong> Zur Identifizierung verdächtiger Browser/Bots</li>
+              <li><strong>Formularinhalte:</strong> Temporäre Analyse auf Spam-Phrasen und Honeypot-Felder</li>
+              <li><strong>GEO-Daten:</strong> Länderzuordnung basierend auf IP-Adresse (falls GEO-Blocking aktiviert)</li>
+            </ul>
+
+            <h3>Rechtsgrundlage</h3>
+            <p>
+              Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse). 
+              Unser berechtigtes Interesse liegt im Schutz unserer Website vor Spam, Missbrauch und automatisierten 
+              Angriffen sowie in der Gewährleistung der Funktionsfähigkeit unserer Kontaktformulare.
+            </p>
+
+            <h3>Speicherdauer</h3>
+            <p>
+              <strong>Blockierte Anfragen:</strong> IP-Adressen und Metadaten blockierter Spam-Versuche werden für 
+              maximal 90 Tage in der WordPress-Datenbank gespeichert und danach automatisch gelöscht.
+            </p>
+            <p>
+              <strong>Legitime Anfragen:</strong> Erfolgreich übermittelte Formulardaten werden gemäß der jeweiligen 
+              Zweckbestimmung (z.B. Kontaktanfrage, Newsletter-Anmeldung) verarbeitet und gespeichert.
+            </p>
+
+            <h3>Datenweitergabe</h3>
+            <p>
+              Alle durch GermanFence verarbeiteten Daten verbleiben ausschließlich auf Ihrem WordPress-Server. 
+              Es erfolgt <strong>keine Übermittlung</strong> an Dritte oder externe Server. Das Plugin arbeitet 
+              vollständig lokal und DSGVO-konform.
+            </p>
+
+            <h3>Ihre Rechte</h3>
+            <p>
+              Sie haben jederzeit das Recht auf:
+            </p>
+            <ul>
+              <li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO)</li>
+              <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
+              <li>Löschung Ihrer Daten (Art. 17 DSGVO)</li>
+              <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+              <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+              <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
+            </ul>
+            <p>
+              Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: support@germanfence.de
+            </p>
+
+            <h2>8. Zahlungsabwicklung</h2>
+            
+            <h3>Mollie Payment Services</h3>
+            <p>
+              Für die Abwicklung von Zahlungen nutzen wir den Zahlungsdienstleister Mollie B.V., 
+              Keizersgracht 313, 1016 EE Amsterdam, Niederlande.
+            </p>
+            <p>
+              Bei Zahlungen über Mollie werden folgende Daten an Mollie übermittelt:
+            </p>
+            <ul>
+              <li>Name und E-Mail-Adresse</li>
+              <li>Rechnungsadresse</li>
+              <li>Zahlungsinformationen (abhängig von der gewählten Zahlungsmethode)</li>
+              <li>Bestelldetails und Betrag</li>
+            </ul>
+            <p>
+              Die Datenverarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) 
+              und Art. 6 Abs. 1 lit. c DSGVO (rechtliche Verpflichtung).
+            </p>
+            <p>
+              Weitere Informationen zum Datenschutz bei Mollie finden Sie hier: 
+              <a href="https://www.mollie.com/de/privacy" target="_blank" rel="noopener">
+                mollie.com/de/privacy
+              </a>
+            </p>
+
+            <h3>Speicherung von Zahlungsdaten</h3>
+            <p>
+              Wir speichern Ihre Zahlungsdaten (Transaktions-ID, Zahlungsstatus, Datum) für die gesetzlich 
+              vorgeschriebene Aufbewahrungsfrist von 10 Jahren gemäß § 147 AO und § 257 HGB.
+            </p>
+
+            <h2>9. Widerrufsrecht und Rückgaberecht</h2>
+            
+            <h3>14-Tage-Widerrufsrecht</h3>
+            <p>
+              Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. 
+              Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
+            </p>
+            <p>
+              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Erwin Meindl, German Fence, Oberensingerstr 70, 
+              72622 Nürtingen, E-Mail: support@germanfence.de) mittels einer eindeutigen Erklärung 
+              (z. B. ein mit der Post versandter Brief oder E-Mail) über Ihren Entschluss, diesen Vertrag zu 
+              widerrufen, informieren.
+            </p>
+            <p>
+              <strong>Wichtiger Hinweis:</strong> Das Widerrufsrecht erlischt vorzeitig, wenn Sie ausdrücklich 
+              zugestimmt haben, dass wir mit der Ausführung des Vertrages vor Ablauf der Widerrufsfrist beginnen, 
+              und Sie Ihre Kenntnis davon bestätigt haben, dass Sie durch Ihre Zustimmung mit Beginn der Ausführung 
+              des Vertrages Ihr Widerrufsrecht verlieren. Dies gilt insbesondere für digitale Inhalte, die nicht 
+              auf einem körperlichen Datenträger geliefert werden (Software-Downloads).
+            </p>
+
+            <h3>Folgen des Widerrufs</h3>
+            <p>
+              Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, 
+              unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung 
+              über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir 
+              dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben.
+            </p>
+            <p>
+              <strong>Nach Ablauf der 14-Tage-Frist:</strong> Nach Ablauf der Widerrufsfrist ist ein Widerruf 
+              nicht mehr möglich. Gewährleistungsansprüche bleiben hiervon unberührt.
+            </p>
+
+            <h2>10. Hosting-Infrastruktur</h2>
+            
+            <h3>Hetzner Online GmbH</h3>
+            <p>
+              Unsere Server-Infrastruktur wird von Hetzner Online GmbH bereitgestellt:
+            </p>
+            <p>
+              Hetzner Online GmbH<br />
+              Industriestr. 25<br />
+              91710 Gunzenhausen<br />
+              Deutschland
+            </p>
+            <p>
+              Die Server befinden sich ausschließlich in Deutschland. Es erfolgt keine Datenübermittlung in 
+              Drittländer außerhalb der EU.
+            </p>
+            <p>
+              Datenschutzerklärung von Hetzner: 
+              <a href="https://www.hetzner.com/de/rechtliches/datenschutz" target="_blank" rel="noopener">
+                hetzner.com/de/rechtliches/datenschutz
+              </a>
+            </p>
+
+            <h3>Domain und E-Mail: Webgo GmbH</h3>
+            <p>
+              Unsere Domain und E-Mail-Dienste werden von Webgo GmbH bereitgestellt:
+            </p>
+            <p>
+              Webgo GmbH<br />
+              Wandsbeker Zollstr. 95<br />
+              22041 Hamburg<br />
+              Deutschland
+            </p>
+            <p>
+              Datenschutzerklärung von Webgo: 
+              <a href="https://www.webgo.de/datenschutz/" target="_blank" rel="noopener">
+                webgo.de/datenschutz/
+              </a>
+            </p>
+
             <p className="mt-8 text-sm text-slate-500">
               Stand: Dezember 2024
             </p>

@@ -29,7 +29,7 @@ class GermanFence_Admin {
         GermanFence_Logger::log_admin('add_admin_menu() wird aufgerufen');
         
         // Hauptmenü mit eigenem Logo
-        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png';
+        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png';
         add_menu_page(
             'GermanFence',
             'GermanFence',
@@ -278,7 +278,7 @@ class GermanFence_Admin {
             <div class="germanfence-header">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <h1 style="color: #1d2327; margin: 0;">
-                        <img src="<?php echo GERMANFENCE_PLUGIN_URL; ?>assets/images/logo_groß.png" alt="GermanFence" class="germanfence-logo-img" style="height: 60px; width: auto; margin-right: 15px;">
+                        <img src="<?php echo GERMANFENCE_PLUGIN_URL; ?>assets/images/germanfence_logo.png" alt="GermanFence" class="germanfence-logo-img" style="height: 60px; width: auto; margin-right: 15px;">
                         GermanFence
                         <span class="germanfence-version">v<?php echo GERMANFENCE_VERSION; ?></span>
                     </h1>
@@ -1429,7 +1429,7 @@ class GermanFence_Admin {
                             <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; text-align: center;">
                                 <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; padding: 10px 16px; border-radius: 6px; border: 1px solid #22D6DD; box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);">
                                     <span id="badge-icon">
-                                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
+                                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
                                     <span id="badge-text-preview" style="font-size: 13px; font-weight: 600; color: #1d2327;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
                                 </div>

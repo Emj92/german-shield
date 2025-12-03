@@ -6,8 +6,13 @@ import { ThemeProvider } from '@/lib/theme-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'German Fence Portal',
-  description: 'Admin & User Portal für German Fence WordPress Plugin',
+  title: 'GermanFence Portal',
+  description: 'Admin & User Portal für GermanFence WordPress Plugin',
+  icons: {
+    icon: '/germanfence_logo.png',
+    shortcut: '/germanfence_logo.png',
+    apple: '/germanfence_logo.png',
+  },
 }
 
 export default function RootLayout({
