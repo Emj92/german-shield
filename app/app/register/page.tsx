@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertCircle, Eye, EyeOff, Check, X, Mail } from 'lucide-react'
+import { Shield, AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
@@ -23,7 +23,6 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [emailSent, setEmailSent] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>('weak')
   const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null)
 
@@ -130,18 +129,20 @@ export default function RegisterPage() {
         return
       }
 
-      if (data.emailSent) {
-        // E-Mail wurde versendet
-        setEmailSent(true)
-        addToast({
-          title: '📧 Bestätigungs-E-Mail versendet!',
-          description: 'Bitte prüfe dein Postfach (auch Spam-Ordner) und klicke auf den Bestätigungslink.',
-          type: 'success',
-          duration: 10000,
-        })
-      } else {
-        router.push('/login?registered=true')
-      }
+      // E-Mail wurde versendet
+      addToast({
+        title: '📧 Bestätigungs-E-Mail versendet!',
+        description: 'Bitte prüfe dein Postfach (auch Spam-Ordner) und klicke auf den Bestätigungslink.',
+        type: 'success',
+        duration: 10000,
+      })
+      
+      // Formular zurücksetzen
+      setName('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
+      setLoading(false)
     } catch {
       setError('Ein Fehler ist aufgetreten')
       addToast({
