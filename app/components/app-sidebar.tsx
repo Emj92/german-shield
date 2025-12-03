@@ -9,7 +9,6 @@ import {
   Download,
   MessageSquare,
   Newspaper,
-  Users,
   Settings,
   LogOut,
   Shield,

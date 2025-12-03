@@ -64,8 +64,9 @@ export async function GET(request: NextRequest) {
     })
 
     // Redirect zum Dashboard mit Session-Cookie
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://portal.germanfence.de'
     const response = NextResponse.redirect(
-      new URL('/dashboard?verified=true', request.url)
+      `${baseUrl}/dashboard?verified=true`
     )
 
     response.cookies.set('session', sessionToken, {

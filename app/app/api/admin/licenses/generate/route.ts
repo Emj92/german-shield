@@ -19,12 +19,14 @@ function generateLicenseKey(): string {
 }
 
 // Paket-Limits definieren
-const PACKAGE_LIMITS = {
+const PACKAGE_LIMITS: Record<string, { maxDomains: number; price: number }> = {
   FREE: { maxDomains: 1, price: 0 },
   SINGLE: { maxDomains: 1, price: 29 },
   FREELANCER: { maxDomains: 5, price: 79 },
   AGENCY: { maxDomains: 25, price: 199 },
 }
+
+type PackageType = 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,7 +39,8 @@ export async function POST(request: NextRequest) {
     const { userId, packageType, email } = await request.json()
 
     // Validierung
-    if (!packageType || !PACKAGE_LIMITS[packageType as keyof typeof PACKAGE_LIMITS]) {
+    const validPackages: PackageType[] = ['FREE', 'SINGLE', 'FREELANCER', 'AGENCY']
+    if (!packageType || !validPackages.includes(packageType as PackageType)) {
       return NextResponse.json({ error: 'Invalid package type' }, { status: 400 })
     }
 
@@ -77,7 +80,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const packageConfig = PACKAGE_LIMITS[packageType as keyof typeof PACKAGE_LIMITS]
+    const packageConfig = PACKAGE_LIMITS[packageType as PackageType]
     const expiresAt = new Date()
     expiresAt.setFullYear(expiresAt.getFullYear() + 1) // 1 Jahr gültig
 
@@ -86,7 +89,7 @@ export async function POST(request: NextRequest) {
       data: {
         userId: targetUser.id,
         licenseKey,
-        packageType: packageType as any,
+        packageType: packageType as PackageType,
         maxDomains: packageConfig.maxDomains,
         expiresAt,
         status: 'ACTIVE',

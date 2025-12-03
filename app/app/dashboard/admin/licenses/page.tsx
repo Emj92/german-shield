@@ -8,11 +8,25 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Key, Plus, Copy, Check, Mail } from 'lucide-react'
 
+type PackageType = 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'
+
+interface GeneratedLicense {
+  id: string
+  licenseKey: string
+  packageType: string
+  expiresAt: string
+  maxDomains: number
+  user: {
+    id: string
+    email: string
+  }
+}
+
 export default function AdminLicensesPage() {
   const [email, setEmail] = useState('')
-  const [packageType, setPackageType] = useState<'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'>('SINGLE')
+  const [packageType, setPackageType] = useState<PackageType>('SINGLE')
   const [loading, setLoading] = useState(false)
-  const [generatedLicense, setGeneratedLicense] = useState<any>(null)
+  const [generatedLicense, setGeneratedLicense] = useState<GeneratedLicense | null>(null)
   const [copied, setCopied] = useState(false)
 
   const packages = [
@@ -103,7 +117,7 @@ export default function AdminLicensesPage() {
               {packages.map((pkg) => (
                 <button
                   key={pkg.type}
-                  onClick={() => setPackageType(pkg.type as any)}
+                  onClick={() => setPackageType(pkg.type as PackageType)}
                   className={`p-4 rounded-lg border-2 transition-all ${
                     packageType === pkg.type
                       ? 'border-[#22D6DD] bg-[#22D6DD]/5'
@@ -193,7 +207,7 @@ export default function AdminLicensesPage() {
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
               <p className="text-sm text-yellow-800">
                 💡 <strong>Wichtig:</strong> Sende diesen Lizenzschlüssel per E-Mail an den Kunden. 
-                Er kann ihn im WordPress-Plugin unter "Lizenz" eingeben.
+                Er kann ihn im WordPress-Plugin unter &quot;Lizenz&quot; eingeben.
               </p>
             </div>
           </CardContent>

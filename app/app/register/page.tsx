@@ -142,7 +142,7 @@ export default function RegisterPage() {
       } else {
         router.push('/login?registered=true')
       }
-    } catch (err) {
+    } catch {
       setError('Ein Fehler ist aufgetreten')
       addToast({
         title: 'Fehler',
@@ -165,28 +165,6 @@ export default function RegisterPage() {
           <p className="text-muted-foreground">Portal</p>
         </div>
 
-        {/* E-Mail-Bestätigungs-Hinweis */}
-        {emailSent && (
-          <Card className="border-2 border-[#22D6DD] bg-[#22D6DD]/5">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-3">
-                <Mail className="h-5 w-5 text-[#22D6DD] flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-[#22D6DD] mb-1">
-                    📧 Bestätigungs-E-Mail versendet!
-                  </h3>
-                  <p className="text-sm text-slate-600">
-                    Wir haben dir eine E-Mail an <strong>{email}</strong> gesendet. 
-                    Bitte klicke auf den Bestätigungslink in der E-Mail, um deinen Account zu aktivieren.
-                  </p>
-                  <p className="text-sm text-slate-500 mt-2">
-                    💡 <strong>Tipp:</strong> Prüfe auch deinen Spam-Ordner!
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Register Card */}
         <Card>

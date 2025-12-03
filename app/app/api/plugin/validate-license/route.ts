@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Auto-Registrierung
-      const newDomain = await prisma.licenseDomain.create({
+      await prisma.licenseDomain.create({
         data: {
           licenseId: license.id,
           domain: normalizedDomain,
