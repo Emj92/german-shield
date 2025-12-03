@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createMollieClient } from '@mollie/api-client'
 
+interface PaymentMetadata {
+  email?: string
+  package_type?: string
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { id } = await request.json()
@@ -20,8 +25,9 @@ export async function POST(request: NextRequest) {
 
       // Lizenz automatisch erstellen
       // E-Mail aus Metadata holen (wurde bei Payment-Erstellung gesetzt)
-      const customerEmail = payment.metadata?.email as string | undefined
-      const packageType = payment.metadata?.package_type as string | undefined || 'SINGLE'
+      const metadata = payment.metadata as PaymentMetadata
+      const customerEmail = metadata?.email
+      const packageType = metadata?.package_type || 'SINGLE'
 
       if (customerEmail) {
         try {
