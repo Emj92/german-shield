@@ -3,11 +3,13 @@ import { createMollieClient } from '@mollie/api-client'
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, description, package_type } = await request.json()
+    const { amount, description, package_type, email } = await request.json()
 
     const mollieClient = createMollieClient({
       apiKey: process.env.MOLLIE_API_KEY || '',
     })
+
+    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
 
     const payment = await mollieClient.payments.create({
       amount: {
@@ -15,10 +17,11 @@ export async function POST(request: NextRequest) {
         value: amount.toFixed(2),
       },
       description: description,
-      redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success?package=${package_type}`,
+      redirectUrl: `${portalUrl}/login?payment=success&package=${package_type}`,
       webhookUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/mollie/webhook`,
       metadata: {
         package_type: package_type,
+        email: email,
       },
     })
 

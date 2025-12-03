@@ -15,6 +15,13 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
   const [loading, setLoading] = useState(false)
 
   const handlePurchase = async () => {
+    // E-Mail abfragen
+    const email = prompt('Bitte gib deine E-Mail-Adresse ein:')
+    if (!email || !email.includes('@')) {
+      alert('Bitte gib eine gültige E-Mail-Adresse ein')
+      return
+    }
+
     setLoading(true)
     try {
       const response = await fetch('/api/mollie/create-payment', {
@@ -26,6 +33,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
           amount: price,
           description: `GermanFence ${packageType.charAt(0).toUpperCase() + packageType.slice(1)} License`,
           package_type: packageType,
+          email: email,
         }),
       })
 

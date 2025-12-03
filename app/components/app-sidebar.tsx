@@ -15,6 +15,8 @@ import {
   Shield,
   Moon,
   Sun,
+  Key,
+  UserCog,
 } from 'lucide-react'
 
 import {
@@ -46,6 +48,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
   // User-Navigation
   const userNav = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Lizenzen', href: '/dashboard/licenses', icon: Key },
     { name: 'Rechnungen', href: '/dashboard/invoices', icon: FileText },
     { name: 'Downloads', href: '/dashboard/downloads', icon: Download },
     { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
@@ -54,13 +57,12 @@ export function AppSidebar({ user }: AppSidebarProps) {
 
   // Admin-zusätzliche Navigation
   const adminNav = [
+    { name: 'Benutzerverwaltung', href: '/dashboard/admin/users', icon: UserCog },
+    { name: 'Lizenzverwaltung', href: '/dashboard/admin/licenses', icon: Key },
     { name: 'Support-Tickets', href: '/dashboard/admin/tickets', icon: MessageSquare },
-    { name: 'Benutzer', href: '/dashboard/admin/users', icon: Users },
     { name: 'News-Verwaltung', href: '/dashboard/admin/news', icon: Newspaper },
     { name: 'Einstellungen', href: '/dashboard/admin/settings', icon: Settings },
   ]
-
-  const navigation = user.role === 'ADMIN' ? [...userNav, ...adminNav] : userNav
 
   return (
     <Sidebar>
@@ -79,11 +81,12 @@ export function AppSidebar({ user }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* User Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.map((item) => (
+              {userNav.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
@@ -99,6 +102,30 @@ export function AppSidebar({ user }: AppSidebarProps) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Admin Navigation */}
+        {user.role === 'ADMIN' && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Admin-Bereich</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminNav.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === item.href}
+                    >
+                      <Link href={item.href}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border">

@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
+import { Shield, AlertCircle, Eye, EyeOff, Check, X, Mail } from 'lucide-react'
+import { useToast } from '@/components/ui/toast'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { addToast } = useToast()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,6 +23,7 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>('weak')
   const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null)
 
@@ -118,13 +121,34 @@ export default function RegisterPage() {
 
       if (!res.ok) {
         setError(data.error || 'Registrierung fehlgeschlagen')
+        addToast({
+          title: 'Fehler bei der Registrierung',
+          description: data.error || 'Bitte versuche es erneut',
+          type: 'error',
+        })
         setLoading(false)
         return
       }
 
-      router.push('/login?registered=true')
-    } catch {
+      if (data.emailSent) {
+        // E-Mail wurde versendet
+        setEmailSent(true)
+        addToast({
+          title: '📧 Bestätigungs-E-Mail versendet!',
+          description: 'Bitte prüfe dein Postfach (auch Spam-Ordner) und klicke auf den Bestätigungslink.',
+          type: 'success',
+          duration: 10000,
+        })
+      } else {
+        router.push('/login?registered=true')
+      }
+    } catch (err) {
       setError('Ein Fehler ist aufgetreten')
+      addToast({
+        title: 'Fehler',
+        description: 'Ein unerwarteter Fehler ist aufgetreten',
+        type: 'error',
+      })
       setLoading(false)
     }
   }
@@ -140,6 +164,29 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold">German Fence</h1>
           <p className="text-muted-foreground">Portal</p>
         </div>
+
+        {/* E-Mail-Bestätigungs-Hinweis */}
+        {emailSent && (
+          <Card className="border-2 border-[#22D6DD] bg-[#22D6DD]/5">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-3">
+                <Mail className="h-5 w-5 text-[#22D6DD] flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-[#22D6DD] mb-1">
+                    📧 Bestätigungs-E-Mail versendet!
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    Wir haben dir eine E-Mail an <strong>{email}</strong> gesendet. 
+                    Bitte klicke auf den Bestätigungslink in der E-Mail, um deinen Account zu aktivieren.
+                  </p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    💡 <strong>Tipp:</strong> Prüfe auch deinen Spam-Ordner!
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Register Card */}
         <Card>

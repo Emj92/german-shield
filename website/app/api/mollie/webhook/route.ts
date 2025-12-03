@@ -12,14 +12,43 @@ export async function POST(request: NextRequest) {
     const payment = await mollieClient.payments.get(id)
 
     if (payment.status === 'paid') {
-      // TODO: Lizenz erstellen und per E-Mail versenden
       console.log('Payment successful:', {
         id: payment.id,
         amount: payment.amount,
         metadata: payment.metadata,
       })
-      
-      // Hier später: Lizenzschlüssel generieren und E-Mail versenden
+
+      // Lizenz automatisch erstellen
+      const customerEmail = payment.details?.consumerAccount || payment.metadata?.email
+      const packageType = payment.metadata?.package_type || 'SINGLE'
+
+      if (customerEmail) {
+        try {
+          // API-Call zum Portal um Lizenz zu erstellen
+          const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
+          const response = await fetch(`${portalUrl}/api/admin/licenses/generate`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.ADMIN_API_KEY}`, // Interner API-Key
+            },
+            body: JSON.stringify({
+              email: customerEmail,
+              packageType: packageType.toUpperCase(),
+              molliePaymentId: payment.id,
+            }),
+          })
+
+          const licenseData = await response.json()
+
+          if (licenseData.success) {
+            console.log('License created:', licenseData.license.licenseKey)
+            // TODO: E-Mail mit Lizenzschlüssel versenden
+          }
+        } catch (error) {
+          console.error('Failed to create license:', error)
+        }
+      }
     }
 
     return NextResponse.json({ status: 'ok' })

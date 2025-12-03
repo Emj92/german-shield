@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Erstelle User
+    // Erstelle Verifizierungs-Token
+    const verificationToken = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 Stunden
+
+    // Erstelle User (NICHT verifiziert)
     const hashedPassword = await bcrypt.hash(password, 12)
     const user = await prisma.user.create({
       data: {
@@ -45,44 +49,28 @@ export async function POST(request: NextRequest) {
         name,
         password: hashedPassword,
         role: 'USER',
+        emailVerified: false,
+        verificationToken,
+        verificationTokenExpiry,
       },
     })
 
-    // Erstelle JWT Token
-    const token = await new SignJWT({ userId: user.id, email: user.email, role: user.role })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setExpirationTime('7d')
-      .sign(JWT_SECRET)
+    // Sende Verifizierungs-E-Mail
+    // TODO: Hier E-Mail-Service integrieren (z.B. Resend, SendGrid)
+    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://portal.germanfence.de'}/verify-email?token=${verificationToken}`
+    
+    console.log('📧 Verifizierungs-Link:', verificationUrl)
+    // In Production: E-Mail versenden mit dem Link
 
-    // Erstelle Session
-    await prisma.session.create({
-      data: {
-        userId: user.id,
-        token,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      },
-    })
-
-    // Setze Cookie
-    const response = NextResponse.json({
+    // Gebe Erfolg zurück OHNE Session (User muss erst E-Mail bestätigen)
+    return NextResponse.json({
       success: true,
+      message: 'Registrierung erfolgreich! Bitte bestätige deine E-Mail-Adresse.',
+      emailSent: true,
       user: {
-        id: user.id,
         email: user.email,
-        name: user.name,
-        role: user.role,
       },
     })
-
-    response.cookies.set('session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-    })
-
-    return response
   } catch (error) {
     console.error('Register error:', error)
     return NextResponse.json(
