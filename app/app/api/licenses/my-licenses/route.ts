@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getUser } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const user = await getUser(request)
+    const user = await getUser()
     
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -13,12 +13,12 @@ export async function GET(request: NextRequest) {
     // Hole alle Lizenzen des Users
     const licenses = await prisma.license.findMany({
       where: {
-        userId: user.id,
+        userId: user.userId,
       },
       include: {
         activeDomains: {
           orderBy: {
-            registeredAt: 'desc',
+            createdAt: 'desc',
           },
         },
       },

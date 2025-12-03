@@ -26,6 +26,7 @@ interface User {
     packageType: string
     status: string
     expiresAt: string
+    maxDomains: number
     activeDomains: { domain: string }[]
   }[]
   supportTickets: {
@@ -165,10 +166,10 @@ export default function AdminUsersContent() {
                           <div className="space-y-1">
                             {user.licenses.map((license) => (
                               <div key={license.id} className="flex items-center gap-2">
-                                <Badge className={getPackageColor(license.packageType)} size="sm">
+                                <Badge className={`${getPackageColor(license.packageType)} text-xs`}>
                                   {license.packageType}
                                 </Badge>
-                                <Badge className={getStatusColor(license.status)} size="sm">
+                                <Badge className={`${getStatusColor(license.status)} text-xs`}>
                                   {license.status}
                                 </Badge>
                               </div>

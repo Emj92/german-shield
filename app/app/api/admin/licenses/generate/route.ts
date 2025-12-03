@@ -30,7 +30,7 @@ type PackageType = 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
 export async function POST(request: NextRequest) {
   try {
-    const user = await getUser(request)
+    const user = await getUser()
     
     if (!user || user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

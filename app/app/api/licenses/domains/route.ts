@@ -14,7 +14,7 @@ function normalizeDomain(url: string): string {
 // GET: Alle Domains einer Lizenz abrufen
 export async function GET(request: NextRequest) {
   try {
-    const user = await getUser(request)
+    const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Nur eigene Lizenzen oder Admin
-    if (license.userId !== user.id && user.role !== 'ADMIN') {
+    if (license.userId !== user.userId && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
 // POST: Domain registrieren
 export async function POST(request: NextRequest) {
   try {
-    const user = await getUser(request)
+    const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Nur eigene Lizenzen oder Admin
-    if (license.userId !== user.id && user.role !== 'ADMIN') {
+    if (license.userId !== user.userId && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
 // DELETE: Domain entfernen
 export async function DELETE(request: NextRequest) {
   try {
-    const user = await getUser(request)
+    const user = await getUser()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -182,7 +182,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Nur eigene Lizenzen oder Admin
-    if (licenseDomain.license.userId !== user.id && user.role !== 'ADMIN') {
+    if (licenseDomain.license.userId !== user.userId && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
