@@ -19,8 +19,9 @@ export async function POST(request: NextRequest) {
       })
 
       // Lizenz automatisch erstellen
-      const customerEmail = payment.details?.consumerAccount || payment.metadata?.email
-      const packageType = payment.metadata?.package_type || 'SINGLE'
+      // E-Mail aus Metadata holen (wurde bei Payment-Erstellung gesetzt)
+      const customerEmail = payment.metadata?.email as string | undefined
+      const packageType = payment.metadata?.package_type as string | undefined || 'SINGLE'
 
       if (customerEmail) {
         try {
