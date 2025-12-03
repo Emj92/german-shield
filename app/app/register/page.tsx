@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,7 +12,6 @@ import { useToast } from '@/components/ui/toast'
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
 export default function RegisterPage() {
-  const router = useRouter()
   const { addToast } = useToast()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

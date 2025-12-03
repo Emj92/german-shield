@@ -12,8 +12,8 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Lösche Cookie
-    const response = NextResponse.json({ success: true })
+    // Redirect zum Login
+    const response = NextResponse.redirect(new URL('/login', request.url))
     response.cookies.delete('session')
 
     return response
@@ -24,5 +24,9 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+export async function GET(request: NextRequest) {
+  return POST(request)
 }
 
