@@ -25,6 +25,7 @@ model User {
   sessions       Session[]
   invoices       Invoice[]
   supportTickets SupportTicket[]
+  licenses       License[]
   
   @@map("users")
 }
@@ -272,4 +273,112 @@ model PluginRelease {
   @@index([version])
   @@index([isStable])
   @@map("plugin_releases")
+}
+
+// ============================================
+// LIZENZ-SYSTEM (Jahres-Abos)
+// ============================================
+
+// License Model (Lizenzschlüssel)
+model License {
+  id              String        @id @default(cuid())
+  userId          String
+  licenseKey      String        @unique // Format: GFXX-XXXX-XXXX-XXXX
+  packageType     PackageType
+  
+  // Lizenz-Status
+  status          LicenseStatus @default(ACTIVE)
+  isActive        Boolean       @default(true)
+  
+  // Zeitraum
+  purchaseDate    DateTime      @default(now())
+  expiresAt       DateTime      // Ablaufdatum (1 Jahr nach Kauf)
+  lastRenewalDate DateTime?     // Letztes Verlängerungsdatum
+  
+  // Domain-Verwaltung
+  maxDomains      Int           // 1, 5, 25 je nach Paket
+  activeDomains   LicenseDomain[]
+  
+  // Payment
+  molliePaymentId String?       // Mollie Payment ID
+  invoiceId       String?       // Verknüpfung zur Rechnung
+  
+  // Metadata
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([licenseKey])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("licenses")
+}
+
+enum PackageType {
+  FREE        // 0€ - 1 Domain, Basis-Features
+  SINGLE      // 29€/Jahr - 1 Domain, Alle Features
+  FREELANCER  // 79€/Jahr - 5 Domains
+  AGENCY      // 199€/Jahr - 25 Domains
+}
+
+enum LicenseStatus {
+  ACTIVE      // Aktiv und gültig
+  EXPIRED     // Abgelaufen (kann verlängert werden)
+  SUSPENDED   // Gesperrt (z.B. bei Missbrauch)
+  CANCELLED   // Gekündigt
+}
+
+// License Domain Model (Registrierte Domains pro Lizenz)
+model LicenseDomain {
+  id          String   @id @default(cuid())
+  licenseId   String
+  domain      String   // z.B. "example.com" (ohne http/https)
+  
+  // Aktivierung
+  activatedAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now()) // Letzte Validierung vom Plugin
+  
+  // Metadata
+  siteTitle   String?  // WordPress Site-Titel
+  wpVersion   String?  // WordPress Version
+  phpVersion  String?  // PHP Version
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  license     License  @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  
+  @@unique([licenseId, domain]) // Eine Domain kann nur einmal pro Lizenz registriert sein
+  @@index([licenseId])
+  @@index([domain])
+  @@map("license_domains")
+}
+
+// License History (Verlängerungen, Änderungen)
+model LicenseHistory {
+  id          String   @id @default(cuid())
+  licenseId   String
+  action      LicenseAction
+  description String?  @db.Text
+  metadata    Json?    // Zusätzliche Daten
+  createdAt   DateTime @default(now())
+  
+  @@index([licenseId])
+  @@index([action])
+  @@map("license_history")
+}
+
+enum LicenseAction {
+  CREATED     // Lizenz erstellt
+  RENEWED     // Verlängert
+  EXPIRED     // Abgelaufen
+  SUSPENDED   // Gesperrt
+  REACTIVATED // Wieder aktiviert
+  CANCELLED   // Gekündigt
+  DOMAIN_ADDED    // Domain hinzugefügt
+  DOMAIN_REMOVED  // Domain entfernt
 }

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     const payment = await mollieClient.payments.get(id)
 
-    if (payment.isPaid()) {
+    if (payment.status === 'paid') {
       // TODO: Lizenz erstellen und per E-Mail versenden
       console.log('Payment successful:', {
         id: payment.id,

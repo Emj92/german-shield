@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Download, Loader2 } from 'lucide-react'
 
 interface BuyButtonProps {
-  packageType: 'single' | 'freelancer' | 'unlimited'
+  packageType: 'single' | 'freelancer' | 'agency'
   price: number
   className?: string
   variant?: 'default' | 'outline'

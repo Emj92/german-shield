@@ -230,36 +230,61 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-              Lifetime Lizenzen
+              Flexible Jahreslizenzen
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              Einmalig zahlen, für immer nutzen 🎉
+              Faire Preise für professionellen Spam-Schutz 🛡️
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Single */}
+          <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {/* FREE */}
+            <Card className="border-2 border-slate-200 flex flex-col h-full">
+              <CardHeader>
+                <Badge className="w-fit mb-4 bg-slate-100 text-slate-700">FREE</Badge>
+                <CardTitle className="text-4xl">0€</CardTitle>
+                <CardDescription className="text-lg mt-2">
+                  <span className="font-semibold text-slate-600">Freemium</span> · 1 Website
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-3 mb-6 flex-1">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>Honeypot Protection</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>Zeitstempel-Check</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>Community Support</span>
+                  </li>
+                </ul>
+                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
+                  <Button variant="outline" className="w-full border-slate-300 text-slate-700 transition-transform hover:-translate-y-1">
+                    <Download className="mr-2 h-4 w-4" />
+                    Kostenlos testen
+                  </Button>
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* SINGLE */}
             <Card className="border-2 flex flex-col h-full">
               <CardHeader>
-                <Badge className="w-fit mb-4 bg-slate-100 text-slate-700">Single</Badge>
-                <CardTitle className="text-4xl">19€</CardTitle>
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Single</Badge>
+                <CardTitle className="text-4xl">29€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">Lifetime</span> · 1 Website
+                  <span className="font-semibold text-[#22D6DD]">pro Jahr</span> · 1 Website
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Honeypot Protection</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Zeitstempel-Check</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>JavaScript-Check</span>
+                    <span>Alle Features</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
@@ -271,7 +296,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Live-Statistiken</span>
+                    <span>Priority Support</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
@@ -280,25 +305,25 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={19} 
+                  price={29} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
               </CardContent>
             </Card>
 
-            {/* Freelancer - Popular */}
+            {/* FREELANCER - Popular */}
             <Card className="border-4 border-[#22D6DD] relative shadow-xl scale-105 flex flex-col h-full">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                 <Badge className="bg-[#22D6DD] text-white px-4 py-1">
-                  Beliebt
+                  ⭐ Beliebt
                 </Badge>
               </div>
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Freelancer</Badge>
-                <CardTitle className="text-4xl">39€</CardTitle>
+                <CardTitle className="text-4xl">79€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">Lifetime</span> · 5 Websites
+                  <span className="font-semibold text-[#22D6DD]">pro Jahr</span> · 5 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -317,36 +342,28 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <span>Dashboard-Zugang</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
                     <span>Client-Projekte erlaubt</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Lifetime Updates</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Zugang zum Dashboard</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Rechnungen & Downloads</span>
                   </li>
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
-                  price={39}
+                  price={79}
                   className="w-full bg-[#22D6DD] text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
             </Card>
 
-            {/* Unlimited */}
+            {/* AGENCY */}
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader>
-                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Unlimited</Badge>
-                <CardTitle className="text-4xl">99€</CardTitle>
+                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Agency</Badge>
+                <CardTitle className="text-4xl">199€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">Lifetime</span> · ∞ Websites
+                  <span className="font-semibold text-[#F06292]">pro Jahr</span> · 25 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -357,15 +374,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span className="font-semibold">Unlimited Websites</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>White-Label Option</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Client-Projekte</span>
+                    <span className="font-semibold">Bis zu 25 Websites</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
@@ -373,7 +382,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Lifetime Updates</span>
+                    <span>White-Label Option</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
@@ -381,8 +390,8 @@ export default function Home() {
                   </li>
                 </ul>
                 <BuyButton 
-                  packageType="unlimited" 
-                  price={99}
+                  packageType="agency" 
+                  price={199}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] transition-transform hover:-translate-y-1"
                 />
