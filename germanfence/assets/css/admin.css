@@ -1283,3 +1283,96 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
         min-width: auto;
     }
 }
+
+/* ============================================
+   HONEYPOT SLIDER STYLING (Türkis statt Lila)
+   ============================================ */
+
+/* Range Slider - Basis */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+input[type="range"]:hover {
+    opacity: 1;
+}
+
+/* Slider Track - Türkis Füllung */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #22D6DD;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(34, 214, 221, 0.3);
+    transition: all 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #1fc5cc;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(34, 214, 221, 0.5);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #22D6DD;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(34, 214, 221, 0.3);
+    transition: all 0.2s;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: #1fc5cc;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(34, 214, 221, 0.5);
+}
+
+/* Track - Türkis Fortschritt */
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: linear-gradient(to right, #22D6DD 0%, #22D6DD var(--value), #ddd var(--value), #ddd 100%);
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #ddd;
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-progress {
+    background: #22D6DD;
+    height: 8px;
+    border-radius: 5px;
+}
+
+/* Dark Mode für Slider */
+body.germanfence-dark-mode input[type="range"] {
+    background: #3c434a;
+}
+
+body.germanfence-dark-mode input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #22D6DD 0%, #22D6DD var(--value), #3c434a var(--value), #3c434a 100%);
+}
+
+body.germanfence-dark-mode input[type="range"]::-moz-range-track {
+    background: #3c434a;
+}

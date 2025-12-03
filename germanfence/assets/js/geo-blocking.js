@@ -47,7 +47,10 @@
             
             // Sektionen ein/ausblenden
             if (isChecked) {
-                $('#geo-mode-buttons').slideDown(300);
+                $('#geo-mode-buttons').slideDown(300, function() {
+                    // Layout nach Animation neu berechnen
+                    $(this).css('display', 'flex');
+                });
                 $('#geo-countries-section').slideDown(300);
             } else {
                 $('#geo-mode-buttons').slideUp(300);
