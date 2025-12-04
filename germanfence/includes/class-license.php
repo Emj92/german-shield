@@ -109,30 +109,48 @@ class GermanFence_License {
         }
         
         // API-Anfrage
+        $request_data = array(
+            'licenseKey' => $license_key,
+            'domain' => home_url(),
+            'siteTitle' => get_bloginfo('name'),
+            'wpVersion' => get_bloginfo('version'),
+            'phpVersion' => phpversion(),
+        );
+        
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('GermanFence License Check - Request: ' . print_r($request_data, true));
+        }
+        
         $response = wp_remote_post($this->api_url, array(
             'timeout' => 15,
-            'body' => json_encode(array(
-                'licenseKey' => $license_key,
-                'domain' => home_url(),
-                'siteTitle' => get_bloginfo('name'),
-                'wpVersion' => get_bloginfo('version'),
-                'phpVersion' => phpversion(),
-            )),
+            'body' => json_encode($request_data),
             'headers' => array(
                 'Content-Type' => 'application/json',
             ),
         ));
         
         if (is_wp_error($response)) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('GermanFence License Check - Error: ' . $response->get_error_message());
+            }
             // Bei Fehler: Letzten gültigen Status verwenden oder FREE
             $last_valid = get_option('germanfence_last_valid_license');
             return $last_valid ? $last_valid : $this->get_free_license_data();
         }
         
         $body = wp_remote_retrieve_body($response);
+        $http_code = wp_remote_retrieve_response_code($response);
+        
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('GermanFence License Check - HTTP ' . $http_code . ' Response: ' . $body);
+        }
+        
         $data = json_decode($body, true);
         
         if (!$data || !isset($data['valid'])) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('GermanFence License Check - Invalid response structure');
+            }
             return $this->get_free_license_data();
         }
         
@@ -218,24 +236,34 @@ class GermanFence_License {
      * Gibt Lizenz-Informationen zurück (für Admin-Seite)
      */
     public function get_license_info() {
+        $settings = get_option('germanfence_settings', array());
+        $license_key = isset($settings['license_key']) ? trim($settings['license_key']) : '';
+        $has_license = !empty($license_key);
+        
         $license = $this->get_license_data();
         
         if (!$license || !isset($license['valid']) || !$license['valid']) {
             return array(
                 'active' => false,
+                'has_license' => $has_license,
+                'license_key' => $license_key,
                 'package' => 'FREE',
                 'expires' => null,
                 'domains' => 0,
                 'max_domains' => 0,
+                'is_valid' => false,
             );
         }
         
         return array(
             'active' => true,
+            'has_license' => $has_license,
+            'license_key' => $license_key,
             'package' => isset($license['license']['packageType']) ? $license['license']['packageType'] : 'FREE',
             'expires' => isset($license['license']['expiresAt']) ? $license['license']['expiresAt'] : null,
             'domains' => isset($license['license']['usedDomains']) ? $license['license']['usedDomains'] : 0,
             'max_domains' => isset($license['license']['maxDomains']) ? $license['license']['maxDomains'] : 0,
+            'is_valid' => true,
         );
     }
     
@@ -246,15 +274,15 @@ class GermanFence_License {
         $license = $this->get_license_data();
         
         if (!$license || !isset($license['valid'])) {
-            return array('valid' => false, 'message' => 'Keine Lizenz vorhanden');
+            return array('is_valid' => false, 'valid' => false, 'message' => 'Keine Lizenz vorhanden');
         }
         
         if (!$license['valid']) {
             $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
-            return array('valid' => false, 'message' => $error);
+            return array('is_valid' => false, 'valid' => false, 'message' => $error);
         }
         
-        return array('valid' => true, 'message' => 'Lizenz aktiv');
+        return array('is_valid' => true, 'valid' => true, 'message' => 'Lizenz aktiv');
     }
     
     /**

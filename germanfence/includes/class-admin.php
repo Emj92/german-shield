@@ -243,6 +243,7 @@ class GermanFence_Admin {
         $license_manager = new GermanFence_License();
         $license_info = $license_manager->get_license_info();
         $license_status = $license_manager->check_license();
+        $is_license_valid = !empty($is_license_valid);
 
         $free_manager = new GermanFence_Free_License();
         
@@ -253,7 +254,7 @@ class GermanFence_Admin {
         $is_free_active = $free_manager->is_free_active();
         $free_email = $free_manager->get_verified_email();
         
-        GermanFence_Logger::log_admin('[LICENSE-CHECK] Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', License valid: ' . ($license_status['is_valid'] ? 'JA' : 'NEIN'));
+        GermanFence_Logger::log_admin('[LICENSE-CHECK] Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', License valid: ' . ($is_license_valid ? 'JA' : 'NEIN'));
 
         // Rechtstexte anzeigen wenn ?show=agb/datenschutz/impressum
         if (isset($_GET['show']) && in_array($_GET['show'], array('agb', 'datenschutz', 'impressum'))) {
@@ -342,41 +343,41 @@ class GermanFence_Admin {
             </div>
             
             <div class="germanfence-tabs">
-                <button class="germanfence-tab <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="dashboard" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="dashboard" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-dashboard"></span>
                     Dashboard
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="antispam" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="antispam" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-shield-alt"></span>
                     Anti-Spam
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo !$license_status['is_valid'] ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo !$is_license_valid ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-location"></span>
                     GEO Blocking
-                    <?php if (!$license_status['is_valid']): ?>
+                    <?php if (!$is_license_valid): ?>
                         <span class="pro-badge">PRO</span>
                     <?php endif; ?>
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo !$license_status['is_valid'] ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo !$is_license_valid ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-editor-removeformatting"></span>
                     Phrasen-Blocking
-                    <?php if (!$license_status['is_valid']): ?>
+                    <?php if (!$is_license_valid): ?>
                         <span class="pro-badge">PRO</span>
                     <?php endif; ?>
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-bell"></span>
                     WordPress Spam
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$license_status['is_valid']) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-admin-settings"></span>
                     Einstellungen
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'license' ? 'active' : ''; ?>" data-tab="license">
                     <span class="dashicons dashicons-admin-network"></span>
@@ -390,7 +391,7 @@ class GermanFence_Admin {
                 <!-- Dashboard Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?>" id="tab-dashboard">
                     
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?>
                         <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%); padding: 40px; border-radius: 8px; border: 2px solid #EC4899; text-align: center; margin: 20px 0;">
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #EC4899;">Plugin nicht aktiviert</h2>
@@ -524,7 +525,7 @@ class GermanFence_Admin {
                 
                 <!-- Anti-Spam Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'antispam' ? 'active' : ''; ?>" id="tab-antispam">
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?>
                         <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%); padding: 40px; border-radius: 8px; border: 2px solid #ef4444; text-align: center; margin: 20px;">
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #ef4444;">Plugin nicht aktiviert</h2>
@@ -758,7 +759,7 @@ class GermanFence_Admin {
                     <div class="germanfence-section">
                         <h2>🚫 Phrasen-Blocking</h2>
                         
-                        <?php if (!$license_status['is_valid']): ?>
+                        <?php if (!$is_license_valid): ?>
                             <div style="background: rgba(34, 214, 221, 0.1); padding: 30px; border-radius: 6px; border: 2px solid rgba(34, 214, 221, 0.3); text-align: center; margin-bottom: 20px;">
                                 <span style="font-size: 48px;">🔒</span>
                                 <h3 style="color: #22D6DD; margin: 15px 0 10px 0;">PRO-Feature</h3>
@@ -993,7 +994,7 @@ class GermanFence_Admin {
                         ?>
                         
                         <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
-                        <?php if (empty($license_info['has_license']) || empty($license_status['is_valid'])): ?>
+                        <?php if (empty($license_info['has_license']) || empty($is_license_valid)): ?>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
                         <!-- FREE VERSION BOX -->
@@ -1131,7 +1132,7 @@ class GermanFence_Admin {
                         <?php endif; ?>
                         
                         <!-- PRO LIZENZ AKTIV -->
-                        <?php if (!empty($license_info['has_license']) && !empty($license_status['is_valid'])): ?>
+                        <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
                         <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; margin-bottom: 30px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
@@ -1291,7 +1292,7 @@ class GermanFence_Admin {
                 
                 <!-- Einstellungen Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
-                    <?php if (!$is_free_active && !$license_status['is_valid']): ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?>
                         <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%); padding: 40px; border-radius: 8px; border: 2px solid #ef4444; text-align: center; margin: 20px;">
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #ef4444;">Plugin nicht aktiviert</h2>

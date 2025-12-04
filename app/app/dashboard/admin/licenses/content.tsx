@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Key, Plus, Copy, Check, Mail } from 'lucide-react'
+import { Key, Plus, Copy, Check, Mail, X, CheckCircle2 } from 'lucide-react'
 
 type PackageType = 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
@@ -22,12 +22,23 @@ interface GeneratedLicense {
   } | null
 }
 
+interface Notification {
+  type: 'success' | 'error'
+  message: string
+}
+
 export default function AdminLicensesContent() {
   const [email, setEmail] = useState('')
   const [packageType, setPackageType] = useState<PackageType>('SINGLE')
   const [loading, setLoading] = useState(false)
   const [generatedLicenses, setGeneratedLicenses] = useState<GeneratedLicense[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [notification, setNotification] = useState<Notification | null>(null)
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message })
+    setTimeout(() => setNotification(null), 5000)
+  }
 
   const packages = [
     { type: 'FREE', name: 'FREE', price: '0€', domains: 1, color: 'bg-gray-100 text-gray-700' },
@@ -50,12 +61,13 @@ export default function AdminLicensesContent() {
       if (data.success) {
         setGeneratedLicenses(prev => [data.license, ...prev])
         setEmail('')
+        showNotification('success', 'Lizenz erfolgreich erstellt!')
       } else {
-        alert(data.error || 'Fehler beim Generieren')
+        showNotification('error', data.error || 'Fehler beim Generieren')
       }
     } catch (error) {
       console.error('Failed to generate license:', error)
-      alert('Fehler beim Generieren')
+      showNotification('error', 'Fehler beim Generieren')
     } finally {
       setLoading(false)
     }
@@ -69,6 +81,25 @@ export default function AdminLicensesContent() {
 
   return (
     <div className="p-12 space-y-6">
+      {/* Notification Toast */}
+      {notification && (
+        <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
+          notification.type === 'success' 
+            ? 'bg-[#22D6DD] text-white' 
+            : 'bg-[#EC4899] text-white'
+        }`}>
+          {notification.type === 'success' ? (
+            <CheckCircle2 className="h-5 w-5" />
+          ) : (
+            <X className="h-5 w-5" />
+          )}
+          <span className="font-medium">{notification.message}</span>
+          <button onClick={() => setNotification(null)} className="ml-2 hover:opacity-70">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Lizenzverwaltung</h1>
         <p className="text-slate-600 mt-2">Erstelle neue Lizenzschlüssel für Kunden</p>
