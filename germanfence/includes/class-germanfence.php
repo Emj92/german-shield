@@ -128,9 +128,6 @@ class GermanFence {
     }
     
     public function perform_validation($data) {
-        // Query Monitor Timer starten
-        $timer_total = microtime(true);
-        
         $ip = $this->get_client_ip();
         $settings = get_option('germanfence_settings', array());
         
@@ -139,19 +136,14 @@ class GermanFence {
         // TEST-MODUS
         if (isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1') {
             $this->statistics->log_block('test_mode', $ip, 'Test-Modus aktiviert');
-            $this->log_timing('gs_validation', $timer_total);
             return array('valid' => false, 'message' => '🧪 TEST-MODUS aktiv', 'reason' => 'Test mode');
         }
         
         // Nonce Check
-        $t = microtime(true);
         if (!isset($data['gs_nonce']) || !wp_verify_nonce($data['gs_nonce'], 'germanfence_nonce')) {
-            $this->log_timing('gs_nonce', $t);
             $this->statistics->log_block('nonce', $ip, 'Invalid nonce');
-            $this->log_timing('gs_validation', $timer_total);
             return array('valid' => false, 'message' => 'Sicherheitsprüfung fehlgeschlagen', 'reason' => 'Invalid nonce');
         }
-        $this->log_timing('gs_nonce', $t);
         
         // Check submission rate (Rate Limiting)
         $rate_check = $this->antispam->check_submission_rate($ip);
@@ -169,104 +161,77 @@ class GermanFence {
         
         // Honeypot
         if (!empty($settings['honeypot_enabled'])) {
-            $t = microtime(true);
             $honeypot_check = $this->antispam->check_honeypot($data);
-            $this->log_timing('gs_honeypot', $t);
             if (!$honeypot_check['valid']) {
                 $this->statistics->log_block('honeypot', $ip, $honeypot_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $honeypot_check;
             }
         }
         
         // Timestamp
         if (!empty($settings['timestamp_enabled'])) {
-            $t = microtime(true);
             $timestamp_check = $this->antispam->check_timestamp($data);
-            $this->log_timing('gs_timestamp', $t);
             if (!$timestamp_check['valid']) {
                 $this->statistics->log_block('timestamp', $ip, $timestamp_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $timestamp_check;
             }
         }
         
         // JavaScript
         if (!empty($settings['javascript_check'])) {
-            $t = microtime(true);
             $js_check = $this->antispam->check_javascript($data);
-            $this->log_timing('gs_javascript', $t);
             if (!$js_check['valid']) {
                 $this->statistics->log_block('javascript', $ip, $js_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $js_check;
             }
         }
         
         // User-Agent
         if (!empty($settings['user_agent_check'])) {
-            $t = microtime(true);
             $ua_check = $this->antispam->check_user_agent();
-            $this->log_timing('gs_useragent', $t);
             if (!$ua_check['valid']) {
                 $this->statistics->log_block('user_agent', $ip, $ua_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $ua_check;
             }
         }
         
         // HTTP Headers
-        $t = microtime(true);
         $header_check = $this->antispam->check_http_headers();
-        $this->log_timing('gs_headers', $t);
         if (!$header_check['valid']) {
             $this->statistics->log_block('headers', $ip, $header_check['reason']);
-            $this->log_timing('gs_validation', $timer_total);
             return $header_check;
         }
         
         // GEO Blocking
         if (!empty($settings['geo_blocking_enabled'])) {
-            $t = microtime(true);
             $geo_check = $this->geo_blocking->check_country($ip);
-            $this->log_timing('gs_geo', $t);
             if (!$geo_check['valid']) {
                 $this->statistics->log_block('geo', $ip, $geo_check['reason'], $geo_check['country']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $geo_check;
             }
         }
         
         // Phrase Blocking
         if (!empty($settings['phrase_blocking_enabled'])) {
-            $t = microtime(true);
             $phrase_check = $this->phrase_blocking->check_phrases($data);
-            $this->log_timing('gs_phrase', $t);
             if (!$phrase_check['valid']) {
                 $this->statistics->log_block('phrase', $ip, $phrase_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $phrase_check;
             }
         }
         
         // Typing Speed
         if (!empty($settings['typing_speed_check'])) {
-            $t = microtime(true);
             $typing_check = $this->antispam->check_typing_speed($data);
-            $this->log_timing('gs_typing', $t);
             if (!$typing_check['valid']) {
                 $this->statistics->log_block('typing_speed', $ip, $typing_check['reason']);
-                $this->log_timing('gs_validation', $timer_total);
                 return $typing_check;
             }
         }
         
         // Log Legitimate
-        $t = microtime(true);
         $this->statistics->log_legitimate($ip);
-        $this->log_timing('gs_log_stats', $t);
         
-        $this->log_timing('gs_validation', $timer_total);
         return array('valid' => true, 'message' => 'Valid submission');
     }
     
@@ -282,19 +247,6 @@ class GermanFence {
         }
         
         return $ip;
-    }
-    
-    /**
-     * Log Timing für Query Monitor & Debug-Log
-     */
-    private function log_timing($name, $start_time) {
-        $duration = (microtime(true) - $start_time) * 1000; // ms
-        
-        // Query Monitor Integration
-        do_action('qm/lap', 'germanfence/' . $name, $duration);
-        
-        // Debug-Log
-        GermanFence_Logger::log('[TIMING] ' . $name . ': ' . number_format($duration, 2) . 'ms');
     }
 }
 

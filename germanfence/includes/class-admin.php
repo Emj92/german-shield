@@ -553,7 +553,7 @@ class GermanFence_Admin {
                             
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="javascript_check" value="1" <?php checked($settings['javascript_check'] === '1'); ?>>
+                                    <input type="checkbox" name="javascript_check" value="1" <?php checked(isset($settings['javascript_check']) && $settings['javascript_check'] === '1'); ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
@@ -644,7 +644,7 @@ class GermanFence_Admin {
                         <div class="germanfence-settings-grid">
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="user_agent_check" value="1" <?php checked($settings['user_agent_check'] === '1'); ?>>
+                                    <input type="checkbox" name="user_agent_check" value="1" <?php checked(isset($settings['user_agent_check']) && $settings['user_agent_check'] === '1'); ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">

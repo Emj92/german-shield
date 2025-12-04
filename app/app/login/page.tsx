@@ -51,10 +51,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">
-          <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary shadow-lg shadow-primary/20">
-            <Shield className="w-8 h-8 text-primary-foreground" />
-          </div>
-          <h1 className="text-3xl font-bold">German Fence</h1>
+          <img 
+            src="/germanfence_logo.png" 
+            alt="GermanFence" 
+            className="h-20 w-20 object-contain"
+          />
+          <h1 className="text-3xl font-bold">GermanFence</h1>
           <p className="text-muted-foreground">Portal</p>
         </div>
 
