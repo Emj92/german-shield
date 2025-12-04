@@ -149,8 +149,20 @@ export async function POST(request: NextRequest) {
     const downloadUrl = 'https://germanfence.de/downloads/germanfence-plugin.zip'
 
     try {
-      await resend.emails.send({
-        from: 'GermanFence <noreply@germanfence.de>',
+      // Check if Resend is configured
+      if (!process.env.RESEND_API_KEY) {
+        console.error('❌ RESEND_API_KEY not configured!')
+        throw new Error('RESEND_API_KEY not configured')
+      }
+
+      console.log(`📧 Sending email to ${normalizedEmail}...`)
+      
+      // Use Resend default sender if domain not verified
+      // You can change this to your verified domain sender
+      const fromEmail = process.env.RESEND_FROM_EMAIL || 'GermanFence <onboarding@resend.dev>'
+      
+      const emailResult = await resend.emails.send({
+        from: fromEmail,
         to: normalizedEmail,
         subject: `🎉 Dein GermanFence ${packageNames[normalizedPackageType] || normalizedPackageType} Lizenzschlüssel`,
         html: `
@@ -223,9 +235,14 @@ export async function POST(request: NextRequest) {
 </html>
         `,
       })
-      console.log(`Email sent to ${normalizedEmail}`)
+      console.log(`✅ Email sent to ${normalizedEmail}`, emailResult)
     } catch (emailError) {
-      console.error('Email sending failed:', emailError)
+      console.error('❌ Email sending failed:', emailError)
+      // Log more details
+      if (emailError instanceof Error) {
+        console.error('Error message:', emailError.message)
+        console.error('Error stack:', emailError.stack)
+      }
       // Nicht abbrechen - Lizenz wurde bereits erstellt
     }
 

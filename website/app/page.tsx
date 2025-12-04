@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BuyButton } from "@/components/BuyButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
 
 export default function Home() {
@@ -24,22 +26,26 @@ export default function Home() {
               GermanFence
             </span>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-4">
             <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Features</a>
             <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
             <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1">
+              <Button variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-transparent hover:border-[#22D6DD] hover:text-[#22D6DD]">
                 <LogIn className="mr-2 h-4 w-4" />
                 Portal Login
               </Button>
             </a>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1">
+              <Button className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white">
                 <Download className="mr-2 h-4 w-4" />
                 Download
               </Button>
             </a>
+            <div className="flex items-center gap-1 ml-2 border-l border-slate-200 dark:border-slate-700 pl-4">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
           </nav>
         </div>
       </header>
