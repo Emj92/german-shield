@@ -5,7 +5,7 @@ Tags: antispam, spam protection, security, firewall, contact form, geo blocking
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 0.93
+Stable tag: 1.5.0
 License: GPLv2 or later + Proprietary
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,15 @@ Siehe LICENSE.txt für Details.
 7. Statistik-Filter
 
 == Changelog ==
+
+= 1.5.0 =
+* KRITISCH: GEO-Blocking & Phrasen-Blocking Tabs werden jetzt korrekt bei PRO-Lizenzen freigeschaltet
+* SICHERHEIT: Single-Lizenzen können nicht mehr auf mehreren Domains gleichzeitig aktiviert werden
+* Bug behoben: License-Validierung wurde nicht korrekt ausgewertet
+
+= 1.4.9 =
+* Sofortige Lizenz-Aktivierung nach Eingabe des Keys
+* Email-Versand nach Kauf optimiert
 
 = 0.93 Beta =
 * NEW: Badge "Bei Formularen anzeigen" - lokale/statische Position am Formular
