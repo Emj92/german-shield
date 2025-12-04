@@ -1012,9 +1012,12 @@ class GermanFence_Admin {
                         </div>
                         <?php endif; ?>
                         
-                        <!-- FREE VERSION BOX -->
+                        <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
                         <?php if (!$license_info['has_license'] || !$license_status['is_valid']): ?>
-                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; margin-bottom: 30px; min-height: 280px; display: flex; flex-direction: column;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                        
+                        <!-- FREE VERSION BOX -->
+                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; min-height: 280px; display: flex; flex-direction: column;">
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
                                 <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ Kostenlose Version aktiviert</h3>
@@ -1123,72 +1126,76 @@ class GermanFence_Admin {
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <?php endif; ?>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <!-- Box 1: Lizenz Status -->
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; border: 1px solid #c3cbd5; display: flex; flex-direction: column; min-height: 280px;">
-                                <?php if ($license_info['has_license'] && $license_status['is_valid']): ?>
-                                    <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px; font-weight: 600;">✅ Lizenz aktiv</h3>
-                                    <p style="color: #50575e; margin: 0 0 10px 0; font-size: 14px;">
-                                        Deine GermanFence Lizenz ist aktiv und gültig.
-                                    </p>
-                                    <?php if ($license_info['expires_at']): ?>
-                                        <p style="color: #50575e; margin: 0 0 15px 0; font-size: 14px;">
-                                            <strong>Gültig bis:</strong> <?php echo date('d.m.Y', strtotime($license_info['expires_at'])); ?>
-                                        </p>
-                                    <?php endif; ?>
-                                    
-                                    <div style="margin-top: auto; text-align: center;">
-                                    <form method="post">
-                                        <button type="submit" name="deactivate_license" class="germanfence-btn-danger">
-                                            Lizenz deaktivieren
-                                        </button>
-                                    </form>
-                                    </div>
-                                <?php else: ?>
-                                    <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px; font-weight: 600;">⚠️ Keine aktive Lizenz</h3>
-                                    <p style="color: #50575e; margin: 0 0 15px 0; font-size: 14px;">
-                                        Aktiviere deine Lizenz um alle Features freizuschalten.
-                                    </p>
-                                    
-                                    <form method="post" id="premium-license-form" style="display: flex; flex-direction: column; flex: 1;">
-                                        <div style="margin-bottom: 12px; flex: 1;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">Lizenzschlüssel:</label>
-                                            <input type="text" name="license_key" id="premium-license-key" placeholder="XXXX-XXXX-XXXX-XXXX" 
-                                                style="width: 100%; padding: 10px 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 13px; font-family: monospace;">
-                                        </div>
-                                        
-                                        <div style="text-align: center; margin-top: auto;">
-                                        <button type="submit" name="activate_license" id="activate-premium-btn" class="germanfence-btn-primary">
-                                            <span class="dashicons dashicons-yes"></span>
-                                            Lizenz aktivieren
-                                        </button>
-                                        </div>
-                                    </form>
-                                <?php endif; ?>
+                        <!-- PRO LIZENZ KAUFEN BOX -->
+                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; min-height: 280px; display: flex; flex-direction: column;">
+                            <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">💎 GermanFence PRO Lizenz</h3>
+                            <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px; flex: 1;">
+                                Noch keine Lizenz? Sichere dir jetzt GermanFence Premium und nutze alle Features!
+                            </p>
+                            
+                            <div style="background: #22D6DD20; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #22D6DD;">
+                                <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600; text-align: center;">
+                                    ✅ 14 Tage 100% Geld-zurück-Garantie
+                                </p>
                             </div>
                             
-                            <!-- Box 2: Lizenz kaufen -->
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; border: 1px solid #c3cbd5; display: flex; flex-direction: column; min-height: 280px;">
-                                <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px; font-weight: 600;">💡 GermanFence PRO Lizenz</h3>
-                                <p style="margin: 0 0 15px 0; color: #50575e; font-size: 14px; flex: 1;">
-                                    Noch keine Lizenz? Sichere dir jetzt GermanFence Premium und nutze alle Features!
-                                </p>
-                                
-                                <div style="background: #22D6DD20; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #22D6DD;">
-                                    <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600; text-align: center;">
-                                        ✅ 14 Tage 100% Geld-zurück-Garantie
-                                    </p>
-                                </div>
-                                
-                                <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de/preise" target="_blank" class="germanfence-btn-primary" style="display: inline-flex; text-decoration: none;">
-                                    Jetzt kaufen →
-                                </a>
-                                </div>
+                            <div style="text-align: center; margin-top: auto;">
+                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-flex; text-decoration: none;">
+                                Jetzt PRO kaufen →
+                            </a>
                             </div>
                         </div>
+                        
+                        </div><!-- Ende 2-Spalten Layout -->
+                        <?php endif; ?>
+                        
+                        <!-- PRO LIZENZ AKTIV -->
+                        <?php if ($license_info['has_license'] && $license_status['is_valid']): ?>
+                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; margin-bottom: 30px;">
+                            <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
+                                <div>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Paket:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 14px; font-weight: 600;"><?php echo esc_html($license_info['package_type']); ?></p>
+                                </div>
+                                <div>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Gültig bis:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 14px; font-weight: 600;"><?php echo esc_html($license_info['expires_at']); ?></p>
+                                </div>
+                                <div>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Domains:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 14px; font-weight: 600;"><?php echo esc_html($license_info['active_domains']); ?> / <?php echo esc_html($license_info['max_domains']); ?></p>
+                                </div>
+                                <div>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Status:</p>
+                                    <p style="margin: 0; color: #22D6DD; font-size: 14px; font-weight: 600;">✓ Aktiv</p>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 6px; border: 1px solid #22D6DD;">
+                                <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
+                                    🔑 Dein License-Key:
+                                </p>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
+                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #f9f9f9;">
+                                    <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); alert('Key kopiert!');" 
+                                        style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                                        📋 Kopieren
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 20px;">
+                            <form method="post" style="display: inline;">
+                                <button type="submit" name="deactivate_license" class="germanfence-btn-danger">
+                                    Lizenz deaktivieren
+                                </button>
+                            </form>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 
