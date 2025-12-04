@@ -68,7 +68,7 @@ export default function AdminLicensesContent() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-12 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Lizenzverwaltung</h1>
         <p className="text-slate-600 mt-2">Erstelle neue Lizenzschlüssel für Kunden</p>

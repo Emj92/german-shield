@@ -140,7 +140,7 @@ export default function UserLicensesContent() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-12 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Meine Lizenzen</h1>
         <p className="text-slate-600 mt-2">Verwalte deine GermanFence Lizenzen und aktivierte Domains</p>
