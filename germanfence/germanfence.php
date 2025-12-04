@@ -70,9 +70,6 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
     'germanfence'
 );
 
-// Check-Intervall auf 1 Stunde setzen (für Testing)
-$myUpdateChecker->setCheckPeriod(1);
-
 // Debug-Logging für Updates (nur wenn WP_DEBUG aktiv)
 if (defined('WP_DEBUG') && WP_DEBUG) {
     add_filter('puc_request_info_result-germanfence', function($pluginInfo, $result) {
