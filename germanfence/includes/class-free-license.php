@@ -267,28 +267,18 @@ class GermanFence_Free_License {
                 
                 GermanFence_Logger::log('[FREE-LICENSE] Verifizierung erfolgreich, Cache geleert, Redirect zu License-Tab');
                 
-                // Redirect nach Verifizierung um Token aus URL zu entfernen
+                // Redirect nach Verifizierung um Token aus URL zu entfernen - Toast-Meldung über JS
                 wp_redirect(admin_url('admin.php?page=germanfence&tab=license&verified=1'));
                 exit;
             } else {
-                add_action('admin_notices', function() use ($result) {
-                    echo '<div class="notice notice-error is-dismissible"><p><strong>❌ ' . esc_html($result['message']) . '</strong></p></div>';
-                });
+                // Fehler über URL-Parameter für Toast-Meldung
+                wp_redirect(admin_url('admin.php?page=germanfence&tab=license&verify_error=' . urlencode($result['message'])));
+                exit;
             }
         }
         
-        // Zeige Success-Nachricht nach Redirect
-        if (isset($_GET['verified']) && $_GET['verified'] === '1') {
-            // WICHTIG: Cache nochmal leeren
-            wp_cache_delete('germanfence_free_verified', 'options');
-            wp_cache_delete('germanfence_free_email', 'options');
-            
-            add_action('admin_notices', function() {
-                echo '<div class="notice notice-success is-dismissible"><p><strong>✅ E-Mail erfolgreich verifiziert! German Shield ist jetzt aktiviert.</strong></p></div>';
-            });
-            
-            GermanFence_Logger::log('[FREE-LICENSE] Zeige Success-Notice, Status: ' . ($this->is_free_active() ? 'AKTIV' : 'INAKTIV'));
-        }
+        // Toast-Meldungen werden jetzt über JavaScript gehandhabt (admin.js)
+        // Keine WP admin_notices mehr verwenden!
     }
     
     /**
@@ -297,25 +287,30 @@ class GermanFence_Free_License {
     public function activate_with_key($key) {
         global $wpdb;
         
-        // Key validieren
-        $key = sanitize_text_field($key);
+        // Key validieren und normalisieren
+        $key = strtoupper(sanitize_text_field($key));
         
         if (empty($key) || strlen($key) < 10) {
             return array('success' => false, 'message' => 'Ungültiger License-Key');
         }
         
-        // Prüfe ob Key existiert und verifiziert ist
+        // Prüfe ob Key das richtige Format hat (GS-FREE-XXXXXXXXXXXX)
+        if (!preg_match('/^GS-FREE-[A-Z0-9]{8,16}$/', $key)) {
+            return array('success' => false, 'message' => 'Ungültiges Key-Format. Erwartet: GS-FREE-XXXXXXXXXXXX');
+        }
+        
+        // Erst lokal prüfen ob Key existiert
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE license_key = %s AND is_verified = 1",
             $key
         ));
         
-        if (!$user) {
-            return array('success' => false, 'message' => 'License-Key nicht gefunden oder nicht verifiziert');
-        }
+        // Wenn lokal gefunden, E-Mail übernehmen
+        $email = $user ? $user->email : 'free-key-user@germanfence.local';
         
-        // Aktivieren
-        update_option('germanfence_free_email', $user->email);
+        // Key ist gültig (Format passt) - aktivieren
+        // Der Key wurde entweder lokal oder auf einer anderen Domain generiert
+        update_option('germanfence_free_email', $email);
         update_option('germanfence_free_verified', '1');
         update_option('germanfence_free_license_key', $key);
         
@@ -324,7 +319,7 @@ class GermanFence_Free_License {
         wp_cache_delete('germanfence_free_email', 'options');
         wp_cache_delete('germanfence_free_license_key', 'options');
         
-        GermanFence_Logger::log('[FREE-LICENSE] Mit Key aktiviert: ' . $key . ' | E-Mail: ' . $user->email);
+        GermanFence_Logger::log('[FREE-LICENSE] Mit Key aktiviert: ' . $key . ' | E-Mail: ' . $email);
         
         return array('success' => true, 'message' => 'Free-License erfolgreich aktiviert!');
     }

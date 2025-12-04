@@ -830,6 +830,40 @@
             '</style>').appendTo('head');
         }
         
+        // URL-Parameter Toast-Meldungen (statt WP admin_notices)
+        var urlParams = new URLSearchParams(window.location.search);
+        
+        // E-Mail-Verifizierung erfolgreich
+        if (urlParams.get('verified') === '1') {
+            showToast('✅ E-Mail erfolgreich verifiziert! German Shield ist jetzt aktiviert.', 'success');
+            // URL bereinigen
+            var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
+            window.history.replaceState({}, '', cleanUrl);
+        }
+        
+        // Verifizierungsfehler
+        var verifyError = urlParams.get('verify_error');
+        if (verifyError) {
+            showToast('❌ ' + decodeURIComponent(verifyError), 'error');
+            // URL bereinigen
+            var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
+            window.history.replaceState({}, '', cleanUrl);
+        }
+        
+        // Lizenz aktiviert
+        if (urlParams.get('license_activated') === '1') {
+            showToast('✅ Lizenz erfolgreich aktiviert!', 'success');
+            var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
+            window.history.replaceState({}, '', cleanUrl);
+        }
+        
+        // Lizenz deaktiviert
+        if (urlParams.get('license_deactivated') === '1') {
+            showToast('🔓 Lizenz deaktiviert', 'success');
+            var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
+            window.history.replaceState({}, '', cleanUrl);
+        }
+        
         log('Init abgeschlossen.');
     });
     
