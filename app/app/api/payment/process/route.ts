@@ -157,9 +157,8 @@ export async function POST(request: NextRequest) {
 
       console.log(`📧 Sending email to ${normalizedEmail}...`)
       
-      // Use Resend default sender if domain not verified
-      // You can change this to your verified domain sender
-      const fromEmail = process.env.RESEND_FROM_EMAIL || 'GermanFence <onboarding@resend.dev>'
+      // Use verified domain sender (same as registration email)
+      const fromEmail = 'GermanFence <hallo@germanfence.de>'
       
       const emailResult = await resend.emails.send({
         from: fromEmail,
