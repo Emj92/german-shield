@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.1] - 2025-12-04
+### Behoben
+- **Badge:** Zeigt jetzt "GermanFence" statt "German Shield"
+- **Badge:** Link zu https://germanfence.de hinzugefügt (klickbar)
+- **Badge:** Cursor zeigt jetzt pointer bei Hover
+
 ## [1.5.0] - 2025-12-04
 ### Behoben (KRITISCH)
 - **Plugin:** GEO-Blocking & Phrasen-Blocking Tabs werden jetzt korrekt freigeschaltet bei PRO-Lizenzen
