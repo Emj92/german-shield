@@ -11,20 +11,17 @@ export async function PUT(request: NextRequest) {
     }
 
     const data = await request.json()
-    const { name, company, street, zip, city, country, phone, website, vatId } = data
+    const { name } = data
 
     // User aktualisieren
     await prisma.user.update({
       where: { id: user.id || user.userId },
       data: {
         name: name || null,
-        // Weitere Felder werden später im Schema hinzugefügt
+        // TODO: Weitere Felder im User-Schema hinzufügen:
+        // company, street, zip, city, country, phone, website, vatId
       },
     })
-
-    // TODO: Weitere Felder im User-Schema hinzufügen:
-    // company, street, zip, city, country, phone, website, vatId
-    // Für jetzt speichern wir nur den Namen
 
     return NextResponse.json({
       success: true,

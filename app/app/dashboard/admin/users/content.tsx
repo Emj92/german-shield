@@ -61,15 +61,6 @@ export default function AdminUsersContent() {
     user.name?.toLowerCase().includes(search.toLowerCase())
   )
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'ACTIVE': return 'bg-green-100 text-green-800'
-      case 'EXPIRED': return 'bg-red-100 text-red-800'
-      case 'SUSPENDED': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-gray-100 text-gray-800'
-    }
-  }
-
   const getPackageColor = (packageType: string) => {
     switch (packageType) {
       case 'FREE': return 'bg-slate-100 text-slate-700'
