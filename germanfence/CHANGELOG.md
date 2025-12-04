@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.9] - 2025-12-04
+### Behoben
+- **Plugin:** Sofortige API-Validierung nach PRO-Lizenz Aktivierung (Features werden sofort freigeschaltet)
+- **Website:** Webhook Portal-URL hardcodiert für korrekte E-Mail-Zustellung nach Kauf
+- **Portal/Website:** Verbesserte Logging für Debugging
+
 ## [1.4.8] - 2025-12-04
 
 ### Hinzugefügt

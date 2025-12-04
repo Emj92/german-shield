@@ -37,9 +37,11 @@ export async function POST(request: NextRequest) {
       if (customerEmail) {
         try {
           // API-Call zum Portal um Shadow Account + Lizenz zu erstellen + E-Mail zu senden
-          const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
+          // WICHTIG: Portal URL muss explizit gesetzt werden, da webhook auf website-server läuft
+          const portalUrl = 'https://portal.germanfence.de'
           
-          console.log(`Creating license for ${customerEmail}, package: ${packageType}`)
+          console.log(`📧 Creating license for ${customerEmail}, package: ${packageType}`)
+          console.log(`🌐 Portal URL: ${portalUrl}`)
           
           const response = await fetch(`${portalUrl}/api/payment/process`, {
             method: 'POST',
@@ -53,12 +55,20 @@ export async function POST(request: NextRequest) {
             }),
           })
 
+          if (!response.ok) {
+            console.error(`❌ Portal API returned ${response.status}`)
+            const errorText = await response.text()
+            console.error(`❌ Error: ${errorText}`)
+            return NextResponse.json({ status: 'error', message: 'Portal API error' })
+          }
+
           const result = await response.json()
 
           if (result.success) {
             console.log('✅ License created and email sent:', {
               licenseKey: result.licenseKey,
               email: customerEmail,
+              packageType: result.packageType,
             })
           } else {
             console.error('❌ Failed to create license:', result.error)

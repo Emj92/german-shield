@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = email.toLowerCase().trim()
     const normalizedPackageType = packageType.toUpperCase()
 
-    console.log(`Processing payment for ${normalizedEmail}, package: ${normalizedPackageType}`)
+    console.log(`📦 Processing payment for ${normalizedEmail}, package: ${normalizedPackageType}`)
+    console.log(`📧 RESEND_API_KEY configured: ${process.env.RESEND_API_KEY ? 'YES' : 'NO'}`)
 
     // 1. Shadow Account erstellen oder existierenden User holen
     let user = await prisma.user.findUnique({

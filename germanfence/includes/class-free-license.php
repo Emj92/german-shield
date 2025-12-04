@@ -343,6 +343,13 @@ class GermanFence_Free_License {
             
             // License-Cache leeren für Revalidierung
             delete_transient('germanfence_license_data');
+            
+            // SOFORT API-Validierung durchführen um Features zu laden
+            require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php';
+            $license = new GermanFence_License();
+            $validation = $license->validate_license($key);
+            
+            GermanFence_Logger::log('[LICENSE] API-Validierung nach Aktivierung: ' . json_encode($validation));
         }
         
         // Cache leeren
