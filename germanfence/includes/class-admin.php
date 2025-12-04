@@ -115,8 +115,8 @@ class GermanFence_Admin {
         <style>
             /* GermanFence Logo im Menü skalieren */
             #adminmenu #toplevel_page_germanfence .wp-menu-image img {
-                width: 20px !important;
-                height: 20px !important;
+                width: 17px !important;
+                height: 21px !important;
                 padding: 6px 0 !important;
             }
             

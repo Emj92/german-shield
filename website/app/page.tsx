@@ -47,8 +47,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
         <div className="container mx-auto text-center max-w-5xl">
-          <Badge className="mb-6 bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD]/20">
-            🇩🇪 Made in Germany
+          <Badge className="mb-6 bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD]/20 flex items-center gap-2 w-fit mx-auto px-4 py-2">
+            <span className="text-lg">🇩🇪</span>
+            <span className="font-semibold">Made in Germany</span>
           </Badge>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-slate-900 dark:text-white leading-tight">
             GermanFence
@@ -509,7 +510,7 @@ export default function Home() {
           <div className="grid md:grid-cols-5 gap-12 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <Image src="/screenshots/logo_klein.png" alt="GermanFence" width={48} height={48} />
+                <Image src="/germanfence_logo.png" alt="GermanFence" width={48} height={48} />
                 <span className="font-bold text-2xl text-[#22D6DD]">GermanFence</span>
               </div>
               <p className="text-slate-400 mb-6 leading-relaxed">
