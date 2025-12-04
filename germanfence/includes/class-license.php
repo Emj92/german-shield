@@ -213,4 +213,92 @@ class GermanFence_License {
         delete_transient('germanfence_license_data');
         $this->license_data = null;
     }
+    
+    /**
+     * Gibt Lizenz-Informationen zurück (für Admin-Seite)
+     */
+    public function get_license_info() {
+        $license = $this->get_license_data();
+        
+        if (!$license || !isset($license['valid']) || !$license['valid']) {
+            return array(
+                'active' => false,
+                'package' => 'FREE',
+                'expires' => null,
+                'domains' => 0,
+                'max_domains' => 0,
+            );
+        }
+        
+        return array(
+            'active' => true,
+            'package' => isset($license['license']['packageType']) ? $license['license']['packageType'] : 'FREE',
+            'expires' => isset($license['license']['expiresAt']) ? $license['license']['expiresAt'] : null,
+            'domains' => isset($license['license']['usedDomains']) ? $license['license']['usedDomains'] : 0,
+            'max_domains' => isset($license['license']['maxDomains']) ? $license['license']['maxDomains'] : 0,
+        );
+    }
+    
+    /**
+     * Prüft Lizenz-Status (für Admin-Seite)
+     */
+    public function check_license() {
+        $license = $this->get_license_data();
+        
+        if (!$license || !isset($license['valid'])) {
+            return array('valid' => false, 'message' => 'Keine Lizenz vorhanden');
+        }
+        
+        if (!$license['valid']) {
+            $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
+            return array('valid' => false, 'message' => $error);
+        }
+        
+        return array('valid' => true, 'message' => 'Lizenz aktiv');
+    }
+    
+    /**
+     * Aktiviert eine Lizenz (Placeholder für Admin-Seite)
+     */
+    public function activate_license($license_key) {
+        // Speichere Lizenzschlüssel in Einstellungen
+        $settings = get_option('germanfence_settings', array());
+        $settings['license_key'] = $license_key;
+        update_option('germanfence_settings', $settings);
+        
+        // Cache leeren und neu validieren
+        $this->clear_cache();
+        $license = $this->validate_license(true);
+        
+        if ($license && isset($license['valid']) && $license['valid']) {
+            return array(
+                'success' => true,
+                'message' => 'Lizenz erfolgreich aktiviert!'
+            );
+        } else {
+            $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
+            return array(
+                'success' => false,
+                'message' => 'Lizenz konnte nicht aktiviert werden: ' . $error
+            );
+        }
+    }
+    
+    /**
+     * Deaktiviert eine Lizenz (Placeholder für Admin-Seite)
+     */
+    public function deactivate_license() {
+        // Entferne Lizenzschlüssel aus Einstellungen
+        $settings = get_option('germanfence_settings', array());
+        unset($settings['license_key']);
+        update_option('germanfence_settings', $settings);
+        
+        // Cache leeren
+        $this->clear_cache();
+        
+        return array(
+            'success' => true,
+            'message' => 'Lizenz erfolgreich deaktiviert'
+        );
+    }
 }
