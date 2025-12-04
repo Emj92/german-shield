@@ -45,15 +45,6 @@ function getPrice(packageType: string): number {
 
 export async function POST(request: NextRequest) {
   try {
-    // Webhook-Secret prüfen (für Sicherheit)
-    const authHeader = request.headers.get('x-webhook-secret')
-    const webhookSecret = process.env.WEBHOOK_SECRET
-    
-    if (webhookSecret && authHeader !== webhookSecret) {
-      console.error('Invalid webhook secret')
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const { email, packageType, molliePaymentId } = await request.json()
 
     if (!email || !packageType) {
