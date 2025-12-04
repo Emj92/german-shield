@@ -988,30 +988,6 @@ class GermanFence_Admin {
                         }
                         ?>
                         
-                        <!-- DEBUG INFO -->
-                        <?php if (defined('WP_DEBUG') && WP_DEBUG): ?>
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border: 2px solid #ffc107; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 10px 0; color: #856404;">🔍 Debug-Info (nur sichtbar wenn WP_DEBUG aktiv)</h4>
-                            <?php 
-                            global $wpdb;
-                            $debug_info = $free_manager->get_debug_info();
-                            $stats_table_exists = $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}germanfence_stats'");
-                            $stats_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}germanfence_stats");
-                            $recent_stats = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}germanfence_stats ORDER BY created_at DESC LIMIT 5");
-                            
-                            echo '<pre style="background: #fff; padding: 10px; border-radius: 4px; font-size: 11px; overflow: auto;">';
-                            echo '<strong>FREE LICENSE:</strong>' . "\n";
-                            print_r($debug_info);
-                            echo "\n<strong>STATS TABELLE:</strong>\n";
-                            echo 'Existiert: ' . ($stats_table_exists ? 'JA' : 'NEIN') . "\n";
-                            echo 'Einträge gesamt: ' . $stats_count . "\n\n";
-                            echo '<strong>LETZTE 5 STATS:</strong>' . "\n";
-                            print_r($recent_stats);
-                            echo '</pre>';
-                            ?>
-                        </div>
-                        <?php endif; ?>
-                        
                         <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
                         <?php if (!$license_info['has_license'] || !$license_status['is_valid']): ?>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
