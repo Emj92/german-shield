@@ -165,12 +165,9 @@ export default function AdminUsersContent() {
                         {user.licenses.length > 0 ? (
                           <div className="space-y-1">
                             {user.licenses.map((license) => (
-                              <div key={license.id} className="flex items-center gap-2">
+                              <div key={license.id}>
                                 <Badge className={`${getPackageColor(license.packageType)} text-xs`}>
                                   {license.packageType}
-                                </Badge>
-                                <Badge className={`${getStatusColor(license.status)} text-xs`}>
-                                  {license.status}
                                 </Badge>
                               </div>
                             ))}

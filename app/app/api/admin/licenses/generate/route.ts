@@ -51,30 +51,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid package type' }, { status: 400 })
     }
 
-    // User finden oder erstellen
-    let targetUser
+    // User finden oder erstellen (optional - Lizenz kann auch ohne User erstellt werden)
+    let targetUser = null
     if (userId) {
       targetUser = await prisma.user.findUnique({ where: { id: userId } })
-    } else if (email) {
-      targetUser = await prisma.user.findUnique({ where: { email } })
+      if (!targetUser) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      }
+    } else if (email && email.trim()) {
+      targetUser = await prisma.user.findUnique({ where: { email: email.trim() } })
       
       // User erstellen wenn nicht vorhanden
       if (!targetUser) {
         targetUser = await prisma.user.create({
           data: {
-            email,
+            email: email.trim(),
             password: '', // Wird beim ersten Login gesetzt
             role: 'USER',
           },
         })
       }
-    } else {
-      return NextResponse.json({ error: 'userId or email required' }, { status: 400 })
     }
-
-    if (!targetUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
-    }
+    // Wenn weder userId noch email angegeben: Ungebundene Lizenz erstellen (ohne User)
 
     // Lizenzschlüssel generieren (unique check) - mit Pakettyp im Key!
     let licenseKey = generateLicenseKey(packageType)
@@ -91,10 +89,10 @@ export async function POST(request: NextRequest) {
     const expiresAt = new Date()
     expiresAt.setFullYear(expiresAt.getFullYear() + 1) // 1 Jahr gültig
 
-    // Lizenz erstellen
+    // Lizenz erstellen (mit oder ohne User)
     const license = await prisma.license.create({
       data: {
-        userId: targetUser.id,
+        userId: targetUser?.id || user.userId, // Wenn kein User, dem Admin zuweisen (wird später übertragen)
         licenseKey,
         packageType: packageType as PackageType,
         maxDomains: packageConfig.maxDomains,
@@ -109,8 +107,10 @@ export async function POST(request: NextRequest) {
       data: {
         licenseId: license.id,
         action: 'CREATED',
-        description: `License created by admin for ${targetUser.email}`,
-        metadata: { packageType, admin: user.email },
+        description: targetUser 
+          ? `License created by admin for ${targetUser.email}` 
+          : `Unbound license created by admin`,
+        metadata: { packageType, admin: user.email, unbound: !targetUser },
       },
     })
 
@@ -122,10 +122,10 @@ export async function POST(request: NextRequest) {
         packageType: license.packageType,
         expiresAt: license.expiresAt,
         maxDomains: license.maxDomains,
-        user: {
+        user: targetUser ? {
           id: targetUser.id,
           email: targetUser.email,
-        },
+        } : null,
       },
     })
   } catch (error) {

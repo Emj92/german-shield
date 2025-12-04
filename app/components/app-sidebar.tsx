@@ -53,6 +53,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
     { name: 'Rechnungen', href: '/dashboard/invoices', icon: FileText },
     { name: 'Downloads', href: '/dashboard/downloads', icon: Download },
     { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
+    { name: 'Einstellungen', href: '/dashboard/settings', icon: Settings },
   ]
 
   // Admin-zusätzliche Navigation

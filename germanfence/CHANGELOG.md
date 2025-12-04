@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.8] - 2025-12-04
+
+### Hinzugefügt
+- **Portal:** Download-Button im Header (neben Sprachumschalter)
+- **Portal:** User-Einstellungen Seite (Name, Adresse, USt-IdNr.)
+- **Portal Dashboard:** Lizenz-Statistiken (FREE/SINGLE/FREELANCER/AGENCY Anzahl)
+- **Portal Dashboard:** Aktive Domains Zähler (echte Installationen)
+
+### Verbessert
+- **Admin-Lizenzen:** Können jetzt OHNE E-Mail erstellt werden (ungebundene Lizenzen)
+- **Benutzerverwaltung:** ACTIVE Badge bei Lizenzen entfernt
+
 ## [1.4.7] - 2025-12-04
 
 ### Behoben
