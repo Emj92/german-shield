@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
+import { AnimatedBackground } from '@/components/AnimatedBackground'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
@@ -154,8 +155,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md space-y-8">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background relative overflow-hidden">
+      <AnimatedBackground />
+      <div className="w-full max-w-md space-y-8 relative z-10">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">
           <Image 
