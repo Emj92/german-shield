@@ -116,15 +116,6 @@ export default function UserLicensesContent() {
     }
   }
 
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case 'ACTIVE': return 'bg-[#22D6DD]/10 text-[#22D6DD]'
-      case 'EXPIRED': return 'bg-[#EC4899]/10 text-[#EC4899]'
-      case 'SUSPENDED': return 'bg-gray-100 text-gray-700'
-      default: return 'bg-gray-100 text-gray-800'
-    }
-  }
-
   const activeLicensesCount = licenses.filter(l => l.status === 'ACTIVE').length
   const totalDomains = licenses.reduce((sum, l) => sum + l.activeDomains.length, 0)
 

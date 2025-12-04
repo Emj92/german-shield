@@ -12,10 +12,13 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - Plugin sperrt alle Tabs wenn keine Lizenz aktiviert (nur Lizenz-Tab offen)
 - Lizenz-Key Styling vereinfacht (kein türkiser Rahmen, saubereres Design)
 - FREELANCER/AGENCY-Lizenzen haben jetzt alle PRO-Features freigeschaltet
+- Domain-Registrierung: Plugin meldet automatisch Domain an Lizenz bei Aktivierung
+- Portal zeigt jetzt alle registrierten Domains pro Lizenz an
 
 ### Behoben
 - Features bei generierten FREELANCER/AGENCY-Keys werden jetzt korrekt erkannt
 - Lizenztyp wird in Meldungen korrekt angezeigt (nicht mehr "Custom Lizenz")
+- ESLint Build-Fehler behoben (unused getStatusBadgeColor entfernt)
 
 ## [1.4.1] - 2025-12-04
 

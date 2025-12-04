@@ -365,9 +365,17 @@ class GermanFence_License {
         $license = $this->validate_license(true);
         
         if ($license && isset($license['valid']) && $license['valid']) {
+            // Erfolg - Domain wurde automatisch beim validate_license() registriert
+            $message = 'Lizenz erfolgreich aktiviert!';
+            
+            // Zusatz-Info wenn Domain registriert wurde
+            if (isset($license['registered']) && $license['registered']) {
+                $message .= ' Domain wurde automatisch registriert.';
+            }
+            
             return array(
                 'success' => true,
-                'message' => 'Lizenz erfolgreich aktiviert!'
+                'message' => $message
             );
         } else {
             $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
