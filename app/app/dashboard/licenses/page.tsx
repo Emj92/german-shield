@@ -11,7 +11,7 @@ export default async function UserLicensesPage() {
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout user={user}>
       <UserLicensesContent />
     </DashboardLayout>
   )

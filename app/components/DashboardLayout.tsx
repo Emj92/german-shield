@@ -1,14 +1,28 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { SessionUser } from '@/lib/auth'
 import { useTheme } from '@/lib/theme-context'
+import { Download, ExternalLink, User } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
-  user: SessionUser
+  user: {
+    userId?: string
+    id?: string
+    email: string
+    name?: string | null
+    role: string
+  }
 }
 
 export default function DashboardLayout({ children, user }: DashboardLayoutProps) {
@@ -97,8 +111,65 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
         {/* Top Bar */}
         <header className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-30">
           <div className="px-8 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://germanfence.de" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition flex items-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Zur Website</span>
+              </a>
+            </div>
 
             <div className="flex items-center space-x-4">
+              {/* Download Button */}
+              <Button
+                asChild
+                className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white"
+              >
+                <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+                  <Download className="mr-2 h-4 w-4" />
+                  Plugin Download
+                </a>
+              </Button>
+
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#22D6DD]/20 border border-[#22D6DD]/30">
+                      <User className="h-5 w-5 text-[#22D6DD]" />
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user.name || 'Benutzer'}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/licenses">Lizenzen</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/support">Support</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Abmelden
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -154,3 +225,4 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
   )
 }
 
+export { DashboardLayout }

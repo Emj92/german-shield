@@ -10,7 +10,6 @@ import {
   MessageSquare,
   Settings,
   LogOut,
-  Shield,
   Moon,
   Sun,
   Key,

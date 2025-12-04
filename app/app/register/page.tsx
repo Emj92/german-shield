@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
+import { AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
