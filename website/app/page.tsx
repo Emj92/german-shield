@@ -47,7 +47,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
         <div className="container mx-auto text-center max-w-5xl">
-          <Badge className="mb-6 bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD]/20 hover:bg-[#22D6DD]/20">
+          <Badge className="mb-6 bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD]/20">
             🇩🇪 Made in Germany
           </Badge>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-slate-900 dark:text-white leading-tight">
@@ -67,7 +67,7 @@ export default function Home() {
                 Plugin herunterladen
               </Button>
             </a>
-            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] px-8 py-6 text-lg transition-transform hover:-translate-y-1">
+            <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] px-8 py-6 text-lg transition-transform hover:-translate-y-1">
               <Shield className="mr-2 h-5 w-5" />
               Live Demo
             </Button>
@@ -251,11 +251,23 @@ export default function Home() {
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500" />
-                    <span>Honeypot Protection</span>
+                    <span>Basis Honeypot (1 Feld)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500" />
                     <span>Zeitstempel-Check</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>JavaScript Bot-Scan</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>WP-Mail Blocker (An/Aus)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <span>Kommentar-Blocker (An/Aus)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500" />
@@ -284,30 +296,38 @@ export default function Home() {
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Alle Features</span>
+                    <span>Erweiterte Honeypot-Kontrolle</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>GEO-Blocking</span>
+                    <span>User Agent Scan</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Phrasen-Blocking</span>
+                    <span>GEO-Blocking (Premium)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <span>Phrasen-Blocking (Regex)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <span>Dashboard mit Statistiken</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <span>Updates während Abo-Laufzeit</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
                     <span>Priority Support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Lifetime Updates</span>
                   </li>
                 </ul>
                 <BuyButton 
                   packageType="single" 
                   price={29} 
                   variant="outline"
-                  className="w-full border-[#22D6DD] text-[#22D6DD] transition-transform hover:-translate-y-1"
+                  className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
               </CardContent>
             </Card>
@@ -338,21 +358,21 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Priority Support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
-                    <span>Dashboard-Zugang</span>
+                    <span>Erweiterte Dashboard-Statistiken</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
                     <span>Client-Projekte erlaubt</span>
                   </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <span>Priority Support</span>
+                  </li>
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
                   price={79}
-                  className="w-full bg-[#22D6DD] text-white transition-transform hover:-translate-y-1"
+                  className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
             </Card>
@@ -378,22 +398,22 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Dedicated Support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
                     <span>White-Label Option</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Premium Templates</span>
+                    <span>Dedicated Support</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
+                    <span>Bulk-Lizenz-Verwaltung</span>
                   </li>
                 </ul>
                 <BuyButton 
                   packageType="agency" 
                   price={199}
                   variant="outline"
-                  className="w-full border-2 border-[#F06292] text-[#F06292] transition-transform hover:-translate-y-1"
+                  className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
               </CardContent>
             </Card>
