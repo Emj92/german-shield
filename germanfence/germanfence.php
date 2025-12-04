@@ -3,7 +3,7 @@
  * Plugin Name: GermanFence
  * Plugin URI: https://germanfence.de
  * Description: Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: GermanFence Team
  * Author URI: https://germanfence.de
  * License: GPL v2 or later + Proprietary
@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GERMANFENCE_VERSION', '1.0.0');
+define('GERMANFENCE_VERSION', '1.3.0');
 define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
@@ -79,8 +79,9 @@ $myUpdateChecker->getVcsApi()->enableReleaseAssets();
 require_once GERMANFENCE_PLUGIN_DIR . 'languages/translations.php';
 
 // Security-Klasse temporär deaktiviert - zu aggressiv
-// require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-security.php';
+// Load core classes (License zuerst!)
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-logger.php';
+require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php'; // Zuerst laden!
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-germanfence.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-admin.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-antispam.php';
@@ -91,7 +92,6 @@ require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-detector.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-stats.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-badge.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-notice-blocker.php';
-require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-free-license.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-ajax.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-updater.php';

@@ -250,27 +250,31 @@ export default function Home() {
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>Basis Honeypot (1 Feld)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>Zeitstempel-Check</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>JavaScript Bot-Scan</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>WP-Mail Blocker (An/Aus)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>Kommentar-Blocker (An/Aus)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-slate-500" />
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
+                    <span>WP-Dashboard Clean-up</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
                     <span>Community Support</span>
                   </li>
                 </ul>
@@ -295,31 +299,39 @@ export default function Home() {
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span className="font-semibold">Alles aus FREE</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Erweiterte Honeypot-Kontrolle</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>User Agent Scan</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>GEO-Blocking (Premium)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Phrasen-Blocking (Regex)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Tippgeschwindigkeit-Analyse</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Dashboard mit Statistiken</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Updates während Abo-Laufzeit</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Priority Support</span>
                   </li>
                 </ul>
@@ -349,23 +361,43 @@ export default function Home() {
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span className="font-semibold">Alles aus Single</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span className="font-semibold">Bis zu 5 Websites</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Erweiterte Honeypot-Kontrolle</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>User Agent Scan</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>GEO-Blocking (Premium)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Phrasen-Blocking (Regex)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Tippgeschwindigkeit-Analyse</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Erweiterte Dashboard-Statistiken</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Client-Projekte erlaubt</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Priority Support</span>
                   </li>
                 </ul>
@@ -389,24 +421,48 @@ export default function Home() {
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
                     <span className="font-semibold">Alles aus Freelancer</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
                     <span className="font-semibold">Bis zu 25 Websites</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Erweiterte Honeypot-Kontrolle</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>User Agent Scan</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>GEO-Blocking (Premium)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Phrasen-Blocking (Regex)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Tippgeschwindigkeit-Analyse</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Erweiterte Dashboard-Statistiken</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
                     <span>White-Label Option</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Dedicated Support</span>
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Bulk-Lizenz-Verwaltung</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-[#F06292]" />
-                    <span>Bulk-Lizenz-Verwaltung</span>
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Dedicated Support</span>
                   </li>
                 </ul>
                 <BuyButton 

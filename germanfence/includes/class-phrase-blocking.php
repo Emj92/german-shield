@@ -19,6 +19,15 @@ class GermanFence_PhraseBlocking {
      * Check for blocked phrases
      */
     public function check_phrases($data) {
+        // Feature-Check
+        $license = GermanFence_License::get_instance();
+        if (!$license->has_feature('phraseBlocking')) {
+            return array(
+                'valid' => true,
+                'message' => 'Phrase blocking not available in FREE version'
+            );
+        }
+        
         if (empty($this->settings['phrase_blocking_enabled'])) {
             return array(
                 'valid' => true,

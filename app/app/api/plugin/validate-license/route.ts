@@ -158,11 +158,25 @@ export async function POST(request: NextRequest) {
         usedDomains: license.activeDomains.length,
       },
       features: {
-        geoBlocking: license.packageType !== 'FREE',
-        phraseBlocking: license.packageType !== 'FREE',
-        statistics: license.packageType !== 'FREE',
-        prioritySupport: ['SINGLE', 'FREELANCER', 'AGENCY'].includes(license.packageType),
-        whiteLabel: license.packageType === 'AGENCY',
+        // FREE Features
+        honeypot: true, // Alle haben Honeypot
+        timestampCheck: true, // Alle haben Zeitstempel-Check
+        javascriptCheck: true, // Alle haben JS-Check
+        commentBlocker: true, // Alle haben Kommentar-Blocker
+        wpMailBlocker: true, // Alle haben WP-Mail-Blocker
+        dashboardCleanup: true, // Alle haben Dashboard-Cleanup
+        
+        // PAID Features (SINGLE, FREELANCER, AGENCY)
+        honeypotAdvanced: license.packageType !== 'FREE', // Erweiterte Honeypot-Kontrolle
+        userAgentScan: license.packageType !== 'FREE', // User Agent Scan
+        geoBlocking: license.packageType !== 'FREE', // GEO-Blocking
+        phraseBlocking: license.packageType !== 'FREE', // Phrasen-Blocking (Regex)
+        typingSpeedAnalysis: license.packageType !== 'FREE', // Tippgeschwindigkeit-Analyse
+        statistics: license.packageType !== 'FREE', // Dashboard mit Statistiken
+        prioritySupport: license.packageType !== 'FREE', // Priority Support
+        
+        // AGENCY Only
+        whiteLabel: license.packageType === 'AGENCY', // White-Label Option
       },
       warning,
     })

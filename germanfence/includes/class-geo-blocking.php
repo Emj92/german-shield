@@ -35,6 +35,12 @@ class GermanFence_GeoBlocking {
      * Prüft, ob das Land blockiert werden soll
      */
     public function check_country($ip) {
+        // Feature-Check
+        $license = GermanFence_License::get_instance();
+        if (!$license->has_feature('geoBlocking')) {
+            return array('valid' => true);
+        }
+        
         // Einstellungen laden
         $settings = get_option('germanfence_settings', array());
         

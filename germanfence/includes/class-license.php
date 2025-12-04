@@ -1,6 +1,8 @@
 <?php
 /**
- * License Class - Lizenzverwaltung
+ * License Management & Feature Control
+ * 
+ * Verwaltet Lizenzprüfung und Feature-Freischaltung basierend auf Pakettyp
  */
 
 if (!defined('ABSPATH')) {
@@ -9,263 +11,206 @@ if (!defined('ABSPATH')) {
 
 class GermanFence_License {
     
-    private $api_url = 'https://portal.germanshield.com/api'; // Später anpassen
+    private static $instance = null;
+    private $license_data = null;
+    private $api_url = 'https://portal.germanfence.de/api/plugin/validate-license';
     
-    public function __construct() {
-        add_action('admin_notices', array($this, 'show_license_notice'));
-        add_action('wp_ajax_germanfence_activate_premium', array($this, 'ajax_activate_premium'));
-        add_action('wp_ajax_germanfence_deactivate_premium', array($this, 'ajax_deactivate_premium'));
+    public static function get_instance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
     
     /**
-     * Lizenz aktivieren
+     * Prüft ob ein Feature verfügbar ist
      */
-    public function activate_license($license_key) {
-        GermanFence_Logger::log('[LICENSE] Aktiviere Lizenz: ' . substr($license_key, 0, 10) . '...');
+    public function has_feature($feature) {
+        $license = $this->get_license_data();
         
-        $site_url = get_site_url();
-        
-        // Validiere Lizenzschlüssel-Format
-        if (!preg_match('/^GS-\d{4}-\d{4}-\d{4}-\d{4}$/', $license_key)) {
-            return array(
-                'success' => false,
-                'message' => 'Ungültiges Lizenzschlüssel-Format. Format: GS-XXXX-XXXX-XXXX-XXXX'
-            );
+        // Wenn keine Lizenz vorhanden, FREE Features erlauben
+        if (!$license || !isset($license['features'])) {
+            return $this->is_free_feature($feature);
         }
         
-        // TEMPORÄR: Lokale Aktivierung bis API fertig ist
-        // TODO: Später durch echten API-Call ersetzen
-        $valid_keys = array(
-            'GS-4723-2947-1494-4551', // Test-Lizenz
-        );
-        
-        if (in_array($license_key, $valid_keys)) {
-            // Lizenz speichern
-            update_option('germanfence_license', array(
-                'key' => $license_key,
-                'status' => 'active',
-                'expires_at' => date('Y-m-d H:i:s', strtotime('+1 year')),
-                'api_key' => wp_generate_password(32, false),
-                'activated_at' => current_time('mysql'),
-                'site_url' => $site_url,
-            ));
-            
-            GermanFence_Logger::log('[LICENSE] Lizenz erfolgreich aktiviert (lokal)');
-            
-            return array(
-                'success' => true,
-                'message' => 'Lizenz erfolgreich aktiviert! (Gültig bis ' . date('d.m.Y', strtotime('+1 year')) . ')'
-            );
-        }
-        
-        // Fallback: Versuche API-Call (wenn Portal läuft)
-        $response = wp_remote_post($this->api_url . '/license/activate', array(
-            'body' => json_encode(array(
-                'license_key' => $license_key,
-                'site_url' => $site_url,
-                'site_name' => get_bloginfo('name'),
-                'plugin_version' => GERMANFENCE_VERSION,
-            )),
-            'headers' => array(
-                'Content-Type' => 'application/json',
-            ),
-            'timeout' => 5,
-            'sslverify' => false,
-        ));
-        
-        if (!is_wp_error($response)) {
-            $body = json_decode(wp_remote_retrieve_body($response), true);
-            
-            if (!empty($body['success'])) {
-                update_option('germanfence_license', array(
-                    'key' => $license_key,
-                    'status' => 'active',
-                    'expires_at' => $body['expires_at'] ?? null,
-                    'api_key' => $body['api_key'] ?? null,
-                    'activated_at' => current_time('mysql'),
-                ));
-                
-                GermanFence_Logger::log('[LICENSE] Lizenz erfolgreich aktiviert (API)');
-                
-                return array(
-                    'success' => true,
-                    'message' => 'Lizenz erfolgreich aktiviert!'
-                );
-            }
-        }
-        
-        return array(
-            'success' => false,
-            'message' => 'Ungültiger Lizenzschlüssel. Bitte überprüfen Sie Ihre Eingabe.'
-        );
+        return isset($license['features'][$feature]) && $license['features'][$feature] === true;
     }
     
     /**
-     * Lizenz deaktivieren
+     * Prüft ob ein Feature zum FREE Paket gehört
      */
-    public function deactivate_license() {
-        $license = get_option('germanfence_license', array());
+    private function is_free_feature($feature) {
+        $free_features = array(
+            'honeypot',
+            'timestampCheck',
+            'javascriptCheck',
+            'commentBlocker',
+            'wpMailBlocker',
+            'dashboardCleanup',
+        );
         
-        if (empty($license['key'])) {
-            return array(
-                'success' => false,
-                'message' => 'Keine aktive Lizenz gefunden'
-            );
+        return in_array($feature, $free_features);
+    }
+    
+    /**
+     * Holt Lizenz-Daten (cached)
+     */
+    public function get_license_data() {
+        if ($this->license_data !== null) {
+            return $this->license_data;
         }
         
-        GermanFence_Logger::log('[LICENSE] Deaktiviere Lizenz');
+        // Aus Transient laden (24h Cache)
+        $cached = get_transient('germanfence_license_data');
+        if ($cached !== false) {
+            $this->license_data = $cached;
+            return $cached;
+        }
         
-        // API-Call
-        wp_remote_post($this->api_url . '/license/deactivate', array(
-            'body' => json_encode(array(
-                'license_key' => $license['key'],
-                'site_url' => get_site_url(),
-            )),
-            'headers' => array(
-                'Content-Type' => 'application/json',
-            ),
+        // Von API laden
+        $this->license_data = $this->validate_license();
+        return $this->license_data;
+    }
+    
+    /**
+     * Validiert Lizenz bei der API
+     */
+    public function validate_license($force = false) {
+        $settings = get_option('germanfence_settings', array());
+        $license_key = isset($settings['license_key']) ? trim($settings['license_key']) : '';
+        
+        // Keine Lizenz = FREE Version
+        if (empty($license_key)) {
+            $free_data = array(
+                'valid' => true,
+                'license' => array(
+                    'packageType' => 'FREE',
+                ),
+                'features' => array(
+                    'honeypot' => true,
+                    'timestampCheck' => true,
+                    'javascriptCheck' => true,
+                    'commentBlocker' => true,
+                    'wpMailBlocker' => true,
+                    'dashboardCleanup' => true,
+                    'honeypotAdvanced' => false,
+                    'userAgentScan' => false,
+                    'geoBlocking' => false,
+                    'phraseBlocking' => false,
+                    'typingSpeedAnalysis' => false,
+                    'statistics' => false,
+                    'prioritySupport' => false,
+                    'whiteLabel' => false,
+                ),
+            );
+            
+            set_transient('germanfence_license_data', $free_data, DAY_IN_SECONDS);
+            return $free_data;
+        }
+        
+        // API-Anfrage
+        $response = wp_remote_post($this->api_url, array(
             'timeout' => 15,
+            'body' => json_encode(array(
+                'licenseKey' => $license_key,
+                'domain' => home_url(),
+                'siteTitle' => get_bloginfo('name'),
+                'wpVersion' => get_bloginfo('version'),
+                'phpVersion' => phpversion(),
+            )),
+            'headers' => array(
+                'Content-Type' => 'application/json',
+            ),
         ));
         
-        // Lizenz lokal löschen
-        delete_option('germanfence_license');
+        if (is_wp_error($response)) {
+            // Bei Fehler: Letzten gültigen Status verwenden oder FREE
+            $last_valid = get_option('germanfence_last_valid_license');
+            return $last_valid ? $last_valid : $this->get_free_license_data();
+        }
         
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        
+        if (!$data || !isset($data['valid'])) {
+            return $this->get_free_license_data();
+        }
+        
+        // Cache für 24h
+        set_transient('germanfence_license_data', $data, DAY_IN_SECONDS);
+        
+        // Letzten gültigen Status speichern
+        if ($data['valid']) {
+            update_option('germanfence_last_valid_license', $data);
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Gibt FREE Lizenz-Daten zurück
+     */
+    private function get_free_license_data() {
         return array(
-            'success' => true,
-            'message' => 'Lizenz deaktiviert'
+            'valid' => true,
+            'license' => array(
+                'packageType' => 'FREE',
+            ),
+            'features' => array(
+                'honeypot' => true,
+                'timestampCheck' => true,
+                'javascriptCheck' => true,
+                'commentBlocker' => true,
+                'wpMailBlocker' => true,
+                'dashboardCleanup' => true,
+                'honeypotAdvanced' => false,
+                'userAgentScan' => false,
+                'geoBlocking' => false,
+                'phraseBlocking' => false,
+                'typingSpeedAnalysis' => false,
+                'statistics' => false,
+                'prioritySupport' => false,
+                'whiteLabel' => false,
+            ),
         );
     }
     
     /**
-     * Lizenz-Status prüfen
+     * Gibt Pakettyp zurück
      */
-    public function check_license() {
-        $license = get_option('germanfence_license', array());
-        
-        if (empty($license['key'])) {
-            return array(
-                'is_valid' => false,
-                'status' => 'none',
-                'message' => 'Keine Lizenz aktiviert'
-            );
-        }
-        
-        // Prüfe Ablaufdatum
-        if (!empty($license['expires_at'])) {
-            $expires = strtotime($license['expires_at']);
-            if ($expires < time()) {
-                return array(
-                    'is_valid' => false,
-                    'status' => 'expired',
-                    'message' => 'Lizenz abgelaufen'
-                );
-            }
-        }
-        
-        return array(
-            'is_valid' => true,
-            'status' => 'active',
-            'message' => 'Lizenz aktiv',
-            'expires_at' => $license['expires_at'] ?? null
-        );
+    public function get_package_type() {
+        $license = $this->get_license_data();
+        return isset($license['license']['packageType']) ? $license['license']['packageType'] : 'FREE';
     }
     
     /**
-     * Admin-Notice für Lizenz
+     * Prüft ob Lizenz gültig ist
      */
-    public function show_license_notice() {
-        $screen = get_current_screen();
-        if ($screen->id !== 'toplevel_page_germanfence') {
-            return;
-        }
+    public function is_valid() {
+        $license = $this->get_license_data();
+        return isset($license['valid']) && $license['valid'] === true;
+    }
+    
+    /**
+     * Zeigt Admin-Notice wenn Feature nicht verfügbar
+     */
+    public function show_upgrade_notice($feature_name) {
+        $package = $this->get_package_type();
         
-        $license_status = $this->check_license();
-        
-        // Prüfe auch Free-Version
-        $free_manager = new GermanFence_Free_License();
-        $is_free_active = $free_manager->is_free_active();
-        
-        if (!$license_status['is_valid'] && !$is_free_active) {
-            ?>
-            <div class="notice notice-warning">
-                <p>
-                    <strong>German Shield:</strong> 
-                    <?php echo esc_html($license_status['message']); ?>
-                    <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>">
-                        Jetzt aktivieren
-                    </a>
-                </p>
-            </div>
-            <?php
+        if ($package === 'FREE') {
+            $upgrade_url = 'https://germanfence.de/#pricing';
+            echo '<div class="notice notice-info is-dismissible">';
+            echo '<p><strong>🔒 ' . esc_html($feature_name) . '</strong> ist ein Premium-Feature.</p>';
+            echo '<p><a href="' . esc_url($upgrade_url) . '" target="_blank" class="button button-primary">Jetzt upgraden ab 29€/Jahr</a></p>';
+            echo '</div>';
         }
     }
     
     /**
-     * Lizenz-Info für API (inkl. Free-Version Check)
+     * Cache leeren (z.B. nach Lizenz-Eingabe)
      */
-    public function get_license_info() {
-        $license = get_option('germanfence_license', array());
-        $status = $this->check_license();
-        
-        // WICHTIG: Auch Free-Version prüfen
-        $free_manager = new GermanFence_Free_License();
-        $is_free_active = $free_manager->is_free_active();
-        $free_email = $free_manager->get_verified_email();
-        
-        // is_valid ist TRUE wenn Premium-Lizenz ODER Free-Version aktiv ist
-        $is_valid = $status['is_valid'] || $is_free_active;
-        
-        GermanFence_Logger::log('[LICENSE-INFO] Premium valid: ' . ($status['is_valid'] ? 'JA' : 'NEIN') . ', Free active: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Final valid: ' . ($is_valid ? 'JA' : 'NEIN'));
-        
-        return array(
-            'has_license' => !empty($license['key']) || $is_free_active,
-            'status' => $status['status'],
-            'is_valid' => $is_valid,
-            'expires_at' => $license['expires_at'] ?? null,
-            'api_key' => $license['api_key'] ?? null,
-            'is_free' => $is_free_active,
-            'free_email' => $free_email,
-        );
-    }
-    
-    /**
-     * AJAX Handler für Premium-Lizenz-Aktivierung
-     */
-    public function ajax_activate_premium() {
-        check_ajax_referer('germanfence_admin', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error('Keine Berechtigung');
-        }
-        
-        $license_key = sanitize_text_field($_POST['license_key'] ?? '');
-        
-        $result = $this->activate_license($license_key);
-        
-        if ($result['success']) {
-            wp_send_json_success($result['message']);
-        } else {
-            wp_send_json_error($result['message']);
-        }
-    }
-    
-    /**
-     * AJAX Handler für Premium-Lizenz-Deaktivierung
-     */
-    public function ajax_deactivate_premium() {
-        check_ajax_referer('germanfence_admin', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error('Keine Berechtigung');
-        }
-        
-        $result = $this->deactivate_license();
-        
-        if ($result['success']) {
-            wp_send_json_success($result['message']);
-        } else {
-            wp_send_json_error($result['message']);
-        }
+    public function clear_cache() {
+        delete_transient('germanfence_license_data');
+        $this->license_data = null;
     }
 }
-
