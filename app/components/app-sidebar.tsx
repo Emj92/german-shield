@@ -8,7 +8,6 @@ import {
   FileText,
   Download,
   MessageSquare,
-  Newspaper,
   Settings,
   LogOut,
   Shield,
@@ -51,7 +50,6 @@ export function AppSidebar({ user }: AppSidebarProps) {
     { name: 'Rechnungen', href: '/dashboard/invoices', icon: FileText },
     { name: 'Downloads', href: '/dashboard/downloads', icon: Download },
     { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
-    { name: 'News', href: '/dashboard/news', icon: Newspaper },
   ]
 
   // Admin-zusätzliche Navigation
@@ -59,7 +57,6 @@ export function AppSidebar({ user }: AppSidebarProps) {
     { name: 'Benutzerverwaltung', href: '/dashboard/admin/users', icon: UserCog },
     { name: 'Lizenzverwaltung', href: '/dashboard/admin/licenses', icon: Key },
     { name: 'Support-Tickets', href: '/dashboard/admin/tickets', icon: MessageSquare },
-    { name: 'News-Verwaltung', href: '/dashboard/admin/news', icon: Newspaper },
     { name: 'Einstellungen', href: '/dashboard/admin/settings', icon: Settings },
   ]
 
@@ -84,7 +81,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-2">
               {userNav.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
@@ -107,7 +104,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
           <SidebarGroup>
             <SidebarGroupLabel>Admin-Bereich</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="space-y-2">
                 {adminNav.map((item) => (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
