@@ -390,9 +390,9 @@ class GermanFence_Admin {
                 <div class="germanfence-tab-content <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?>" id="tab-dashboard">
                     
                     <?php if (!$is_free_active && !$license_status['is_valid']): ?>
-                        <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%); padding: 40px; border-radius: 8px; border: 2px solid #ef4444; text-align: center; margin: 20px 0;">
+                        <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%); padding: 40px; border-radius: 8px; border: 2px solid #EC4899; text-align: center; margin: 20px 0;">
                             <span style="font-size: 64px;">🔒</span>
-                            <h2 style="margin: 20px 0 10px 0; color: #ef4444;">Plugin nicht aktiviert</h2>
+                            <h2 style="margin: 20px 0 10px 0; color: #EC4899;">Plugin nicht aktiviert</h2>
                             <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>

@@ -256,7 +256,7 @@ class GermanFence_Free_License {
      * Handle Verification in Admin
      */
     public function handle_verification() {
-        if (isset($_GET['page']) && $_GET['page'] === 'german-shield' && isset($_GET['verify_token'])) {
+        if (isset($_GET['page']) && $_GET['page'] === 'germanfence' && isset($_GET['verify_token'])) {
             $token = sanitize_text_field($_GET['verify_token']);
             $result = $this->verify_token($token);
             

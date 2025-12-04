@@ -18,7 +18,7 @@ interface License {
   activeDomains: {
     id: string
     domain: string
-    registeredAt: string
+    activatedAt: string
     lastSeenAt: string
   }[]
 }
@@ -270,7 +270,7 @@ export default function UserLicensesContent() {
                           <div className="flex-1">
                             <p className="font-medium text-sm">{domain.domain}</p>
                             <p className="text-xs text-slate-500">
-                              Registriert: {new Date(domain.registeredAt).toLocaleDateString('de-DE')}
+                              Registriert: {domain.activatedAt ? new Date(domain.activatedAt).toLocaleDateString('de-DE') : 'Kürzlich'}
                             </p>
                           </div>
                           <Button
