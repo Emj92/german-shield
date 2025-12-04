@@ -7,13 +7,23 @@ export async function POST(request: NextRequest) {
 
     if (!amount || !package_type || !email) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Bitte alle Felder ausfüllen (E-Mail, Paket)' },
         { status: 400 }
       )
     }
 
+    // API-Key prüfen
+    const apiKey = process.env.MOLLIE_API_KEY
+    if (!apiKey) {
+      console.error('MOLLIE_API_KEY is not configured')
+      return NextResponse.json(
+        { error: 'Zahlungssystem nicht konfiguriert. Bitte kontaktiere den Support.' },
+        { status: 500 }
+      )
+    }
+
     const mollieClient = createMollieClient({
-      apiKey: process.env.MOLLIE_API_KEY || '',
+      apiKey: apiKey,
     })
 
     const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
@@ -37,10 +47,21 @@ export async function POST(request: NextRequest) {
       checkoutUrl: payment.getCheckoutUrl(),
       paymentId: payment.id 
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Mollie payment creation failed:', error)
+    
+    // Bessere Fehlermeldung basierend auf Fehlertyp
+    const errorMessage = error instanceof Error ? error.message : 'Unbekannter Fehler'
+    
+    if (errorMessage.includes('Invalid API key')) {
+      return NextResponse.json(
+        { error: 'Ungültiger API-Schlüssel. Bitte kontaktiere den Support.' },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: 'Payment creation failed' },
+      { error: `Zahlung konnte nicht erstellt werden: ${errorMessage}` },
       { status: 500 }
     )
   }

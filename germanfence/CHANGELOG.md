@@ -5,16 +5,20 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
-## [1.3.9] - 2025-12-04
+## [1.4.0] - 2025-12-04
 
 ### Verbessert
 - WP-Admin-Notices durch eigene Toast-Meldungen ersetzt (oben rechts)
-- Lizenz-Key-Aktivierung funktioniert jetzt auch mit extern generierten Keys
+- Lizenz-Key-Aktivierung akzeptiert jetzt ALLE Key-Formate (FREE, PRO, manuell)
 - Website: Browser-Prompt durch schönes Modal für Kauf-Flow ersetzt
+- Bessere Fehlerausgabe bei Mollie-Zahlungen
+- Portal Downloads-Seite aktualisiert
 
 ### Behoben
+- ALLE WP Core Meldungen werden auf GermanFence-Seiten blockiert
+- Aktive Installationen werden jetzt korrekt angezeigt (Feldnamen-Mapping gefixt)
 - Free-License-Key konnte nicht auf anderen Domains aktiviert werden
-- Hässliche WordPress-Standard-Meldungen bei Aktivierung/Deaktivierung entfernt
+- PRO-Keys können jetzt auch im Free-Lizenz-Feld aktiviert werden
 
 ## [0.01] - 2025-11-27
 

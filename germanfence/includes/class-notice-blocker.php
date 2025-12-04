@@ -12,24 +12,45 @@ class GermanFence_Notice_Blocker {
     private $settings;
     
     public function __construct() {
-        // Nur laden wenn nicht auf German Shield Seiten
-        if (isset($_GET['page']) && strpos($_GET['page'], 'germanfence') !== false) {
-            return; // German Shield Admin-Seiten nicht blockieren!
-        }
-        
         $this->settings = get_option('germanfence_settings', array());
         
+        // AUF GermanFence-Seiten: IMMER alle WP Core Meldungen blockieren!
+        if (isset($_GET['page']) && strpos($_GET['page'], 'germanfence') !== false) {
+            add_action('admin_print_styles', array($this, 'block_all_wp_notices_on_germanfence'), 999);
+            return;
+        }
+        
+        // Auf anderen Seiten: Nur wenn in Settings aktiviert
         if (!empty($this->settings['block_admin_notices']) || 
             !empty($this->settings['block_plugin_ads']) || 
             !empty($this->settings['block_update_notices']) || 
             !empty($this->settings['block_review_requests'])) {
             
             add_action('admin_print_styles', array($this, 'add_blocking_css'), 999);
-            
-            // Nur CSS-basiertes Blocking - KEIN remove_all_actions!
         }
     }
     
+    /**
+     * Blockiert ALLE WP Core Meldungen auf GermanFence Admin-Seiten
+     */
+    public function block_all_wp_notices_on_germanfence() {
+        echo '<style type="text/css">
+            /* ALLE WP Core Notices auf GermanFence-Seiten blockieren */
+            .wp-core-ui .notice,
+            .wp-core-ui .notice.is-dismissible,
+            .notice:not([class*="germanfence"]),
+            .updated:not([class*="germanfence"]),
+            .update-nag,
+            .error:not([class*="germanfence"]),
+            #wpbody-content > .notice,
+            #wpbody-content > .updated,
+            #wpbody-content > .error,
+            .wrap > .notice:not([class*="germanfence"]),
+            div.notice:not([class*="germanfence"]) {
+                display: none !important;
+            }
+        </style>';
+    }
     
     public function add_blocking_css() {
         $css = '';

@@ -282,46 +282,68 @@ class GermanFence_Free_License {
     }
     
     /**
-     * Aktiviert Free-Lizenz mit Key
+     * Aktiviert Lizenz mit Key (FREE, PRO, manuell generiert - alle Formate)
      */
     public function activate_with_key($key) {
         global $wpdb;
         
         // Key validieren und normalisieren
-        $key = strtoupper(sanitize_text_field($key));
+        $key = strtoupper(trim(sanitize_text_field($key)));
         
-        if (empty($key) || strlen($key) < 10) {
-            return array('success' => false, 'message' => 'Ungültiger License-Key');
+        if (empty($key) || strlen($key) < 8) {
+            return array('success' => false, 'message' => 'Ungültiger License-Key (zu kurz)');
         }
         
-        // Prüfe ob Key das richtige Format hat (GS-FREE-XXXXXXXXXXXX)
-        if (!preg_match('/^GS-FREE-[A-Z0-9]{8,16}$/', $key)) {
-            return array('success' => false, 'message' => 'Ungültiges Key-Format. Erwartet: GS-FREE-XXXXXXXXXXXX');
+        // Akzeptiere ALLE Key-Formate:
+        // - GS-FREE-XXXX (Free-Keys)
+        // - GS-PRO-XXXX, GS-SINGLE-XXXX, GS-FREELANCER-XXXX, GS-AGENCY-XXXX (Pro-Keys)
+        // - Beliebige andere alphanumerische Keys mit Bindestrichen
+        if (!preg_match('/^[A-Z0-9][A-Z0-9\-]{6,}[A-Z0-9]$/', $key)) {
+            return array('success' => false, 'message' => 'Ungültiges Key-Format. Nur Buchstaben, Zahlen und Bindestriche erlaubt.');
         }
         
-        // Erst lokal prüfen ob Key existiert
+        // Erst lokal prüfen ob Key existiert (für FREE-Keys)
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE license_key = %s AND is_verified = 1",
             $key
         ));
         
         // Wenn lokal gefunden, E-Mail übernehmen
-        $email = $user ? $user->email : 'free-key-user@germanfence.local';
+        $email = $user ? $user->email : 'license-user@germanfence.local';
         
-        // Key ist gültig (Format passt) - aktivieren
-        // Der Key wurde entweder lokal oder auf einer anderen Domain generiert
+        // Key-Typ bestimmen
+        $key_type = 'CUSTOM';
+        if (strpos($key, 'GS-FREE-') === 0) {
+            $key_type = 'FREE';
+        } elseif (strpos($key, 'GS-PRO-') === 0 || strpos($key, 'GS-SINGLE-') === 0 || 
+                  strpos($key, 'GS-FREELANCER-') === 0 || strpos($key, 'GS-AGENCY-') === 0) {
+            $key_type = 'PRO';
+        }
+        
+        // Key aktivieren
         update_option('germanfence_free_email', $email);
         update_option('germanfence_free_verified', '1');
         update_option('germanfence_free_license_key', $key);
+        
+        // Bei PRO-Keys auch in die Premium-Settings speichern
+        if ($key_type === 'PRO') {
+            $settings = get_option('germanfence_settings', array());
+            $settings['license_key'] = $key;
+            update_option('germanfence_settings', $settings);
+            
+            // License-Cache leeren für Revalidierung
+            delete_transient('germanfence_license_data');
+        }
         
         // Cache leeren
         wp_cache_delete('germanfence_free_verified', 'options');
         wp_cache_delete('germanfence_free_email', 'options');
         wp_cache_delete('germanfence_free_license_key', 'options');
         
-        GermanFence_Logger::log('[FREE-LICENSE] Mit Key aktiviert: ' . $key . ' | E-Mail: ' . $email);
+        GermanFence_Logger::log('[LICENSE] Mit Key aktiviert: ' . $key . ' | Typ: ' . $key_type . ' | E-Mail: ' . $email);
         
-        return array('success' => true, 'message' => 'Free-License erfolgreich aktiviert!');
+        $success_msg = $key_type === 'PRO' ? 'PRO-Lizenz erfolgreich aktiviert!' : 'Lizenz erfolgreich aktiviert!';
+        return array('success' => true, 'message' => $success_msg);
     }
     
     /**

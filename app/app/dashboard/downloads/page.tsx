@@ -111,7 +111,7 @@ export default async function DownloadsPage() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-6 w-6 text-[#22D6DD]" />
-                    German Fence Plugin v1.3.0
+                    German Fence Plugin v1.4.0
                   </CardTitle>
                   <CardDescription>
                     Aktuelle Version herunterladen
@@ -126,27 +126,14 @@ export default async function DownloadsPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="prose prose-sm dark:prose-invert">
-                  <h3 className="font-semibold">Installationsanleitung:</h3>
-                  <ol className="text-sm space-y-2">
-                    <li>Plugin-ZIP-Datei herunterladen</li>
-                    <li>In WordPress: Plugins → Installieren → Plugin hochladen</li>
-                    <li>ZIP-Datei auswählen und hochladen</li>
-                    <li>Plugin aktivieren und konfigurieren</li>
-                  </ol>
-                </div>
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm font-medium mb-2">Benötigen Sie Hilfe?</p>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Unser Support-Team steht Ihnen gerne zur Verfügung
-                  </p>
-                  <Button variant="outline" size="sm" asChild className="border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
-                    <a href="mailto:support@germanfence.de">
-                      Support kontaktieren
-                    </a>
-                  </Button>
-                </div>
+              <div className="prose prose-sm dark:prose-invert">
+                <h3 className="font-semibold">Installationsanleitung:</h3>
+                <ol className="text-sm space-y-2">
+                  <li>Plugin-ZIP-Datei herunterladen</li>
+                  <li>In WordPress: Plugins → Installieren → Plugin hochladen</li>
+                  <li>ZIP-Datei auswählen und hochladen</li>
+                  <li>Plugin aktivieren und konfigurieren</li>
+                </ol>
               </div>
             </CardContent>
           </Card>

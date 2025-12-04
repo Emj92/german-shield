@@ -248,21 +248,38 @@ class GermanFence_License {
                 'has_license' => $has_license,
                 'license_key' => $license_key,
                 'package' => 'FREE',
+                'package_type' => 'FREE',
                 'expires' => null,
+                'expires_at' => '-',
                 'domains' => 0,
+                'active_domains' => 0,
                 'max_domains' => 0,
                 'is_valid' => false,
             );
+        }
+        
+        $package_type = isset($license['license']['packageType']) ? $license['license']['packageType'] : 'FREE';
+        $expires_at = isset($license['license']['expiresAt']) ? $license['license']['expiresAt'] : null;
+        $used_domains = isset($license['license']['usedDomains']) ? $license['license']['usedDomains'] : 1;
+        $max_domains = isset($license['license']['maxDomains']) ? $license['license']['maxDomains'] : 1;
+        
+        // Formatiere Ablaufdatum
+        $expires_formatted = '-';
+        if ($expires_at) {
+            $expires_formatted = date('d.m.Y', strtotime($expires_at));
         }
         
         return array(
             'active' => true,
             'has_license' => $has_license,
             'license_key' => $license_key,
-            'package' => isset($license['license']['packageType']) ? $license['license']['packageType'] : 'FREE',
-            'expires' => isset($license['license']['expiresAt']) ? $license['license']['expiresAt'] : null,
-            'domains' => isset($license['license']['usedDomains']) ? $license['license']['usedDomains'] : 0,
-            'max_domains' => isset($license['license']['maxDomains']) ? $license['license']['maxDomains'] : 0,
+            'package' => $package_type,
+            'package_type' => $package_type,
+            'expires' => $expires_at,
+            'expires_at' => $expires_formatted,
+            'domains' => $used_domains,
+            'active_domains' => $used_domains,
+            'max_domains' => $max_domains,
             'is_valid' => true,
         );
     }
