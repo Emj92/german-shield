@@ -86,22 +86,32 @@ class GermanFence_Free_License {
      */
     private function send_verification_email($email, $token) {
         $verification_url = admin_url('admin.php?page=germanfence&tab=license&verify_token=' . $token);
+        $portal_url = 'https://portal.germanfence.de/login';
+        $password_reset_url = 'https://portal.germanfence.de/register?email=' . urlencode($email);
         
-        $subject = '🛡️ German Shield - E-Mail bestätigen';
+        $subject = '🛡️ GermanFence - E-Mail bestätigen';
         
         $message = "Hallo!\n\n";
-        $message .= "Danke für deine Registrierung bei German Shield!\n\n";
+        $message .= "Danke für deine Registrierung bei GermanFence!\n\n";
         $message .= "Bitte bestätige deine E-Mail-Adresse, um die kostenlose Version zu aktivieren:\n\n";
-        $message .= $verification_url . "\n\n";
+        $message .= "👉 " . $verification_url . "\n\n";
         $message .= "Der Link ist 24 Stunden gültig.\n\n";
-        $message .= "---\n\n";
-        $message .= "Nach der Bestätigung erhältst du automatisch einen FREE-LICENSE-KEY,\n";
-        $message .= "mit dem du German Shield auch auf weiteren Domains aktivieren kannst.\n\n";
-        $message .= "Der Key wird dir nach der Verifizierung im Plugin angezeigt.\n\n";
-        $message .= "---\n\n";
-        $message .= "Viel Erfolg mit German Shield!\n";
-        $message .= "Dein GermanProWeb Team\n\n";
-        $message .= "Website: https://german-shield.de";
+        $message .= "══════════════════════════════════════════\n\n";
+        $message .= "📦 NACH DER VERIFIZIERUNG:\n\n";
+        $message .= "• Du erhältst automatisch einen FREE-LICENSE-KEY\n";
+        $message .= "• Damit kannst du GermanFence auf weiteren Domains aktivieren\n";
+        $message .= "• Der Key wird dir nach der Verifizierung im Plugin angezeigt\n\n";
+        $message .= "══════════════════════════════════════════\n\n";
+        $message .= "🌐 PORTAL-ZUGANG:\n\n";
+        $message .= "Ab jetzt kannst du dich im GermanFence Portal einloggen:\n";
+        $message .= "👉 " . $portal_url . "\n\n";
+        $message .= "Falls du noch kein Passwort gesetzt hast, kannst du es hier erstellen:\n";
+        $message .= "👉 " . $password_reset_url . "\n\n";
+        $message .= "══════════════════════════════════════════\n\n";
+        $message .= "Viel Erfolg mit GermanFence!\n";
+        $message .= "Dein GermanFence Team 🇩🇪\n\n";
+        $message .= "Website: https://germanfence.de\n";
+        $message .= "Support: support@germanfence.de";
         
         $headers = array('Content-Type: text/plain; charset=UTF-8');
         
@@ -342,7 +352,25 @@ class GermanFence_Free_License {
         
         GermanFence_Logger::log('[LICENSE] Mit Key aktiviert: ' . $key . ' | Typ: ' . $key_type . ' | E-Mail: ' . $email);
         
-        $success_msg = $key_type === 'PRO' ? 'PRO-Lizenz erfolgreich aktiviert!' : 'Lizenz erfolgreich aktiviert!';
+        // Erfolgs-Nachricht mit Lizenztyp
+        $type_names = array(
+            'FREE' => 'FREE',
+            'PRO' => 'PRO',
+            'SINGLE' => 'SINGLE',
+            'FREELANCER' => 'FREELANCER',
+            'AGENCY' => 'AGENCY',
+            'CUSTOM' => 'CUSTOM'
+        );
+        
+        // Detaillierter Typ für spezielle Keys
+        $detailed_type = $key_type;
+        if (strpos($key, 'GS-SINGLE-') === 0) $detailed_type = 'SINGLE';
+        elseif (strpos($key, 'GS-FREELANCER-') === 0) $detailed_type = 'FREELANCER';
+        elseif (strpos($key, 'GS-AGENCY-') === 0) $detailed_type = 'AGENCY';
+        
+        $type_display = isset($type_names[$detailed_type]) ? $type_names[$detailed_type] : $detailed_type;
+        $success_msg = '✅ ' . $type_display . '-Lizenz erfolgreich aktiviert!';
+        
         return array('success' => true, 'message' => $success_msg);
     }
     

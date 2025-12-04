@@ -5,6 +5,19 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.1] - 2025-12-04
+
+### Verbessert
+- PRO-Tabs (GEO/Phrasen) für Free-User jetzt komplett blockiert mit Toast-Meldung
+- Flaggen werden überall korrekt angezeigt (bereits vorhanden)
+- Verifizierungs-Mail mit Portal-Login-Link und Passwort-Setup erweitert
+- Lizenz-Texte zeigen jetzt korrekten Typ an (FREE, SINGLE, FREELANCER, AGENCY)
+- Aktivierungs-Meldung zeigt jetzt Lizenztyp: "✅ AGENCY-Lizenz erfolgreich aktiviert!"
+
+### Behoben
+- Mollie-Fehler: API-Key muss auf Server in .env gesetzt werden
+- Lizenz-Feld akzeptiert jetzt alle Formate (nicht nur FREE)
+
 ## [1.4.0] - 2025-12-04
 
 ### Verbessert

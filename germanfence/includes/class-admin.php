@@ -1008,7 +1008,16 @@ class GermanFence_Admin {
                                 <?php if ($current_key): ?>
                                 <div style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 6px; border: 1px solid #22D6DD;">
                                     <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
-                                        🔑 Dein Free-License-Key:
+                                        🔑 Dein License-Key<?php 
+                                        $key_type = 'FREE';
+                                        if (strpos($current_key, 'GS-PRO-') === 0) $key_type = 'PRO';
+                                        elseif (strpos($current_key, 'GS-SINGLE-') === 0) $key_type = 'SINGLE';
+                                        elseif (strpos($current_key, 'GS-FREELANCER-') === 0) $key_type = 'FREELANCER';
+                                        elseif (strpos($current_key, 'GS-AGENCY-') === 0) $key_type = 'AGENCY';
+                                        elseif (strpos($current_key, 'GS-FREE-') === 0) $key_type = 'FREE';
+                                        else $key_type = 'CUSTOM';
+                                        echo ' (' . $key_type . ')';
+                                        ?>:
                                     </p>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
@@ -1084,24 +1093,24 @@ class GermanFence_Admin {
                                     <!-- Key Aktivierung -->
                                     <div id="free-key-content" class="germanfence-free-content" style="display: none;">
                                         <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 14px;">
-                                            Hast du bereits einen Free-License-Key? Gib ihn hier ein!
+                                            Hast du bereits einen License-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY oder manuell generiert)
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">Free-License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-FREE-XXXXXXXXXXXX" 
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">License-Key:</label>
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" 
                                                 style="width: 100%; padding: 12px; border: 2px solid #22D6DD; border-radius: 6px; font-size: 14px; font-family: monospace; text-transform: uppercase;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
                                             <button type="button" id="activate-free-key-btn" class="germanfence-btn-primary">
                                                 <span class="dashicons dashicons-unlock"></span>
-                                                Mit Key aktivieren
+                                                Lizenz aktivieren
                                             </button>
                                         </div>
                                         
                                         <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px; text-align: center;">
-                                            💡 Den Key erhältst du nach der E-Mail-Verifizierung. Nutze ihn um GermanFence auf weiteren Domains zu aktivieren!
+                                            💡 Kostenlose Keys erhältst du nach der E-Mail-Verifizierung. PRO-Keys kannst du auf germanfence.de kaufen oder von einem Admin erhalten.
                                         </p>
                                     </div>
                                 </div>

@@ -346,12 +346,25 @@
         $('.germanfence-tab').on('click', function(e) {
             e.preventDefault();
             try {
-                var tabId = $(this).data('tab');
+                var $tab = $(this);
+                var tabId = $tab.data('tab');
                 log('Tab Wechsel:', tabId);
+                
+                // PRO-Feature-Check: Blockiere Tabs mit pro-feature Klasse
+                if ($tab.hasClass('pro-feature')) {
+                    showToast('🔒 Dieses Feature ist nur in der PRO-Version verfügbar', 'error');
+                    return; // Tab nicht öffnen!
+                }
+                
+                // Disabled-Check: Blockiere deaktivierte Tabs
+                if ($tab.hasClass('disabled') || $tab.prop('disabled')) {
+                    showToast('⚠️ Bitte aktiviere zuerst eine Lizenz', 'error');
+                    return;
+                }
                 
                 // Buttons umschalten
                 $('.germanfence-tab').removeClass('active');
-                $(this).addClass('active');
+                $tab.addClass('active');
                 
                 // Content umschalten
                 $('.germanfence-tab-content').hide(); // Sicherer als removeClass

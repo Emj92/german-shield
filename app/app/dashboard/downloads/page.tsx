@@ -111,7 +111,7 @@ export default async function DownloadsPage() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-6 w-6 text-[#22D6DD]" />
-                    German Fence Plugin v1.4.0
+                    German Fence Plugin v1.4.1
                   </CardTitle>
                   <CardDescription>
                     Aktuelle Version herunterladen
