@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.5] - 2025-12-04
+
+### Behoben
+- Flaggen werden jetzt auf allen Systemen korrekt angezeigt (PNG statt Emoji)
+- Website: SVG-Flaggen für Sprachumschalter
+- Plugin: CDN-basierte Flaggen (flagcdn.com) für GEO-Blocking und Statistiken
+- Sprachumschaltung zeigt echte Flaggen-Bilder
+
 ## [1.4.4] - 2025-12-04
 
 ### Neu

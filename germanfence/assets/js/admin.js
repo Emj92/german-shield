@@ -169,11 +169,11 @@
             
             var $btn = $(this);
             if (currentLang === 'en') {
-                $btn.find('.language-flag').text('🇬🇧');
+                $btn.find('.language-flag').html('<img src="https://flagcdn.com/w20/gb.png" width="20" height="15" alt="EN" style="vertical-align: middle;">');
                 $btn.find('.language-code').text('EN');
                 showToast('Language switched to English', 'success');
             } else {
-                $btn.find('.language-flag').text('🇩🇪');
+                $btn.find('.language-flag').html('<img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;">');
                 $btn.find('.language-code').text('DE');
                 showToast('Sprache auf Deutsch gewechselt', 'success');
             }
@@ -184,7 +184,7 @@
         
         // Language beim Start setzen
         if (currentLang === 'en') {
-            $('#germanfence-language-toggle .language-flag').text('🇬🇧');
+            $('#germanfence-language-toggle .language-flag').html('<img src="https://flagcdn.com/w20/gb.png" width="20" height="15" alt="EN" style="vertical-align: middle;">');
             $('#germanfence-language-toggle .language-code').text('EN');
             setTimeout(function() {
                 translateUI('en');

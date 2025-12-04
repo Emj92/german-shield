@@ -2,8 +2,23 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 type Language = 'de' | 'en'
+
+// Flag component for consistent display
+function Flag({ code, size = 20 }: { code: 'de' | 'us', size?: number }) {
+  return (
+    <Image 
+      src={`/flags/${code}.svg`} 
+      alt={code === 'de' ? 'Deutsch' : 'English'} 
+      width={size} 
+      height={size * 0.6}
+      className="rounded-sm"
+      style={{ objectFit: 'cover' }}
+    />
+  )
+}
 
 export function LanguageSwitcher() {
   const [language, setLanguage] = useState<Language>('de')
@@ -33,14 +48,12 @@ export function LanguageSwitcher() {
     setLanguage(lang)
     localStorage.setItem('language', lang)
     setIsOpen(false)
-    // Here you would typically trigger a translation update
-    // For now, we just save the preference
   }
 
   if (!mounted) {
     return (
       <Button variant="ghost" size="icon" className="w-9 h-9">
-        <span className="text-lg">🇩🇪</span>
+        <Flag code="de" />
       </Button>
     )
   }
@@ -54,18 +67,18 @@ export function LanguageSwitcher() {
         className="w-9 h-9 hover:bg-[#22D6DD]/10"
         title="Sprache wechseln"
       >
-        <span className="text-lg">{language === 'de' ? '🇩🇪' : '🇺🇸'}</span>
+        <Flag code={language === 'de' ? 'de' : 'us'} />
       </Button>
       
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
+        <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
           <button
             onClick={() => changeLanguage('de')}
             className={`w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${
               language === 'de' ? 'bg-[#22D6DD]/10 text-[#22D6DD]' : 'text-slate-700 dark:text-slate-300'
             }`}
           >
-            <span className="text-lg">🇩🇪</span>
+            <Flag code="de" />
             <span className="text-sm font-medium">Deutsch</span>
           </button>
           <button
@@ -74,7 +87,7 @@ export function LanguageSwitcher() {
               language === 'en' ? 'bg-[#22D6DD]/10 text-[#22D6DD]' : 'text-slate-700 dark:text-slate-300'
             }`}
           >
-            <span className="text-lg">🇺🇸</span>
+            <Flag code="us" />
             <span className="text-sm font-medium">English</span>
           </button>
         </div>

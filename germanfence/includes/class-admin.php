@@ -295,7 +295,7 @@ class GermanFence_Admin {
                         
                         <!-- Language Switcher -->
                         <button id="germanfence-language-toggle" class="header-control-btn" title="Sprache wechseln">
-                            <span class="language-flag">🇩🇪</span>
+                            <span class="language-flag"><img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;"></span>
                             <span class="language-code" style="font-size: 11px; font-weight: 700; margin-left: 3px;">DE</span>
                         </button>
                     </div>
@@ -1611,21 +1611,19 @@ class GermanFence_Admin {
     }
     
     private function get_flag_emoji($code) {
-        // Konvertiere Ländercode zu Flaggen-Emoji
+        // Konvertiere Ländercode zu Flaggen-Bild (funktioniert auf allen Systemen)
         $code = strtoupper($code);
-        if ($code === 'LOCAL') return '🏠';
-        
-        // Fallback wenn mb_chr nicht verfügbar
-        if (!function_exists('mb_chr')) {
-            return '🌍';
+        if ($code === 'LOCAL') {
+            return '<span style="font-size: 16px;">🏠</span>';
         }
         
-        $offset = 127397;
-        $flag = '';
-        for ($i = 0; $i < strlen($code); $i++) {
-            $flag .= mb_chr($offset + ord($code[$i]));
-        }
-        return $flag;
+        // Verwende Flagpedia CDN für zuverlässige Flaggen-Anzeige
+        $code_lower = strtolower($code);
+        return '<img src="https://flagcdn.com/w20/' . esc_attr($code_lower) . '.png" 
+                     srcset="https://flagcdn.com/w40/' . esc_attr($code_lower) . '.png 2x" 
+                     width="20" height="15" 
+                     alt="' . esc_attr($code) . '" 
+                     style="vertical-align: middle; border-radius: 2px; display: inline-block;">';
     }
     
     private function get_country_list() {

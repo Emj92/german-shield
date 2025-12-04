@@ -54,7 +54,7 @@ export default function Home() {
       <section className="pt-32 pb-20 px-6">
         <div className="container mx-auto text-center max-w-5xl">
           <Badge className="mb-6 bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD]/20 flex items-center gap-2 w-fit mx-auto px-4 py-2">
-            <span className="text-lg">🇩🇪</span>
+            <Image src="/flags/de.svg" alt="DE" width={24} height={16} className="rounded-sm" />
             <span className="font-semibold">Made in Germany</span>
           </Badge>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-slate-900 dark:text-white leading-tight">
@@ -520,7 +520,7 @@ export default function Home() {
                 <span className="font-bold text-2xl text-[#22D6DD]">GermanFence</span>
               </div>
               <p className="text-slate-400 mb-6 leading-relaxed">
-                Das beste WordPress Anti-Spam Plugin aus Deutschland. Schützt deine Website mit modernsten Techniken vor Spam und bösartigen Anfragen. Made in Germany 🇩🇪
+                Das beste WordPress Anti-Spam Plugin aus Deutschland. Schützt deine Website mit modernsten Techniken vor Spam und bösartigen Anfragen.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-slate-800 hover:bg-[#22D6DD] flex items-center justify-center transition">
@@ -575,7 +575,7 @@ export default function Home() {
               <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#F06292] hover:text-[#F06292]/80 transition">
                 ❤️
               </a>
-              <span>in Germany 🇩🇪 by</span>
+              <span className="flex items-center gap-1">in Germany <Image src="/flags/de.svg" alt="DE" width={16} height={11} className="inline rounded-sm" /> by</span>
               <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#22D6DD] hover:text-[#22D6DD]/80 transition font-semibold">
                 Meindl Webdesign
               </a>
