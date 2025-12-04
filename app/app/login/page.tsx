@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -51,9 +52,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">
-          <img 
+          <Image 
             src="/germanfence_logo.png" 
             alt="GermanFence" 
+            width={80}
+            height={80}
             className="h-20 w-20 object-contain"
           />
           <h1 className="text-3xl font-bold">GermanFence</h1>

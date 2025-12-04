@@ -71,7 +71,11 @@ export async function POST(request: NextRequest) {
 
     const { licenseKey, domain, siteTitle, wpVersion, phpVersion } = await request.json()
 
-    if (!licenseKey || !domain) {
+    if (!licenseKey) {
+      return NextResponse.json({ error: 'License key required' }, { status: 400 })
+    }
+    
+    if (!domain) {
       return NextResponse.json({ error: 'License key and domain required' }, { status: 400 })
     }
 

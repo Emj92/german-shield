@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   LayoutDashboard,
   FileText,
@@ -33,8 +34,11 @@ import { useTheme } from '@/lib/theme-context'
 
 interface AppSidebarProps {
   user: {
+    userId?: string
+    id?: string
     email: string
-    role: 'ADMIN' | 'USER'
+    name?: string | null
+    role: string
   }
 }
 
@@ -63,9 +67,11 @@ export function AppSidebar({ user }: AppSidebarProps) {
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-3 px-4 py-3">
-          <img 
+          <Image 
             src="/germanfence_logo.png" 
             alt="GermanFence" 
+            width={40}
+            height={40}
             className="h-10 w-10 object-contain"
           />
           <div className="flex flex-col">

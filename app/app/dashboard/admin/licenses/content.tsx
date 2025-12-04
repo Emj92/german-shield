@@ -30,18 +30,13 @@ export default function AdminLicensesContent() {
   const [copied, setCopied] = useState(false)
 
   const packages = [
-    { type: 'FREE', name: 'FREE', price: '0€', domains: 1, color: 'bg-slate-100 text-slate-700' },
-    { type: 'SINGLE', name: 'Single', price: '29€/Jahr', domains: 1, color: 'bg-cyan-100 text-cyan-700' },
-    { type: 'FREELANCER', name: 'Freelancer', price: '79€/Jahr', domains: 5, color: 'bg-cyan-500 text-white' },
-    { type: 'AGENCY', name: 'Agency', price: '199€/Jahr', domains: 25, color: 'bg-pink-500 text-white' },
+    { type: 'FREE', name: 'FREE', price: '0€', domains: 1, color: 'bg-gray-100 text-gray-700' },
+    { type: 'SINGLE', name: 'Single', price: '29€/Jahr', domains: 1, color: 'bg-[#22D6DD]/10 text-[#22D6DD]' },
+    { type: 'FREELANCER', name: 'Freelancer', price: '79€/Jahr', domains: 5, color: 'bg-[#22D6DD]/20 text-[#22D6DD]' },
+    { type: 'AGENCY', name: 'Agency', price: '199€/Jahr', domains: 25, color: 'bg-[#EC4899]/10 text-[#EC4899]' },
   ]
 
   const handleGenerate = async () => {
-    if (!email) {
-      alert('Bitte E-Mail-Adresse eingeben')
-      return
-    }
-
     setLoading(true)
     try {
       const res = await fetch('/api/admin/licenses/generate', {
@@ -93,20 +88,20 @@ export default function AdminLicensesContent() {
         <CardContent className="space-y-6">
           {/* Email Input */}
           <div className="space-y-2">
-            <Label htmlFor="email">E-Mail-Adresse des Kunden</Label>
+            <Label htmlFor="email">E-Mail-Adresse des Kunden (optional)</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
               <Input
                 id="email"
                 type="email"
-                placeholder="kunde@example.com"
+                placeholder="kunde@example.com (leer lassen für ungebundene Lizenz)"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10"
               />
             </div>
             <p className="text-xs text-slate-500">
-              Falls der Kunde noch nicht existiert, wird automatisch ein Account erstellt
+              Leer lassen um eine ungebundene Lizenz zu erstellen. Der Kunde kann sie später selbst aktivieren.
             </p>
           </div>
 
@@ -135,7 +130,7 @@ export default function AdminLicensesContent() {
           {/* Generate Button */}
           <Button
             onClick={handleGenerate}
-            disabled={loading || !email}
+            disabled={loading}
             className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5] text-white"
           >
             {loading ? (
@@ -155,9 +150,9 @@ export default function AdminLicensesContent() {
 
       {/* Generated License */}
       {generatedLicense && (
-        <Card className="border bg-green-50">
+        <Card className="border bg-[#22D6DD]/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-700">
+            <CardTitle className="flex items-center gap-2 text-[#22D6DD]">
               <Check className="h-5 w-5" />
               Lizenzschlüssel erfolgreich erstellt!
             </CardTitle>
@@ -204,8 +199,8 @@ export default function AdminLicensesContent() {
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-              <p className="text-sm text-yellow-800">
+            <div className="bg-[#22D6DD]/10 border border-[#22D6DD]/30 rounded-lg p-3">
+              <p className="text-sm text-slate-700">
                 💡 <strong>Wichtig:</strong> Sende diesen Lizenzschlüssel per E-Mail an den Kunden. 
                 Er kann ihn im WordPress-Plugin unter &quot;Lizenz&quot; eingeben.
               </p>
