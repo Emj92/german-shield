@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest) {
 
     // User aktualisieren
     await prisma.user.update({
-      where: { id: user.id || user.userId },
+      where: { id: user.userId },
       data: {
         name: name || null,
         // TODO: Weitere Felder im User-Schema hinzufügen:

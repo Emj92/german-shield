@@ -17,6 +17,10 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - **Admin-Lizenzen:** Können jetzt OHNE E-Mail erstellt werden (ungebundene Lizenzen)
 - **Benutzerverwaltung:** ACTIVE Badge bei Lizenzen entfernt
 
+### Behoben
+- **Portal:** TypeScript-Fehler in User Settings API
+- **Plugin:** Honeypot-Slider Knopf vertikale Ausrichtung korrigiert
+
 ## [1.4.7] - 2025-12-04
 
 ### Behoben

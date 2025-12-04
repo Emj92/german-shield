@@ -1319,6 +1319,7 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(34, 214, 221, 0.3);
     transition: all 0.2s;
+    margin-top: -6px;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -1336,6 +1337,7 @@ input[type="range"]::-moz-range-thumb {
     border: none;
     box-shadow: 0 2px 4px rgba(34, 214, 221, 0.3);
     transition: all 0.2s;
+    margin-top: 0;
 }
 
 input[type="range"]::-moz-range-thumb:hover {
