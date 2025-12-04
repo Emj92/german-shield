@@ -1,17 +1,17 @@
 {
   "name": "GermanFence",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "download_url": "https://germanfence.de/downloads/germanfence-plugin.zip",
   "homepage": "https://germanfence.de",
   "requires": "5.0",
   "tested": "6.4",
   "requires_php": "7.4",
-  "last_updated": "2025-12-04 20:10:00",
+  "last_updated": "2025-12-04 20:20:00",
   "author": "GermanFence Team",
   "author_homepage": "https://germanfence.de",
   "sections": {
     "description": "Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪",
-    "changelog": "<h4>1.5.1</h4><ul><li>Badge zeigt jetzt 'GermanFence' statt 'German Shield'</li><li>Badge ist jetzt klickbar und führt zu https://germanfence.de</li></ul><h4>1.5.0</h4><ul><li><strong>KRITISCH:</strong> GEO-Blocking & Phrasen-Blocking Tabs werden jetzt korrekt bei PRO-Lizenzen freigeschaltet</li><li><strong>SICHERHEIT:</strong> Single-Lizenzen können nicht mehr auf mehreren Domains gleichzeitig aktiviert werden</li><li>Bug behoben: License-Validierung wurde nicht korrekt ausgewertet</li></ul><h4>1.4.9</h4><ul><li>Sofortige Lizenz-Aktivierung nach Eingabe des Keys</li><li>Email-Versand nach Kauf optimiert</li></ul>"
+    "changelog": "<h4>1.5.2</h4><ul><li><strong>KRITISCH:</strong> FREE Lizenz hat jetzt korrekt KEINE PRO-Features (GEO/Phrasen)</li><li>Hintergrundfarbe einheitlich auf #F2F5F8</li><li>Plugin-Header Version korrigiert</li></ul><h4>1.5.1</h4><ul><li>Badge zeigt jetzt 'GermanFence' statt 'German Shield'</li><li>Badge ist jetzt klickbar</li></ul><h4>1.5.0</h4><ul><li><strong>KRITISCH:</strong> GEO-Blocking & Phrasen-Blocking werden bei PRO-Lizenzen freigeschaltet</li><li><strong>SICHERHEIT:</strong> Single-Lizenzen nur auf 1 Domain</li></ul>"
   },
   "banners": {
     "low": "https://germanfence.de/assets/banner-772x250.png",

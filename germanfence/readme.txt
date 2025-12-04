@@ -5,7 +5,7 @@ Tags: antispam, spam protection, security, firewall, contact form, geo blocking
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later + Proprietary
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,11 @@ Siehe LICENSE.txt für Details.
 7. Statistik-Filter
 
 == Changelog ==
+
+= 1.5.2 =
+* KRITISCH: FREE Lizenz hat jetzt korrekt KEINE PRO-Features (GEO/Phrasen)
+* Hintergrundfarbe einheitlich auf #F2F5F8 gesetzt
+* Plugin-Header Version korrigiert
 
 = 1.5.1 =
 * Badge zeigt jetzt "GermanFence" statt "German Shield"

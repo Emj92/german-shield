@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.2] - 2025-12-04
+### Behoben (KRITISCH)
+- **FREE Lizenz:** GEO-Blocking & Phrasen-Blocking sind jetzt korrekt gesperrt für FREE-User
+- **Hintergrundfarbe:** Header & Quote-Box nutzen jetzt einheitlich #F2F5F8
+- **Plugin-Header:** Version im Plugin-Header korrigiert (war 1.4.8, jetzt 1.5.2)
+
 ## [1.5.1] - 2025-12-04
 ### Behoben
 - **Badge:** Zeigt jetzt "GermanFence" statt "German Shield"

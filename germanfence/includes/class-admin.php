@@ -243,7 +243,11 @@ class GermanFence_Admin {
         $license_manager = new GermanFence_License();
         $license_info = $license_manager->get_license_info();
         $license_status = $license_manager->check_license();
-        $is_license_valid = !empty($license_status['valid']);
+        
+        // WICHTIG: Prüfe ob es eine ECHTE PRO-Lizenz ist (nicht FREE!)
+        $package_type = isset($license_info['package_type']) ? $license_info['package_type'] : 'FREE';
+        $is_pro_license = in_array($package_type, array('SINGLE', 'FREELANCER', 'AGENCY'));
+        $is_license_valid = !empty($license_status['valid']) && $is_pro_license;
 
         $free_manager = new GermanFence_Free_License();
         
@@ -254,7 +258,7 @@ class GermanFence_Admin {
         $is_free_active = $free_manager->is_free_active();
         $free_email = $free_manager->get_verified_email();
         
-        GermanFence_Logger::log_admin('[LICENSE-CHECK] Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', License valid: ' . ($is_license_valid ? 'JA' : 'NEIN'));
+        GermanFence_Logger::log_admin('[LICENSE-CHECK] Package: ' . $package_type . ', Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', PRO License: ' . ($is_license_valid ? 'JA' : 'NEIN'));
 
         // Rechtstexte anzeigen wenn ?show=agb/datenschutz/impressum
         if (isset($_GET['show']) && in_array($_GET['show'], array('agb', 'datenschutz', 'impressum'))) {
