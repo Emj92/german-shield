@@ -5,6 +5,21 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.4] - 2025-12-04
+
+### Neu
+- **Kompletter Kauf-Flow implementiert:**
+  - Shadow Account: User wird automatisch ohne Passwort erstellt
+  - Lizenz wird automatisch generiert und gespeichert
+  - Professionelle E-Mail mit Lizenzschlüssel + Passwort-Link
+  - Success-Page zeigt Lizenzschlüssel an (mit Copy-Button)
+  - Set-Password-Page für neue Kunden
+
+### Verbessert
+- Payment Webhook ruft jetzt Portal API auf
+- E-Mail-Design mit HTML-Template
+- Success-Page mit Dark-Mode Design
+
 ## [1.4.3] - 2025-12-04
 
 ### Verbessert

@@ -26,8 +26,11 @@ export async function POST(request: NextRequest) {
       apiKey: apiKey,
     })
 
-    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://germanfence.de'
+
+    // Redirect zur Success Page auf der Website (nicht Portal)
+    // Die Success Page zeigt den Key an + sendet zur Passwort-Seite
+    const redirectUrl = `${baseUrl}/payment/success?package=${package_type}&email=${encodeURIComponent(email)}`
 
     const payment = await mollieClient.payments.create({
       amount: {
@@ -35,12 +38,19 @@ export async function POST(request: NextRequest) {
         value: Number(amount).toFixed(2),
       },
       description: description || `GermanFence ${package_type} License`,
-      redirectUrl: `${portalUrl}/login?payment=success&package=${package_type}`,
+      redirectUrl: redirectUrl,
       webhookUrl: `${baseUrl}/api/mollie/webhook`,
       metadata: {
         package_type: package_type,
         email: email,
       },
+    })
+
+    console.log('Payment created:', {
+      id: payment.id,
+      email: email,
+      package: package_type,
+      redirectUrl: redirectUrl,
     })
 
     return NextResponse.json({ 

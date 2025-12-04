@@ -16,6 +16,12 @@ export async function POST(request: NextRequest) {
 
     const payment = await mollieClient.payments.get(id)
 
+    console.log('Webhook received for payment:', {
+      id: payment.id,
+      status: payment.status,
+      metadata: payment.metadata,
+    })
+
     if (payment.status === 'paid') {
       console.log('Payment successful:', {
         id: payment.id,
@@ -23,7 +29,6 @@ export async function POST(request: NextRequest) {
         metadata: payment.metadata,
       })
 
-      // Lizenz automatisch erstellen
       // E-Mail aus Metadata holen (wurde bei Payment-Erstellung gesetzt)
       const metadata = payment.metadata as PaymentMetadata
       const customerEmail = metadata?.email
@@ -31,13 +36,16 @@ export async function POST(request: NextRequest) {
 
       if (customerEmail) {
         try {
-          // API-Call zum Portal um Lizenz zu erstellen
+          // API-Call zum Portal um Shadow Account + Lizenz zu erstellen + E-Mail zu senden
           const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://portal.germanfence.de'
-          const response = await fetch(`${portalUrl}/api/admin/licenses/generate`, {
+          
+          console.log(`Creating license for ${customerEmail}, package: ${packageType}`)
+          
+          const response = await fetch(`${portalUrl}/api/payment/process`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${process.env.ADMIN_API_KEY}`, // Interner API-Key
+              'x-webhook-secret': process.env.WEBHOOK_SECRET || '',
             },
             body: JSON.stringify({
               email: customerEmail,
@@ -46,15 +54,21 @@ export async function POST(request: NextRequest) {
             }),
           })
 
-          const licenseData = await response.json()
+          const result = await response.json()
 
-          if (licenseData.success) {
-            console.log('License created:', licenseData.license.licenseKey)
-            // TODO: E-Mail mit Lizenzschlüssel versenden
+          if (result.success) {
+            console.log('✅ License created and email sent:', {
+              licenseKey: result.licenseKey,
+              email: customerEmail,
+            })
+          } else {
+            console.error('❌ Failed to create license:', result.error)
           }
         } catch (error) {
-          console.error('Failed to create license:', error)
+          console.error('❌ Failed to process payment:', error)
         }
+      } else {
+        console.error('❌ No email in payment metadata')
       }
     }
 
