@@ -5,6 +5,16 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.6] - 2025-12-04
+
+### Behoben
+- **Lizenzsystem:** Admin-erstellte Lizenzen schalten jetzt alle Features korrekt frei
+- **API:** Features werden jetzt auch bei Domain-Auto-Registrierung zurückgegeben
+
+### Hinzugefügt
+- **Portal:** Sprachumschalter oben rechts (DE/EN mit Flaggen)
+- **Portal:** SVG-Flaggen für konsistente Darstellung
+
 ## [1.4.5] - 2025-12-04
 
 ### Behoben

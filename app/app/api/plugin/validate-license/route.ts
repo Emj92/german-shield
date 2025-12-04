@@ -127,6 +127,27 @@ export async function POST(request: NextRequest) {
           maxDomains: license.maxDomains,
           usedDomains: license.activeDomains.length + 1,
         },
+        features: {
+          // FREE Features
+          honeypot: true,
+          timestampCheck: true,
+          javascriptCheck: true,
+          commentBlocker: true,
+          wpMailBlocker: true,
+          dashboardCleanup: true,
+          
+          // PAID Features (SINGLE, FREELANCER, AGENCY)
+          honeypotAdvanced: license.packageType !== 'FREE',
+          userAgentScan: license.packageType !== 'FREE',
+          geoBlocking: license.packageType !== 'FREE',
+          phraseBlocking: license.packageType !== 'FREE',
+          typingSpeedAnalysis: license.packageType !== 'FREE',
+          statistics: license.packageType !== 'FREE',
+          prioritySupport: license.packageType !== 'FREE',
+          
+          // AGENCY Only
+          whiteLabel: license.packageType === 'AGENCY',
+        },
       })
     }
 
