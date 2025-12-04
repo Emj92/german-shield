@@ -243,7 +243,7 @@ class GermanFence_Admin {
         $license_manager = new GermanFence_License();
         $license_info = $license_manager->get_license_info();
         $license_status = $license_manager->check_license();
-        $is_license_valid = !empty($is_license_valid);
+        $is_license_valid = !empty($license_status['valid']);
 
         $free_manager = new GermanFence_Free_License();
         

@@ -5,6 +5,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.0] - 2025-12-04
+### Behoben (KRITISCH)
+- **Plugin:** GEO-Blocking & Phrasen-Blocking Tabs werden jetzt korrekt freigeschaltet bei PRO-Lizenzen
+  - Bug: `$is_license_valid` wurde nie korrekt gesetzt (Zeile 246)
+  - Fix: Nutzt jetzt `$license_status['valid']` für die Prüfung
+- **API:** Single-Lizenzen können nicht mehr auf mehreren Domains gleichzeitig aktiviert werden
+  - Strenge Validierung: Single-Lizenz = 1 Domain
+  - Klare Fehlermeldung mit Upgrade-Hinweis
+
 ## [1.4.9] - 2025-12-04
 ### Behoben
 - **Plugin:** Sofortige API-Validierung nach PRO-Lizenz Aktivierung (Features werden sofort freigeschaltet)

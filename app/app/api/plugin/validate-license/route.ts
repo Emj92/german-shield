@@ -87,12 +87,24 @@ export async function POST(request: NextRequest) {
     if (!domainEntry) {
       // Domain nicht registriert - Auto-Registrierung wenn Platz frei
       if (license.activeDomains.length >= license.maxDomains) {
+        // SPEZIAL-CHECK: Bei SINGLE-Lizenz die bereits eine andere Domain hat, streng blockieren
+        if (license.packageType === 'SINGLE' && license.activeDomains.length > 0) {
+          return NextResponse.json({
+            valid: false,
+            error: 'Single license already activated on another domain',
+            maxDomains: license.maxDomains,
+            registeredDomains: license.activeDomains.map(d => d.domain),
+            message: `Diese Single-Lizenz ist bereits auf ${license.activeDomains[0].domain} aktiviert. Bitte deaktiviere sie dort zuerst oder wechsle zu einem Freelancer- oder Agency-Paket.`,
+            manageUrl: `https://portal.germanfence.de/dashboard/licenses`,
+          })
+        }
+        
         return NextResponse.json({
           valid: false,
           error: 'Domain not registered and limit reached',
           maxDomains: license.maxDomains,
           registeredDomains: license.activeDomains.map(d => d.domain),
-          manageUrl: `https://germanfence.de/dashboard/licenses`,
+          manageUrl: `https://portal.germanfence.de/dashboard/licenses`,
         })
       }
 
