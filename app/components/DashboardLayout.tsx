@@ -14,7 +14,6 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const [sidebarOpen, setSidebarOpen] = useState(true)
   const { theme, toggleTheme } = useTheme()
 
   const navigation = [
@@ -35,9 +34,7 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
     <div className="min-h-screen bg-gradient-to-br">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 h-screen transition-transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } bg-gray-800/50 backdrop-blur-sm border-r border-gray-700`}
+        className="fixed top-0 left-0 z-40 h-screen bg-gray-800/50 backdrop-blur-sm border-r border-gray-700"
         style={{ width: '280px' }}
       >
         <div className="h-full px-3 py-4 overflow-y-auto">
@@ -96,18 +93,10 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
       </aside>
 
       {/* Main Content */}
-      <div className={`${sidebarOpen ? 'ml-[280px]' : 'ml-0'} transition-all`}>
+      <div className="ml-[280px] transition-all">
         {/* Top Bar */}
         <header className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-30">
           <div className="px-8 py-4 flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-gray-400 hover:text-white transition"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
 
             <div className="flex items-center space-x-4">
               {/* Theme Toggle */}

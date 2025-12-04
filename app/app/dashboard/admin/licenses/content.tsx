@@ -80,7 +80,7 @@ export default function AdminLicensesContent() {
       </div>
 
       {/* Generator */}
-      <Card className="border-2 border-[#22D6DD]">
+      <Card className="border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Key className="h-5 w-5 text-[#22D6DD]" />
@@ -155,7 +155,7 @@ export default function AdminLicensesContent() {
 
       {/* Generated License */}
       {generatedLicense && (
-        <Card className="border-2 border-green-500 bg-green-50">
+        <Card className="border bg-green-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-green-700">
               <Check className="h-5 w-5" />

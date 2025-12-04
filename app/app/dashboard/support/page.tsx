@@ -66,7 +66,7 @@ export default async function SupportPage() {
               Ihre Support-Anfragen und Tickets
             </p>
           </div>
-          <Button asChild>
+          <Button asChild className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
             <a href="/dashboard/support/new">
               <Plus className="mr-2 h-4 w-4" />
               Neues Ticket
@@ -82,7 +82,7 @@ export default async function SupportPage() {
               <p className="text-sm text-muted-foreground mb-4">
                 Erstellen Sie ein Ticket, wenn Sie Hilfe benötigen
               </p>
-              <Button asChild>
+              <Button asChild className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
                 <a href="/dashboard/support/new">
                   <Plus className="mr-2 h-4 w-4" />
                   Ticket erstellen
@@ -93,7 +93,7 @@ export default async function SupportPage() {
         ) : (
           <div className="grid gap-4">
             {tickets.map((ticket) => (
-              <Card key={ticket.id} className="hover:border-primary transition-colors cursor-pointer">
+              <Card key={ticket.id} className="hover:border-[#22D6DD] transition-colors cursor-pointer border">
                 <a href={`/dashboard/support/${ticket.id}`}>
                   <CardHeader>
                     <div className="flex items-start justify-between">

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth'
 import UserLicensesContent from './content'
+import { DashboardLayout } from '@/components/DashboardLayout'
 
 export default async function UserLicensesPage() {
   const user = await getUser()
@@ -9,5 +10,9 @@ export default async function UserLicensesPage() {
     redirect('/login')
   }
 
-  return <UserLicensesContent />
+  return (
+    <DashboardLayout>
+      <UserLicensesContent />
+    </DashboardLayout>
+  )
 }

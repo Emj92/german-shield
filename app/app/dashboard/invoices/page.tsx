@@ -80,7 +80,7 @@ export default async function InvoicesPage() {
                       )}
                     </div>
                     {invoice.pdfUrl && (
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" size="sm" asChild className="border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
                         <a href={invoice.pdfUrl} download>
                           <Download className="mr-2 h-4 w-4" />
                           PDF herunterladen

@@ -35,19 +35,19 @@ export default async function DownloadsPage() {
         </div>
 
         {latestRelease && (
-          <Card className="border-primary">
+          <Card className="border">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Shield className="h-6 w-6 text-primary" />
+                    <Shield className="h-6 w-6 text-[#22D6DD]" />
                     German Fence v{latestRelease.version}
                   </CardTitle>
                   <CardDescription>
                     Veröffentlicht am {new Date(latestRelease.releaseDate).toLocaleDateString('de-DE')}
                   </CardDescription>
                 </div>
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
                   <a href={latestRelease.downloadUrl} download>
                     <Download className="mr-2 h-5 w-5" />
                     Herunterladen
@@ -90,7 +90,7 @@ export default async function DownloadsPage() {
                           {new Date(release.releaseDate).toLocaleDateString('de-DE')}
                         </CardDescription>
                       </div>
-                      <Button variant="outline" asChild>
+                      <Button variant="outline" asChild className="border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
                         <a href={release.downloadUrl} download>
                           <Download className="mr-2 h-4 w-4" />
                           Herunterladen
@@ -105,19 +105,19 @@ export default async function DownloadsPage() {
         )}
 
         {releases.length === 0 && (
-          <Card className="border-primary">
+          <Card className="border">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Shield className="h-6 w-6 text-primary" />
-                    German Fence Plugin
+                    <Shield className="h-6 w-6 text-[#22D6DD]" />
+                    German Fence Plugin v1.3.0
                   </CardTitle>
                   <CardDescription>
                     Aktuelle Version herunterladen
                   </CardDescription>
                 </div>
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+                <Button asChild size="lg" className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
                   <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
                     <Download className="mr-2 h-5 w-5" />
                     Jetzt herunterladen
@@ -141,7 +141,7 @@ export default async function DownloadsPage() {
                   <p className="text-sm text-muted-foreground mb-3">
                     Unser Support-Team steht Ihnen gerne zur Verfügung
                   </p>
-                  <Button variant="outline" size="sm" asChild>
+                  <Button variant="outline" size="sm" asChild className="border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
                     <a href="mailto:support@germanfence.de">
                       Support kontaktieren
                     </a>
