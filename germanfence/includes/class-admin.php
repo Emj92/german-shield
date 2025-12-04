@@ -242,6 +242,7 @@ class GermanFence_Admin {
         
         $license_manager = new GermanFence_License();
         $license_info = $license_manager->get_license_info();
+        $license_status = $license_manager->check_license();
 
         $free_manager = new GermanFence_Free_License();
         
@@ -962,18 +963,20 @@ class GermanFence_Admin {
                         if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
                             $result = $license_manager->activate_license(sanitize_text_field($_POST['license_key']));
                             if ($result['success']) {
-                                echo '<div class="notice notice-success"><p>' . esc_html($result['message']) . '</p></div>';
+                                add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
                                 $license_info = $license_manager->get_license_info();
                                 $license_status = $license_manager->check_license();
                             } else {
-                                echo '<div class="notice notice-error"><p>' . esc_html($result['message']) . '</p></div>';
+                                add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'error');
                             }
+                            settings_errors('germanfence_messages');
                         }
                         
                         // Lizenz deaktivieren
                         if (isset($_POST['deactivate_license'])) {
                             $result = $license_manager->deactivate_license();
-                            echo '<div class="notice notice-success"><p>' . esc_html($result['message']) . '</p></div>';
+                            add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
+                            settings_errors('germanfence_messages');
                             $license_info = $license_manager->get_license_info();
                             $license_status = $license_manager->check_license();
                         }
@@ -981,7 +984,8 @@ class GermanFence_Admin {
                         // Free-Version deaktivieren
                         if (isset($_POST['deactivate_free'])) {
                             $result = $free_manager->deactivate_free();
-                            echo '<div class="notice notice-success"><p>' . esc_html($result['message']) . '</p></div>';
+                            add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
+                            settings_errors('germanfence_messages');
                             $is_free_active = $free_manager->is_free_active();
                             $free_email = $free_manager->get_verified_email();
                             $license_info = $license_manager->get_license_info();
@@ -989,7 +993,7 @@ class GermanFence_Admin {
                         ?>
                         
                         <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
-                        <?php if (!$license_info['has_license'] || !$license_status['is_valid']): ?>
+                        <?php if (empty($license_info['has_license']) || empty($license_status['is_valid'])): ?>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
                         <!-- FREE VERSION BOX -->
@@ -1008,7 +1012,7 @@ class GermanFence_Admin {
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
                                             style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #f9f9f9;">
-                                        <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); alert('Key kopiert!');" 
+                                        <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                             style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
                                             📋 Kopieren
                                         </button>
@@ -1127,7 +1131,7 @@ class GermanFence_Admin {
                         <?php endif; ?>
                         
                         <!-- PRO LIZENZ AKTIV -->
-                        <?php if ($license_info['has_license'] && $license_status['is_valid']): ?>
+                        <?php if (!empty($license_info['has_license']) && !empty($license_status['is_valid'])): ?>
                         <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; margin-bottom: 30px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
@@ -1156,7 +1160,7 @@ class GermanFence_Admin {
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
                                         style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #f9f9f9;">
-                                    <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); alert('Key kopiert!');" 
+                                    <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                         style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
                                         📋 Kopieren
                                     </button>

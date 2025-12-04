@@ -173,7 +173,7 @@ class GermanFence_GeoBlocking {
             <div class="germanfence-section">
                 <h2>🌍 GEO Blocking</h2>
                 
-                <?php if (!$license_info['is_valid']): ?>
+                <?php if (empty($license_info['is_valid'])): ?>
                     <div style="background: rgba(34, 214, 221, 0.1); padding: 30px; border-radius: 6px; border: 2px solid rgba(34, 214, 221, 0.3); text-align: center;">
                         <span style="font-size: 48px;">🔒</span>
                         <h3 style="color: #22D6DD; margin: 15px 0 10px 0;">PRO-Feature</h3>
