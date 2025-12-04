@@ -19,15 +19,15 @@ interface GeneratedLicense {
   user: {
     id: string
     email: string
-  }
+  } | null
 }
 
 export default function AdminLicensesContent() {
   const [email, setEmail] = useState('')
   const [packageType, setPackageType] = useState<PackageType>('SINGLE')
   const [loading, setLoading] = useState(false)
-  const [generatedLicense, setGeneratedLicense] = useState<GeneratedLicense | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [generatedLicenses, setGeneratedLicenses] = useState<GeneratedLicense[]>([])
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const packages = [
     { type: 'FREE', name: 'FREE', price: '0€', domains: 1, color: 'bg-gray-100 text-gray-700' },
@@ -48,7 +48,7 @@ export default function AdminLicensesContent() {
       const data = await res.json()
 
       if (data.success) {
-        setGeneratedLicense(data.license)
+        setGeneratedLicenses(prev => [data.license, ...prev])
         setEmail('')
       } else {
         alert(data.error || 'Fehler beim Generieren')
@@ -61,10 +61,10 @@ export default function AdminLicensesContent() {
     }
   }
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
   }
 
   return (
@@ -148,62 +148,65 @@ export default function AdminLicensesContent() {
         </CardContent>
       </Card>
 
-      {/* Generated License */}
-      {generatedLicense && (
-        <Card className="border bg-[#22D6DD]/5">
-          <CardHeader>
+      {/* Generated Licenses Table */}
+      {generatedLicenses.length > 0 && (
+        <Card className="border">
+          <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-[#22D6DD]">
               <Check className="h-5 w-5" />
-              Lizenzschlüssel erfolgreich erstellt!
+              Generierte Lizenzen ({generatedLicenses.length})
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="bg-white p-4 rounded-lg space-y-3">
-              <div>
-                <Label className="text-xs text-slate-500">Lizenzschlüssel</Label>
-                <div className="flex items-center gap-2 mt-1">
-                  <code className="flex-1 bg-slate-100 px-4 py-3 rounded font-mono text-lg font-bold text-slate-900">
-                    {generatedLicense.licenseKey}
-                  </code>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyToClipboard(generatedLicense.licenseKey)}
-                  >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 pt-2 border-t">
-                <div>
-                  <Label className="text-xs text-slate-500">Kunde</Label>
-                  <p className="font-medium">{generatedLicense.user.email}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-slate-500">Paket</Label>
-                  <Badge className="mt-1">
-                    {generatedLicense.packageType}
-                  </Badge>
-                </div>
-                <div>
-                  <Label className="text-xs text-slate-500">Max. Domains</Label>
-                  <p className="font-medium">{generatedLicense.maxDomains}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-slate-500">Gültig bis</Label>
-                  <p className="font-medium">
-                    {new Date(generatedLicense.expiresAt).toLocaleDateString('de-DE')}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#22D6DD]/10 border border-[#22D6DD]/30 rounded-lg p-3">
-              <p className="text-sm text-slate-700">
-                💡 <strong>Wichtig:</strong> Sende diesen Lizenzschlüssel per E-Mail an den Kunden. 
-                Er kann ihn im WordPress-Plugin unter &quot;Lizenz&quot; eingeben.
-              </p>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 px-3 font-medium text-slate-600">Lizenzschlüssel</th>
+                    <th className="text-left py-2 px-3 font-medium text-slate-600">E-Mail</th>
+                    <th className="text-left py-2 px-3 font-medium text-slate-600">Paket</th>
+                    <th className="text-left py-2 px-3 font-medium text-slate-600">Gültig bis</th>
+                    <th className="text-left py-2 px-3 font-medium text-slate-600"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {generatedLicenses.map((license) => (
+                    <tr key={license.id} className="border-b last:border-0 hover:bg-slate-50">
+                      <td className="py-2 px-3">
+                        <code className="font-mono text-sm bg-slate-100 px-2 py-1 rounded">
+                          {license.licenseKey}
+                        </code>
+                      </td>
+                      <td className="py-2 px-3 text-slate-700">
+                        {license.user?.email || <span className="text-slate-400 italic">Ungebunden</span>}
+                      </td>
+                      <td className="py-2 px-3">
+                        <Badge className={
+                          license.packageType === 'AGENCY' ? 'bg-[#EC4899]/10 text-[#EC4899]' :
+                          license.packageType === 'FREELANCER' ? 'bg-[#22D6DD]/20 text-[#22D6DD]' :
+                          license.packageType === 'SINGLE' ? 'bg-[#22D6DD]/10 text-[#22D6DD]' :
+                          'bg-gray-100 text-gray-700'
+                        }>
+                          {license.packageType}
+                        </Badge>
+                      </td>
+                      <td className="py-2 px-3 text-slate-700">
+                        {new Date(license.expiresAt).toLocaleDateString('de-DE')}
+                      </td>
+                      <td className="py-2 px-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyToClipboard(license.licenseKey, license.id)}
+                          className="h-8 w-8 p-0"
+                        >
+                          {copiedId === license.id ? <Check className="h-4 w-4 text-[#22D6DD]" /> : <Copy className="h-4 w-4" />}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>

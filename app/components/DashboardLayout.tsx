@@ -19,11 +19,13 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children, user }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full relative overflow-hidden">
+      <div className="flex min-h-screen w-full relative overflow-hidden bg-[#FAFAFA]">
         <AnimatedBackground />
         <AppSidebar user={user} />
-        <main className="flex-1 overflow-auto relative z-10">
-          {children}
+        <main className="flex-1 overflow-auto relative z-10 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 min-h-[calc(100vh-3rem)]">
+            {children}
+          </div>
         </main>
       </div>
     </SidebarProvider>
