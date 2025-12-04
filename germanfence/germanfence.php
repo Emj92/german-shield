@@ -3,7 +3,7 @@
  * Plugin Name: GermanFence
  * Plugin URI: https://germanfence.de
  * Description: Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: GermanFence Team
  * Author URI: https://germanfence.de
  * License: GPL v2 or later + Proprietary
@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GERMANFENCE_VERSION', '1.3.5');
+define('GERMANFENCE_VERSION', '1.3.6');
 define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
@@ -65,14 +65,10 @@ require_once plugin_dir_path(__FILE__) . 'lib/plugin-update-checker/plugin-updat
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
-    'https://github.com/Emj92/german-shield/',
+    'https://germanfence.de/downloads/info.json',
     __FILE__,
     'germanfence'
 );
-
-// Branch und Release-Assets
-$myUpdateChecker->setBranch('main');
-$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 // Check-Intervall auf 1 Stunde setzen (für Testing)
 $myUpdateChecker->setCheckPeriod(1);
