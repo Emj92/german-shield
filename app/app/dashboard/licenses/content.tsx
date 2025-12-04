@@ -116,7 +116,7 @@ export default function UserLicensesContent() {
     }
   }
 
-  const activeLicensesCount = licenses.filter(l => l.status === 'ACTIVE').length
+  const activeLicensesCount = licenses.length // Alle gezeigten Lizenzen sind aktiv
   const totalDomains = licenses.reduce((sum, l) => sum + l.activeDomains.length, 0)
 
   if (loading) {
