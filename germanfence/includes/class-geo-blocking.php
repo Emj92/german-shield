@@ -267,6 +267,11 @@ class GermanFence_GeoBlocking {
         $code = strtoupper($code);
         if ($code === 'LOCAL') return '🏠';
         
+        // Fallback wenn mb_chr nicht verfügbar
+        if (!function_exists('mb_chr')) {
+            return '🌍';
+        }
+        
         $offset = 127397;
         $flag = '';
         for ($i = 0; $i < strlen($code); $i++) {
