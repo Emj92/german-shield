@@ -26,7 +26,7 @@ interface License {
 export default function UserLicensesContent() {
   const [licenses, setLicenses] = useState<License[]>([])
   const [loading, setLoading] = useState(true)
-  const [newDomain, setNewDomain] = useState('')
+  const [newDomains, setNewDomains] = useState<Record<string, string>>({})
   const [addingDomain, setAddingDomain] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
 
@@ -46,8 +46,9 @@ export default function UserLicensesContent() {
     }
   }
 
-  const addDomain = async (licenseId: string) => {
-    if (!newDomain.trim()) {
+  const addDomain = async (licenseId: string, licenseKey: string) => {
+    const domain = newDomains[licenseId]?.trim()
+    if (!domain) {
       alert('Bitte Domain eingeben')
       return
     }
@@ -57,13 +58,13 @@ export default function UserLicensesContent() {
       const res = await fetch('/api/licenses/domains', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ licenseId, domain: newDomain }),
+        body: JSON.stringify({ licenseKey, domain }),
       })
 
       const data = await res.json()
 
       if (data.success) {
-        setNewDomain('')
+        setNewDomains(prev => ({ ...prev, [licenseId]: '' }))
         fetchLicenses()
         alert('Domain erfolgreich hinzugefügt!')
       } else {
@@ -77,14 +78,12 @@ export default function UserLicensesContent() {
     }
   }
 
-  const removeDomain = async (licenseId: string, domainId: string) => {
+  const removeDomain = async (domainId: string) => {
     if (!confirm('Domain wirklich entfernen?')) return
 
     try {
-      const res = await fetch('/api/licenses/domains', {
+      const res = await fetch(`/api/licenses/domains?domainId=${domainId}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ licenseId, domainId }),
       })
 
       const data = await res.json()
@@ -107,24 +106,27 @@ export default function UserLicensesContent() {
     setTimeout(() => setCopied(null), 2000)
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'ACTIVE': return 'bg-green-100 text-green-800'
-      case 'EXPIRED': return 'bg-red-100 text-red-800'
-      case 'SUSPENDED': return 'bg-yellow-100 text-yellow-800'
+  const getPackageColor = (packageType: string) => {
+    switch (packageType) {
+      case 'FREE': return 'bg-gray-100 text-gray-700'
+      case 'SINGLE': return 'bg-[#22D6DD]/10 text-[#22D6DD]'
+      case 'FREELANCER': return 'bg-[#22D6DD]/20 text-[#22D6DD]'
+      case 'AGENCY': return 'bg-[#EC4899]/10 text-[#EC4899]'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
 
-  const getPackageColor = (packageType: string) => {
-    switch (packageType) {
-      case 'FREE': return 'bg-slate-100 text-slate-700'
-      case 'SINGLE': return 'bg-cyan-100 text-cyan-700'
-      case 'FREELANCER': return 'bg-cyan-500 text-white'
-      case 'AGENCY': return 'bg-pink-500 text-white'
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'ACTIVE': return 'bg-[#22D6DD]/10 text-[#22D6DD]'
+      case 'EXPIRED': return 'bg-[#EC4899]/10 text-[#EC4899]'
+      case 'SUSPENDED': return 'bg-gray-100 text-gray-700'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
+
+  const activeLicensesCount = licenses.filter(l => l.status === 'ACTIVE').length
+  const totalDomains = licenses.reduce((sum, l) => sum + l.activeDomains.length, 0)
 
   if (loading) {
     return (
@@ -144,8 +146,38 @@ export default function UserLicensesContent() {
         <p className="text-slate-600 mt-2">Verwalte deine GermanFence Lizenzen und aktivierte Domains</p>
       </div>
 
+      {/* Übersicht */}
+      {licenses.length > 0 && (
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="border">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-slate-500 mb-1">Lizenzen gesamt</p>
+                <p className="text-3xl font-bold text-slate-900">{licenses.length}</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-slate-500 mb-1">Aktive Lizenzen</p>
+                <p className="text-3xl font-bold text-[#22D6DD]">{activeLicensesCount}</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-slate-500 mb-1">Aktivierte Domains</p>
+                <p className="text-3xl font-bold text-slate-900">{totalDomains}</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {licenses.length === 0 ? (
-        <Card>
+        <Card className="border">
           <CardContent className="py-12 text-center">
             <Key className="h-12 w-12 text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Keine Lizenzen vorhanden</h3>
@@ -161,10 +193,10 @@ export default function UserLicensesContent() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4">
           {licenses.map((license) => (
-            <Card key={license.id} className="border-2">
-              <CardHeader>
+            <Card key={license.id} className="border">
+              <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-2">
@@ -194,15 +226,15 @@ export default function UserLicensesContent() {
                     <Badge className={getPackageColor(license.packageType)}>
                       {license.packageType}
                     </Badge>
-                    <Badge className={getStatusColor(license.status)}>
+                    <Badge className={getStatusBadgeColor(license.status)}>
                       {license.status}
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 {/* Lizenz-Info */}
-                <div className="grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg">
+                <div className="grid grid-cols-3 gap-4 p-3 bg-slate-50 rounded-lg">
                   <div>
                     <p className="text-xs text-slate-500">Gültig bis</p>
                     <p className="font-semibold">
@@ -223,7 +255,7 @@ export default function UserLicensesContent() {
 
                 {/* Aktivierte Domains */}
                 <div>
-                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                  <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
                     Aktivierte Domains ({license.activeDomains.length})
                   </h4>
@@ -233,19 +265,18 @@ export default function UserLicensesContent() {
                       {license.activeDomains.map((domain) => (
                         <div
                           key={domain.id}
-                          className="flex items-center justify-between p-3 bg-white border rounded-lg"
+                          className="flex items-center justify-between p-2 bg-white border rounded-lg"
                         >
                           <div className="flex-1">
-                            <p className="font-medium">{domain.domain}</p>
+                            <p className="font-medium text-sm">{domain.domain}</p>
                             <p className="text-xs text-slate-500">
-                              Registriert: {new Date(domain.registeredAt).toLocaleDateString('de-DE')} •
-                              Zuletzt gesehen: {new Date(domain.lastSeenAt).toLocaleDateString('de-DE')}
+                              Registriert: {new Date(domain.registeredAt).toLocaleDateString('de-DE')}
                             </p>
                           </div>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeDomain(license.id, domain.id)}
+                            onClick={() => removeDomain(domain.id)}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -263,20 +294,20 @@ export default function UserLicensesContent() {
 
                 {/* Domain hinzufügen */}
                 {license.activeDomains.length < license.maxDomains && license.status === 'ACTIVE' && (
-                  <div className="border-t pt-4">
-                    <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                  <div className="border-t pt-3">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
                       <Plus className="h-4 w-4 text-[#22D6DD]" />
                       Domain hinzufügen
                     </h4>
                     <div className="flex gap-2">
                       <Input
                         placeholder="beispiel.de"
-                        value={newDomain}
-                        onChange={(e) => setNewDomain(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && addDomain(license.id)}
+                        value={newDomains[license.id] || ''}
+                        onChange={(e) => setNewDomains(prev => ({ ...prev, [license.id]: e.target.value }))}
+                        onKeyPress={(e) => e.key === 'Enter' && addDomain(license.id, license.licenseKey)}
                       />
                       <Button
-                        onClick={() => addDomain(license.id)}
+                        onClick={() => addDomain(license.id, license.licenseKey)}
                         disabled={addingDomain === license.id}
                         className="bg-[#22D6DD] hover:bg-[#1EBEC5]"
                       >
@@ -293,7 +324,7 @@ export default function UserLicensesContent() {
                         )}
                       </Button>
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">
+                    <p className="text-xs text-slate-500 mt-1">
                       💡 Gib die Domain ohne http:// oder www. ein (z.B. beispiel.de)
                     </p>
                   </div>

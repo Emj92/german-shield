@@ -71,11 +71,7 @@ export async function POST(request: NextRequest) {
 
     const { licenseKey, domain, siteTitle, wpVersion, phpVersion } = await request.json()
 
-    if (!licenseKey) {
-      return NextResponse.json({ error: 'License key required' }, { status: 400 })
-    }
-    
-    if (!domain) {
+    if (!licenseKey || !domain) {
       return NextResponse.json({ error: 'License key and domain required' }, { status: 400 })
     }
 
@@ -92,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Nur eigene Lizenzen oder Admin
-    if (license.userId !== user.userId && user.role !== 'ADMIN') {
+    if (license.userId && license.userId !== user.userId && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
