@@ -5,6 +5,18 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.2] - 2025-12-04
+
+### Verbessert
+- Portal: ACTIVE Badge bei Lizenzen entfernt (alle gezeigten Lizenzen sind aktiv)
+- Plugin sperrt alle Tabs wenn keine Lizenz aktiviert (nur Lizenz-Tab offen)
+- Lizenz-Key Styling vereinfacht (kein türkiser Rahmen, saubereres Design)
+- FREELANCER/AGENCY-Lizenzen haben jetzt alle PRO-Features freigeschaltet
+
+### Behoben
+- Features bei generierten FREELANCER/AGENCY-Keys werden jetzt korrekt erkannt
+- Lizenztyp wird in Meldungen korrekt angezeigt (nicht mehr "Custom Lizenz")
+
 ## [1.4.1] - 2025-12-04
 
 ### Verbessert

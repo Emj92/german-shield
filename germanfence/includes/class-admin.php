@@ -353,18 +353,18 @@ class GermanFence_Admin {
                     Anti-Spam
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo !$is_license_valid ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ($is_free_active && !$is_license_valid ? 'pro-feature' : ''); ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-location"></span>
                     GEO Blocking
-                    <?php if (!$is_license_valid): ?>
+                    <?php if ($is_free_active && !$is_license_valid): ?>
                         <span class="pro-badge">PRO</span>
                     <?php endif; ?>
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo !$is_license_valid ? 'pro-feature' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ($is_free_active && !$is_license_valid ? 'pro-feature' : ''); ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-editor-removeformatting"></span>
                     Phrasen-Blocking
-                    <?php if (!$is_license_valid): ?>
+                    <?php if ($is_free_active && !$is_license_valid): ?>
                         <span class="pro-badge">PRO</span>
                     <?php endif; ?>
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
@@ -379,7 +379,7 @@ class GermanFence_Admin {
                     Einstellungen
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'license' ? 'active' : ''; ?>" data-tab="license">
+                <button class="germanfence-tab <?php echo (!$is_free_active && !$is_license_valid) && $active_tab !== 'license' ? 'active' : ($active_tab === 'license' ? 'active' : ''); ?>" data-tab="license">
                     <span class="dashicons dashicons-admin-network"></span>
                     Lizenz
                 </button>
@@ -1006,7 +1006,7 @@ class GermanFence_Admin {
                                     <strong>Verifizierte E-Mail:</strong> <?php echo esc_html($free_email); ?>
                                 </p>
                                 <?php if ($current_key): ?>
-                                <div style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 6px; border: 1px solid #22D6DD;">
+                                <div style="margin: 15px 0;">
                                     <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
                                         🔑 Dein License-Key<?php 
                                         $key_type = 'FREE';
@@ -1021,7 +1021,7 @@ class GermanFence_Admin {
                                     </p>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
-                                            style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #f9f9f9;">
+                                            style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #fff;">
                                         <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                             style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
                                             📋 Kopieren
@@ -1163,13 +1163,13 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <div style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 6px; border: 1px solid #22D6DD;">
+                            <div style="margin: 15px 0;">
                                 <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
                                     🔑 Dein License-Key:
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
-                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #f9f9f9;">
+                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #fff;">
                                     <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                         style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
                                         📋 Kopieren

@@ -226,9 +226,6 @@ export default function UserLicensesContent() {
                     <Badge className={getPackageColor(license.packageType)}>
                       {license.packageType}
                     </Badge>
-                    <Badge className={getStatusBadgeColor(license.status)}>
-                      {license.status}
-                    </Badge>
                   </div>
                 </div>
               </CardHeader>

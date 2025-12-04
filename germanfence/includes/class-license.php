@@ -169,27 +169,76 @@ class GermanFence_License {
      * Gibt FREE Lizenz-Daten zurück
      */
     private function get_free_license_data() {
+        $settings = get_option('germanfence_settings', array());
+        $license_key = isset($settings['license_key']) ? trim($settings['license_key']) : '';
+        
+        // Prüfe ob lokal ein Key gesetzt ist und welchen Typ er hat
+        $package_type = 'FREE';
+        $features = array(
+            'honeypot' => true,
+            'timestampCheck' => true,
+            'javascriptCheck' => true,
+            'commentBlocker' => true,
+            'wpMailBlocker' => true,
+            'dashboardCleanup' => true,
+            'honeypotAdvanced' => false,
+            'userAgentScan' => false,
+            'geoBlocking' => false,
+            'phraseBlocking' => false,
+            'typingSpeedAnalysis' => false,
+            'statistics' => false,
+            'prioritySupport' => false,
+            'whiteLabel' => false,
+        );
+        
+        // Wenn ein Key vorhanden ist, prüfe Format und setze Features
+        if (!empty($license_key)) {
+            if (strpos($license_key, 'GS-SINGLE-') === 0) {
+                $package_type = 'SINGLE';
+                $features['honeypotAdvanced'] = true;
+                $features['userAgentScan'] = true;
+                $features['geoBlocking'] = true;
+                $features['phraseBlocking'] = true;
+                $features['typingSpeedAnalysis'] = true;
+                $features['statistics'] = true;
+                $features['prioritySupport'] = true;
+            } elseif (strpos($license_key, 'GS-FREELANCER-') === 0) {
+                $package_type = 'FREELANCER';
+                $features['honeypotAdvanced'] = true;
+                $features['userAgentScan'] = true;
+                $features['geoBlocking'] = true;
+                $features['phraseBlocking'] = true;
+                $features['typingSpeedAnalysis'] = true;
+                $features['statistics'] = true;
+                $features['prioritySupport'] = true;
+            } elseif (strpos($license_key, 'GS-AGENCY-') === 0) {
+                $package_type = 'AGENCY';
+                $features['honeypotAdvanced'] = true;
+                $features['userAgentScan'] = true;
+                $features['geoBlocking'] = true;
+                $features['phraseBlocking'] = true;
+                $features['typingSpeedAnalysis'] = true;
+                $features['statistics'] = true;
+                $features['prioritySupport'] = true;
+                $features['whiteLabel'] = true;
+            } elseif (strpos($license_key, 'GS-PRO-') === 0) {
+                $package_type = 'PRO';
+                $features['honeypotAdvanced'] = true;
+                $features['userAgentScan'] = true;
+                $features['geoBlocking'] = true;
+                $features['phraseBlocking'] = true;
+                $features['typingSpeedAnalysis'] = true;
+                $features['statistics'] = true;
+                $features['prioritySupport'] = true;
+            }
+        }
+        
         return array(
             'valid' => true,
             'license' => array(
-                'packageType' => 'FREE',
+                'packageType' => $package_type,
             ),
-            'features' => array(
-                'honeypot' => true,
-                'timestampCheck' => true,
-                'javascriptCheck' => true,
-                'commentBlocker' => true,
-                'wpMailBlocker' => true,
-                'dashboardCleanup' => true,
-                'honeypotAdvanced' => false,
-                'userAgentScan' => false,
-                'geoBlocking' => false,
-                'phraseBlocking' => false,
-                'typingSpeedAnalysis' => false,
-                'statistics' => false,
-                'prioritySupport' => false,
-                'whiteLabel' => false,
-            ),
+            'features' => $features,
         );
     }
     
