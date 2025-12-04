@@ -29,7 +29,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
-import { useTheme } from '@/lib/theme-provider'
+import { useTheme } from '@/lib/theme-context'
 
 interface AppSidebarProps {
   user: {
