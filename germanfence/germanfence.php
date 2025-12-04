@@ -67,11 +67,19 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 $myUpdateChecker = PucFactory::buildUpdateChecker(
     'https://github.com/Emj92/german-shield/',
     __FILE__,
-    'german-fence'
+    'germanfence'
 );
 
 $myUpdateChecker->setBranch('main');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
+
+// Debug-Logging für Updates (nur wenn WP_DEBUG aktiv)
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    add_filter('puc_request_info_result-germanfence', function($pluginInfo, $result) {
+        error_log('GermanFence Update Check: ' . print_r($result, true));
+        return $pluginInfo;
+    }, 10, 2);
+}
 // ============================================
 
 // Include required files
