@@ -65,14 +65,14 @@ export function AppSidebar({ user }: AppSidebarProps) {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex items-center gap-3 px-4 py-3">
+      <SidebarHeader className="border-b border-sidebar-border" style={{ height: '4.3rem' }}>
+        <div className="flex items-center justify-center gap-3 px-4 h-full">
           <Image 
             src="/germanfence_logo.png" 
             alt="GermanFence" 
-            width={40}
-            height={40}
-            className="h-10 w-10 object-contain"
+            width={36}
+            height={36}
+            className="h-9 w-9 object-contain"
           />
           <div className="flex flex-col">
             <span className="font-semibold text-sidebar-foreground">GermanFence</span>

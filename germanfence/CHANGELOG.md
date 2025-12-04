@@ -5,6 +5,17 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.7] - 2025-12-04
+
+### Behoben
+- **Admin-Lizenzen:** Format jetzt korrekt `GS-AGENCY-XXXX-XXXX-XXXX` statt `GF-XXXX`
+- **Portal UI:** Header Höhe 4.3rem, Sidebar Logo zentriert
+- **Portal:** Browser-Alerts durch Toast-Notifications ersetzt
+- **Portal:** Confirm-Modal statt Browser-Confirm für Domain-Löschung
+
+### Hinzugefügt
+- **Portal:** Header mit Sprachumschalter auf allen Seiten (inkl. Admin)
+
 ## [1.4.6] - 2025-12-04
 
 ### Behoben

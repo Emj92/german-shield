@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Key, Plus, Trash2, Copy, Check, ExternalLink, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Key, Plus, Trash2, Copy, Check, ExternalLink, AlertCircle, CheckCircle2, X } from 'lucide-react'
 
 interface License {
   id: string
@@ -23,12 +23,30 @@ interface License {
   }[]
 }
 
+interface Notification {
+  type: 'success' | 'error'
+  message: string
+}
+
+interface ConfirmModal {
+  show: boolean
+  domainId: string
+  domainName: string
+}
+
 export default function UserLicensesContent() {
   const [licenses, setLicenses] = useState<License[]>([])
   const [loading, setLoading] = useState(true)
   const [newDomains, setNewDomains] = useState<Record<string, string>>({})
   const [addingDomain, setAddingDomain] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
+  const [notification, setNotification] = useState<Notification | null>(null)
+  const [confirmModal, setConfirmModal] = useState<ConfirmModal>({ show: false, domainId: '', domainName: '' })
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message })
+    setTimeout(() => setNotification(null), 4000)
+  }
 
   useEffect(() => {
     fetchLicenses()
@@ -49,7 +67,7 @@ export default function UserLicensesContent() {
   const addDomain = async (licenseId: string, licenseKey: string) => {
     const domain = newDomains[licenseId]?.trim()
     if (!domain) {
-      alert('Bitte Domain eingeben')
+      showNotification('error', 'Bitte Domain eingeben')
       return
     }
 
@@ -66,20 +84,25 @@ export default function UserLicensesContent() {
       if (data.success) {
         setNewDomains(prev => ({ ...prev, [licenseId]: '' }))
         fetchLicenses()
-        alert('Domain erfolgreich hinzugefügt!')
+        showNotification('success', 'Domain erfolgreich hinzugefügt!')
       } else {
-        alert(data.error || 'Fehler beim Hinzufügen')
+        showNotification('error', data.error || 'Fehler beim Hinzufügen')
       }
     } catch (error) {
       console.error('Failed to add domain:', error)
-      alert('Fehler beim Hinzufügen')
+      showNotification('error', 'Fehler beim Hinzufügen')
     } finally {
       setAddingDomain(null)
     }
   }
 
-  const removeDomain = async (domainId: string) => {
-    if (!confirm('Domain wirklich entfernen?')) return
+  const confirmRemoveDomain = (domainId: string, domainName: string) => {
+    setConfirmModal({ show: true, domainId, domainName })
+  }
+
+  const removeDomain = async () => {
+    const { domainId } = confirmModal
+    setConfirmModal({ show: false, domainId: '', domainName: '' })
 
     try {
       const res = await fetch(`/api/licenses/domains?domainId=${domainId}`, {
@@ -90,13 +113,13 @@ export default function UserLicensesContent() {
 
       if (data.success) {
         fetchLicenses()
-        alert('Domain erfolgreich entfernt!')
+        showNotification('success', 'Domain erfolgreich entfernt!')
       } else {
-        alert(data.error || 'Fehler beim Entfernen')
+        showNotification('error', data.error || 'Fehler beim Entfernen')
       }
     } catch (error) {
       console.error('Failed to remove domain:', error)
-      alert('Fehler beim Entfernen')
+      showNotification('error', 'Fehler beim Entfernen')
     }
   }
 
@@ -132,6 +155,46 @@ export default function UserLicensesContent() {
 
   return (
     <div className="p-12 space-y-6">
+      {/* Notification Toast */}
+      {notification && (
+        <div className={`fixed top-20 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg animate-in slide-in-from-right ${
+          notification.type === 'success' 
+            ? 'bg-[#22D6DD] text-white' 
+            : 'bg-[#EC4899] text-white'
+        }`}>
+          {notification.type === 'success' ? (
+            <CheckCircle2 className="h-5 w-5" />
+          ) : (
+            <AlertCircle className="h-5 w-5" />
+          )}
+          <span className="font-medium">{notification.message}</span>
+          <button onClick={() => setNotification(null)} className="ml-2 hover:opacity-70">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Confirm Modal */}
+      {confirmModal.show && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setConfirmModal({ show: false, domainId: '', domainName: '' })} />
+          <div className="relative bg-white rounded-xl p-6 shadow-2xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">Domain entfernen?</h3>
+            <p className="text-slate-600 mb-4">
+              Möchtest du die Domain <strong>{confirmModal.domainName}</strong> wirklich entfernen?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setConfirmModal({ show: false, domainId: '', domainName: '' })}>
+                Abbrechen
+              </Button>
+              <Button onClick={removeDomain} className="bg-red-600 hover:bg-red-700 text-white">
+                Entfernen
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Meine Lizenzen</h1>
         <p className="text-slate-600 mt-2">Verwalte deine GermanFence Lizenzen und aktivierte Domains</p>
@@ -264,7 +327,7 @@ export default function UserLicensesContent() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeDomain(domain.id)}
+                            onClick={() => confirmRemoveDomain(domain.id, domain.domain)}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
                             <Trash2 className="h-4 w-4" />

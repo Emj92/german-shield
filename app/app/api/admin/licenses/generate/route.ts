@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getUser } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
-// Lizenzschlüssel generieren (Format: GFXX-XXXX-XXXX-XXXX)
-function generateLicenseKey(): string {
+// Lizenzschlüssel generieren (Format: GS-AGENCY-XXXX-XXXX-XXXX)
+function generateLicenseKey(packageType: string): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // Ohne 0,O,1,I für bessere Lesbarkeit
-  const segments = ['GF']
   
+  // Prefix basierend auf Pakettyp (wie bei Payment)
+  const prefix = packageType === 'FREE' ? 'GS-FREE' : 
+                 packageType === 'SINGLE' ? 'GS-SINGLE' :
+                 packageType === 'FREELANCER' ? 'GS-FREELANCER' :
+                 packageType === 'AGENCY' ? 'GS-AGENCY' : 'GS-PRO'
+  
+  const segments = []
   for (let i = 0; i < 3; i++) {
     let segment = ''
     for (let j = 0; j < 4; j++) {
@@ -15,7 +21,8 @@ function generateLicenseKey(): string {
     segments.push(segment)
   }
   
-  return segments.join('-')
+  // Format: GS-AGENCY-XXXX-XXXX-XXXX
+  return `${prefix}-${segments.join('-')}`
 }
 
 // Paket-Limits definieren
@@ -69,11 +76,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    // Lizenzschlüssel generieren (unique check)
-    let licenseKey = generateLicenseKey()
+    // Lizenzschlüssel generieren (unique check) - mit Pakettyp im Key!
+    let licenseKey = generateLicenseKey(packageType)
     let attempts = 0
     while (await prisma.license.findUnique({ where: { licenseKey } })) {
-      licenseKey = generateLicenseKey()
+      licenseKey = generateLicenseKey(packageType)
       attempts++
       if (attempts > 10) {
         return NextResponse.json({ error: 'Failed to generate unique license key' }, { status: 500 })
