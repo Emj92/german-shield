@@ -1375,84 +1375,134 @@ class GermanFence_Admin {
                         <div class="germanfence-subsetting" id="badge-settings" style="<?php echo (!isset($settings['badge_enabled']) || $settings['badge_enabled'] !== '1') ? 'display:none;' : ''; ?>">
                             <h3>Badge-Einstellungen</h3>
                             
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Anzeige-Bereich:</strong></label>
-                                <select name="badge_display_type" style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
-                                    <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
-                                    <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
-                                </select>
-                                <p class="description" style="margin-top: 5px; color: #646970;">
-                                    <strong>Global:</strong> Badge erscheint auf jeder Seite<br>
-                                    <strong>Nur bei Formularen:</strong> Badge erscheint nur bei geschützten Formularen (Contact Form 7, WPForms, etc.)
-                                </p>
-                            </div>
-                            
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Position:</strong></label>
-                                <select name="badge_position" style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
-                                    <option value="bottom-right" <?php selected($settings['badge_position'] ?? 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
-                                    <option value="bottom-left" <?php selected($settings['badge_position'] ?? '', 'bottom-left'); ?>>Unten Links</option>
-                                    <option value="top-right" <?php selected($settings['badge_position'] ?? '', 'top-right'); ?>>Oben Rechts</option>
-                                    <option value="top-left" <?php selected($settings['badge_position'] ?? '', 'top-left'); ?>>Oben Links</option>
-                                </select>
+                            <!-- 2-Spalten Layout für Badge Einstellungen -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div class="setting-row">
+                                    <label><strong>Anzeige-Bereich:</strong></label>
+                                    <select name="badge_display_type" style="width: 100%; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
+                                        <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
+                                        <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
+                                    </select>
+                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 12px;">
+                                        <strong>Global:</strong> Auf jeder Seite<br>
+                                        <strong>Formulare:</strong> Nur bei CF7, WPForms, etc.
+                                    </p>
+                                </div>
+                                
+                                <div class="setting-row">
+                                    <label><strong>Position:</strong></label>
+                                    <select name="badge_position" style="width: 100%; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
+                                        <option value="bottom-right" <?php selected($settings['badge_position'] ?? 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
+                                        <option value="bottom-left" <?php selected($settings['badge_position'] ?? '', 'bottom-left'); ?>>Unten Links</option>
+                                        <option value="top-right" <?php selected($settings['badge_position'] ?? '', 'top-right'); ?>>Oben Rechts</option>
+                                        <option value="top-left" <?php selected($settings['badge_position'] ?? '', 'top-left'); ?>>Oben Links</option>
+                                    </select>
+                                </div>
                             </div>
                             
                             <div class="setting-row" style="margin-bottom: 20px;">
                                 <label><strong>Badge-Text:</strong></label>
                                 <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                    style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                    style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
                                     placeholder="Geschützt durch GermanFence">
                             </div>
                             
                             <div class="setting-row" style="margin-bottom: 20px;">
                                 <label><strong>Eigenes Icon/Logo (URL):</strong></label>
                                 <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                    style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                    style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
                                     placeholder="https://example.com/logo.png (max. 1.5MB)">
                                 <p class="description" style="margin-top: 5px; color: #646970;">
                                     Leer lassen für Standard-Icon 🛡️. Empfohlen: 32x32px PNG/SVG, max. 1.5MB
                                 </p>
                             </div>
                             
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Text-Farbe:</strong></label>
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="color" name="badge_text_color" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
-                                        style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
-                                    <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
-                                        style="width: 100px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
-                                        placeholder="#1d2327">
-                                    <span class="description" style="color: #646970;">Standard: #1d2327 (Dunkelgrau)</span>
+                            <!-- 2-Spalten Layout für Farben -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div class="setting-row">
+                                    <label><strong>Text-Farbe:</strong></label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="color" name="badge_text_color" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
+                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                        <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
+                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            placeholder="#1d2327">
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <label><strong>Rahmen-Farbe:</strong></label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                        <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            placeholder="#22D6DD">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div class="setting-row">
+                                    <label><strong>Hintergrund-Farbe:</strong></label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                        <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            placeholder="#ffffff">
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <label><strong>Schatten-Farbe:</strong></label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="color" name="badge_shadow_color" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
+                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                        <input type="text" name="badge_shadow_color_hex" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
+                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            placeholder="#22D6DD">
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Rahmen-Farbe:</strong></label>
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
-                                        style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
-                                    <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
-                                        style="width: 100px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
-                                        placeholder="#22D6DD">
-                                    <span class="description" style="color: #646970;">Standard: #22D6DD (Türkis)</span>
+                                <label><strong>Border Radius (Abrundung):</strong></label>
+                                <div style="display: flex; gap: 15px; align-items: center;">
+                                    <input 
+                                        type="range" 
+                                        name="badge_border_radius" 
+                                        id="badge-border-radius-slider"
+                                        min="0" 
+                                        max="30" 
+                                        value="<?php echo esc_attr($settings['badge_border_radius'] ?? 6); ?>"
+                                        style="flex: 1; max-width: 300px;"
+                                    >
+                                    <span id="badge-border-radius-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 60px;">
+                                        <?php echo esc_html($settings['badge_border_radius'] ?? 6); ?>px
+                                    </span>
                                 </div>
-                            </div>
-
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Hintergrund-Farbe:</strong></label>
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
-                                        style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
-                                    <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
-                                        style="width: 100px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
-                                        placeholder="#ffffff">
-                                    <span class="description" style="color: #646970;">Standard: #ffffff (Weiß)</span>
-                                </div>
+                                <p class="description" style="margin-top: 5px; color: #646970;">
+                                    0px = eckig, 6px = leicht abgerundet (Standard), 30px = stark abgerundet
+                                </p>
                             </div>
                             
                             <h3 style="margin-top: 30px;">Vorschau</h3>
                             <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; text-align: center;">
-                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: 6px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);">
+                                <?php 
+                                $shadow_color = $settings['badge_shadow_color'] ?? '#22D6DD';
+                                $border_radius = $settings['badge_border_radius'] ?? 6;
+                                // Konvertiere Hex zu RGB für Shadow
+                                $hex = ltrim($shadow_color, '#');
+                                if (strlen($hex) == 3) {
+                                    $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+                                }
+                                $r = hexdec(substr($hex, 0, 2));
+                                $g = hexdec(substr($hex, 2, 2));
+                                $b = hexdec(substr($hex, 4, 2));
+                                $shadow_rgb = "$r, $g, $b";
+                                ?>
+                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: <?php echo esc_attr($border_radius); ?>px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                                     <span id="badge-icon">
                                         <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
@@ -1614,6 +1664,8 @@ class GermanFence_Admin {
             'badge_text_color' => sanitize_text_field($_POST['badge_text_color'] ?? '#1d2327'),
             'badge_border_color' => sanitize_text_field($_POST['badge_border_color'] ?? '#22D6DD'),
             'badge_background_color' => sanitize_text_field($_POST['badge_background_color'] ?? '#ffffff'),
+            'badge_shadow_color' => sanitize_text_field($_POST['badge_shadow_color'] ?? '#22D6DD'),
+            'badge_border_radius' => intval($_POST['badge_border_radius'] ?? 6),
             'badge_custom_image' => sanitize_text_field($_POST['badge_custom_image'] ?? ''),
             'block_admin_notices' => isset($_POST['block_admin_notices']) ? '1' : '0',
             'block_plugin_ads' => isset($_POST['block_plugin_ads']) ? '1' : '0',

@@ -592,17 +592,24 @@
             var textColor = $('input[name="badge_text_color"]').val() || '#1d2327';
             var borderColor = $('input[name="badge_border_color"]').val() || '#22D6DD';
             var backgroundColor = $('input[name="badge_background_color"]').val() || '#ffffff';
+            var shadowColor = $('input[name="badge_shadow_color"]').val() || '#22D6DD';
+            var borderRadius = $('input[name="badge_border_radius"]').val() || 6;
             var customImage = $('input[name="badge_custom_image"]').val();
+            
+            var shadowRgb = hexToRgb(shadowColor);
             
             $('#badge-text-preview').text(text).css('color', textColor);
             $('#badge-preview').css({
                 'border-color': borderColor,
-                'background-color': backgroundColor
+                'background-color': backgroundColor,
+                'border-radius': borderRadius + 'px',
+                'box-shadow': '0 2px 8px rgba(' + shadowRgb + ', 0.2)'
             });
             
             $('input[name="badge_text_color_hex"]').val(textColor);
             $('input[name="badge_border_color_hex"]').val(borderColor);
             $('input[name="badge_background_color_hex"]').val(backgroundColor);
+            $('input[name="badge_shadow_color_hex"]').val(shadowColor);
             
             // Icon aktualisieren
             if (customImage && customImage.trim() !== '') {
@@ -695,6 +702,45 @@
                 }, 500);
             }
         });
+        
+        // Schattenfarbe
+        $('input[name="badge_shadow_color"]').on('input change', function() {
+            var color = $(this).val();
+            $('input[name="badge_shadow_color_hex"]').val(color);
+            var rgb = hexToRgb(color);
+            $('#badge-preview').css('box-shadow', '0 2px 8px rgba(' + rgb + ', 0.2)');
+            
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(function() {
+                performAutoSave('badge_shadow_color', color);
+            }, 500);
+        });
+        
+        $('input[name="badge_shadow_color_hex"]').on('input change', function() {
+            var color = $(this).val();
+            if (/^#[0-9A-F]{6}$/i.test(color)) {
+                $('input[name="badge_shadow_color"]').val(color);
+                var rgb = hexToRgb(color);
+                $('#badge-preview').css('box-shadow', '0 2px 8px rgba(' + rgb + ', 0.2)');
+                
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(function() {
+                    performAutoSave('badge_shadow_color', color);
+                }, 500);
+            }
+        });
+        
+        // Hilfsfunktion: Hex zu RGB
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+            var r = parseInt(hex.substring(0, 2), 16);
+            var g = parseInt(hex.substring(2, 4), 16);
+            var b = parseInt(hex.substring(4, 6), 16);
+            return r + ', ' + g + ', ' + b;
+        }
         
         // Free-License Tab-Switching
         $('.germanfence-free-tab').on('click', function() {
@@ -828,6 +874,14 @@
             var count = $(this).val();
             $('#honeypot-count-value').text(count);
             updateHoneypotFields(count);
+        });
+        
+        // Slider für Badge Border Radius
+        $('#badge-border-radius-slider').on('input', function() {
+            var radius = $(this).val();
+            $('#badge-border-radius-value').text(radius + 'px');
+            // Live-Vorschau aktualisieren
+            $('#badge-preview').css('border-radius', radius + 'px');
         });
         
         function updateHoneypotFields(targetCount) {

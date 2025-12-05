@@ -44,6 +44,8 @@ class GermanFence_Badge {
         $text_color = $this->settings['badge_text_color'] ?? '#1d2327';
         $border_color = $this->settings['badge_border_color'] ?? '#22D6DD';
         $background_color = $this->settings['badge_background_color'] ?? '#ffffff';
+        $shadow_color = $this->settings['badge_shadow_color'] ?? '#22D6DD';
+        $border_radius = $this->settings['badge_border_radius'] ?? 6;
         
         $position_styles = array(
             'bottom-right' => 'bottom: 20px; right: 20px;',
@@ -54,10 +56,13 @@ class GermanFence_Badge {
         
         $style = $position_styles[$position] ?? $position_styles['bottom-right'];
         
+        // Konvertiere Hex zu RGB für Shadow
+        $shadow_rgb = $this->hex_to_rgb($shadow_color);
+        
         ?>
         <div class="germanfence-badge" style="<?php echo esc_attr($style); ?>">
             <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
-               style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>;">
+               style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                 <?php if ($custom_image): ?>
                     <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                 <?php else: ?>
@@ -76,6 +81,8 @@ class GermanFence_Badge {
         $text_color = $this->settings['badge_text_color'] ?? '#1d2327';
         $border_color = $this->settings['badge_border_color'] ?? '#22D6DD';
         $background_color = $this->settings['badge_background_color'] ?? '#ffffff';
+        $shadow_color = $this->settings['badge_shadow_color'] ?? '#22D6DD';
+        $border_radius = $this->settings['badge_border_radius'] ?? 6;
         
         // Position für lokal am Formular: above/below
         $alignment_map = array(
@@ -88,12 +95,15 @@ class GermanFence_Badge {
         $position_type = (strpos($position, 'top') !== false) ? 'above' : 'below';
         $alignment = $alignment_map[$position] ?? 'right';
         
+        // Konvertiere Hex zu RGB für Shadow
+        $shadow_rgb = $this->hex_to_rgb($shadow_color);
+        
         ?>
         <!-- Badge Template (wird per JS zu Formularen hinzugefügt) -->
         <template id="germanfence-badge-template">
             <div class="germanfence-badge-form-local" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
                 <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
-                   style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>;">
+                   style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                     <?php if ($custom_image): ?>
                         <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                     <?php else: ?>
@@ -180,6 +190,10 @@ class GermanFence_Badge {
     }
     
     private function get_badge_css($display_type = 'global') {
+        $shadow_color = $this->settings['badge_shadow_color'] ?? '#22D6DD';
+        $border_radius = $this->settings['badge_border_radius'] ?? 6;
+        $shadow_rgb = $this->hex_to_rgb($shadow_color);
+        
         $css = '
         /* Common Styles */
         .germanfence-badge-icon {
@@ -228,15 +242,15 @@ class GermanFence_Badge {
             gap: 8px;
             background: #ffffff;
             padding: 10px 16px;
-            border-radius: 6px;
+            border-radius: ' . esc_attr($border_radius) . 'px;
             border: 1px solid #22D6DD;
-            box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);
+            box-shadow: 0 2px 8px rgba(' . esc_attr($shadow_rgb) . ', 0.2);
             transition: all 0.3s ease;
             cursor: pointer;
         }
         
         .germanfence-badge > .germanfence-badge-inner:hover {
-            box-shadow: 0 4px 12px rgba(34, 214, 221, 0.3);
+            box-shadow: 0 4px 12px rgba(' . esc_attr($shadow_rgb) . ', 0.3);
             transform: translateY(-2px);
         }
         
@@ -263,15 +277,15 @@ class GermanFence_Badge {
             gap: 8px;
             background: #ffffff;
             padding: 10px 16px;
-            border-radius: 6px;
+            border-radius: ' . esc_attr($border_radius) . 'px;
             border: 1px solid #22D6DD;
-            box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);
+            box-shadow: 0 2px 8px rgba(' . esc_attr($shadow_rgb) . ', 0.2);
             transition: all 0.3s ease;
             cursor: pointer;
         }
         
         .germanfence-badge-form-local .germanfence-badge-inner:hover {
-            box-shadow: 0 4px 12px rgba(34, 214, 221, 0.3);
+            box-shadow: 0 4px 12px rgba(' . esc_attr($shadow_rgb) . ', 0.3);
             transform: translateY(-2px);
         }
         
@@ -288,6 +302,20 @@ class GermanFence_Badge {
         }
         
         return $css;
+    }
+    
+    private function hex_to_rgb($hex) {
+        $hex = ltrim($hex, '#');
+        
+        if (strlen($hex) == 3) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+        
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+        
+        return "$r, $g, $b";
     }
 }
 

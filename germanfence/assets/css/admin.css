@@ -15,21 +15,17 @@
 
 #toplevel_page_germanfence .wp-submenu {
     margin-top: 0 !important;
-    transition: opacity 0.3s ease, visibility 0.3s ease !important;
-    transition-delay: 0.2s !important;
-}
-
-#toplevel_page_germanfence:hover .wp-submenu {
-    transition-delay: 0s !important;
-}
-
-#toplevel_page_germanfence .wp-submenu {
-    pointer-events: none;
+    transition: opacity 0.15s ease, visibility 0.15s ease !important;
+    transition-delay: 0.1s !important;
+    opacity: 0;
+    visibility: hidden;
 }
 
 #toplevel_page_germanfence:hover .wp-submenu,
 #toplevel_page_germanfence .wp-submenu:hover {
-    pointer-events: auto;
+    transition-delay: 0s !important;
+    opacity: 1;
+    visibility: visible;
 }
 
 .germanfence-wrapper {

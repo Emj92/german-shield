@@ -22,6 +22,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // WARNUNG: Test-Key Erkennung
+    if (apiKey.startsWith('test_')) {
+      console.warn('⚠️ WARNUNG: Test-API-Key wird verwendet! Echte Zahlungen werden NICHT verarbeitet.')
+      console.warn('Bitte setze MOLLIE_API_KEY auf einen Live-Key (live_...)')
+    } else if (apiKey.startsWith('live_')) {
+      console.log('✅ Live-API-Key wird verwendet')
+    }
+
     const mollieClient = createMollieClient({
       apiKey: apiKey,
     })
