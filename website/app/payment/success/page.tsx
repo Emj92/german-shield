@@ -11,10 +11,10 @@ import { CheckCircle2, Download, Mail, Copy, Check, Key, ExternalLink } from 'lu
 function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const packageType = searchParams.get('package')
-  const licenseKey = searchParams.get('key')
   const email = searchParams.get('email')
   
   const [copied, setCopied] = useState(false)
+  const [licenseKey, setLicenseKey] = useState<string | null>(searchParams.get('key'))
 
   const copyToClipboard = () => {
     if (licenseKey) {
@@ -71,34 +71,46 @@ function PaymentSuccessContent() {
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Lizenzschlüssel Box */}
-          {licenseKey && (
-            <div className="bg-[#22D6DD]/5 border-2 border-[#22D6DD] rounded-xl p-6 text-center">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Key className="w-5 h-5 text-[#22D6DD]" />
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Dein Lizenzschlüssel:</span>
-              </div>
-              <div className="flex items-center justify-center gap-3">
-                <code className="text-xl md:text-2xl font-mono font-bold text-[#22D6DD] tracking-wider break-all">
-                  {licenseKey}
-                </code>
-                <button
-                  onClick={copyToClipboard}
-                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                  title="Kopieren"
-                >
-                  {copied ? (
-                    <Check className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <Copy className="w-5 h-5 text-slate-500" />
-                  )}
-                </button>
-              </div>
-              {copied && (
-                <p className="text-sm text-green-500 mt-2">✓ Kopiert!</p>
-              )}
+          {/* Info: Lizenzschlüssel kommt per E-Mail */}
+          <div className="bg-[#22D6DD]/5 border-2 border-[#22D6DD] rounded-xl p-6 text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Key className="w-5 h-5 text-[#22D6DD]" />
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Dein Lizenzschlüssel</span>
             </div>
-          )}
+            {licenseKey ? (
+              <>
+                <div className="flex items-center justify-center gap-3">
+                  <code className="text-xl md:text-2xl font-mono font-bold text-[#22D6DD] tracking-wider break-all">
+                    {licenseKey}
+                  </code>
+                  <button
+                    onClick={copyToClipboard}
+                    className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                    title="Kopieren"
+                  >
+                    {copied ? (
+                      <Check className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-slate-500" />
+                    )}
+                  </button>
+                </div>
+                {copied && (
+                  <p className="text-sm text-green-500 mt-2">✓ Kopiert!</p>
+                )}
+              </>
+            ) : (
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#22D6DD]/10 rounded-lg">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#22D6DD] border-t-transparent"></div>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">Lizenzschlüssel wird generiert...</span>
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Dein Schlüssel wird in wenigen Sekunden per E-Mail zugestellt.
+                </p>
+              </div>
+            )}
+          </div>
 
           {/* E-Mail Hinweis */}
           <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">

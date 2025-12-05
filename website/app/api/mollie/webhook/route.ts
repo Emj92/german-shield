@@ -8,7 +8,16 @@ interface PaymentMetadata {
 
 export async function POST(request: NextRequest) {
   try {
-    const { id } = await request.json()
+    // WICHTIG: Mollie sendet Form-Daten, nicht JSON!
+    const formData = await request.formData()
+    const id = formData.get('id') as string
+    
+    if (!id) {
+      console.error('No payment ID in webhook')
+      return NextResponse.json({ error: 'No payment ID' }, { status: 400 })
+    }
+
+    console.log('📥 Webhook received for payment ID:', id)
 
     const mollieClient = createMollieClient({
       apiKey: process.env.MOLLIE_API_KEY || '',
