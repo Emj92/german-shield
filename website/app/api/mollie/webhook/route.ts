@@ -62,6 +62,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ status: 'error', message: 'No email' }, { status: 400 })
       }
 
+      // Variable für Subscription (wird ggf. im try-Block gefüllt)
+      let mollieSubscription: { id: string; nextPaymentDate?: string; status: string } | null = null
+
       // WICHTIG: Nach erster Zahlung -> Subscription erstellen
       if (payment.sequenceType === 'first' && customerId) {
         console.log('🔄 First payment detected - creating subscription...')
@@ -71,7 +74,7 @@ export async function POST(request: NextRequest) {
           const nextPaymentDate = new Date()
           nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
           
-          const subscription = await mollieClient.customerSubscriptions.create({
+          mollieSubscription = await mollieClient.customerSubscriptions.create({
             customerId: customerId,
             amount: {
               currency: 'EUR',
@@ -89,17 +92,11 @@ export async function POST(request: NextRequest) {
           })
 
           console.log('✅ Subscription created:', {
-            id: subscription.id,
+            id: mollieSubscription.id,
             customerId: customerId,
-            nextPaymentDate: subscription.nextPaymentDate,
-            status: subscription.status
+            nextPaymentDate: mollieSubscription.nextPaymentDate,
+            status: mollieSubscription.status
           })
-
-          // Füge Subscription ID zu Metadata hinzu für Portal
-          const extendedMetadata = {
-            ...metadata,
-            subscriptionId: subscription.id
-          }
         } catch (subError) {
           console.error('❌ Failed to create subscription:', subError)
           // Trotzdem weitermachen - Lizenz wird erstellt
@@ -123,7 +120,7 @@ export async function POST(request: NextRequest) {
             packageType: packageType.toUpperCase(),
             molliePaymentId: payment.id,
             mollieCustomerId: customerId,
-            mollieSubscriptionId: subscription?.id || metadata.subscriptionId,
+            mollieSubscriptionId: mollieSubscription?.id || metadata.subscriptionId,
             // Tax details
             netAmount: parseFloat(metadata.netAmount || payment.amount.value),
             taxAmount: parseFloat(metadata.taxAmount || '0'),
@@ -154,7 +151,7 @@ export async function POST(request: NextRequest) {
             licenseKey: result.licenseKey,
             email: customerEmail,
             packageType: result.packageType,
-            subscriptionCreated: !!metadata.subscriptionId
+            subscriptionCreated: !!mollieSubscription
           })
         } else {
           console.error('❌ Failed to create license:', result.error)
