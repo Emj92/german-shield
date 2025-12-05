@@ -3,7 +3,22 @@ import { createMollieClient } from '@mollie/api-client'
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, description, package_type, email } = await request.json()
+    const { 
+      amount, 
+      netAmount,
+      taxAmount,
+      taxRate,
+      description, 
+      package_type, 
+      email,
+      isBusiness,
+      companyName,
+      vatId,
+      street,
+      zipCode,
+      city,
+      country
+    } = await request.json()
 
     if (!amount || !package_type || !email) {
       return NextResponse.json(
@@ -36,39 +51,76 @@ export async function POST(request: NextRequest) {
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://germanfence.de'
 
-    // Redirect zur Success Page auf der Website (nicht Portal)
-    // Die Success Page zeigt den Key an + sendet zur Passwort-Seite
+    // Redirect zur Success Page
     const redirectUrl = `${baseUrl}/payment/success?package=${package_type}&email=${encodeURIComponent(email)}`
 
+    // WICHTIG: Erstelle Customer für Subscription (wiederholende Zahlungen)
+    console.log('📋 Creating Mollie Customer for subscription...')
+    const customer = await mollieClient.customers.create({
+      name: isBusiness && companyName ? companyName : email,
+      email: email,
+      metadata: {
+        package_type: package_type,
+        isBusiness: isBusiness ? 'true' : 'false',
+        ...(isBusiness && {
+          companyName,
+          vatId,
+          street,
+          zipCode,
+          city,
+          country
+        })
+      }
+    })
+
+    console.log('✅ Customer created:', customer.id)
+
+    // Erstelle erste Zahlung (wird automatisch zu Subscription nach Zahlung)
     const payment = await mollieClient.payments.create({
+      customerId: customer.id,
       amount: {
         currency: 'EUR',
         value: Number(amount).toFixed(2),
       },
-      description: description || `GermanFence ${package_type} License`,
+      description: description || `GermanFence ${package_type} License - Jahr 1`,
       redirectUrl: redirectUrl,
       webhookUrl: `${baseUrl}/api/mollie/webhook`,
+      sequenceType: 'first', // Erste Zahlung einer Subscription
       metadata: {
         package_type: package_type,
         email: email,
+        customerId: customer.id,
+        netAmount: netAmount?.toString() || amount.toString(),
+        taxAmount: taxAmount?.toString() || '0',
+        taxRate: taxRate?.toString() || '0',
+        isBusiness: isBusiness ? 'true' : 'false',
+        ...(isBusiness && {
+          companyName,
+          vatId,
+          street,
+          zipCode,
+          city,
+          country
+        })
       },
     })
 
-    console.log('Payment created:', {
+    console.log('💳 First payment created:', {
       id: payment.id,
+      customerId: customer.id,
       email: email,
       package: package_type,
-      redirectUrl: redirectUrl,
+      amount: amount
     })
 
     return NextResponse.json({ 
       checkoutUrl: payment.getCheckoutUrl(),
-      paymentId: payment.id 
+      paymentId: payment.id,
+      customerId: customer.id
     })
   } catch (error: unknown) {
     console.error('Mollie payment creation failed:', error)
     
-    // Bessere Fehlermeldung basierend auf Fehlertyp
     const errorMessage = error instanceof Error ? error.message : 'Unbekannter Fehler'
     
     if (errorMessage.includes('Invalid API key')) {

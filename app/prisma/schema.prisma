@@ -32,6 +32,7 @@ model User {
   invoices       Invoice[]
   supportTickets SupportTicket[]
   licenses       License[]
+  subscriptions  Subscription[]
   
   @@map("users")
 }
@@ -143,20 +144,48 @@ model Invoice {
   id            String   @id @default(cuid())
   userId        String
   invoiceNumber String   @unique
-  amount        Float
+  
+  // Beträge
+  netAmount     Float    // Nettobetrag
+  taxAmount     Float    @default(0) // Steuerbetrag
+  taxRate       Float    @default(0) // Steuersatz in %
+  grossAmount   Float    // Bruttobetrag (= netAmount + taxAmount)
   currency      String   @default("EUR")
+  
+  // Steuer-Details
+  taxLabel      String?  // "MwSt.", "VAT", "GST", etc.
+  taxExempt     Boolean  @default(false) // Reverse Charge
+  
+  // Firmen-Details (falls vorhanden)
+  isBusiness    Boolean  @default(false)
+  companyName   String?
+  vatId         String?
+  street        String?
+  zipCode       String?
+  city          String?
+  country       String   @default("DE")
+  
+  // Status & Payment
   status        InvoiceStatus @default(PAID)
   pdfUrl        String?  // URL zum PDF
   description   String?
+  
+  // Mollie
+  molliePaymentId String?
+  subscriptionId  String? // Verknüpfung zur Subscription
+  
+  // Zeitstempel
   issuedAt      DateTime @default(now())
   dueAt         DateTime?
   paidAt        DateTime?
   createdAt     DateTime @default(now())
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
   
   @@index([userId])
   @@index([invoiceNumber])
+  @@index([subscriptionId])
   @@map("invoices")
 }
 
@@ -390,4 +419,60 @@ enum LicenseAction {
   DELETED     // Gelöscht (Admin)
   DOMAIN_ADDED    // Domain hinzugefügt
   DOMAIN_REMOVED  // Domain entfernt
+}
+
+// ============================================
+// SUBSCRIPTION-SYSTEM (Mollie Subscriptions)
+// ============================================
+
+// Subscription Model (Jährliche Abos)
+model Subscription {
+  id                String             @id @default(cuid())
+  userId            String
+  licenseId         String?            // Verknüpfung zur Lizenz
+  
+  // Mollie Subscription Details
+  mollieSubscriptionId String?         @unique
+  mollieCustomerId     String?         // Mollie Customer ID
+  
+  // Paket & Preis
+  packageType       PackageType
+  netAmount         Float              // Nettobetrag
+  taxAmount         Float              @default(0)
+  taxRate           Float              @default(0)
+  grossAmount       Float              // Bruttobetrag
+  currency          String             @default("EUR")
+  interval          String             @default("12 months") // Mollie Interval
+  
+  // Status
+  status            SubscriptionStatus @default(ACTIVE)
+  
+  // Zeitstempel
+  startDate         DateTime           @default(now())
+  nextPaymentDate   DateTime?          // Nächste Zahlung
+  cancelledAt       DateTime?          // Kündigungsdatum
+  endDate           DateTime?          // Enddatum (nach Kündigung)
+  
+  // Metadata
+  description       String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  // Relations
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices          Invoice[]          // Alle Rechnungen zu diesem Abo
+  
+  @@index([userId])
+  @@index([mollieSubscriptionId])
+  @@index([status])
+  @@index([nextPaymentDate])
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  ACTIVE      // Aktiv
+  PENDING     // Warte auf erste Zahlung
+  CANCELLED   // Gekündigt (läuft noch bis Ablauf)
+  SUSPENDED   // Pausiert
+  EXPIRED     // Abgelaufen
 }

@@ -1,266 +1,273 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import crypto from 'crypto'
-import { Resend } from 'resend'
+import bcrypt from 'bcryptjs'
 
-// Resend für E-Mail-Versand
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-// Lizenzschlüssel generieren
 function generateLicenseKey(packageType: string): string {
-  const prefix = packageType === 'FREE' ? 'GS-FREE' : 
-                 packageType === 'SINGLE' ? 'GS-SINGLE' :
-                 packageType === 'FREELANCER' ? 'GS-FREELANCER' :
-                 packageType === 'AGENCY' ? 'GS-AGENCY' : 'GS-PRO'
+  const prefix = packageType === 'SINGLE' ? 'GS-SINGLE' : 
+                 packageType === 'FREELANCER' ? 'GS-FREELANCER' : 
+                 packageType === 'AGENCY' ? 'GS-AGENCY' : 'GS-FREE'
   
-  const random = crypto.randomBytes(12).toString('hex').toUpperCase()
-  // Format: GS-AGENCY-XXXX-XXXX-XXXX
-  return `${prefix}-${random.slice(0,4)}-${random.slice(4,8)}-${random.slice(8,12)}`
+  const random = Math.random().toString(36).substring(2, 15).toUpperCase()
+  return `${prefix}-${random}`
 }
 
-// Passwort-Reset-Token generieren
-function generatePasswordToken(): string {
-  return crypto.randomBytes(32).toString('hex')
-}
-
-// Max Domains basierend auf Pakettyp
-function getMaxDomains(packageType: string): number {
-  switch (packageType) {
-    case 'SINGLE': return 1
-    case 'FREELANCER': return 5
-    case 'AGENCY': return 25
-    default: return 1
-  }
-}
-
-// Preis basierend auf Pakettyp
-function getPrice(packageType: string): number {
-  switch (packageType) {
-    case 'SINGLE': return 19
-    case 'FREELANCER': return 39
-    case 'AGENCY': return 99
-    default: return 0
-  }
+function generateInvoiceNumber(): string {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+  return `INV-${year}${month}-${random}`
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, packageType, molliePaymentId } = await request.json()
+    const {
+      email,
+      packageType,
+      molliePaymentId,
+      mollieCustomerId,
+      mollieSubscriptionId,
+      netAmount,
+      taxAmount,
+      taxRate,
+      grossAmount,
+      isBusiness,
+      companyName,
+      vatId,
+      street,
+      zipCode,
+      city,
+      country
+    } = await request.json()
 
-    if (!email || !packageType) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Email und Pakettyp erforderlich' 
-      }, { status: 400 })
-    }
+    console.log('📦 Processing payment:', { email, packageType, molliePaymentId })
 
-    const normalizedEmail = email.toLowerCase().trim()
-    const normalizedPackageType = packageType.toUpperCase()
-
-    console.log(`📦 Processing payment for ${normalizedEmail}, package: ${normalizedPackageType}`)
-    console.log(`📧 RESEND_API_KEY configured: ${process.env.RESEND_API_KEY ? 'YES' : 'NO'}`)
-
-    // 1. Shadow Account erstellen oder existierenden User holen
+    // 1. Finde oder erstelle User (Shadow Account)
     let user = await prisma.user.findUnique({
-      where: { email: normalizedEmail }
+      where: { email }
     })
 
-    const passwordResetToken = generatePasswordToken()
-    const tokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 Tage gültig
-
     if (!user) {
-      // Neuen Shadow Account erstellen (ohne echtes Passwort)
-      const tempPassword = crypto.randomBytes(32).toString('hex') // Nicht nutzbar
+      console.log('👤 Creating shadow account for:', email)
       
+      // Generiere temporäres Passwort
+      const tempPassword = Math.random().toString(36).substring(2, 15)
+      const hashedPassword = await bcrypt.hash(tempPassword, 12)
+      
+      // Erstelle Verification Token für Passwort-Setup
+      const verificationToken = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+      const verificationTokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 Tage
+
       user = await prisma.user.create({
         data: {
-          email: normalizedEmail,
-          password: tempPassword, // Wird durch Passwort-Setzen ersetzt
-          emailVerified: true, // Durch Zahlung verifiziert
-          verificationToken: passwordResetToken,
-          verificationTokenExpiry: tokenExpiry,
+          email,
+          name: isBusiness && companyName ? companyName : null,
+          password: hashedPassword,
+          role: 'USER',
+          emailVerified: false,
+          verificationToken,
+          verificationTokenExpiry
         }
       })
-      console.log(`Shadow account created for ${normalizedEmail}`)
+
+      console.log('✅ Shadow account created:', user.id)
     } else {
-      // Existierenden User aktualisieren - Token für Passwort setzen
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          verificationToken: passwordResetToken,
-          verificationTokenExpiry: tokenExpiry,
-        }
-      })
-      console.log(`Existing user updated: ${normalizedEmail}`)
+      console.log('✅ User already exists:', user.id)
     }
 
-    // 2. Lizenz generieren
-    const licenseKey = generateLicenseKey(normalizedPackageType)
+    // 2. Erstelle License
+    const licenseKey = generateLicenseKey(packageType)
+    const maxDomains = packageType === 'SINGLE' ? 1 : 
+                       packageType === 'FREELANCER' ? 5 : 
+                       packageType === 'AGENCY' ? 25 : 1
+
     const expiresAt = new Date()
     expiresAt.setFullYear(expiresAt.getFullYear() + 1) // 1 Jahr gültig
 
     const license = await prisma.license.create({
       data: {
         userId: user.id,
-        licenseKey: licenseKey,
-        packageType: normalizedPackageType as 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY',
+        licenseKey,
+        packageType: packageType as any,
         status: 'ACTIVE',
         isActive: true,
-        expiresAt: expiresAt,
-        maxDomains: getMaxDomains(normalizedPackageType),
-        molliePaymentId: molliePaymentId || null,
+        expiresAt,
+        maxDomains,
+        molliePaymentId
       }
     })
 
-    // 3. Lizenz-History eintragen
-    await prisma.licenseHistory.create({
-      data: {
-        licenseId: license.id,
-        action: 'CREATED',
-        description: `${normalizedPackageType} Lizenz erstellt nach Zahlung`,
-        metadata: { molliePaymentId, email: normalizedEmail }
-      }
-    })
+    console.log('✅ License created:', licenseKey)
 
-    // 4. Rechnung erstellen
-    const invoiceNumber = `GF-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`
-    await prisma.invoice.create({
-      data: {
-        userId: user.id,
-        invoiceNumber: invoiceNumber,
-        amount: getPrice(normalizedPackageType),
-        currency: 'EUR',
-        status: 'PAID',
-        description: `GermanFence ${normalizedPackageType} Lizenz - 1 Jahr`,
-        paidAt: new Date(),
-      }
-    })
+    // 3. Erstelle Subscription (falls Subscription ID vorhanden)
+    let subscription = null
+    if (mollieSubscriptionId) {
+      const nextPaymentDate = new Date()
+      nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
 
-    console.log(`License ${licenseKey} created for ${normalizedEmail}`)
+      subscription = await prisma.subscription.create({
+        data: {
+          userId: user.id,
+          licenseId: license.id,
+          mollieSubscriptionId,
+          mollieCustomerId,
+          packageType: packageType as any,
+          netAmount: netAmount || grossAmount,
+          taxAmount: taxAmount || 0,
+          taxRate: taxRate || 0,
+          grossAmount: grossAmount,
+          currency: 'EUR',
+          interval: '12 months',
+          status: 'ACTIVE',
+          nextPaymentDate,
+          description: `GermanFence ${packageType} - Jahresabo`
+        }
+      })
 
-    // 5. E-Mail senden
-    const packageNames: { [key: string]: string } = {
-      'SINGLE': 'Single (1 Domain)',
-      'FREELANCER': 'Freelancer (5 Domains)',
-      'AGENCY': 'Agency (25 Domains)',
+      console.log('✅ Subscription created:', subscription.id)
     }
 
-    const passwordSetUrl = `https://portal.germanfence.de/set-password?token=${passwordResetToken}&email=${encodeURIComponent(normalizedEmail)}`
-    const dashboardUrl = 'https://portal.germanfence.de/login'
-    const downloadUrl = 'https://germanfence.de/downloads/germanfence-plugin.zip'
+    // 4. Erstelle Invoice/Rechnung
+    const invoiceNumber = generateInvoiceNumber()
+    const taxLabel = country === 'DE' ? 'MwSt.' :
+                     country === 'AT' ? 'MwSt.' :
+                     country === 'CH' ? 'MwSt.' :
+                     country === 'US' ? 'Tax' :
+                     country === 'CN' ? 'VAT' :
+                     country === 'IN' ? 'GST' :
+                     country === 'IT' ? 'IVA' :
+                     country === 'FR' ? 'TVA' : 'VAT'
 
+    const taxExempt = isBusiness && vatId && taxAmount === 0 && country !== 'DE'
+
+    const invoice = await prisma.invoice.create({
+      data: {
+        userId: user.id,
+        invoiceNumber,
+        netAmount: netAmount || grossAmount,
+        taxAmount: taxAmount || 0,
+        taxRate: taxRate || 0,
+        grossAmount: grossAmount,
+        currency: 'EUR',
+        taxLabel,
+        taxExempt,
+        isBusiness: isBusiness || false,
+        companyName,
+        vatId,
+        street,
+        zipCode,
+        city,
+        country: country || 'DE',
+        status: 'PAID',
+        description: `GermanFence ${packageType} License - Jahr 1`,
+        molliePaymentId,
+        subscriptionId: subscription?.id,
+        paidAt: new Date()
+      }
+    })
+
+    console.log('✅ Invoice created:', invoiceNumber)
+
+    // 5. Sende E-Mail mit Lizenzschlüssel + Passwort-Setup Link
     try {
-      // Check if Resend is configured
-      if (!process.env.RESEND_API_KEY) {
-        console.error('❌ RESEND_API_KEY not configured!')
-        throw new Error('RESEND_API_KEY not configured')
-      }
+      const { Resend } = await import('resend')
+      const resend = new Resend(process.env.RESEND_API_KEY)
 
-      console.log(`📧 Sending email to ${normalizedEmail}...`)
-      
-      // Use verified domain sender (same as registration email)
-      const fromEmail = 'GermanFence <hallo@germanfence.de>'
-      
-      const emailResult = await resend.emails.send({
-        from: fromEmail,
-        to: normalizedEmail,
-        subject: `🎉 Dein GermanFence ${packageNames[normalizedPackageType] || normalizedPackageType} Lizenzschlüssel`,
+      const passwordSetupUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://portal.germanfence.de'}/set-password?token=${user.verificationToken}`
+
+      await resend.emails.send({
+        from: 'GermanFence <hallo@germanfence.de>',
+        to: email,
+        subject: `🎉 Dein GermanFence ${packageType} Lizenzschlüssel`,
         html: `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; }
-    .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-    .header { text-align: center; margin-bottom: 40px; }
-    .logo { font-size: 28px; font-weight: bold; color: #22D6DD; }
-    .success-icon { font-size: 64px; margin-bottom: 20px; }
-    .license-box { background: linear-gradient(135deg, #22D6DD10 0%, #22D6DD05 100%); border: 2px solid #22D6DD; border-radius: 12px; padding: 24px; text-align: center; margin: 30px 0; }
-    .license-key { font-family: 'Monaco', 'Consolas', monospace; font-size: 20px; font-weight: bold; color: #22D6DD; letter-spacing: 2px; margin: 10px 0; word-break: break-all; }
-    .btn { display: inline-block; padding: 14px 28px; background: #22D6DD; color: white !important; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 10px 5px; }
-    .btn-outline { background: transparent; border: 2px solid #22D6DD; color: #22D6DD !important; }
-    .steps { background: #f8fafc; border-radius: 12px; padding: 24px; margin: 30px 0; }
-    .steps h3 { margin-top: 0; color: #22D6DD; }
-    .steps ol { margin: 0; padding-left: 20px; }
-    .steps li { margin: 10px 0; }
-    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 14px; }
-    .highlight { background: #22D6DD20; padding: 2px 6px; border-radius: 4px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="success-icon">🎉</div>
-      <div class="logo">GermanFence</div>
-      <h1 style="margin: 20px 0 10px;">Vielen Dank für deinen Kauf!</h1>
-      <p style="color: #64748b; font-size: 18px;">Deine <strong>${packageNames[normalizedPackageType] || normalizedPackageType}</strong> Lizenz ist bereit.</p>
-    </div>
-    
-    <div class="license-box">
-      <p style="margin: 0 0 10px 0; color: #64748b;">Dein Lizenzschlüssel:</p>
-      <div class="license-key">${licenseKey}</div>
-      <p style="margin: 10px 0 0 0; font-size: 14px; color: #64748b;">Gültig bis: ${expiresAt.toLocaleDateString('de-DE')}</p>
-    </div>
-    
-    <div style="text-align: center; margin: 30px 0;">
-      <a href="${passwordSetUrl}" class="btn">🔐 Passwort setzen & Dashboard</a>
-      <a href="${downloadUrl}" class="btn btn-outline">📥 Plugin herunterladen</a>
-    </div>
-    
-    <div class="steps">
-      <h3>🚀 So startest du:</h3>
-      <ol>
-        <li><strong>Passwort setzen:</strong> Klicke auf den Button oben, um dein Dashboard-Passwort festzulegen.</li>
-        <li><strong>Plugin herunterladen:</strong> Lade das Plugin herunter und installiere es in WordPress.</li>
-        <li><strong>Lizenz aktivieren:</strong> Gehe zu <span class="highlight">GermanFence → Lizenz</span> und gib deinen Schlüssel ein.</li>
-        <li><strong>Schutz aktivieren:</strong> Aktiviere die gewünschten Schutzfunktionen im Dashboard.</li>
-      </ol>
-    </div>
-    
-    <div class="footer">
-      <p>Bei Fragen erreichst du uns unter:<br>
-      <a href="mailto:support@germanfence.de" style="color: #22D6DD;">support@germanfence.de</a></p>
-      <p style="margin-top: 20px;">
-        <a href="https://germanfence.de" style="color: #64748b;">Website</a> · 
-        <a href="${dashboardUrl}" style="color: #64748b;">Dashboard</a> · 
-        <a href="https://germanfence.de/datenschutz" style="color: #64748b;">Datenschutz</a>
-      </p>
-      <p style="color: #94a3b8; font-size: 12px; margin-top: 20px;">
-        © ${new Date().getFullYear()} GermanFence · Made in Germany 🇩🇪
-      </p>
-    </div>
-  </div>
-</body>
-</html>
-        `,
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #1d2327; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background: linear-gradient(135deg, #22D6DD 0%, #1EBEC5 100%); padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                .header h1 { color: white; margin: 0; font-size: 28px; }
+                .content { background: #ffffff; padding: 40px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px; }
+                .license-box { background: rgba(34, 214, 221, 0.1); border: 2px solid #22D6DD; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+                .license-key { font-size: 24px; font-weight: bold; font-family: monospace; color: #22D6DD; letter-spacing: 2px; }
+                .button { display: inline-block; background: #22D6DD; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+                .button:hover { background: #1EBEC5; }
+                .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <div class="header">
+                  <h1>🛡️ GermanFence</h1>
+                </div>
+                <div class="content">
+                  <h2>Vielen Dank für deinen Kauf!</h2>
+                  <p>Deine Zahlung war erfolgreich. Hier ist dein Lizenzschlüssel für <strong>GermanFence ${packageType}</strong>:</p>
+                  
+                  <div class="license-box">
+                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 10px;">Dein Lizenzschlüssel:</div>
+                    <div class="license-key">${licenseKey}</div>
+                  </div>
+
+                  ${subscription ? `
+                  <div style="background: #f3f4f6; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                    <strong>🔄 Automatische Verlängerung:</strong><br>
+                    Dein Abo verlängert sich automatisch jährlich. Nächste Zahlung: ${subscription.nextPaymentDate?.toLocaleDateString('de-DE') || 'in 12 Monaten'}<br>
+                    Du kannst jederzeit in deinem Dashboard kündigen.
+                  </div>
+                  ` : ''}
+
+                  <h3>📋 Rechnung:</h3>
+                  <p>
+                    Rechnungsnummer: <strong>${invoiceNumber}</strong><br>
+                    Betrag: ${netAmount.toFixed(2)}€ ${taxAmount > 0 ? `+ ${taxAmount.toFixed(2)}€ ${taxLabel}` : ''} = <strong>${grossAmount.toFixed(2)}€</strong>
+                  </p>
+
+                  <h3>🚀 Nächste Schritte:</h3>
+                  <ol>
+                    <li><strong>Passwort setzen:</strong> Klicke auf den Button um dein Portal-Passwort zu setzen</li>
+                    <li><strong>Plugin installieren:</strong> Lade das Plugin herunter und installiere es in WordPress</li>
+                    <li><strong>Lizenz aktivieren:</strong> Gehe zu GermanFence → Lizenz und gib deinen Schlüssel ein</li>
+                  </ol>
+
+                  <div style="text-align: center;">
+                    <a href="${passwordSetupUrl}" class="button">
+                      🔐 Passwort setzen & loslegen
+                    </a>
+                  </div>
+
+                  <div class="footer">
+                    <p>Bei Fragen erreichst du uns unter <a href="mailto:support@germanfence.de" style="color: #22D6DD;">support@germanfence.de</a></p>
+                    <p style="font-size: 12px; color: #9ca3af;">© ${new Date().getFullYear()} GermanFence. Alle Rechte vorbehalten.</p>
+                  </div>
+                </div>
+              </div>
+            </body>
+          </html>
+        `
       })
-      console.log(`✅ Email sent to ${normalizedEmail}`, emailResult)
+
+      console.log('✅ Email sent to:', email)
     } catch (emailError) {
-      console.error('❌ Email sending failed:', emailError)
-      // Log more details
-      if (emailError instanceof Error) {
-        console.error('Error message:', emailError.message)
-        console.error('Error stack:', emailError.stack)
-      }
-      // Nicht abbrechen - Lizenz wurde bereits erstellt
+      console.error('❌ Failed to send email:', emailError)
+      // Trotzdem erfolgreich zurückgeben
     }
 
     return NextResponse.json({
       success: true,
-      licenseKey: licenseKey,
-      expiresAt: expiresAt.toISOString(),
-      packageType: normalizedPackageType,
-      email: normalizedEmail,
-      passwordSetUrl: passwordSetUrl,
+      licenseKey,
+      packageType,
+      invoiceNumber,
+      subscriptionCreated: !!subscription
     })
 
   } catch (error) {
-    console.error('Payment processing failed:', error)
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Processing failed'
-    }, { status: 500 })
+    console.error('❌ Payment processing failed:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to process payment' },
+      { status: 500 }
+    )
   }
 }
-

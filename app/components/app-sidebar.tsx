@@ -50,7 +50,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
   const userNav = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Lizenzen', href: '/dashboard/licenses', icon: Key },
-    { name: 'Rechnungen', href: '/dashboard/invoices', icon: FileText },
+    { name: 'Rechnungen & Abos', href: '/dashboard/invoices', icon: FileText },
     { name: 'Downloads', href: '/dashboard/downloads', icon: Download },
     { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
     { name: 'Einstellungen', href: '/dashboard/settings', icon: Settings },
