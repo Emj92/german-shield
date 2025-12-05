@@ -36,7 +36,6 @@ export default function AdminLicensesContent() {
   const [sendEmail, setSendEmail] = useState(false)
   const [loading, setLoading] = useState(false)
   const [loadingAll, setLoadingAll] = useState(true)
-  const [generatedLicenses, setGeneratedLicenses] = useState<GeneratedLicense[]>([])
   const [allLicenses, setAllLicenses] = useState<GeneratedLicense[]>([])
   const [filteredLicenses, setFilteredLicenses] = useState<GeneratedLicense[]>([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -101,7 +100,6 @@ export default function AdminLicensesContent() {
       const data = await res.json()
 
       if (data.success) {
-        setGeneratedLicenses(prev => [data.license, ...prev])
         setEmail('')
         setSendEmail(false)
         showNotification('success', 'Lizenz erfolgreich erstellt!')
