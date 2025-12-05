@@ -5,6 +5,10 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.4] - 2025-12-04
+### Behoben (Portal)
+- **Build-Fehler:** useSearchParams() in Suspense-Boundary gewickelt (Register-Seite)
+
 ## [1.5.3] - 2025-12-04
 ### Behoben
 - **Email-Anzeige:** Echte Email wird angezeigt statt "license-user@germanfence.local"

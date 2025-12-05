@@ -1,17 +1,17 @@
 {
   "name": "GermanFence",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "download_url": "https://germanfence.de/downloads/germanfence-plugin.zip",
   "homepage": "https://germanfence.de",
   "requires": "5.0",
   "tested": "6.4",
   "requires_php": "7.4",
-  "last_updated": "2025-12-04 20:30:00",
+  "last_updated": "2025-12-04 20:35:00",
   "author": "GermanFence Team",
   "author_homepage": "https://germanfence.de",
   "sections": {
     "description": "Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪",
-    "changelog": "<h4>1.5.3</h4><ul><li>Email-Anzeige korrigiert</li><li>Passwort-Setzen Link mit Email-Vorausfüllung</li><li>Verify-Email Link führt zu WP-Admin</li></ul><h4>1.5.2</h4><ul><li><strong>KRITISCH:</strong> FREE Lizenz KEINE PRO-Features</li><li>Hintergrundfarbe #F2F5F8</li></ul><h4>1.5.1</h4><ul><li>Badge 'GermanFence' statt 'German Shield'</li></ul>"
+    "changelog": "<h4>1.5.4</h4><ul><li>Portal Build-Fehler behoben</li></ul><h4>1.5.3</h4><ul><li>Email-Anzeige korrigiert</li><li>Passwort-Link mit Email-Vorausfüllung</li></ul><h4>1.5.2</h4><ul><li><strong>KRITISCH:</strong> FREE Lizenz KEINE PRO-Features</li></ul>"
   },
   "banners": {
     "low": "https://germanfence.de/assets/banner-772x250.png",

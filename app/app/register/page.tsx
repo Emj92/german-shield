@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,13 +8,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react'
+import { AlertCircle, Eye, EyeOff, Check, X, Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
-export default function RegisterPage() {
+function RegisterForm() {
   const { addToast } = useToast()
   const searchParams = useSearchParams()
   const [name, setName] = useState('')
@@ -376,5 +376,17 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-[#22D6DD]" />
+      </div>
+    }>
+      <RegisterForm />
+    </Suspense>
   )
 }
