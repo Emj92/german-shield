@@ -87,7 +87,7 @@ class GermanFence_Free_License {
     private function send_verification_email($email, $token) {
         $verification_url = admin_url('admin.php?page=germanfence&tab=license&verify_token=' . $token);
         $portal_url = 'https://portal.germanfence.de/login';
-        $password_reset_url = 'https://portal.germanfence.de/register?email=' . urlencode($email);
+        $password_reset_url = 'https://portal.germanfence.de/register?email=' . urlencode($email) . '&setPassword=true';
         
         $subject = '🛡️ GermanFence - E-Mail bestätigen';
         
@@ -319,7 +319,11 @@ class GermanFence_Free_License {
         ));
         
         // Wenn lokal gefunden, E-Mail übernehmen
-        $email = $user ? $user->email : 'license-user@germanfence.local';
+        // Wenn NICHT lokal gefunden, versuche von API zu holen (PRO-Keys)
+        $email = '';
+        if ($user) {
+            $email = $user->email;
+        }
         
         // Key-Typ bestimmen
         $key_type = 'CUSTOM';
@@ -348,6 +352,11 @@ class GermanFence_Free_License {
             require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php';
             $license = new GermanFence_License();
             $validation = $license->validate_license($key);
+            
+            // Email aus API-Response holen wenn nicht lokal gefunden
+            if (empty($email) && isset($validation['license']['userEmail'])) {
+                $email = $validation['license']['userEmail'];
+            }
             
             GermanFence_Logger::log('[LICENSE] API-Validierung nach Aktivierung: ' . json_encode($validation));
         }

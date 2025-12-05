@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -15,6 +16,7 @@ type PasswordStrength = 'weak' | 'medium' | 'strong' | 'very-strong'
 
 export default function RegisterPage() {
   const { addToast } = useToast()
+  const searchParams = useSearchParams()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,6 +27,14 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>('weak')
   const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null)
+
+  // Email aus Query-Parameter vorausfüllen
+  useEffect(() => {
+    const emailParam = searchParams?.get('email')
+    if (emailParam) {
+      setEmail(decodeURIComponent(emailParam))
+    }
+  }, [searchParams])
 
   // Passwort-Stärke berechnen
   useEffect(() => {
