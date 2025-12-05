@@ -15,6 +15,7 @@ interface PaymentMetadata {
   zipCode?: string
   city?: string
   country?: string
+  subscriptionId?: string
 }
 
 export async function POST(request: NextRequest) {
@@ -94,8 +95,11 @@ export async function POST(request: NextRequest) {
             status: subscription.status
           })
 
-          // Speichere Subscription ID in Metadata für Portal
-          metadata.subscriptionId = subscription.id
+          // Füge Subscription ID zu Metadata hinzu für Portal
+          const extendedMetadata = {
+            ...metadata,
+            subscriptionId: subscription.id
+          }
         } catch (subError) {
           console.error('❌ Failed to create subscription:', subError)
           // Trotzdem weitermachen - Lizenz wird erstellt
@@ -119,7 +123,7 @@ export async function POST(request: NextRequest) {
             packageType: packageType.toUpperCase(),
             molliePaymentId: payment.id,
             mollieCustomerId: customerId,
-            mollieSubscriptionId: metadata.subscriptionId,
+            mollieSubscriptionId: subscription?.id || metadata.subscriptionId,
             // Tax details
             netAmount: parseFloat(metadata.netAmount || payment.amount.value),
             taxAmount: parseFloat(metadata.taxAmount || '0'),
