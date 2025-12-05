@@ -588,24 +588,36 @@
         
         // Badge-Vorschau Live-Update
         function updateBadgePreview() {
-            var text = $('input[name="badge_text"]').val() || 'Geschützt durch German Shield';
+            var text = $('input[name="badge_text"]').val() || 'Geschützt durch GermanFence';
             var textColor = $('input[name="badge_text_color"]').val() || '#1d2327';
+            var borderColor = $('input[name="badge_border_color"]').val() || '#22D6DD';
+            var backgroundColor = $('input[name="badge_background_color"]').val() || '#ffffff';
             var customImage = $('input[name="badge_custom_image"]').val();
             
             $('#badge-text-preview').text(text).css('color', textColor);
+            $('#badge-preview').css({
+                'border-color': borderColor,
+                'background-color': backgroundColor
+            });
+            
             $('input[name="badge_text_color_hex"]').val(textColor);
+            $('input[name="badge_border_color_hex"]').val(borderColor);
+            $('input[name="badge_background_color_hex"]').val(backgroundColor);
             
             // Icon aktualisieren
             if (customImage && customImage.trim() !== '') {
                 $('#badge-icon').html('<img src="' + customImage + '" alt="Custom Icon" style="width: 24px; height: 24px; object-fit: contain;">');
             } else {
-                $('#badge-icon').html('<img src="' + germanfenceAdmin.pluginUrl + 'assets/images/logo_klein.png" alt="German Shield" style="width: 24px; height: 24px; object-fit: contain;">');
+                $('#badge-icon').html('<img src="' + germanfenceAdmin.pluginUrl + 'assets/images/germanfence_logo.png" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">');
             }
         }
         
         // Event-Listener
         $('input[name="badge_text"]').on('input', updateBadgePreview);
         $('input[name="badge_custom_image"]').on('input', updateBadgePreview);
+        
+        // Initiale Preview-Aktualisierung beim Laden
+        updateBadgePreview();
         
         // Color Picker Sync
         $('input[name="badge_text_color"]').on('input change', function() {
@@ -630,6 +642,56 @@
                 clearTimeout(inputTimeout);
                 inputTimeout = setTimeout(function() {
                     performAutoSave('badge_text_color', color);
+                }, 500);
+            }
+        });
+        
+        // Rahmenfarbe
+        $('input[name="badge_border_color"]').on('input change', function() {
+            var color = $(this).val();
+            $('input[name="badge_border_color_hex"]').val(color);
+            $('#badge-preview').css('border-color', color);
+            
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(function() {
+                performAutoSave('badge_border_color', color);
+            }, 500);
+        });
+        
+        $('input[name="badge_border_color_hex"]').on('input change', function() {
+            var color = $(this).val();
+            if (/^#[0-9A-F]{6}$/i.test(color)) {
+                $('input[name="badge_border_color"]').val(color);
+                $('#badge-preview').css('border-color', color);
+                
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(function() {
+                    performAutoSave('badge_border_color', color);
+                }, 500);
+            }
+        });
+        
+        // Hintergrundfarbe
+        $('input[name="badge_background_color"]').on('input change', function() {
+            var color = $(this).val();
+            $('input[name="badge_background_color_hex"]').val(color);
+            $('#badge-preview').css('background-color', color);
+            
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(function() {
+                performAutoSave('badge_background_color', color);
+            }, 500);
+        });
+        
+        $('input[name="badge_background_color_hex"]').on('input change', function() {
+            var color = $(this).val();
+            if (/^#[0-9A-F]{6}$/i.test(color)) {
+                $('input[name="badge_background_color"]').val(color);
+                $('#badge-preview').css('background-color', color);
+                
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(function() {
+                    performAutoSave('badge_background_color', color);
                 }, 500);
             }
         });

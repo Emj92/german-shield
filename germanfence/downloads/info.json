@@ -1,17 +1,17 @@
 {
   "name": "GermanFence",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "download_url": "https://germanfence.de/downloads/germanfence-plugin.zip",
   "homepage": "https://germanfence.de",
   "requires": "5.0",
   "tested": "6.4",
   "requires_php": "7.4",
-  "last_updated": "2025-12-05 10:00:00",
+  "last_updated": "2025-12-05 11:00:00",
   "author": "GermanFence Team",
   "author_homepage": "https://germanfence.de",
   "sections": {
     "description": "Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪",
-    "changelog": "<h4>1.6.0</h4><ul><li>Admin Lizenzverwaltung: Email-Checkbox, Suchfunktion, Löschen/Sperren</li><li>Badge: Rahmen- & Hintergrundfarbe anpassbar</li></ul><h4>1.5.4</h4><ul><li>Portal Build-Fehler behoben</li></ul><h4>1.5.3</h4><ul><li>Email-Anzeige korrigiert</li></ul>"
+    "changelog": "<h4>1.6.1</h4><ul><li>Badge-Farben Live-Preview & Speicherung behoben</li><li>Testpreise aktiv</li></ul><h4>1.6.0</h4><ul><li>Admin Lizenzverwaltung: Email-Checkbox, Suchfunktion, Löschen/Sperren</li><li>Badge: Rahmen- & Hintergrundfarbe anpassbar</li></ul>"
   },
   "banners": {
     "low": "https://germanfence.de/assets/banner-772x250.png",

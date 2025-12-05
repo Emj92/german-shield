@@ -1452,11 +1452,11 @@ class GermanFence_Admin {
                             
                             <h3 style="margin-top: 30px;">Vorschau</h3>
                             <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; text-align: center;">
-                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; padding: 10px 16px; border-radius: 6px; border: 1px solid #22D6DD; box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);">
+                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: 6px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(34, 214, 221, 0.2);">
                                     <span id="badge-icon">
                                         <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
-                                    <span id="badge-text-preview" style="font-size: 13px; font-weight: 600; color: #1d2327;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
+                                    <span id="badge-text-preview" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
                                 </div>
                             </div>
                         </div>

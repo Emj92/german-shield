@@ -298,9 +298,9 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Single</Badge>
-                <CardTitle className="text-4xl">29€</CardTitle>
+                <CardTitle className="text-4xl">0,50€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">pro Jahr</span> · 1 Website
+                  <span className="font-semibold text-[#22D6DD]">TEST-Preis</span> · 1 Website
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -344,7 +344,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={29} 
+                  price={0.50} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
@@ -360,9 +360,9 @@ export default function Home() {
               </div>
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Freelancer</Badge>
-                <CardTitle className="text-4xl">79€</CardTitle>
+                <CardTitle className="text-4xl">1,00€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">pro Jahr</span> · 5 Websites
+                  <span className="font-semibold text-[#22D6DD]">TEST-Preis</span> · 5 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -410,7 +410,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
-                  price={79}
+                  price={1.00}
                   className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
@@ -420,9 +420,9 @@ export default function Home() {
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Agency</Badge>
-                <CardTitle className="text-4xl">199€</CardTitle>
+                <CardTitle className="text-4xl">2,00€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">pro Jahr</span> · 25 Websites
+                  <span className="font-semibold text-[#F06292]">TEST-Preis</span> · 25 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -474,7 +474,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={199}
+                  price={2.00}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
