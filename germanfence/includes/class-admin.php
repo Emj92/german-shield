@@ -1361,14 +1361,32 @@ class GermanFence_Admin {
                     <div class="germanfence-section">
                         <h2 style="margin-top: 40px;">⭐ Badge - "Diese Seite wird geschützt"</h2>
                         
+                        <?php 
+                        $license = GermanFence_License::get_instance();
+                        $package_type = $license->get_package_type();
+                        $is_free = ($package_type === 'FREE');
+                        $has_whitelabel = $license->has_feature('whiteLabel');
+                        ?>
+                        
                         <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
-                                <input type="checkbox" name="badge_enabled" value="1" <?php checked(isset($settings['badge_enabled']) && $settings['badge_enabled'] === '1'); ?>>
+                            <label class="germanfence-toggle <?php echo $is_free ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="badge_enabled" value="1" 
+                                    <?php checked($is_free || (isset($settings['badge_enabled']) && $settings['badge_enabled'] === '1')); ?>
+                                    <?php echo $is_free ? 'disabled onclick="return false;"' : ''; ?>>
                                 <span class="toggle-slider"></span>
+                                <?php if ($is_free): ?>
+                                    <span class="toggle-lock-icon">🔒</span>
+                                <?php endif; ?>
                             </label>
                             <div class="setting-info">
-                                <h3>Badge anzeigen</h3>
-                                <p>Zeigt einen Badge auf der Website, dass sie durch GermanFence geschützt wird.</p>
+                                <h3>Badge anzeigen <?php echo $is_free ? '<span style="color: #22D6DD;">● Aktiv (FREE)</span>' : ''; ?></h3>
+                                <p>Zeigt einen Badge auf der Website, dass sie durch GermanFence geschützt wird.
+                                <?php if (!$has_whitelabel): ?>
+                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single-Lizenz</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
+                                <?php else: ?>
+                                    <br><strong style="color: #10b981;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
+                                <?php endif; ?>
+                                </p>
                             </div>
                         </div>
                         
@@ -1676,6 +1694,14 @@ class GermanFence_Admin {
             'block_comment_bots' => isset($_POST['block_comment_bots']) ? '1' : '0',
             'block_wp_update_emails' => isset($_POST['block_wp_update_emails']) ? '1' : '0',
         );
+        
+        // FREE Version: Badge MUSS aktiviert sein (Zwingend)
+        $license = GermanFence_License::get_instance();
+        $package_type = $license->get_package_type();
+        if ($package_type === 'FREE') {
+            $settings['badge_enabled'] = '1'; // Badge immer an bei FREE
+            GermanFence_Logger::log_save('FREE Version: Badge zwingend aktiviert');
+        }
         
         GermanFence_Logger::log_save('Einstellungen vorbereitet', $settings);
         

@@ -361,6 +361,10 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span className="font-semibold">🏷️ White Label (Badge ausblenden)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Erweiterte Honeypot-Kontrolle</span>
                   </li>
                   <li className="flex items-center gap-2">

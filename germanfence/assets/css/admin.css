@@ -910,6 +910,29 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     transform: translateX(24px);
 }
 
+/* Locked Toggle (FREE Version) */
+.germanfence-toggle-locked {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.germanfence-toggle-locked .toggle-slider {
+    cursor: not-allowed;
+    background-color: #22D6DD !important;
+}
+
+.germanfence-toggle-locked input {
+    cursor: not-allowed;
+}
+
+.toggle-lock-icon {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
 /* Subsettings */
 .germanfence-subsetting {
     margin: 20px 0 20px 0 !important;

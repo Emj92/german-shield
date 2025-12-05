@@ -10,9 +10,15 @@ if (!defined('ABSPATH')) {
 class GermanFence_Badge {
     
     private $settings;
+    private $class_hash; // Anti-CSS-Block Hash
     
     public function __construct() {
         $this->settings = get_option('germanfence_settings', array());
+        
+        // Generiere täglich wechselnden Hash für Klassennamen (Anti-CSS-Block)
+        $site_url = get_site_url();
+        $daily_seed = date('Ymd'); // Ändert sich täglich
+        $this->class_hash = substr(md5($site_url . $daily_seed . 'germanfence_badge_v2'), 0, 8);
         
         if (!empty($this->settings['badge_enabled'])) {
             $display_type = $this->settings['badge_display_type'] ?? 'global';
@@ -59,16 +65,22 @@ class GermanFence_Badge {
         // Konvertiere Hex zu RGB für Shadow
         $shadow_rgb = $this->hex_to_rgb($shadow_color);
         
+        // Anti-CSS-Block: Dynamische Klassennamen
+        $badge_class = 'gf-b-' . $this->class_hash;
+        $inner_class = 'gf-bi-' . $this->class_hash;
+        $icon_class = 'gf-ic-' . $this->class_hash;
+        $text_class = 'gf-tx-' . $this->class_hash;
+        
         ?>
-        <div class="germanfence-badge" style="<?php echo esc_attr($style); ?>">
-            <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
-               style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
+        <div class="<?php echo esc_attr($badge_class); ?>" style="position: fixed; z-index: 999999; <?php echo esc_attr($style); ?>">
+            <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="<?php echo esc_attr($inner_class); ?>" 
+               style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border: 1px solid <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2); transition: all 0.2s;">
                 <?php if ($custom_image): ?>
-                    <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
+                    <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php else: ?>
-                    <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
+                    <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php endif; ?>
-                <span class="germanfence-badge-text" style="color: <?php echo esc_attr($text_color); ?>;"><?php echo esc_html($text); ?></span>
+                <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap;"><?php echo esc_html($text); ?></span>
             </a>
         </div>
         <?php
@@ -98,18 +110,24 @@ class GermanFence_Badge {
         // Konvertiere Hex zu RGB für Shadow
         $shadow_rgb = $this->hex_to_rgb($shadow_color);
         
+        // Anti-CSS-Block: Dynamische Klassennamen
+        $local_class = 'gf-bfl-' . $this->class_hash;
+        $inner_class = 'gf-bi-' . $this->class_hash;
+        $icon_class = 'gf-ic-' . $this->class_hash;
+        $text_class = 'gf-tx-' . $this->class_hash;
+        
         ?>
         <!-- Badge Template (wird per JS zu Formularen hinzugefügt) -->
         <template id="germanfence-badge-template">
-            <div class="germanfence-badge-form-local" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
-                <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
-                   style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
+            <div class="<?php echo esc_attr($local_class); ?>" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
+                <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="<?php echo esc_attr($inner_class); ?>" 
+                   style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border: 1px solid <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2); transition: all 0.2s;">
                     <?php if ($custom_image): ?>
-                        <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
+                        <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php else: ?>
-                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
+                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php endif; ?>
-                    <span class="germanfence-badge-text" style="color: <?php echo esc_attr($text_color); ?>;"><?php echo esc_html($text); ?></span>
+                    <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap;"><?php echo esc_html($text); ?></span>
                 </a>
             </div>
         </template>
