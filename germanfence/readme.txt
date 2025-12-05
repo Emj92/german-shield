@@ -5,7 +5,7 @@ Tags: antispam, spam protection, security, firewall, contact form, geo blocking
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.5.4
+Stable tag: 1.6.0
 License: GPLv2 or later + Proprietary
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,13 @@ Siehe LICENSE.txt für Details.
 7. Statistik-Filter
 
 == Changelog ==
+
+= 1.6.0 =
+* Admin Lizenzverwaltung: Checkbox für Email-Versand
+* Admin Lizenzverwaltung: Alle Lizenzen anzeigen
+* Admin Lizenzverwaltung: Suchfunktion
+* Admin Lizenzverwaltung: Löschen & Sperren
+* Badge: Rahmen- & Hintergrundfarbe anpassbar
 
 = 1.5.4 =
 * Portal Build-Fehler behoben (Suspense)

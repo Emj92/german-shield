@@ -42,6 +42,8 @@ class GermanFence_Badge {
         $text = $this->settings['badge_text'] ?? 'Geschützt durch GermanFence';
         $custom_image = $this->settings['badge_custom_image'] ?? '';
         $text_color = $this->settings['badge_text_color'] ?? '#1d2327';
+        $border_color = $this->settings['badge_border_color'] ?? '#22D6DD';
+        $background_color = $this->settings['badge_background_color'] ?? '#ffffff';
         
         $position_styles = array(
             'bottom-right' => 'bottom: 20px; right: 20px;',
@@ -54,7 +56,8 @@ class GermanFence_Badge {
         
         ?>
         <div class="germanfence-badge" style="<?php echo esc_attr($style); ?>">
-            <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" style="text-decoration: none;">
+            <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
+               style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>;">
                 <?php if ($custom_image): ?>
                     <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                 <?php else: ?>
@@ -71,6 +74,8 @@ class GermanFence_Badge {
         $text = $this->settings['badge_text'] ?? 'Geschützt durch GermanFence';
         $custom_image = $this->settings['badge_custom_image'] ?? '';
         $text_color = $this->settings['badge_text_color'] ?? '#1d2327';
+        $border_color = $this->settings['badge_border_color'] ?? '#22D6DD';
+        $background_color = $this->settings['badge_background_color'] ?? '#ffffff';
         
         // Position für lokal am Formular: above/below
         $alignment_map = array(
@@ -87,7 +92,8 @@ class GermanFence_Badge {
         <!-- Badge Template (wird per JS zu Formularen hinzugefügt) -->
         <template id="germanfence-badge-template">
             <div class="germanfence-badge-form-local" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
-                <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" style="text-decoration: none;">
+                <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="germanfence-badge-inner" 
+                   style="text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border-color: <?php echo esc_attr($border_color); ?>;">
                     <?php if ($custom_image): ?>
                         <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                     <?php else: ?>

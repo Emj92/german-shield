@@ -1425,6 +1425,30 @@ class GermanFence_Admin {
                                     <span class="description" style="color: #646970;">Standard: #1d2327 (Dunkelgrau)</span>
                                 </div>
                             </div>
+
+                            <div class="setting-row" style="margin-bottom: 20px;">
+                                <label><strong>Rahmen-Farbe:</strong></label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                        style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                    <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                        style="width: 100px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                        placeholder="#22D6DD">
+                                    <span class="description" style="color: #646970;">Standard: #22D6DD (Türkis)</span>
+                                </div>
+                            </div>
+
+                            <div class="setting-row" style="margin-bottom: 20px;">
+                                <label><strong>Hintergrund-Farbe:</strong></label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                        style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                    <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                        style="width: 100px; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                        placeholder="#ffffff">
+                                    <span class="description" style="color: #646970;">Standard: #ffffff (Weiß)</span>
+                                </div>
+                            </div>
                             
                             <h3 style="margin-top: 30px;">Vorschau</h3>
                             <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; text-align: center;">
@@ -1588,6 +1612,8 @@ class GermanFence_Admin {
             'badge_position' => sanitize_text_field($_POST['badge_position'] ?? 'bottom-right'),
             'badge_text' => sanitize_text_field($_POST['badge_text'] ?? 'Geschützt durch GermanFence'),
             'badge_text_color' => sanitize_text_field($_POST['badge_text_color'] ?? '#1d2327'),
+            'badge_border_color' => sanitize_text_field($_POST['badge_border_color'] ?? '#22D6DD'),
+            'badge_background_color' => sanitize_text_field($_POST['badge_background_color'] ?? '#ffffff'),
             'badge_custom_image' => sanitize_text_field($_POST['badge_custom_image'] ?? ''),
             'block_admin_notices' => isset($_POST['block_admin_notices']) ? '1' : '0',
             'block_plugin_ads' => isset($_POST['block_plugin_ads']) ? '1' : '0',

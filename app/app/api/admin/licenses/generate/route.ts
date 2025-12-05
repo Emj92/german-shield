@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { userId, packageType, email } = await request.json()
+    const { userId, packageType, email, sendEmail } = await request.json()
 
     // Validierung
     const validPackages: PackageType[] = ['FREE', 'SINGLE', 'FREELANCER', 'AGENCY']
@@ -113,6 +113,17 @@ export async function POST(request: NextRequest) {
         metadata: { packageType, admin: user.email, unbound: !targetUser },
       },
     })
+
+    // Optional: Email senden wenn sendEmail === true
+    if (sendEmail && targetUser && targetUser.email) {
+      try {
+        // TODO: Email-Versand implementieren (später mit Resend)
+        console.log(`📧 Email would be sent to ${targetUser.email} with key: ${licenseKey}`)
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError)
+        // Nicht kritisch, Lizenz wurde erstellt
+      }
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Key, Plus, Copy, Check, Mail, X, CheckCircle2 } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Key, Plus, Copy, Check, Mail, X, CheckCircle2, Search, Trash2, Lock, Unlock } from 'lucide-react'
 
 type PackageType = 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
@@ -16,6 +17,8 @@ interface GeneratedLicense {
   packageType: string
   expiresAt: string
   maxDomains: number
+  status: string
+  isActive: boolean
   user: {
     id: string
     email: string
@@ -30,14 +33,53 @@ interface Notification {
 export default function AdminLicensesContent() {
   const [email, setEmail] = useState('')
   const [packageType, setPackageType] = useState<PackageType>('SINGLE')
+  const [sendEmail, setSendEmail] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [loadingAll, setLoadingAll] = useState(true)
   const [generatedLicenses, setGeneratedLicenses] = useState<GeneratedLicense[]>([])
+  const [allLicenses, setAllLicenses] = useState<GeneratedLicense[]>([])
+  const [filteredLicenses, setFilteredLicenses] = useState<GeneratedLicense[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [notification, setNotification] = useState<Notification | null>(null)
+
+  // Load all licenses on mount
+  useEffect(() => {
+    loadAllLicenses()
+  }, [])
+
+  // Filter licenses when search query changes
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredLicenses(allLicenses)
+    } else {
+      const query = searchQuery.toLowerCase()
+      setFilteredLicenses(allLicenses.filter(license => 
+        license.licenseKey.toLowerCase().includes(query) ||
+        license.user?.email.toLowerCase().includes(query) ||
+        license.packageType.toLowerCase().includes(query)
+      ))
+    }
+  }, [searchQuery, allLicenses])
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message })
     setTimeout(() => setNotification(null), 5000)
+  }
+
+  const loadAllLicenses = async () => {
+    try {
+      const res = await fetch('/api/admin/licenses/list')
+      const data = await res.json()
+      if (data.licenses) {
+        setAllLicenses(data.licenses)
+        setFilteredLicenses(data.licenses)
+      }
+    } catch (error) {
+      console.error('Failed to load licenses:', error)
+    } finally {
+      setLoadingAll(false)
+    }
   }
 
   const packages = [
@@ -53,7 +95,7 @@ export default function AdminLicensesContent() {
       const res = await fetch('/api/admin/licenses/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, packageType }),
+        body: JSON.stringify({ email, packageType, sendEmail }),
       })
 
       const data = await res.json()
@@ -61,7 +103,9 @@ export default function AdminLicensesContent() {
       if (data.success) {
         setGeneratedLicenses(prev => [data.license, ...prev])
         setEmail('')
+        setSendEmail(false)
         showNotification('success', 'Lizenz erfolgreich erstellt!')
+        loadAllLicenses() // Reload all licenses
       } else {
         showNotification('error', data.error || 'Fehler beim Generieren')
       }
@@ -70,6 +114,52 @@ export default function AdminLicensesContent() {
       showNotification('error', 'Fehler beim Generieren')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleToggleLicense = async (licenseId: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch('/api/admin/licenses/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ licenseId, isActive: !currentStatus }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        showNotification('success', currentStatus ? 'Lizenz gesperrt!' : 'Lizenz entsperrt!')
+        loadAllLicenses()
+      } else {
+        showNotification('error', data.error || 'Fehler')
+      }
+    } catch (error) {
+      console.error('Toggle failed:', error)
+      showNotification('error', 'Fehler beim Aktualisieren')
+    }
+  }
+
+  const handleDeleteLicense = async (licenseId: string, licenseKey: string) => {
+    if (!confirm(`Lizenz ${licenseKey} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden!`)) {
+      return
+    }
+
+    try {
+      const res = await fetch('/api/admin/licenses/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ licenseId }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        showNotification('success', 'Lizenz gelöscht!')
+        loadAllLicenses()
+      } else {
+        showNotification('error', data.error || 'Fehler beim Löschen')
+      }
+    } catch (error) {
+      console.error('Delete failed:', error)
+      showNotification('error', 'Fehler beim Löschen')
     }
   }
 
@@ -136,6 +226,23 @@ export default function AdminLicensesContent() {
             </p>
           </div>
 
+          {/* Send Email Checkbox */}
+          {email && email.trim() && (
+            <div className="flex items-center space-x-2 p-3 bg-slate-50 rounded-lg">
+              <Checkbox
+                id="sendEmail"
+                checked={sendEmail}
+                onCheckedChange={(checked) => setSendEmail(checked === true)}
+              />
+              <label
+                htmlFor="sendEmail"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Bestätigungsmail an Kunden senden
+              </label>
+            </div>
+          )}
+
           {/* Package Selection */}
           <div className="space-y-2">
             <Label>Paket auswählen</Label>
@@ -179,16 +286,36 @@ export default function AdminLicensesContent() {
         </CardContent>
       </Card>
 
-      {/* Generated Licenses Table */}
-      {generatedLicenses.length > 0 && (
-        <Card className="border">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-[#22D6DD]">
-              <Check className="h-5 w-5" />
-              Generierte Lizenzen ({generatedLicenses.length})
+      {/* All Licenses Table */}
+      <Card className="border">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Key className="h-5 w-5 text-[#22D6DD]" />
+              Alle Lizenzschlüssel ({allLicenses.length})
             </CardTitle>
-          </CardHeader>
-          <CardContent>
+            {/* Search */}
+            <div className="relative w-80">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+              <Input
+                placeholder="Suche nach Key, E-Mail oder Paket..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {loadingAll ? (
+            <div className="text-center py-8 text-slate-500">
+              Lade Lizenzen...
+            </div>
+          ) : filteredLicenses.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              {searchQuery ? 'Keine Lizenzen gefunden' : 'Noch keine Lizenzen erstellt'}
+            </div>
+          ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -196,19 +323,20 @@ export default function AdminLicensesContent() {
                     <th className="text-left py-2 px-3 font-medium text-slate-600">Lizenzschlüssel</th>
                     <th className="text-left py-2 px-3 font-medium text-slate-600">E-Mail</th>
                     <th className="text-left py-2 px-3 font-medium text-slate-600">Paket</th>
+                    <th className="text-left py-2 px-3 font-medium text-slate-600">Status</th>
                     <th className="text-left py-2 px-3 font-medium text-slate-600">Gültig bis</th>
-                    <th className="text-left py-2 px-3 font-medium text-slate-600"></th>
+                    <th className="text-right py-2 px-3 font-medium text-slate-600">Aktionen</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {generatedLicenses.map((license) => (
+                  {filteredLicenses.map((license) => (
                     <tr key={license.id} className="border-b last:border-0 hover:bg-slate-50">
                       <td className="py-2 px-3">
-                        <code className="font-mono text-sm bg-slate-100 px-2 py-1 rounded">
+                        <code className="font-mono text-xs bg-slate-100 px-2 py-1 rounded">
                           {license.licenseKey}
                         </code>
                       </td>
-                      <td className="py-2 px-3 text-slate-700">
+                      <td className="py-2 px-3 text-slate-700 text-xs">
                         {license.user?.email || <span className="text-slate-400 italic">Ungebunden</span>}
                       </td>
                       <td className="py-2 px-3">
@@ -221,27 +349,53 @@ export default function AdminLicensesContent() {
                           {license.packageType}
                         </Badge>
                       </td>
-                      <td className="py-2 px-3 text-slate-700">
+                      <td className="py-2 px-3">
+                        <Badge className={license.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}>
+                          {license.isActive ? 'Aktiv' : 'Gesperrt'}
+                        </Badge>
+                      </td>
+                      <td className="py-2 px-3 text-slate-700 text-xs">
                         {new Date(license.expiresAt).toLocaleDateString('de-DE')}
                       </td>
                       <td className="py-2 px-3">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyToClipboard(license.licenseKey, license.id)}
-                          className="h-8 w-8 p-0"
-                        >
-                          {copiedId === license.id ? <Check className="h-4 w-4 text-[#22D6DD]" /> : <Copy className="h-4 w-4" />}
-                        </Button>
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(license.licenseKey, license.id)}
+                            className="h-8 w-8 p-0"
+                            title="Kopieren"
+                          >
+                            {copiedId === license.id ? <Check className="h-4 w-4 text-[#22D6DD]" /> : <Copy className="h-4 w-4" />}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleToggleLicense(license.id, license.isActive)}
+                            className="h-8 w-8 p-0"
+                            title={license.isActive ? 'Sperren' : 'Entsperren'}
+                          >
+                            {license.isActive ? <Lock className="h-4 w-4 text-orange-600" /> : <Unlock className="h-4 w-4 text-green-600" />}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteLicense(license.id, license.licenseKey)}
+                            className="h-8 w-8 p-0"
+                            title="Löschen"
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

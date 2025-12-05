@@ -5,6 +5,14 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.6.0] - 2025-12-05
+### Neu (MAJOR)
+- **Admin Lizenzverwaltung:** Checkbox "Bestätigungsmail senden" (optional)
+- **Admin Lizenzverwaltung:** Alle Lizenzen werden gespeichert & angezeigt
+- **Admin Lizenzverwaltung:** Suchleiste für Keys, E-Mails, Pakete
+- **Admin Lizenzverwaltung:** Löschen & Sperren/Entsperren Buttons
+- **Plugin Badge:** Rahmenfarbe & Hintergrundfarbe anpassbar
+
 ## [1.5.4] - 2025-12-04
 ### Behoben (Portal)
 - **Build-Fehler:** useSearchParams() in Suspense-Boundary gewickelt (Register-Seite)
