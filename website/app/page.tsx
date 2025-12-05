@@ -98,15 +98,15 @@ export default function Home() {
             {/* Erste Reihe: 4 Kennzahlen */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">99.9%</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">🛡️ 99.9%</div>
                 <div className="text-slate-600 dark:text-slate-400">Spam-Block-Rate</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">&lt; 3ms</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">⚡ &lt; 3ms</div>
                 <div className="text-slate-600 dark:text-slate-400">Performance-Impact</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">100%</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">✅ 100%</div>
                 <div className="text-slate-600 dark:text-slate-400">DSGVO-konform</div>
               </div>
               <div>
@@ -118,15 +118,15 @@ export default function Home() {
             {/* Zweite Reihe: 4 Kennzahlen (gleichmäßig wie oben) */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">300k+</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">📧 300k+</div>
                 <div className="text-slate-600 dark:text-slate-400">Spammails geblockt</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">200+</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">😊 200+</div>
                 <div className="text-slate-600 dark:text-slate-400">Zufriedene Kunden</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-[#22D6DD] mb-2">24/7</div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">🔒 24/7</div>
                 <div className="text-slate-600 dark:text-slate-400">Schutz</div>
               </div>
               <div>
@@ -346,8 +346,8 @@ export default function Home() {
 
             {/* SINGLE */}
             <Card className="border-2 flex flex-col h-full">
-              <CardHeader>
-                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Single</Badge>
+              <CardHeader className="text-center">
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">Single</Badge>
                 <CardTitle className="text-4xl">29€</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 1 Website
@@ -412,8 +412,8 @@ export default function Home() {
                   ⭐ Beliebt
                 </Badge>
               </div>
-              <CardHeader>
-                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Freelancer</Badge>
+              <CardHeader className="text-center">
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">Freelancer</Badge>
                 <CardTitle className="text-4xl">99€</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 5 Websites
@@ -472,8 +472,8 @@ export default function Home() {
 
             {/* AGENCY */}
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
-              <CardHeader>
-                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Agency</Badge>
+              <CardHeader className="text-center">
+                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency</Badge>
                 <CardTitle className="text-4xl">0.50€</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   <span className="font-semibold text-[#F06292]">zzgl. Steuer</span> · 25 Websites <span className="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">TEST</span>

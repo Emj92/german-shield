@@ -67,20 +67,14 @@ export function AppSidebar({ user }: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border" style={{ height: '4.3rem' }}>
-        <div className="flex items-center justify-center gap-3 px-4 h-full">
+        <div className="flex items-center justify-center px-4 h-full">
           <Image 
-            src="/germanfence_logo.png" 
+            src="/germanfence_icon.png" 
             alt="GermanFence" 
-            width={36}
-            height={36}
-            className="h-9 w-9 object-contain"
+            width={48}
+            height={48}
+            className="h-12 w-12 object-contain"
           />
-          <div className="flex flex-col">
-            <span className="font-semibold text-sidebar-foreground">GermanFence</span>
-            <span className="text-xs text-muted-foreground">
-              {user.role === 'ADMIN' ? 'Admin-Portal' : 'User-Portal'}
-            </span>
-          </div>
         </div>
       </SidebarHeader>
 

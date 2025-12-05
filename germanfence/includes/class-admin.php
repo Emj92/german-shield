@@ -1418,21 +1418,24 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Badge-Text:</strong></label>
-                                <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                    style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
-                                    placeholder="Geschützt durch GermanFence">
-                            </div>
-                            
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label><strong>Eigenes Icon/Logo (URL):</strong></label>
-                                <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                    style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
-                                    placeholder="https://example.com/logo.png (max. 1.5MB)">
-                                <p class="description" style="margin-top: 5px; color: #646970;">
-                                    Leer lassen für Standard-Icon 🛡️. Empfohlen: 32x32px PNG/SVG, max. 1.5MB
-                                </p>
+                            <!-- 2-Spalten Layout für Badge-Text & Logo -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div class="setting-row">
+                                    <label><strong>Badge-Text:</strong></label>
+                                    <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
+                                        style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                        placeholder="Geschützt durch GermanFence">
+                                </div>
+                                
+                                <div class="setting-row">
+                                    <label><strong>Eigenes Icon/Logo (URL):</strong></label>
+                                    <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
+                                        style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                        placeholder="https://example.com/logo.png">
+                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 12px;">
+                                        Leer = Standard-Icon 🛡️
+                                    </p>
+                                </div>
                             </div>
                             
                             <!-- 2-Spalten Layout für Farben -->

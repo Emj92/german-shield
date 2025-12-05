@@ -36,11 +36,8 @@ class GermanFence_Badge {
     }
     
     public function enqueue_badge_styles() {
-        // Inline-Style direkt im Head ausgeben
-        $display_type = $this->settings['badge_display_type'] ?? 'global';
-        add_action('wp_head', function() use ($display_type) {
-            echo '<style>' . $this->get_badge_css($display_type) . '</style>';
-        });
+        // CSS wird nicht mehr benötigt - Alle Styles sind inline
+        // Anti-CSS-Block: Keine externen Styles verwendbar
     }
     
     public function render_badge() {
@@ -80,7 +77,7 @@ class GermanFence_Badge {
                 <?php else: ?>
                     <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php endif; ?>
-                <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap;"><?php echo esc_html($text); ?></span>
+                <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
             </a>
         </div>
         <?php
@@ -127,7 +124,7 @@ class GermanFence_Badge {
                     <?php else: ?>
                         <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php endif; ?>
-                    <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap;"><?php echo esc_html($text); ?></span>
+                    <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
                 </a>
             </div>
         </template>
