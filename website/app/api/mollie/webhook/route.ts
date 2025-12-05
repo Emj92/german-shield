@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
           const nextPaymentDate = new Date()
           nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
           
-          const subscription = await mollieClient.subscriptions.create({
+          const subscription = await mollieClient.customerSubscriptions.create({
             customerId: customerId,
             amount: {
               currency: 'EUR',
