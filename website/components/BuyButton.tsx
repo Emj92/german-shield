@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Download, Loader2, X, Mail, ShoppingCart, Building, MapPin, Globe, CheckCircle2, AlertCircle } from 'lucide-react'
 import { calculateTax, validateVatIdFormat, PACKAGE_NAMES, TAX_RATES } from '@/lib/tax-config'
+import { useLanguage } from '@/lib/language-context'
 
 interface BuyButtonProps {
   packageType: 'single' | 'freelancer' | 'agency'
@@ -13,6 +14,7 @@ interface BuyButtonProps {
 }
 
 export function BuyButton({ packageType, price, className, variant = 'default' }: BuyButtonProps) {
+  const { t } = useLanguage()
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [email, setEmail] = useState('')
@@ -60,7 +62,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
     setError('')
 
     if (!email || !email.includes('@') || !email.includes('.')) {
-      setError('Bitte gib eine gültige E-Mail-Adresse ein')
+      setError(t.modal.email + ' - Invalid format')
       return
     }
 
@@ -140,7 +142,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
         ) : (
           <>
             <ShoppingCart className="mr-2 h-4 w-4" />
-            Jetzt kaufen
+            {t.pricing.buyNow}
           </>
         )}
       </Button>
@@ -171,31 +173,38 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                   <ShoppingCart className="h-8 w-8 text-[#22D6DD]" />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                  {PACKAGE_NAMES[packageType]} Lizenz
+                  {PACKAGE_NAMES[packageType]} {t.modal.license}
                 </h2>
                 
                 {/* Preis-Anzeige */}
                 <div className="mt-4 space-y-1">
-                  <div className="text-sm text-slate-600 dark:text-slate-400">
-                    Netto: {taxCalc.netAmount.toFixed(2)}€
-                  </div>
+                  {!taxCalc.taxExempt && (
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                      {t.modal.net}: {taxCalc.netAmount.toFixed(2)}€
+                    </div>
+                  )}
                   {taxCalc.taxAmount > 0 && (
                     <div className="text-sm text-slate-600 dark:text-slate-400">
-                      + {taxCalc.taxLabel} ({taxCalc.taxRate}%): {taxCalc.taxAmount.toFixed(2)}€
+                      {t.modal.plus} {taxCalc.taxLabel} ({taxCalc.taxRate}%): {taxCalc.taxAmount.toFixed(2)}€
                     </div>
                   )}
                   {taxCalc.taxExempt && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-green-600">
+                    <div className="flex items-center justify-center gap-2 text-sm text-green-600 mb-2">
                       <CheckCircle2 className="h-4 w-4" />
-                      Reverse Charge (Steuerbefreit)
+                      {t.modal.reverseCharge}
                     </div>
                   )}
                   <div className="text-2xl font-bold text-[#22D6DD]">
-                    {taxCalc.grossAmount.toFixed(2)}€ / Jahr
+                    {taxCalc.taxExempt ? taxCalc.netAmount.toFixed(2) : taxCalc.grossAmount.toFixed(2)}€ {t.modal.perYear}
                   </div>
+                  {taxCalc.taxExempt && (
+                    <div className="text-xs text-slate-500">
+                      ({t.modal.netNotice})
+                    </div>
+                  )}
                   {taxCalc.taxAmount === 0 && !taxCalc.taxExempt && (
                     <div className="text-xs text-slate-500">
-                      (Steuerfrei in {TAX_RATES[country]?.country || 'diesem Land'})
+                      ({t.modal.taxFree} {TAX_RATES[country]?.country || 'diesem Land'})
                     </div>
                   )}
                 </div>
@@ -206,7 +215,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                 {/* E-Mail */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    E-Mail-Adresse *
+                    {t.modal.email} *
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
@@ -216,7 +225,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="deine@email.de"
+                      placeholder={t.modal.emailPlaceholder}
                       className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:border-[#22D6DD] focus:ring-2 focus:ring-[#22D6DD]/20 outline-none transition-all"
                       required
                     />
@@ -230,10 +239,11 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                     id="isBusiness"
                     checked={isBusiness}
                     onChange={(e) => setIsBusiness(e.target.checked)}
-                    className="w-5 h-5 rounded border-slate-300 text-[#22D6DD] focus:ring-[#22D6DD]"
+                    className="w-5 h-5 rounded border-slate-300 dark:border-slate-600 focus:ring-[#22D6DD] focus:ring-offset-0 checked:bg-[#22D6DD] checked:border-[#22D6DD]"
+                    style={{ accentColor: '#22D6DD' }}
                   />
                   <label htmlFor="isBusiness" className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
-                    🏢 Ich kaufe als Firma ein
+                    🏢 {t.modal.companyPurchase}
                   </label>
                 </div>
 
@@ -368,7 +378,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
 
                 {/* Info */}
                 <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
-                  💳 Sichere Zahlung über Mollie · 14 Tage Geld-zurück-Garantie · Automatische Verlängerung jährlich
+                  {t.modal.securePayment}
                 </p>
 
                 {/* Buttons */}
@@ -380,7 +390,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                     className="flex-1 border-slate-300 dark:border-slate-600"
                     disabled={loading}
                   >
-                    Abbrechen
+                    {t.modal.cancel}
                   </Button>
                   <Button
                     type="submit"
@@ -390,12 +400,12 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                     {loading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Wird geladen...
+                        {t.modal.loading}
                       </>
                     ) : (
                       <>
                         <Download className="mr-2 h-4 w-4" />
-                        Zur Zahlung
+                        {t.modal.toPay}
                       </>
                     )}
                   </Button>

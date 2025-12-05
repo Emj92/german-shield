@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useLanguage } from '@/lib/language-context'
 
 type Language = 'de' | 'en'
 
@@ -21,17 +22,13 @@ function Flag({ code, size = 20 }: { code: 'de' | 'us', size?: number }) {
 }
 
 export function LanguageSwitcher() {
-  const [language, setLanguage] = useState<Language>('de')
+  const { language, setLanguage } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
-    const savedLang = localStorage.getItem('language') as Language
-    if (savedLang && (savedLang === 'de' || savedLang === 'en')) {
-      setLanguage(savedLang)
-    }
   }, [])
 
   useEffect(() => {
@@ -46,7 +43,6 @@ export function LanguageSwitcher() {
 
   const changeLanguage = (lang: Language) => {
     setLanguage(lang)
-    localStorage.setItem('language', lang)
     setIsOpen(false)
   }
 

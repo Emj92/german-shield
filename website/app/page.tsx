@@ -97,26 +97,41 @@ export default function Home() {
       {/* Stats/Trust Section */}
       <section className="py-16 px-6 bg-white dark:bg-slate-900">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">99.9%</div>
-              <div className="text-slate-600 dark:text-slate-400">Spam-Block-Rate</div>
+          <div className="space-y-8">
+            {/* Erste Reihe: 4 Kennzahlen */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">99.9%</div>
+                <div className="text-slate-600 dark:text-slate-400">Spam-Block-Rate</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">&lt; 3ms</div>
+                <div className="text-slate-600 dark:text-slate-400">Performance-Impact</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">100%</div>
+                <div className="text-slate-600 dark:text-slate-400">DSGVO-konform</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">🇩🇪 100%</div>
+                <div className="text-slate-600 dark:text-slate-400">In Deutschland gehostet</div>
+              </div>
             </div>
-            <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">&lt; 3ms</div>
-              <div className="text-slate-600 dark:text-slate-400">Performance-Impact</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">100%</div>
-              <div className="text-slate-600 dark:text-slate-400">DSGVO-konform</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">🇩🇪 100%</div>
-              <div className="text-slate-600 dark:text-slate-400">In Deutschland gehostet</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">24/7</div>
-              <div className="text-slate-600 dark:text-slate-400">Schutz</div>
+            
+            {/* Zweite Reihe: 3 Kennzahlen (zentriert) */}
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center">
+              <div className="w-40">
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">300k+</div>
+                <div className="text-slate-600 dark:text-slate-400">Spammails geblockt</div>
+              </div>
+              <div className="w-40">
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">200+</div>
+                <div className="text-slate-600 dark:text-slate-400">Zufriedene Kunden</div>
+              </div>
+              <div className="w-40">
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">24/7</div>
+                <div className="text-slate-600 dark:text-slate-400">Schutz</div>
+              </div>
             </div>
           </div>
         </div>
@@ -602,7 +617,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-slate-800 pt-8 space-y-4">
+          <div className="border-t border-slate-800 pt-8 space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-slate-400">© 2024-2025 GermanFence. Alle Rechte vorbehalten.</p>
               <div className="flex items-center gap-2 text-slate-400">
@@ -616,7 +631,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="text-center text-sm text-slate-500">
+            <div className="text-center text-sm text-slate-500 pt-4">
               💶 Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer | All prices plus VAT
             </div>
           </div>
