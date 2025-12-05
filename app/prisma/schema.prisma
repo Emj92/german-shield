@@ -384,7 +384,10 @@ enum LicenseAction {
   EXPIRED     // Abgelaufen
   SUSPENDED   // Gesperrt
   REACTIVATED // Wieder aktiviert
+  ACTIVATED   // Aktiviert (Admin)
+  BLOCKED     // Gesperrt (Admin)
   CANCELLED   // Gekündigt
+  DELETED     // Gelöscht (Admin)
   DOMAIN_ADDED    // Domain hinzugefügt
   DOMAIN_REMOVED  // Domain entfernt
 }

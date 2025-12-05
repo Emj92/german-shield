@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       where: { id: licenseId },
       data: { 
         isActive,
-        status: isActive ? 'ACTIVE' : 'BLOCKED',
+        status: isActive ? 'ACTIVE' : 'SUSPENDED',
       },
     })
 
