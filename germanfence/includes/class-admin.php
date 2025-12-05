@@ -1596,18 +1596,18 @@ class GermanFence_Admin {
                                     </ul>
                                 </div>
                                 
-                                <div style="padding: 15px; background: #F2F5F8; border-radius: 6px; text-align: center;">
-                                    <p style="margin: 0 0 12px 0; color: #646970; font-size: 13px;">
+                                <div style="padding: 20px; background: #ffffff; border: 1px solid #c3cbd5; border-radius: 6px; text-align: center;">
+                                    <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px;">
                                         📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
                                     </p>
                                     <a href="<?php echo GERMANFENCE_PLUGIN_URL; ?>data/av-vertrag.pdf" 
                                        target="_blank" 
                                        class="germanfence-btn-secondary"
-                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; transition: all 0.2s;">
-                                        <span class="dashicons dashicons-download" style="font-size: 16px;"></span>
+                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                        <span class="dashicons dashicons-download" style="font-size: 18px;"></span>
                                         AV-Vertrag herunterladen (PDF)
                                     </a>
-                                    <p style="margin: 12px 0 0 0; color: #888; font-size: 11px;">
+                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px;">
                                         Rechtlich verbindlicher Vertrag zur Auftragsverarbeitung gem. Art. 28 DSGVO
                                     </p>
                                 </div>
