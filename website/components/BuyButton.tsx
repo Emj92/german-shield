@@ -33,7 +33,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
 
   // Tax Berechnung aktualisieren
   useEffect(() => {
-    const hasValidVat = isBusiness && vatId && validateVatIdFormat(vatId, country)
+    const hasValidVat = !!(isBusiness && vatId && validateVatIdFormat(vatId, country))
     setTaxCalc(calculateTax(price, country, hasValidVat))
   }, [price, country, vatId, isBusiness])
 
@@ -122,7 +122,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
   }
 
   const countries = Object.values(TAX_RATES)
-  const vatValid = isBusiness && vatId && validateVatIdFormat(vatId, country)
+  const vatValid = !!(isBusiness && vatId && validateVatIdFormat(vatId, country))
 
   return (
     <>
