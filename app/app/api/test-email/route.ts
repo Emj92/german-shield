@@ -45,13 +45,13 @@ export async function GET(request: NextRequest) {
       result: result
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Resend test failed:', error)
     
     return NextResponse.json({
       success: false,
       error: '❌ Resend API Fehler',
-      details: error.message,
+      details: error instanceof Error ? error.message : 'Unknown error',
       help: 'Prüfe ob RESEND_API_KEY korrekt ist und hallo@germanfence.de in Resend verifiziert ist'
     }, { status: 500 })
   }
