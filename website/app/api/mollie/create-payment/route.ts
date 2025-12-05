@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createMollieClient } from '@mollie/api-client'
+import { createMollieClient, SequenceType } from '@mollie/api-client'
 
 export async function POST(request: NextRequest) {
   try {
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       description: description || `GermanFence ${package_type} License - Jahr 1`,
       redirectUrl: redirectUrl,
       webhookUrl: `${baseUrl}/api/mollie/webhook`,
-      sequenceType: 'first', // Erste Zahlung einer Subscription
+      sequenceType: SequenceType.first, // Erste Zahlung einer Subscription
       metadata: {
         package_type: package_type,
         email: email,
