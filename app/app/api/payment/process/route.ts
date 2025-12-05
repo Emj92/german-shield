@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       data: {
         userId: user.id,
         licenseKey,
-        packageType: packageType as any,
+        packageType: packageType as 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY',
         status: 'ACTIVE',
         isActive: true,
         expiresAt,
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
           licenseId: license.id,
           mollieSubscriptionId,
           mollieCustomerId,
-          packageType: packageType as any,
+          packageType: packageType as 'FREE' | 'SINGLE' | 'FREELANCER' | 'AGENCY',
           netAmount: netAmount || grossAmount,
           taxAmount: taxAmount || 0,
           taxRate: taxRate || 0,
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
 
     const taxExempt = isBusiness && vatId && taxAmount === 0 && country !== 'DE'
 
-    const invoice = await prisma.invoice.create({
+    await prisma.invoice.create({
       data: {
         userId: user.id,
         invoiceNumber,

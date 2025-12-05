@@ -50,7 +50,32 @@ export async function GET(
   }
 }
 
-function generateInvoiceHTML(invoice: any): string {
+interface InvoiceData {
+  invoiceNumber: string
+  issuedAt: Date
+  paidAt?: Date | null
+  isBusiness: boolean
+  companyName?: string | null
+  street?: string | null
+  zipCode?: string | null
+  city?: string | null
+  country: string
+  vatId?: string | null
+  netAmount: number
+  taxAmount: number
+  taxRate: number
+  grossAmount: number
+  taxLabel?: string | null
+  taxExempt: boolean
+  description?: string | null
+  molliePaymentId?: string | null
+  user: {
+    email: string
+    name?: string | null
+  }
+}
+
+function generateInvoiceHTML(invoice: InvoiceData): string {
   const taxExemptText = invoice.taxExempt 
     ? '<div style="color: #059669; font-size: 14px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
     : ''

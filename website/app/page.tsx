@@ -103,12 +103,16 @@ export default function Home() {
               <div className="text-slate-600 dark:text-slate-400">Spam-Block-Rate</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#22D6DD] mb-2">0ms</div>
+              <div className="text-4xl font-bold text-[#22D6DD] mb-2">&lt; 3ms</div>
               <div className="text-slate-600 dark:text-slate-400">Performance-Impact</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-[#22D6DD] mb-2">100%</div>
               <div className="text-slate-600 dark:text-slate-400">DSGVO-konform</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-[#22D6DD] mb-2">🇩🇪 100%</div>
+              <div className="text-slate-600 dark:text-slate-400">In Deutschland gehostet</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-[#22D6DD] mb-2">24/7</div>
@@ -187,6 +191,36 @@ export default function Home() {
                 <CardTitle>Live-Statistiken</CardTitle>
                 <CardDescription>
                   Echtzeitüberwachung aller Anfragen mit detaillierten Analytics
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Zap className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>Bestes Preis-Leistungs-Verhältnis</CardTitle>
+                <CardDescription>
+                  Premium-Schutz ab 29€/Jahr - günstiger als die Konkurrenz
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>100% Made in Germany</CardTitle>
+                <CardDescription>
+                  Alle Daten werden ausschließlich in Deutschland verarbeitet & gespeichert
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Lock className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>Ohne Captchas</CardTitle>
+                <CardDescription>
+                  Kein nerviges Captcha - deine User merken nichts vom Spam-Schutz
                 </CardDescription>
               </CardHeader>
             </Card>
