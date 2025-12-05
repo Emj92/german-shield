@@ -298,9 +298,9 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Single</Badge>
-                <CardTitle className="text-4xl">0,50€</CardTitle>
+                <CardTitle className="text-4xl">29€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">TEST-Preis</span> · 1 Website
+                  <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 1 Website
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -344,7 +344,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={0.50} 
+                  price={29} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
@@ -360,9 +360,9 @@ export default function Home() {
               </div>
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD]">Freelancer</Badge>
-                <CardTitle className="text-4xl">1,00€</CardTitle>
+                <CardTitle className="text-4xl">99€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">TEST-Preis</span> · 5 Websites
+                  <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 5 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -410,7 +410,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
-                  price={1.00}
+                  price={99}
                   className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
@@ -420,9 +420,9 @@ export default function Home() {
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Agency</Badge>
-                <CardTitle className="text-4xl">2,00€</CardTitle>
+                <CardTitle className="text-4xl">299€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">TEST-Preis</span> · 25 Websites
+                  <span className="font-semibold text-[#F06292]">zzgl. Steuer</span> · 25 Websites
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -474,7 +474,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={2.00}
+                  price={299}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
@@ -548,9 +548,9 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-lg mb-6 text-white">Lizenzen</h3>
               <ul className="space-y-3 text-slate-400">
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (19€)</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (39€)</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Unlimited (99€)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (29€ zzgl. Steuer)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€ zzgl. Steuer)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (299€ zzgl. Steuer)</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">WordPress.org</a></li>
                 <li><Link href="/login" className="hover:text-[#22D6DD] transition">Dashboard</Link></li>
@@ -568,17 +568,22 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-400">© 2024-2025 GermanFence. Alle Rechte vorbehalten.</p>
-            <div className="flex items-center gap-2 text-slate-400">
-              <span>Made with</span>
-              <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#F06292] hover:text-[#F06292]/80 transition">
-                ❤️
-              </a>
-              <span className="flex items-center gap-1">in Germany <Image src="/flags/de.svg" alt="DE" width={16} height={11} className="inline rounded-sm" /> by</span>
-              <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#22D6DD] hover:text-[#22D6DD]/80 transition font-semibold">
-                Meindl Webdesign
-              </a>
+          <div className="border-t border-slate-800 pt-8 space-y-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-slate-400">© 2024-2025 GermanFence. Alle Rechte vorbehalten.</p>
+              <div className="flex items-center gap-2 text-slate-400">
+                <span>Made with</span>
+                <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#F06292] hover:text-[#F06292]/80 transition">
+                  ❤️
+                </a>
+                <span className="flex items-center gap-1">in Germany <Image src="/flags/de.svg" alt="DE" width={16} height={11} className="inline rounded-sm" /> by</span>
+                <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#22D6DD] hover:text-[#22D6DD]/80 transition font-semibold">
+                  Meindl Webdesign
+                </a>
+              </div>
+            </div>
+            <div className="text-center text-sm text-slate-500">
+              💶 Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer | All prices plus VAT
             </div>
           </div>
         </div>
