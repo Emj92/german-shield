@@ -115,7 +115,7 @@ function SetPasswordContent() {
       <Card className="w-full max-w-md relative z-10 border-[#22D6DD]/30 bg-slate-900/50 backdrop-blur">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image src="/germanfence_logo.png" alt="GermanFence" width={56} height={56} />
+            <Image src="/germanfence_logo.png" alt="GermanFence" width={73} height={73} />
           </div>
           <CardTitle className="text-2xl text-white">Passwort festlegen</CardTitle>
           <CardDescription className="text-slate-400">

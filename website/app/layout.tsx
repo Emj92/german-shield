@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title: "GermanFence - Anti-Spam Plugin",
   description: "Bestes WordPress Anti-Spam Plugin aus Deutschland. Schützt alle Formulare vor Spam mit Honeypot, GEO-Blocking und mehr.",
   icons: {
-    icon: '/germanfence_logo.png',
-    shortcut: '/germanfence_logo.png',
-    apple: '/germanfence_logo.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/germanfence_icon.png',
   },
 };
 

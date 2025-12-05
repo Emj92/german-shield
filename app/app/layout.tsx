@@ -10,9 +10,9 @@ export const metadata: Metadata = {
   title: 'GermanFence Portal',
   description: 'Admin & User Portal für GermanFence WordPress Plugin',
   icons: {
-    icon: '/germanfence_logo.png',
-    shortcut: '/germanfence_logo.png',
-    apple: '/germanfence_logo.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/germanfence_icon.png',
   },
 }
 

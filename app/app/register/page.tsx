@@ -169,16 +169,14 @@ function RegisterForm() {
       <AnimatedBackground />
       <div className="w-full max-w-md space-y-8 relative z-10">
         {/* Logo */}
-        <div className="flex flex-col items-center space-y-2">
+        <div className="flex flex-col items-center">
           <Image 
             src="/germanfence_logo.png" 
             alt="GermanFence" 
-            width={80}
-            height={80}
-            className="h-20 w-20 object-contain"
+            width={104}
+            height={104}
+            className="h-26 w-26 object-contain"
           />
-          <h1 className="text-3xl font-bold">GermanFence</h1>
-          <p className="text-muted-foreground">Portal</p>
         </div>
 
 
