@@ -118,19 +118,23 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Zweite Reihe: 3 Kennzahlen (zentriert) */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center">
-              <div className="w-40">
+            {/* Zweite Reihe: 4 Kennzahlen (gleichmäßig wie oben) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">300k+</div>
                 <div className="text-slate-600 dark:text-slate-400">Spammails geblockt</div>
               </div>
-              <div className="w-40">
+              <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">200+</div>
                 <div className="text-slate-600 dark:text-slate-400">Zufriedene Kunden</div>
               </div>
-              <div className="w-40">
+              <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">24/7</div>
                 <div className="text-slate-600 dark:text-slate-400">Schutz</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-[#22D6DD] mb-2">🚀 100%</div>
+                <div className="text-slate-600 dark:text-slate-400">Made in Germany</div>
               </div>
             </div>
           </div>
@@ -282,7 +286,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-6">
+      <section id="pricing" className="py-20 px-6 mb-20">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
@@ -469,9 +473,9 @@ export default function Home() {
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292]">Agency</Badge>
-                <CardTitle className="text-4xl">299€</CardTitle>
+                <CardTitle className="text-4xl">0.50€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">zzgl. Steuer</span> · 25 Websites
+                  <span className="font-semibold text-[#F06292]">zzgl. Steuer</span> · 25 Websites <span className="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">TEST</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -523,7 +527,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={299}
+                  price={0.50}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />

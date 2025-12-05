@@ -66,7 +66,7 @@ class GermanFence_Badge {
                 <?php if ($custom_image): ?>
                     <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                 <?php else: ?>
-                    <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
+                    <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
                 <?php endif; ?>
                 <span class="germanfence-badge-text" style="color: <?php echo esc_attr($text_color); ?>;"><?php echo esc_html($text); ?></span>
             </a>
@@ -107,7 +107,7 @@ class GermanFence_Badge {
                     <?php if ($custom_image): ?>
                         <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="germanfence-badge-icon">
                     <?php else: ?>
-                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence_logo.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
+                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="germanfence-badge-icon">
                     <?php endif; ?>
                     <span class="germanfence-badge-text" style="color: <?php echo esc_attr($text_color); ?>;"><?php echo esc_html($text); ?></span>
                 </a>
