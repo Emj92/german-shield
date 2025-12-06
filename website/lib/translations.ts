@@ -6,10 +6,10 @@ export const translations = {
   de: {
     // Hero Section
     hero: {
-      title: 'Schütze deine WordPress-Website vor Spam',
-      subtitle: 'Leistungsstarker Anti-Spam-Schutz ohne nervige Captchas. Made in Germany. DSGVO-konform.',
-      cta: 'Jetzt starten',
-      learnMore: 'Mehr erfahren',
+      title: 'Bestes WordPress Anti-Spam Plugin',
+      subtitle: 'Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr.',
+      cta: 'Plugin herunterladen',
+      learnMore: 'Live Demo',
     },
     // Stats
     stats: {
@@ -28,8 +28,8 @@ export const translations = {
     },
     // Pricing
     pricing: {
-      title: 'Einfache, faire Preise',
-      subtitle: 'Wähle das Paket, das zu dir passt. Alle Pakete mit 14 Tage Geld-zurück-Garantie.',
+      title: 'Flexible Jahreslizenzen',
+      subtitle: 'Faire Preise für professionellen Spam-Schutz 🛡️',
       single: 'Single',
       singleDesc: 'Jährlich · 1 Website',
       freelancer: 'Freelancer',
@@ -81,10 +81,10 @@ export const translations = {
   en: {
     // Hero Section
     hero: {
-      title: 'Protect Your WordPress Website from Spam',
-      subtitle: 'Powerful anti-spam protection without annoying captchas. Made in Germany. GDPR compliant.',
-      cta: 'Get Started',
-      learnMore: 'Learn More',
+      title: 'Best WordPress Anti-Spam Plugin',
+      subtitle: 'Protects all WordPress forms from spam with cutting-edge techniques: Honeypot, Timestamp, GEO-Blocking, intelligent phrase detection and more.',
+      cta: 'Download Plugin',
+      learnMore: 'Live Demo',
     },
     // Stats
     stats: {
@@ -103,8 +103,8 @@ export const translations = {
     },
     // Pricing
     pricing: {
-      title: 'Simple, Fair Pricing',
-      subtitle: 'Choose the package that suits you. All packages with 14-day money-back guarantee.',
+      title: 'Flexible Annual Licenses',
+      subtitle: 'Fair prices for professional spam protection 🛡️',
       single: 'Single',
       singleDesc: 'Yearly · 1 Website',
       freelancer: 'Freelancer',

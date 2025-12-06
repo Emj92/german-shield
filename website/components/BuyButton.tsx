@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
 import { Download, Loader2, X, Mail, ShoppingCart, Building, MapPin, Globe, CheckCircle2, AlertCircle } from 'lucide-react'
 import { calculateTax, validateVatIdFormat, PACKAGE_NAMES, TAX_RATES } from '@/lib/tax-config'
@@ -19,7 +20,13 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
   const [showModal, setShowModal] = useState(false)
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const [mounted, setMounted] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  
+  // Ensure component is mounted (for portal)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   // Firmenfelder
   const [isBusiness, setIsBusiness] = useState(false)
@@ -147,8 +154,8 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
         )}
       </Button>
 
-      {/* Custom Modal */}
-      {showModal && (
+      {/* Custom Modal - Using Portal */}
+      {showModal && mounted && createPortal(
         <div 
           className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && setShowModal(false)}
@@ -413,7 +420,8 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
               </form>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

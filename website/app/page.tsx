@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -7,8 +9,11 @@ import { BuyButton } from "@/components/BuyButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
+  const { t } = useLanguage()
+  
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Header/Nav */}
@@ -24,9 +29,9 @@ export default function Home() {
             />
           </div>
           <nav className="hidden md:flex items-center gap-4">
-            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Features</a>
+            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.features.title}</a>
             <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
-            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
+            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.pricing.title}</a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-transparent hover:border-[#22D6DD] hover:text-[#22D6DD]">
                 <LogIn className="mr-2 h-4 w-4" />
@@ -58,22 +63,22 @@ export default function Home() {
             GermanFence
           </h1>
           <p className="text-2xl md:text-3xl text-slate-700 dark:text-slate-300 mb-4 font-semibold">
-            Bestes WordPress Anti-Spam Plugin
+            {t.hero.title}
           </p>
           <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">
-            Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr.
+            {t.hero.subtitle}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button size="lg" className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white px-8 py-6 text-lg transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
-                Plugin herunterladen
+                {t.hero.cta}
               </Button>
             </a>
             <Button size="lg" variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] px-8 py-6 text-lg transition-transform hover:-translate-y-1">
               <Shield className="mr-2 h-5 w-5" />
-              Live Demo
+              {t.hero.learnMore}
             </Button>
           </div>
 
@@ -99,19 +104,19 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">🛡️ 99.9%</div>
-                <div className="text-slate-600 dark:text-slate-400">Spam-Block-Rate</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.spamBlockRate}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">⚡ &lt; 3ms</div>
-                <div className="text-slate-600 dark:text-slate-400">Performance-Impact</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.performance}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">✅ 100%</div>
-                <div className="text-slate-600 dark:text-slate-400">DSGVO-konform</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.gdpr}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">🇩🇪 100%</div>
-                <div className="text-slate-600 dark:text-slate-400">In Deutschland gehostet</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.hosted}</div>
               </div>
             </div>
             
@@ -119,15 +124,15 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">📧 300k+</div>
-                <div className="text-slate-600 dark:text-slate-400">Spammails geblockt</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.spamBlocked}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">😊 200+</div>
-                <div className="text-slate-600 dark:text-slate-400">Zufriedene Kunden</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.customers}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">🔒 24/7</div>
-                <div className="text-slate-600 dark:text-slate-400">Schutz</div>
+                <div className="text-slate-600 dark:text-slate-400">{t.stats.protection}</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-[#22D6DD] mb-2">🚀 100%</div>
@@ -143,10 +148,10 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-              Leistungsstarke Features
+              {t.features.title}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Alles was du brauchst, um deine WordPress-Site vor Spam zu schützen
+              {t.features.subtitle}
             </p>
           </div>
 
