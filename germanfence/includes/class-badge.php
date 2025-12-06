@@ -116,7 +116,7 @@ class GermanFence_Badge {
         ?>
         <!-- Badge Template (wird per JS zu Formularen hinzugefügt) -->
         <template id="germanfence-badge-template">
-            <div class="<?php echo esc_attr($local_class); ?>" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
+            <div class="germanfence-badge-form-local <?php echo esc_attr($local_class); ?>" style="text-align: <?php echo esc_attr($alignment); ?>; margin: 15px 0;">
                 <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer" class="<?php echo esc_attr($inner_class); ?>" 
                    style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; text-decoration: none; background: <?php echo esc_attr($background_color); ?>; border: 1px solid <?php echo esc_attr($border_color); ?>; border-radius: <?php echo esc_attr($border_radius); ?>px; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2); transition: all 0.2s;">
                     <?php if ($custom_image): ?>
