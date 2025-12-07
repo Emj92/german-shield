@@ -1,0 +1,24 @@
+{
+    "version":  "1.7.2",
+    "sections":  {
+                     "changelog":  "\u003ch4\u003e1.7.2\u003c/h4\u003e\u003cul\u003e\u003cli\u003eBadge Doppel-Anzeige behoben\u003c/li\u003e\u003cli\u003eUpdate-System repariert\u003c/li\u003e\u003c/ul\u003e",
+                     "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
+                 },
+    "author_homepage":  "https://germanfence.de",
+    "download_url":  "https://germanfence.de/downloads/germanfence-plugin.zip",
+    "last_updated":  "2025-12-07 07:54:06",
+    "banners":  {
+                    "low":  "https://germanfence.de/assets/banner-772x250.png",
+                    "high":  "https://germanfence.de/assets/banner-1544x500.png"
+                },
+    "name":  "GermanFence",
+    "tested":  "6.7",
+    "icons":  {
+                  "2x":  "https://germanfence.de/germanfence_logo.png",
+                  "1x":  "https://germanfence.de/germanfence_logo.png"
+              },
+    "requires_php":  "7.4",
+    "requires":  "5.0",
+    "author":  "GermanFence Team",
+    "homepage":  "https://germanfence.de"
+}
