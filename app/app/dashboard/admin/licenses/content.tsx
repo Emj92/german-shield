@@ -194,7 +194,7 @@ export default function AdminLicensesContent() {
       </div>
 
       {/* Generator */}
-      <Card className="border">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Key className="h-5 w-5 text-[#22D6DD]" />
@@ -226,7 +226,7 @@ export default function AdminLicensesContent() {
 
           {/* Send Email Checkbox */}
           {email && email.trim() && (
-            <div className="flex items-center space-x-2 p-3 bg-slate-50 rounded-lg">
+            <div className="flex items-center space-x-2 p-3 bg-white border border-[#d9dde1] rounded-[9px]">
               <Checkbox
                 id="sendEmail"
                 checked={sendEmail}
@@ -249,10 +249,10 @@ export default function AdminLicensesContent() {
                 <button
                   key={pkg.type}
                   onClick={() => setPackageType(pkg.type as PackageType)}
-                  className={`p-4 rounded-lg border-2 transition-all ${
+                  className={`p-4 rounded-[9px] border-2 transition-all ${
                     packageType === pkg.type
                       ? 'border-[#22D6DD] bg-[#22D6DD]/5'
-                      : 'border-slate-200 hover:border-slate-300'
+                      : 'border-[#d9dde1] hover:border-[#22D6DD]'
                   }`}
                 >
                   <Badge className={`${pkg.color} mb-2`}>{pkg.name}</Badge>
@@ -285,7 +285,7 @@ export default function AdminLicensesContent() {
       </Card>
 
       {/* All Licenses Table */}
-      <Card className="border">
+      <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
@@ -317,7 +317,7 @@ export default function AdminLicensesContent() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
+                  <tr className="border-b border-[#d9dde1]">
                     <th className="text-left py-2 px-3 font-medium text-slate-600">Lizenzschlüssel</th>
                     <th className="text-left py-2 px-3 font-medium text-slate-600">E-Mail</th>
                     <th className="text-left py-2 px-3 font-medium text-slate-600">Paket</th>
@@ -328,9 +328,9 @@ export default function AdminLicensesContent() {
                 </thead>
                 <tbody>
                   {filteredLicenses.map((license) => (
-                    <tr key={license.id} className="border-b last:border-0 hover:bg-slate-50">
+                    <tr key={license.id} className="border-b border-[#d9dde1] last:border-0 hover:bg-[#F2F5F8]">
                       <td className="py-2 px-3">
-                        <code className="font-mono text-xs bg-slate-100 px-2 py-1 rounded">
+                        <code className="font-mono text-xs bg-white border border-[#d9dde1] px-2 py-1 rounded-[9px]">
                           {license.licenseKey}
                         </code>
                       </td>

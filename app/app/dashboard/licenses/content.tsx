@@ -203,7 +203,7 @@ export default function UserLicensesContent() {
       {/* Übersicht */}
       {licenses.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
-          <Card className="border">
+          <Card>
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-sm text-slate-500 mb-1">Lizenzen gesamt</p>
@@ -211,7 +211,7 @@ export default function UserLicensesContent() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border">
+          <Card>
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-sm text-slate-500 mb-1">Aktive Lizenzen</p>
@@ -219,7 +219,7 @@ export default function UserLicensesContent() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border">
+          <Card>
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-sm text-slate-500 mb-1">Aktivierte Domains</p>
@@ -231,7 +231,7 @@ export default function UserLicensesContent() {
       )}
 
       {licenses.length === 0 ? (
-        <Card className="border">
+        <Card>
           <CardContent className="py-12 text-center">
             <Key className="h-12 w-12 text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Keine Lizenzen vorhanden</h3>
@@ -249,7 +249,7 @@ export default function UserLicensesContent() {
       ) : (
         <div className="grid gap-4">
           {licenses.map((license) => (
-            <Card key={license.id} className="border">
+            <Card key={license.id}>
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
@@ -259,7 +259,7 @@ export default function UserLicensesContent() {
                     </CardTitle>
                     <CardDescription className="mt-2">
                       <div className="flex items-center gap-2 mt-1">
-                        <code className="bg-slate-100 px-3 py-1.5 rounded font-mono text-sm font-bold text-slate-900">
+                        <code className="bg-white border border-[#d9dde1] px-3 py-1.5 rounded-[9px] font-mono text-sm font-bold text-slate-900">
                           {license.licenseKey}
                         </code>
                         <Button
@@ -285,7 +285,7 @@ export default function UserLicensesContent() {
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* Lizenz-Info */}
-                <div className="grid grid-cols-3 gap-4 p-3 bg-slate-50 rounded-lg">
+                <div className="grid grid-cols-3 gap-4 p-3 bg-white rounded-[9px] border border-[#d9dde1]">
                   <div>
                     <p className="text-xs text-slate-500">Gültig bis</p>
                     <p className="font-semibold">
@@ -316,7 +316,7 @@ export default function UserLicensesContent() {
                       {license.activeDomains.map((domain) => (
                         <div
                           key={domain.id}
-                          className="flex items-center justify-between p-2 bg-white border rounded-lg"
+                          className="flex items-center justify-between p-2 bg-white border border-[#d9dde1] rounded-[9px]"
                         >
                           <div className="flex-1">
                             <p className="font-medium text-sm">{domain.domain}</p>
@@ -336,7 +336,7 @@ export default function UserLicensesContent() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-6 bg-slate-50 rounded-lg">
+                    <div className="text-center py-6 bg-white border border-[#d9dde1] rounded-[9px]">
                       <AlertCircle className="h-8 w-8 text-slate-300 mx-auto mb-2" />
                       <p className="text-sm text-slate-500">Noch keine Domains aktiviert</p>
                     </div>

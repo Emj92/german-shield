@@ -91,7 +91,7 @@ export default function NewSupportTicketPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-destructive/10 text-destructive px-4 py-3 rounded-lg">
+              <div className="bg-destructive/10 text-destructive px-4 py-3 rounded-[9px]">
                 {error}
               </div>
             )}
@@ -113,7 +113,7 @@ export default function NewSupportTicketPage() {
                 id="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value as 'FEHLER' | 'VORSCHLAG' | 'HILFE')}
-                className="w-full rounded-md border border-input bg-background px-3 py-2"
+                className="w-full rounded-[9px] border border-[#d9dde1] bg-background px-3 py-2"
                 required
               >
                 <option value="HILFE">🤝 Hilfestellung</option>
@@ -129,14 +129,14 @@ export default function NewSupportTicketPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Beschreiben Sie Ihr Anliegen so detailliert wie möglich..."
-                className="w-full min-h-[200px] rounded-md border border-input bg-background px-3 py-2"
+                className="w-full min-h-[200px] rounded-[9px] border border-[#d9dde1] bg-background px-3 py-2"
                 required
               />
             </div>
 
-            <div className="space-y-2">
+              <div className="space-y-2">
               <Label>Anhänge (optional)</Label>
-              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+              <div className="border-2 border-dashed border-[#d9dde1] rounded-[9px] p-6 text-center">
                 <input
                   type="file"
                   id="file-upload"
@@ -163,7 +163,7 @@ export default function NewSupportTicketPage() {
               {files.length > 0 && (
                 <div className="space-y-2 mt-4">
                   {files.map((file, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 border border-border rounded-lg">
+                    <div key={index} className="flex items-center gap-2 p-2 border border-[#d9dde1] rounded-[9px]">
                       <FileImage className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm flex-1">{file.name}</span>
                       <span className="text-xs text-muted-foreground">

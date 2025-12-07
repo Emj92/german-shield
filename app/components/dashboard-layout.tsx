@@ -18,12 +18,12 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full relative overflow-hidden bg-[#FAFAFA]">
+      <div className="flex min-h-screen w-full relative overflow-hidden bg-[#F2F5F8]">
         <AnimatedBackground />
         <AppSidebar user={user} />
         <main className="flex-1 overflow-auto relative z-10">
           {/* Top Bar mit Download + Sprachumschalter - Höhe 4.3rem wie Sidebar */}
-          <div className="flex justify-end items-center gap-3 px-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
+          <div className="flex justify-end items-center gap-3 px-6 border-b border-[#d9dde1] bg-white/80 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button size="sm" className="bg-[#22D6DD] hover:bg-[#22D6DD] text-white">
                 <Download className="mr-2 h-4 w-4" />
@@ -34,7 +34,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           </div>
           
           <div className="p-8">
-            <div className="bg-white rounded-lg border border-gray-200 min-h-[calc(100vh-8rem)]">
+            <div className="bg-white rounded-[9px] border border-[#d9dde1] min-h-[calc(100vh-8rem)]">
               {children}
             </div>
           </div>

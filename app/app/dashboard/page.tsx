@@ -161,19 +161,19 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-slate-50 rounded-lg">
+                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
                     <Badge className="bg-slate-100 text-slate-700 mb-2">FREE</Badge>
                     <div className="text-2xl font-bold">{'packageStats' in data ? data.packageStats.FREE : 0}</div>
                   </div>
-                  <div className="text-center p-4 bg-[#22D6DD]/5 rounded-lg">
+                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
                     <Badge className="bg-[#22D6DD]/10 text-[#22D6DD] mb-2">SINGLE</Badge>
                     <div className="text-2xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.SINGLE : 0}</div>
                   </div>
-                  <div className="text-center p-4 bg-[#22D6DD]/10 rounded-lg">
+                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
                     <Badge className="bg-[#22D6DD]/20 text-[#22D6DD] mb-2">FREELANCER</Badge>
                     <div className="text-2xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.FREELANCER : 0}</div>
                   </div>
-                  <div className="text-center p-4 bg-[#EC4899]/5 rounded-lg">
+                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
                     <Badge className="bg-[#EC4899]/10 text-[#EC4899] mb-2">AGENCY</Badge>
                     <div className="text-2xl font-bold text-[#EC4899]">{'packageStats' in data ? data.packageStats.AGENCY : 0}</div>
                   </div>

@@ -105,7 +105,7 @@ export default function SettingsContent({ user }: SettingsContentProps) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Account Info */}
-        <Card className="border">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5 text-[#22D6DD]" />
@@ -156,7 +156,7 @@ export default function SettingsContent({ user }: SettingsContentProps) {
         </Card>
 
         {/* Rechnungsadresse */}
-        <Card className="border">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building className="h-5 w-5 text-[#22D6DD]" />
@@ -234,7 +234,7 @@ export default function SettingsContent({ user }: SettingsContentProps) {
         </Card>
 
         {/* Kontaktdaten */}
-        <Card className="border">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Phone className="h-5 w-5 text-[#22D6DD]" />

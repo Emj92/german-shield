@@ -77,7 +77,7 @@ export default async function TicketsAdminPage() {
                 tickets.map((ticket) => (
                   <div
                     key={ticket.id}
-                    className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+                    className="border border-[#d9dde1] rounded-[9px] p-4 hover:bg-[#F2F5F8] transition-colors"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">

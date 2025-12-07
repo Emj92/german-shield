@@ -35,7 +35,7 @@ export default async function DownloadsPage() {
         </div>
 
         {latestRelease && (
-          <Card className="border">
+          <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -105,7 +105,7 @@ export default async function DownloadsPage() {
         )}
 
         {releases.length === 0 && (
-          <Card className="border">
+          <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>

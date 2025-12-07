@@ -64,9 +64,9 @@ export default function AdminUsersContent() {
   const getPackageColor = (packageType: string) => {
     switch (packageType) {
       case 'FREE': return 'bg-slate-100 text-slate-700'
-      case 'SINGLE': return 'bg-cyan-100 text-cyan-700'
-      case 'FREELANCER': return 'bg-cyan-500 text-white'
-      case 'AGENCY': return 'bg-pink-500 text-white'
+      case 'SINGLE': return 'bg-[#22D6DD]/10 text-[#22D6DD]'
+      case 'FREELANCER': return 'bg-[#22D6DD]/20 text-[#22D6DD]'
+      case 'AGENCY': return 'bg-[#EC4899]/10 text-[#EC4899]'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -110,7 +110,7 @@ export default function AdminUsersContent() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50">
+                <TableRow className="bg-white border-b border-[#d9dde1]">
                   <TableHead className="font-semibold">E-Mail / Name</TableHead>
                   <TableHead className="font-semibold">Rolle</TableHead>
                   <TableHead className="font-semibold">Lizenzen</TableHead>
@@ -128,7 +128,7 @@ export default function AdminUsersContent() {
                   </TableRow>
                 ) : (
                   filteredUsers.map((user) => (
-                    <TableRow key={user.id} className="hover:bg-slate-50">
+                    <TableRow key={user.id} className="hover:bg-[#F2F5F8]">
                       {/* E-Mail / Name */}
                       <TableCell>
                         <div className="flex items-center gap-2">

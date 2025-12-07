@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Plugin-Farben White Mode */
-    --background: 0 0% 98%;           /* #FAFAFA */
+    --background: 210 17% 96%;        /* #F2F5F8 */
     --foreground: 210 11% 15%;        /* #1d2327 */
     --card: 0 0% 100%;                /* #ffffff */
     --card-foreground: 210 11% 15%;   /* #1d2327 */
@@ -21,17 +21,17 @@
     --accent-foreground: 0 0% 100%;
     --destructive: 358 75% 59%;       /* #d63638 - Plugin Error */
     --destructive-foreground: 0 0% 100%;
-    --border: 210 16% 82%;            /* #c3cbd5 */
-    --input: 210 16% 82%;
+    --border: 210 14% 86%;            /* #d9dde1 */
+    --input: 210 14% 86%;             /* #d9dde1 */
     --ring: 186 73% 50%;              /* #22D6DD */
-    --radius: 0.375rem;
-    --sidebar-background: 0 0% 98%;
+    --radius: 9px;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 210 14% 86%;    /* #d9dde1 */
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {

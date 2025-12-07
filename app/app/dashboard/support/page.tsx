@@ -93,7 +93,7 @@ export default async function SupportPage() {
         ) : (
           <div className="grid gap-4">
             {tickets.map((ticket) => (
-              <Card key={ticket.id} className="hover:border-[#22D6DD] transition-colors cursor-pointer border">
+              <Card key={ticket.id} className="hover:border-[#22D6DD] transition-colors cursor-pointer">
                 <a href={`/dashboard/support/${ticket.id}`}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
