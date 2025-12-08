@@ -120,6 +120,7 @@ class GermanFence_Admin {
             
             // GEO Blocking
             'geo: Land nicht in Whitelist' => '🌍 Land nicht erlaubt',
+            'geo: Land blockiert' => '🌍 Land blockiert',
             
             // URL Limit
             'url_limit: URL limit exceeded' => '🔗 Zu viele URLs',
@@ -156,6 +157,10 @@ class GermanFence_Admin {
         
         // GEO Blocking - zeige Ländercode
         if (preg_match('/geo.*Land nicht in Whitelist: ([A-Z]{2})/', $reason, $matches)) {
+            return '🌍 Land ' . $matches[1] . ' blockiert';
+        }
+        
+        if (preg_match('/geo.*Land blockiert: ([A-Z]{2})/', $reason, $matches)) {
             return '🌍 Land ' . $matches[1] . ' blockiert';
         }
         

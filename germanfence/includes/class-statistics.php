@@ -15,7 +15,17 @@ class GermanFence_Statistics {
     public function __construct() {
         global $wpdb;
         $this->table_name = $wpdb->prefix . 'germanfence_stats';
-        $this->history_file = WP_CONTENT_DIR . '/germanfence-history.log';
+        
+        // History-Datei im Plugin-Ordner (bessere Schreibrechte)
+        $upload_dir = wp_upload_dir();
+        $germanfence_dir = $upload_dir['basedir'] . '/germanfence';
+        
+        // Erstelle Verzeichnis falls nicht vorhanden
+        if (!file_exists($germanfence_dir)) {
+            wp_mkdir_p($germanfence_dir);
+        }
+        
+        $this->history_file = $germanfence_dir . '/history.log';
         
         // Stelle sicher, dass die History-Datei existiert
         $this->ensure_history_file_exists();
@@ -26,12 +36,21 @@ class GermanFence_Statistics {
      */
     private function ensure_history_file_exists() {
         if (!file_exists($this->history_file)) {
-            // Erstelle Datei mit Header
-            $header = "# GermanFence Request History\n";
-            $header .= "# Diese Datei speichert alle Anfragen dauerhaft und überlebt Plugin-Updates\n";
-            $header .= "# Format: [Timestamp] | Type | IP | Country | Reason\n";
-            $header .= "# ================================================================================\n\n";
-            file_put_contents($this->history_file, $header);
+            try {
+                // Erstelle Datei mit Header
+                $header = "# GermanFence Request History\n";
+                $header .= "# Diese Datei speichert alle Anfragen dauerhaft (in wp-uploads/germanfence/)\n";
+                $header .= "# Format: [Timestamp] | Type | IP | Country | Reason\n";
+                $header .= "# ================================================================================\n\n";
+                
+                $result = file_put_contents($this->history_file, $header);
+                
+                if ($result === false) {
+                    error_log('[GermanFence] Konnte History-Datei nicht erstellen: ' . $this->history_file);
+                }
+            } catch (Exception $e) {
+                error_log('[GermanFence] Fehler beim Erstellen der History-Datei: ' . $e->getMessage());
+            }
         }
     }
     
@@ -39,27 +58,48 @@ class GermanFence_Statistics {
      * Schreibt einen Eintrag in die History-Datei
      */
     private function write_to_history($type, $ip, $reason, $country = null) {
-        $timestamp = current_time('Y-m-d H:i:s');
-        $country_display = $country ? $country : 'N/A';
-        $line = sprintf("[%s] | %s | %s | %s | %s\n", 
-            $timestamp, 
-            strtoupper($type), 
-            $ip, 
-            $country_display, 
-            $reason
-        );
-        
-        // Append zur Datei (non-blocking)
-        file_put_contents($this->history_file, $line, FILE_APPEND | LOCK_EX);
+        try {
+            $timestamp = current_time('Y-m-d H:i:s');
+            $country_display = $country ? $country : 'N/A';
+            $line = sprintf("[%s] | %s | %s | %s | %s\n", 
+                $timestamp, 
+                strtoupper($type), 
+                $ip, 
+                $country_display, 
+                $reason
+            );
+            
+            // Append zur Datei (non-blocking)
+            $result = @file_put_contents($this->history_file, $line, FILE_APPEND | LOCK_EX);
+            
+            if ($result === false) {
+                error_log('[GermanFence] Konnte nicht in History-Datei schreiben: ' . $this->history_file);
+            }
+        } catch (Exception $e) {
+            error_log('[GermanFence] Fehler beim Schreiben in History-Datei: ' . $e->getMessage());
+        }
     }
     
     /**
      * Löscht die komplette History
      */
     public function clear_history() {
-        if (file_exists($this->history_file)) {
-            unlink($this->history_file);
-            $this->ensure_history_file_exists();
+        try {
+            if (file_exists($this->history_file)) {
+                $result = @unlink($this->history_file);
+                
+                if ($result === false) {
+                    error_log('[GermanFence] Konnte History-Datei nicht löschen: ' . $this->history_file);
+                    return false;
+                }
+                
+                $this->ensure_history_file_exists();
+                return true;
+            }
+            return true;
+        } catch (Exception $e) {
+            error_log('[GermanFence] Fehler beim Löschen der History-Datei: ' . $e->getMessage());
+            return false;
         }
     }
     

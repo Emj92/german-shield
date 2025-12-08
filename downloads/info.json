@@ -1,7 +1,7 @@
 {
-    "version":  "1.10.3",
+    "version":  "1.10.4",
     "sections":  {
-                     "changelog":  "\u003ch4\u003e1.10.3\u003c/h4\u003e\u003cul\u003e\u003cli\u003eALLE Blockgr\u00fcnde komplett definiert\u003c/li\u003e\u003cli\u003eUser-Agent Bot Detection hinzugef\u00fcgt\u003c/li\u003e\u003cli\u003eDetails in Blockgr\u00fcnden (Anzahl, Land, etc.)\u003c/li\u003e\u003c/ul\u003e",
+                     "changelog":  "\u003ch4\u003e1.10.4\u003c/h4\u003e\u003cul\u003e\u003cli\u003eGEO Land blockiert Pattern hinzugef\u00fcgt\u003c/li\u003e\u003cli\u003eHistory-Datei in wp-uploads (bessere Rechte)\u003c/li\u003e\u003cli\u003eFehlerbehandlung verbessert\u003c/li\u003e\u003c/ul\u003e",
                      "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
                  },
     "author_homepage":  "https://germanfence.de",
