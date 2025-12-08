@@ -947,7 +947,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                        <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-top: 20px; border-left: 4px solid #22D6DD;">
+                        <div style="padding: 20px 0; margin-top: 20px;">
                             <h3 style="margin-top: 0; color: #22D6DD;">⚠️ Hinweis</h3>
                             <p style="color: #50575e; margin: 0;">
                                 Kritische Sicherheits- und Fehler-Meldungen werden NICHT blockiert, um die Sicherheit deiner Website zu gewährleisten.
@@ -1002,7 +1002,7 @@ class GermanFence_Admin {
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
                         <!-- FREE VERSION BOX -->
-                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; min-height: 280px; display: flex; flex-direction: column;">
+                        <div style="background: #ffffff; padding: 25px; min-height: 280px; display: flex; flex-direction: column;">
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
                                 <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ Kostenlose Version aktiviert</h3>
@@ -1050,13 +1050,13 @@ class GermanFence_Admin {
                                     <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">🆓 Kostenlose Version aktivieren</h3>
                                     
                                     <!-- Tabs: E-Mail vs Key -->
-                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #22D6DD;">
+                                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                                         <button type="button" id="free-email-tab" class="germanfence-free-tab active" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                                            style="flex: 1; padding: 10px; background: transparent; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
                                             📧 Per E-Mail
                                         </button>
                                         <button type="button" id="free-key-tab" class="germanfence-free-tab" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                                            style="flex: 1; padding: 10px; background: transparent; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
                                             🔑 Mit License-Key
                                         </button>
                                     </div>
@@ -1070,7 +1070,7 @@ class GermanFence_Admin {
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">E-Mail-Adresse:</label>
                                             <input type="email" id="free-email-input" placeholder="deine@email.de" 
-                                                style="width: 100%; padding: 12px; border: 2px solid #22D6DD; border-radius: 6px; font-size: 14px;">
+                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
@@ -1103,7 +1103,7 @@ class GermanFence_Admin {
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">License-Key:</label>
                                             <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" 
-                                                style="width: 100%; padding: 12px; border: 2px solid #22D6DD; border-radius: 6px; font-size: 14px; font-family: monospace; text-transform: uppercase;">
+                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; text-transform: uppercase;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
@@ -1122,13 +1122,13 @@ class GermanFence_Admin {
                         </div>
                         
                         <!-- PRO LIZENZ KAUFEN BOX -->
-                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; min-height: 280px; display: flex; flex-direction: column;">
+                        <div style="background: #ffffff; padding: 25px; min-height: 280px; display: flex; flex-direction: column;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">💎 GermanFence PRO Lizenz</h3>
                             <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px; flex: 1;">
                                 Noch keine Lizenz? Sichere dir jetzt GermanFence Premium und nutze alle Features!
                             </p>
                             
-                            <div style="background: #22D6DD20; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #22D6DD;">
+                            <div style="padding: 12px; margin-bottom: 15px;">
                                 <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600; text-align: center;">
                                     ✅ 14 Tage 100% Geld-zurück-Garantie
                                 </p>
@@ -1146,7 +1146,7 @@ class GermanFence_Admin {
                         
                         <!-- PRO LIZENZ AKTIV -->
                         <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
-                        <div style="background: #F2F5F8; padding: 25px; border-radius: 8px; border: 2px solid #22D6DD; margin-bottom: 30px;">
+                        <div style="background: #ffffff; padding: 25px; margin-bottom: 30px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
                                 <div>
@@ -1326,7 +1326,7 @@ class GermanFence_Admin {
                         </p>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; border: 1px solid #c3cbd5;">
+                            <div style="padding: 20px 0;">
                                 <h3 style="margin-top: 0; color: #1d2327;">📍 Script-Ladeposition</h3>
                                 <div style="margin-top: 15px;">
                                     <label style="display: block; margin-bottom: 10px; cursor: pointer;">
@@ -1545,7 +1545,7 @@ class GermanFence_Admin {
                         $is_telemetry_enabled = $telemetry->is_enabled();
                         ?>
                         
-                        <div style="background: <?php echo $is_telemetry_enabled ? 'rgba(34, 214, 221, 0.05)' : '#F2F5F8'; ?>; padding: 25px; border-radius: 8px; border: 2px solid <?php echo $is_telemetry_enabled ? '#22D6DD' : '#c3cbd5'; ?>;">
+                        <div style="background: #fff; padding: 25px;">
                             <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
                                 <label class="germanfence-toggle">
                                     <input type="checkbox" name="telemetry_enabled" value="1" <?php checked($is_telemetry_enabled); ?>>
@@ -1557,7 +1557,7 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <div style="background: #fff; padding: 20px; border-radius: 6px; border: 1px solid #c3cbd5;">
+                            <div style="padding: 20px 0;">
                                 <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px;">🔒 Was wird gesendet?</h4>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                                     <div>
@@ -1583,7 +1583,7 @@ class GermanFence_Admin {
                                     </div>
                                 </div>
                                 
-                                <div style="background: rgba(34, 214, 221, 0.05); padding: 15px; border-radius: 6px; border-left: 4px solid #22D6DD; margin-bottom: 15px;">
+                                <div style="padding: 15px 0; margin-bottom: 15px;">
                                     <h4 style="margin: 0 0 8px 0; color: #22D6DD; font-size: 13px; display: flex; align-items: center; gap: 8px;">
                                         <span>🇩🇪</span> <strong>100% DSGVO-konform</strong>
                                     </h4>
@@ -1596,7 +1596,7 @@ class GermanFence_Admin {
                                     </ul>
                                 </div>
                                 
-                                <div style="padding: 20px; background: #ffffff; border: 1px solid #c3cbd5; border-radius: 6px; text-align: center;">
+                                <div style="padding: 20px 0; background: #ffffff; text-align: center;">
                                     <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px;">
                                         📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
                                     </p>

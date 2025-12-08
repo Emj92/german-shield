@@ -508,6 +508,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     background: #F2F5F8;
     padding: 0 40px;
     gap: 10px;
+    border-top: 1px solid #d9dde1;
     border-bottom: 1px solid #d9dde1;
 }
 

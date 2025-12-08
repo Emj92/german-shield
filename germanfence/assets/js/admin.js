@@ -745,11 +745,9 @@
         // Free-License Tab-Switching
         $('.germanfence-free-tab').on('click', function() {
             $('.germanfence-free-tab').removeClass('active').css({
-                'border-bottom-color': 'transparent',
                 'color': '#646970'
             });
             $(this).addClass('active').css({
-                'border-bottom-color': '#22D6DD',
                 'color': '#22D6DD'
             });
             
@@ -804,7 +802,6 @@
         
         // Tab-Styling beim Laden
         $('.germanfence-free-tab.active').css({
-            'border-bottom-color': '#22D6DD',
             'color': '#22D6DD'
         });
         
