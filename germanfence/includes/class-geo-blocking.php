@@ -231,13 +231,13 @@ class GermanFence_GeoBlocking {
                         $mode_text = $current_mode === 'whitelist' ? 'Erlaubte Länder' : 'Blockierte Länder';
                         $mode_desc = $current_mode === 'whitelist' ? 'Nur diese Länder dürfen Formulare absenden.' : 'Diese Länder können keine Formulare absenden.';
                         ?>
-                        <div id="geo-countries-wrapper" style="background: #F2F5F8; padding: 25px; border: 3px solid <?php echo $mode_color; ?>; border-radius: 6px; transition: border-color 0.3s;">
+                        <div id="geo-countries-wrapper" style="background: #ffffff; padding: 25px; border: 3px solid <?php echo $mode_color; ?>; border-radius: 9px; transition: border-color 0.3s;">
                             <h3 style="margin: 0 0 10px 0; color: <?php echo $mode_color; ?>;" id="geo-countries-title"><?php echo $mode_text; ?></h3>
                             <p style="color: #646970; margin: 0 0 15px 0;" id="geo-countries-desc"><?php echo $mode_desc; ?></p>
                             
                             <!-- Suchleiste -->
                             <div style="margin-bottom: 15px;">
-                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-size: 14px;">
+                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;">
                             </div>
                             
                             <div class="country-grid" id="geo-country-grid" style="max-height: 500px; overflow-y: auto; padding: 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px;">

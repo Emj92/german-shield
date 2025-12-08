@@ -619,13 +619,13 @@ class GermanFence_Admin {
                                     
                                     foreach ($honeypot_fields as $index => $field_name): 
                                     ?>
-                                    <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #F2F5F8; border: 1px solid #c3cbd5; border-radius: 6px; margin-bottom: 10px;">
+                                    <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #F2F5F8; border: 1px solid #d9dde1; border-radius: 9px; margin-bottom: 10px;">
                                         <span style="min-width: 30px; font-weight: 600; color: #646970;">#<?php echo $index + 1; ?></span>
                                         <input 
                                             type="text" 
                                             name="honeypot_fields[]" 
                                             value="<?php echo esc_attr($field_name); ?>"
-                                            style="flex: 1; padding: 8px 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            style="flex: 1; padding: 8px 12px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; background: #ffffff;"
                                             placeholder="feldname"
                                         >
                                         <button 
@@ -903,48 +903,46 @@ class GermanFence_Admin {
                             </div>
                             
                             <div id="phrase-examples-regex" style="margin-top: 10px; <?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? '' : 'display:none;'; ?>">
-                                <div style="background: rgba(34, 214, 221, 0.08); border: 1px solid rgba(34, 214, 221, 0.3); border-radius: 6px; padding: 15px;">
-                                    <h4 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #22D6DD;">
-                                        💡 Regex-Beispiele
-                                    </h4>
-                                    <table style="width: 100%; border-collapse: collapse;">
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                V.*i.*a.*g.*r.*a
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                                Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                c[a@4]s[i1!]n[o0]
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                                Findet: casino, cas1no, c@sino, cas!n0
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                \b(buy|click)\s+here\b
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                                Findet: "buy here", "click here" (ganze Wörter)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                \d{10,}
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                                Findet: 10+ aufeinanderfolgende Zahlen
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
-                                        <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
-                                    </p>
-                                </div>
+                                <p class="description" style="color: #646970; margin-bottom: 12px;">
+                                    <strong>💡 Regex-Beispiele:</strong>
+                                </p>
+                                <table style="width: 100%; max-width: 700px; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                            V.*i.*a.*g.*r.*a
+                                        </td>
+                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                            c[a@4]s[i1!]n[o0]
+                                        </td>
+                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            Findet: casino, cas1no, c@sino, cas!n0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                            \b(buy|click)\s+here\b
+                                        </td>
+                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            Findet: "buy here", "click here" (ganze Wörter)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                            \d{10,}
+                                        </td>
+                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            Findet: 10+ aufeinanderfolgende Zahlen
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
+                                    <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
+                                </p>
                             </div>
                         </div>
                         <?php endif; ?>
@@ -1136,69 +1134,70 @@ class GermanFence_Admin {
                 
                 <!-- Sicherheit Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
+                    
+                    <!-- WORDPRESS FIREWALL Section -->
                     <div class="germanfence-section">
-                        <h2>🔒 WordPress Sicherheit</h2>
+                        <h2>🛡️ WordPress Firewall</h2>
                         <p class="description" style="margin-bottom: 20px;">
-                            Schütze deine WordPress-Installation mit zusätzlichen Sicherheitsmaßnahmen.
+                            Schütze deine WordPress-Installation mit zusätzlichen Firewall-Regeln.
                         </p>
                         
-                        <!-- Firewall Einstellungen -->
-                        <div style="margin-bottom: 40px;">
-                            <h3 style="margin: 0 0 20px 0; font-size: 18px; color: #1d2327;">🛡️ WordPress Firewall</h3>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>XML-RPC deaktivieren</h3>
-                                    <p>Blockiert XML-RPC Zugriffe (häufig für Brute-Force-Attacken missbraucht)</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>Datei-Editor deaktivieren</h3>
-                                    <p>Verhindert das Bearbeiten von Theme- und Plugin-Dateien im WordPress-Admin</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>WordPress-Version verstecken</h3>
-                                    <p>Entfernt die WordPress-Version aus dem HTML-Head</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>REST API User-Enumeration blockieren</h3>
-                                    <p>Verhindert das Auslesen von Benutzernamen über die REST API</p>
-                                </div>
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>XML-RPC deaktivieren</h3>
+                                <p>Blockiert XML-RPC Zugriffe (häufig für Brute-Force-Attacken missbraucht)</p>
                             </div>
                         </div>
                         
-                        <!-- .htaccess Generator -->
-                        <div style="margin-bottom: 40px;">
-                            <h3 style="margin: 0 0 20px 0; font-size: 18px; color: #1d2327;">📄 .htaccess Sicherheits-Regeln</h3>
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>Datei-Editor deaktivieren</h3>
+                                <p>Verhindert das Bearbeiten von Theme- und Plugin-Dateien im WordPress-Admin</p>
+                            </div>
+                        </div>
+                        
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>WordPress-Version verstecken</h3>
+                                <p>Entfernt die WordPress-Version aus dem HTML-Head</p>
+                            </div>
+                        </div>
+                        
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>REST API User-Enumeration blockieren</h3>
+                                <p>Verhindert das Auslesen von Benutzernamen über die REST API</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- .HTACCESS GENERATOR Section -->
+                    <div class="germanfence-section">
+                        <h2>📄 .htaccess Sicherheits-Regeln</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Generiere .htaccess-Regeln zum Schutz wichtiger WordPress-Dateien.
+                        </p>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                                 <!-- Linke Spalte: Optionen -->
                                 <div>
-                                    <h4 style="margin: 0 0 15px 0; font-size: 16px;">Sicherheitsregeln auswählen:</h4>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
@@ -1250,7 +1249,7 @@ class GermanFence_Admin {
                                 
                                 <!-- Rechte Spalte: Code-Feld -->
                                 <div>
-                                    <h4 style="margin: 0 0 15px 0; font-size: 16px;">Generierter Code:</h4>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
                                     <textarea id="htaccess-output" readonly 
                                         style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #f8f9fa; resize: vertical;"
                                         placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
