@@ -67,7 +67,6 @@
     border-radius: 9px;
     padding: 15px 20px;
     max-width: 450px;
-    box-shadow: 0 2px 8px rgba(34, 214, 221, 0.15);
 }
 
 .germanfence-logo {
@@ -301,10 +300,10 @@ body.germanfence-dark-mode #phrase-settings {
 
 /* Subsetting Styles (für Honeypot & Timestamp Einstellungen) */
 .germanfence-subsetting {
-    background: #F2F5F8;
+    background: #ffffff;
     padding: 25px;
     border-radius: 9px;
-    border: 2px solid #22D6DD;
+    border: 1px solid #d9dde1;
     margin-top: 15px;
     margin-bottom: 20px;
 }
@@ -581,7 +580,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     display: none;
     padding: 40px;
     animation: fadeIn 0.3s ease;
-    background: #ffffff;
+    background: #F2F5F8;
 }
 
 .germanfence-tab-content.active {
@@ -937,8 +936,8 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 /* Subsettings */
 .germanfence-subsetting {
     margin: 20px 0 20px 0 !important;
-    padding: 20px;
-    background: #F2F5F8;
+    padding: 25px;
+    background: #ffffff;
     border: 1px solid #d9dde1;
     border-radius: 9px;
     position: relative;

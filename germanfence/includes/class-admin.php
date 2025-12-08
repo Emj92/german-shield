@@ -88,6 +88,15 @@ class GermanFence_Admin {
         
         add_submenu_page(
             'germanfence',
+            'Sicherheit',
+            '🔒 Sicherheit',
+            'manage_options',
+            'germanfence&tab=security',
+            array($this, 'render_admin_page')
+        );
+        
+        add_submenu_page(
+            'germanfence',
             'Einstellungen',
             '⚙️ Einstellungen',
             'manage_options',
@@ -369,14 +378,15 @@ class GermanFence_Admin {
                     WordPress Spam
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                    <span class="dashicons dashicons-shield"></span>
+                    Sicherheit
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-admin-settings"></span>
                     Einstellungen
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
-                </button>
-                <button class="germanfence-tab <?php echo (!$is_free_active && !$is_license_valid) && $active_tab !== 'license' ? 'active' : ($active_tab === 'license' ? 'active' : ''); ?>" data-tab="license">
-                    <span class="dashicons dashicons-admin-network"></span>
-                    Lizenz
                 </button>
             </div>
             
@@ -1056,6 +1066,142 @@ class GermanFence_Admin {
                     </div>
                 </div>
                 
+                <!-- Sicherheit Tab -->
+                <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
+                    <div class="germanfence-section">
+                        <h2>🔒 WordPress Sicherheit</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Schütze deine WordPress-Installation mit zusätzlichen Sicherheitsmaßnahmen.
+                        </p>
+                        
+                        <!-- Firewall Einstellungen -->
+                        <div style="margin-bottom: 40px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; color: #1d2327;">🛡️ WordPress Firewall</h3>
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>XML-RPC deaktivieren</h3>
+                                    <p>Blockiert XML-RPC Zugriffe (häufig für Brute-Force-Attacken missbraucht)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Datei-Editor deaktivieren</h3>
+                                    <p>Verhindert das Bearbeiten von Theme- und Plugin-Dateien im WordPress-Admin</p>
+                                </div>
+                            </div>
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>WordPress-Version verstecken</h3>
+                                    <p>Entfernt die WordPress-Version aus dem HTML-Head</p>
+                                </div>
+                            </div>
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>REST API User-Enumeration blockieren</h3>
+                                    <p>Verhindert das Auslesen von Benutzernamen über die REST API</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- .htaccess Generator -->
+                        <div style="margin-bottom: 40px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; color: #1d2327;">📄 .htaccess Sicherheits-Regeln</h3>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                <!-- Linke Spalte: Optionen -->
+                                <div>
+                                    <h4 style="margin: 0 0 15px 0; font-size: 16px;">Sicherheitsregeln auswählen:</h4>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-directory-listing" checked>
+                                            <span>🚫 Directory Listings blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-xmlrpc" checked>
+                                            <span>🛡️ XML-RPC blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-wp-config" checked>
+                                            <span>🔐 wp-config.php schützen</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-htaccess" checked>
+                                            <span>🔒 .htaccess schützen</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-uploads" checked>
+                                            <span>📁 PHP in Uploads blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-sql-injection" checked>
+                                            <span>💉 SQL-Injection blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <button type="button" id="generate-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 20px; width: 100%;">
+                                        <span class="dashicons dashicons-admin-tools"></span>
+                                        .htaccess generieren
+                                    </button>
+                                </div>
+                                
+                                <!-- Rechte Spalte: Code-Feld -->
+                                <div>
+                                    <h4 style="margin: 0 0 15px 0; font-size: 16px;">Generierter Code:</h4>
+                                    <textarea id="htaccess-output" readonly 
+                                        style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #f8f9fa; resize: vertical;"
+                                        placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
+                                    ></textarea>
+                                    
+                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn" style="margin-top: 10px; width: 100%;">
+                                        <span class="dashicons dashicons-clipboard"></span>
+                                        Code kopieren
+                                    </button>
+                                    
+                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px;">
+                                        ⚠️ <strong>Wichtig:</strong> Erstelle vorher ein Backup deiner .htaccess Datei! Fehlerhafte Regeln können deine Website unzugänglich machen.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Einstellungen Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
                     
@@ -1292,7 +1438,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         <?php endif; ?>
-                    </div>
+                </div>
                     
                     <!-- Performance-Optimierung Section -->
                     <div class="germanfence-section">

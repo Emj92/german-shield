@@ -990,6 +990,84 @@
             window.history.replaceState({}, '', cleanUrl);
         }
         
+        // .htaccess Generator
+        $('#generate-htaccess-btn').on('click', function() {
+            var htaccessCode = "# GermanFence Security Rules\n# Generated: " + new Date().toLocaleString() + "\n\n";
+            
+            if ($('#htaccess-directory-listing').is(':checked')) {
+                htaccessCode += "# Disable Directory Listings\n";
+                htaccessCode += "Options -Indexes\n\n";
+            }
+            
+            if ($('#htaccess-xmlrpc').is(':checked')) {
+                htaccessCode += "# Block XML-RPC\n";
+                htaccessCode += "<Files xmlrpc.php>\n";
+                htaccessCode += "    Order Deny,Allow\n";
+                htaccessCode += "    Deny from all\n";
+                htaccessCode += "</Files>\n\n";
+            }
+            
+            if ($('#htaccess-wp-config').is(':checked')) {
+                htaccessCode += "# Protect wp-config.php\n";
+                htaccessCode += "<Files wp-config.php>\n";
+                htaccessCode += "    Order Allow,Deny\n";
+                htaccessCode += "    Deny from all\n";
+                htaccessCode += "</Files>\n\n";
+            }
+            
+            if ($('#htaccess-htaccess').is(':checked')) {
+                htaccessCode += "# Protect .htaccess\n";
+                htaccessCode += "<Files .htaccess>\n";
+                htaccessCode += "    Order Allow,Deny\n";
+                htaccessCode += "    Deny from all\n";
+                htaccessCode += "</Files>\n\n";
+            }
+            
+            if ($('#htaccess-uploads').is(':checked')) {
+                htaccessCode += "# Block PHP execution in uploads\n";
+                htaccessCode += "<Directory wp-content/uploads>\n";
+                htaccessCode += "    <FilesMatch \"\\.php$\">\n";
+                htaccessCode += "        Order Allow,Deny\n";
+                htaccessCode += "        Deny from all\n";
+                htaccessCode += "    </FilesMatch>\n";
+                htaccessCode += "</Directory>\n\n";
+            }
+            
+            if ($('#htaccess-sql-injection').is(':checked')) {
+                htaccessCode += "# Block SQL Injection Patterns\n";
+                htaccessCode += "<IfModule mod_rewrite.c>\n";
+                htaccessCode += "    RewriteEngine On\n";
+                htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]\n";
+                htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\\.\\.//?)+ [OR]\n";
+                htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [OR]\n";
+                htaccessCode += "    RewriteCond %{QUERY_STRING} (union|select|insert|drop|delete|update|replace|truncate) [NC]\n";
+                htaccessCode += "    RewriteRule .* - [F]\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if (htaccessCode === "# GermanFence Security Rules\n# Generated: " + new Date().toLocaleString() + "\n\n") {
+                htaccessCode += "# Keine Regeln ausgewählt\n";
+            }
+            
+            $('#htaccess-output').val(htaccessCode);
+            showToast('.htaccess erfolgreich generiert!', 'success');
+        });
+        
+        // .htaccess Code kopieren
+        $('#copy-htaccess-btn').on('click', function() {
+            var $textarea = $('#htaccess-output');
+            var code = $textarea.val();
+            
+            if (!code || code.includes('Keine Regeln ausgewählt') || code.includes('Wähle Sicherheitsregeln')) {
+                showToast('Bitte erst .htaccess generieren', 'error');
+                return;
+            }
+            
+            $textarea.select();
+            document.execCommand('copy');
+            showToast('Code kopiert!', 'success');
+        });
+        
         log('Init abgeschlossen.');
     });
     
