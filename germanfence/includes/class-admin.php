@@ -408,13 +408,15 @@ class GermanFence_Admin {
                 <div class="germanfence-tab-content <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?>" id="tab-dashboard">
                     
                     <?php if (!$is_free_active && !$is_license_valid): ?>
-                        <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%); padding: 40px; border-radius: 8px; border: 2px solid #EC4899; text-align: center; margin: 20px 0;">
+                        <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px 0;">
                             <span style="font-size: 64px;">🔒</span>
-                            <h2 style="margin: 20px 0 10px 0; color: #EC4899;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
+                            <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 16px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" class="germanfence-btn-primary">
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
+                               style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
+                                <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
                                 Zur Lizenz-Verwaltung →
                             </a>
                         </div>
@@ -542,13 +544,15 @@ class GermanFence_Admin {
                 <!-- Anti-Spam Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'antispam' ? 'active' : ''; ?>" id="tab-antispam">
                     <?php if (!$is_free_active && !$is_license_valid): ?>
-                        <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%); padding: 40px; border-radius: 8px; border: 2px solid #ef4444; text-align: center; margin: 20px;">
+                        <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px;">
                             <span style="font-size: 64px;">🔒</span>
-                            <h2 style="margin: 20px 0 10px 0; color: #ef4444;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
+                            <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 16px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" class="germanfence-btn-primary">
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
+                               style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
+                                <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
                                 Zur Lizenz-Verwaltung →
                             </a>
                         </div>
@@ -1498,13 +1502,13 @@ class GermanFence_Admin {
                                     <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">🆓 Kostenlose Version aktivieren</h3>
                                     
                                     <!-- Tabs: E-Mail vs Key -->
-                                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 2px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
                                         <button type="button" id="free-email-tab" class="germanfence-free-tab active" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
+                                            style="flex: 1; padding: 10px; background: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
                                             📧 Per E-Mail
                                         </button>
                                         <button type="button" id="free-key-tab" class="germanfence-free-tab" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
+                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
                                             🔑 Mit License-Key
                                         </button>
                                     </div>
@@ -1583,7 +1587,7 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-flex; text-decoration: none;">
+                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-flex; text-decoration: none; padding: 12px 24px; justify-content: center; width: 100%; max-width: 250px; margin: 0 auto;">
                                 Jetzt PRO kaufen →
                             </a>
                             </div>
@@ -1745,14 +1749,14 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
                                     <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;"
                                         placeholder="Geschützt durch GermanFence">
                                 </div>
                                 
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
                                     <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 14px;"
+                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;"
                                         placeholder="https://example.com/logo.png">
                                     <p class="description" style="margin-top: 5px; color: #646970; font-size: 12px;">
                                         Leer = Standard-Icon 🛡️
@@ -1766,9 +1770,9 @@ class GermanFence_Admin {
                                     <label><strong>Text-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="color" name="badge_text_color" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
-                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                            style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
-                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 14px;"
                                             placeholder="#1d2327">
                                     </div>
                                 </div>
@@ -1777,9 +1781,9 @@ class GermanFence_Admin {
                                     <label><strong>Rahmen-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
-                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                            style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
-                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 14px;"
                                             placeholder="#22D6DD">
                                     </div>
                                 </div>
@@ -1790,9 +1794,9 @@ class GermanFence_Admin {
                                     <label><strong>Hintergrund-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
-                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                            style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
-                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 14px;"
                                             placeholder="#ffffff">
                                     </div>
                                 </div>
@@ -1801,9 +1805,9 @@ class GermanFence_Admin {
                                     <label><strong>Schatten-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="color" name="badge_shadow_color" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
-                                            style="width: 60px; height: 40px; border: 1px solid #c3cbd5; border-radius: 6px; cursor: pointer;">
+                                            style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_shadow_color_hex" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
-                                            style="flex: 1; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: monospace;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 14px;"
                                             placeholder="#22D6DD">
                                     </div>
                                 </div>

@@ -754,10 +754,12 @@
         // Free-License Tab-Switching
         $('.germanfence-free-tab').on('click', function() {
             $('.germanfence-free-tab').removeClass('active').css({
-                'color': '#646970'
+                'color': '#646970',
+                'background': 'transparent'
             });
             $(this).addClass('active').css({
-                'color': '#22D6DD'
+                'color': '#22D6DD',
+                'background': '#ffffff'
             });
             
             var isEmailTab = $(this).attr('id') === 'free-email-tab';

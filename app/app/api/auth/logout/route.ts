@@ -13,7 +13,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Redirect zum Login
-    const response = NextResponse.redirect(new URL('/login', request.url))
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://portal.germanfence.de'
+    const response = NextResponse.redirect(new URL('/login', baseUrl))
     response.cookies.delete('session')
 
     return response
