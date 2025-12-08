@@ -664,9 +664,9 @@ class GermanFence_Admin {
                                     Das <span class="dashicons dashicons-update" style="font-size: 14px;"></span> Symbol generiert einen neuen zufälligen Namen.
                                 </p>
                             </div>
+                            </div>
                         </div>
-                    </div>
-                    
+                        
                     <!-- SEKTION 2: JavaScript & User-Agent Prüfung -->
                     <div class="germanfence-section">
                         <h2>🔍 JavaScript & User-Agent Prüfung</h2>
@@ -695,10 +695,10 @@ class GermanFence_Admin {
                                     <h3>User-Agent-Prüfung</h3>
                                     <p>Blockiert bekannte Bot User-Agents und verdächtige Clients.</p>
                                 </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+                        
                     <!-- SEKTION 3: Timestamp & Tippgeschwindigkeit -->
                     <div class="germanfence-section">
                         <h2>⏱️ Zeit-basierte Prüfungen</h2>
@@ -769,9 +769,9 @@ class GermanFence_Admin {
                                     Formulare, die nach dieser Zeit abgesendet werden, sind ungültig. Empfohlen: 3600 (1 Stunde)
                                 </p>
                             </div>
+                            </div>
                         </div>
-                    </div>
-                    
+                        
                     <!-- SEKTION 4: URL & Domain-Schutz -->
                     <div class="germanfence-section">
                         <h2>🔗 URL & Domain-Schutz</h2>
@@ -952,42 +952,42 @@ class GermanFence_Admin {
                                     <strong>💡 Regex-Beispiele:</strong>
                                 </p>
                                 <table style="width: 100%; max-width: 700px; border-collapse: collapse;">
-                                    <tr>
-                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                            V.*i.*a.*g.*r.*a
-                                        </td>
-                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                            Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                            c[a@4]s[i1!]n[o0]
-                                        </td>
-                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                            Findet: casino, cas1no, c@sino, cas!n0
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                            \b(buy|click)\s+here\b
-                                        </td>
-                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                            Findet: "buy here", "click here" (ganze Wörter)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                            \d{10,}
-                                        </td>
-                                        <td style="padding: 5px 0; color: #646970; font-size: 13px;">
-                                            Findet: 10+ aufeinanderfolgende Zahlen
-                                        </td>
-                                    </tr>
-                                </table>
-                                <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
-                                    <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
-                                </p>
+                                        <tr>
+                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                                V.*i.*a.*g.*r.*a
+                                            </td>
+                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                                Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                                c[a@4]s[i1!]n[o0]
+                                            </td>
+                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                                Findet: casino, cas1no, c@sino, cas!n0
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                                \b(buy|click)\s+here\b
+                                            </td>
+                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                                Findet: "buy here", "click here" (ganze Wörter)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
+                                                \d{10,}
+                                            </td>
+                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                                Findet: 10+ aufeinanderfolgende Zahlen
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
+                                        <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
+                                    </p>
                             </div>
                         </div>
                         <?php endif; ?>
@@ -1388,11 +1388,11 @@ class GermanFence_Admin {
                                 <div>
                                     <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
                                     <textarea id="htaccess-output" readonly 
-                                        style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #f8f9fa; resize: vertical;"
+                                        style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
                                         placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
                                     ></textarea>
                                     
-                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn" style="margin-top: 10px; width: 100%;">
+                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 10px; width: 100%;">
                                         <span class="dashicons dashicons-clipboard"></span>
                                         Code kopieren
                                     </button>
@@ -1522,7 +1522,9 @@ class GermanFence_Admin {
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">E-Mail-Adresse:</label>
                                             <input type="email" id="free-email-input" placeholder="deine@email.de" 
-                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;">
+                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; outline: none;"
+                                                onfocus="this.style.border='1px solid #d9dde1'"
+                                                onblur="this.style.border='1px solid #d9dde1'">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
@@ -1555,7 +1557,9 @@ class GermanFence_Admin {
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">License-Key:</label>
                                             <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" 
-                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; text-transform: uppercase;">
+                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; text-transform: uppercase; outline: none;"
+                                                onfocus="this.style.border='1px solid #d9dde1'"
+                                                onblur="this.style.border='1px solid #d9dde1'">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
@@ -1587,8 +1591,8 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 20px; font-size: 14px;">
-                                Jetzt PRO kaufen →
+                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 20px; font-size: 14px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                Jetzt PRO kaufen
                             </a>
                             </div>
                         </div>

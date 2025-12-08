@@ -180,6 +180,9 @@ class GermanFence_Free_License {
             GermanFence_Logger::log('[FREE-LICENSE] E-Mail verifiziert: ' . $user->email . ' | Key: ' . $license_key);
             GermanFence_Logger::log('[FREE-LICENSE] Option gespeichert: ' . get_option('germanfence_free_verified'));
             
+            // Registriere License auch im Portal (damit sie in der DB erscheint)
+            $this->sync_license_to_portal($user->email, $license_key, $this->get_current_domain());
+            
             return array(
                 'success' => true, 
                 'message' => 'E-Mail erfolgreich verifiziert! Du kannst jetzt die kostenlose Version nutzen.',
@@ -378,6 +381,11 @@ class GermanFence_Free_License {
         
         GermanFence_Logger::log('[LICENSE] Mit Key aktiviert: ' . $key . ' | Typ: ' . $key_type . ' | E-Mail: ' . $email);
         
+        // Registriere FREE-License auch im Portal (damit sie in der DB erscheint)
+        if ($key_type === 'FREE') {
+            $this->sync_license_to_portal($email, $key, $this->get_current_domain());
+        }
+        
         // Erfolgs-Nachricht mit Lizenztyp
         $type_names = array(
             'FREE' => 'FREE',
@@ -442,6 +450,54 @@ class GermanFence_Free_License {
             'is_active' => $this->is_free_active(),
             'users_in_db' => $users
         );
+    }
+    
+    /**
+     * Synchronisiert FREE-License mit Portal-Datenbank
+     */
+    private function sync_license_to_portal($email, $license_key, $domain = '') {
+        $portal_url = 'https://portal.germanfence.de/api/licenses/register-free';
+        
+        $data = array(
+            'email' => $email,
+            'licenseKey' => $license_key,
+            'domain' => $domain
+        );
+        
+        $args = array(
+            'method' => 'POST',
+            'timeout' => 10,
+            'headers' => array(
+                'Content-Type' => 'application/json'
+            ),
+            'body' => json_encode($data)
+        );
+        
+        GermanFence_Logger::log('[FREE-LICENSE-SYNC] Sende an Portal: ' . $portal_url);
+        GermanFence_Logger::log('[FREE-LICENSE-SYNC] Daten: ' . json_encode($data));
+        
+        $response = wp_remote_post($portal_url, $args);
+        
+        if (is_wp_error($response)) {
+            GermanFence_Logger::log('[FREE-LICENSE-SYNC] ❌ Fehler: ' . $response->get_error_message());
+            return false;
+        }
+        
+        $body = wp_remote_retrieve_body($response);
+        $result = json_decode($body, true);
+        
+        GermanFence_Logger::log('[FREE-LICENSE-SYNC] ✅ Response: ' . $body);
+        
+        return isset($result['success']) && $result['success'];
+    }
+    
+    /**
+     * Gibt aktuelle Domain zurück
+     */
+    private function get_current_domain() {
+        $site_url = get_site_url();
+        $parsed = parse_url($site_url);
+        return isset($parsed['host']) ? $parsed['host'] : '';
     }
 }
 
