@@ -95,15 +95,6 @@ class GermanFence_Admin {
             array($this, 'render_admin_page')
         );
         
-        add_submenu_page(
-            'germanfence',
-            'Lizenz',
-            '🔑 Lizenz',
-            'manage_options',
-            'germanfence&tab=license',
-            array($this, 'render_admin_page')
-        );
-        
         // CSS für Icon-Skalierung + Hover-Menü
         add_action('admin_head', array($this, 'add_menu_icon_css'));
         
@@ -402,7 +393,7 @@ class GermanFence_Admin {
                             <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>" class="germanfence-btn-primary">
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" class="germanfence-btn-primary">
                                 Zur Lizenz-Verwaltung →
                             </a>
                         </div>
@@ -536,7 +527,7 @@ class GermanFence_Admin {
                             <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>" class="germanfence-btn-primary">
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" class="germanfence-btn-primary">
                                 Zur Lizenz-Verwaltung →
                             </a>
                         </div>
@@ -770,7 +761,7 @@ class GermanFence_Admin {
                                 <p style="color: #50575e; margin: 0 0 20px 0;">
                                     Phrasen-Blocking ist nur mit einer aktiven Lizenz verfügbar.
                                 </p>
-                                <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>" class="germanfence-btn-primary">
+                                <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" class="germanfence-btn-primary">
                                     Jetzt Lizenz aktivieren →
                                 </a>
                             </div>
@@ -955,9 +946,120 @@ class GermanFence_Admin {
                         </div>
                     </div>
                 </div>
+                <!-- Debug Log Tab -->
+                <div class="germanfence-tab-content <?php echo $active_tab === 'debug' ? 'active' : ''; ?>" id="tab-debug">
+                    <div class="germanfence-section">
+                        <h2>🔍 Debug Log - Ausführliche Fehlersuche</h2>
+                        
+                        <div style="background: #d1ecf1; padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #0c5460;">
+                            <h3 style="margin-top: 0; color: #0c5460;">📋 Vollständiges Debug-Log</h3>
+                            <p style="color: #0c5460;">Hier siehst du ALLE Aktionen des Plugins in Echtzeit:</p>
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 11px; max-height: 500px; font-family: 'Courier New', monospace;"><?php 
+                                echo esc_html(GermanFence_Logger::get_log()); 
+                            ?></pre>
+                            <button type="button" class="germanfence-btn-danger" id="clear-debug-log" style="margin-top: 10px;">
+                                        <span class="dashicons dashicons-trash"></span>
+                                Debug-Log leeren
+                                    </button>
+                                </div>
+                        
+                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; margin-bottom: 20px;">
+                            <h3 style="margin-top: 0;">Aktueller Status</h3>
+                            
+                            <table class="germanfence-table">
+                                <tr>
+                                    <td><strong>POST-Daten empfangen:</strong></td>
+                                    <td><?php echo !empty($_POST) ? '✅ JA (' . count($_POST) . ' Felder)' : '❌ NEIN'; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Save-Button geklickt:</strong></td>
+                                    <td><?php echo isset($_POST['germanfence_save_settings']) ? '✅ JA' : '❌ NEIN'; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nonce vorhanden:</strong></td>
+                                    <td><?php echo isset($_POST['germanfence_nonce']) ? '✅ JA' : '❌ NEIN'; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nonce gültig:</strong></td>
+                                    <td><?php 
+                                        if (isset($_POST['germanfence_nonce'])) {
+                                            echo wp_verify_nonce($_POST['germanfence_nonce'], 'germanfence_settings') ? '✅ JA' : '❌ NEIN (FEHLER!)';
+                                        } else {
+                                            echo '⚠️ Nicht geprüft';
+                                        }
+                                    ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gespeichert:</strong></td>
+                                    <td><?php echo $saved ? '✅ JA' : '❌ NEIN'; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aktuelle Einstellungen:</strong></td>
+                                    <td><?php echo count($settings); ?> Einträge</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <?php if (!empty($_POST)): ?>
+                        <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #22D6DD;">
+                            <h3 style="margin-top: 0;">📝 Empfangene POST-Daten</h3>
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 300px;"><?php 
+                                $post_data = $_POST;
+                                unset($post_data['germanfence_nonce']);
+                                unset($post_data['_wp_http_referer']);
+                                echo esc_html(print_r($post_data, true)); 
+                            ?></pre>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
+                            <h3 style="margin-top: 0; color: #1d2327;">💾 Gespeicherte Einstellungen</h3>
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
+                        </div>
+                        
+                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px;">
+                            <h3 style="margin-top: 0;">🔧 System-Info</h3>
+                            <table class="germanfence-table">
+                                <tr>
+                                    <td><strong>WordPress Version:</strong></td>
+                                    <td><?php echo get_bloginfo('version'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PHP Version:</strong></td>
+                                    <td><?php echo PHP_VERSION; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Plugin Version:</strong></td>
+                                    <td><?php echo GERMANFENCE_VERSION; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Admin URL:</strong></td>
+                                    <td><?php echo admin_url('admin.php?page=germanfence'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Form Action:</strong></td>
+                                    <td><?php echo esc_url(admin_url('admin.php?page=germanfence')); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Current User Can:</strong></td>
+                                    <td><?php echo current_user_can('manage_options') ? '✅ manage_options' : '❌ KEINE RECHTE!'; ?></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <?php if ($saved): ?>
+                        <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-top: 20px; border-left: 4px solid #22D6DD;">
+                            <h3 style="margin-top: 0; color: #22D6DD;">✅ Letztes Speichern erfolgreich!</h3>
+                            <p style="margin: 0; color: #50575e;">Zeitpunkt: <?php echo current_time('d.m.Y H:i:s'); ?></p>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
                 
-                <!-- Lizenz Tab -->
-                <div class="germanfence-tab-content <?php echo $active_tab === 'license' ? 'active' : ''; ?>" id="tab-license">
+                <!-- Einstellungen Tab -->
+                <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
+                    
+                    <!-- LIZENZ-VERWALTUNG Section -->
                     <div class="germanfence-section">
                         <h2>🔑 Lizenz-Verwaltung</h2>
                         
@@ -1191,132 +1293,6 @@ class GermanFence_Admin {
                         </div>
                         <?php endif; ?>
                     </div>
-                </div>
-                
-                <!-- Debug Log Tab -->
-                <div class="germanfence-tab-content <?php echo $active_tab === 'debug' ? 'active' : ''; ?>" id="tab-debug">
-                    <div class="germanfence-section">
-                        <h2>🔍 Debug Log - Ausführliche Fehlersuche</h2>
-                        
-                        <div style="background: #d1ecf1; padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #0c5460;">
-                            <h3 style="margin-top: 0; color: #0c5460;">📋 Vollständiges Debug-Log</h3>
-                            <p style="color: #0c5460;">Hier siehst du ALLE Aktionen des Plugins in Echtzeit:</p>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 11px; max-height: 500px; font-family: 'Courier New', monospace;"><?php 
-                                echo esc_html(GermanFence_Logger::get_log()); 
-                            ?></pre>
-                            <button type="button" class="germanfence-btn-danger" id="clear-debug-log" style="margin-top: 10px;">
-                                        <span class="dashicons dashicons-trash"></span>
-                                Debug-Log leeren
-                                    </button>
-                                </div>
-                        
-                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; margin-bottom: 20px;">
-                            <h3 style="margin-top: 0;">Aktueller Status</h3>
-                            
-                            <table class="germanfence-table">
-                                <tr>
-                                    <td><strong>POST-Daten empfangen:</strong></td>
-                                    <td><?php echo !empty($_POST) ? '✅ JA (' . count($_POST) . ' Felder)' : '❌ NEIN'; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Save-Button geklickt:</strong></td>
-                                    <td><?php echo isset($_POST['germanfence_save_settings']) ? '✅ JA' : '❌ NEIN'; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Nonce vorhanden:</strong></td>
-                                    <td><?php echo isset($_POST['germanfence_nonce']) ? '✅ JA' : '❌ NEIN'; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Nonce gültig:</strong></td>
-                                    <td><?php 
-                                        if (isset($_POST['germanfence_nonce'])) {
-                                            echo wp_verify_nonce($_POST['germanfence_nonce'], 'germanfence_settings') ? '✅ JA' : '❌ NEIN (FEHLER!)';
-                                        } else {
-                                            echo '⚠️ Nicht geprüft';
-                                        }
-                                    ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Gespeichert:</strong></td>
-                                    <td><?php echo $saved ? '✅ JA' : '❌ NEIN'; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Aktuelle Einstellungen:</strong></td>
-                                    <td><?php echo count($settings); ?> Einträge</td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <?php if (!empty($_POST)): ?>
-                        <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #22D6DD;">
-                            <h3 style="margin-top: 0;">📝 Empfangene POST-Daten</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 300px;"><?php 
-                                $post_data = $_POST;
-                                unset($post_data['germanfence_nonce']);
-                                unset($post_data['_wp_http_referer']);
-                                echo esc_html(print_r($post_data, true)); 
-                            ?></pre>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
-                            <h3 style="margin-top: 0; color: #1d2327;">💾 Gespeicherte Einstellungen</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
-                        </div>
-                        
-                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px;">
-                            <h3 style="margin-top: 0;">🔧 System-Info</h3>
-                            <table class="germanfence-table">
-                                <tr>
-                                    <td><strong>WordPress Version:</strong></td>
-                                    <td><?php echo get_bloginfo('version'); ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>PHP Version:</strong></td>
-                                    <td><?php echo PHP_VERSION; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Plugin Version:</strong></td>
-                                    <td><?php echo GERMANFENCE_VERSION; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Admin URL:</strong></td>
-                                    <td><?php echo admin_url('admin.php?page=germanfence'); ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Form Action:</strong></td>
-                                    <td><?php echo esc_url(admin_url('admin.php?page=germanfence')); ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Current User Can:</strong></td>
-                                    <td><?php echo current_user_can('manage_options') ? '✅ manage_options' : '❌ KEINE RECHTE!'; ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <?php if ($saved): ?>
-                        <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-top: 20px; border-left: 4px solid #22D6DD;">
-                            <h3 style="margin-top: 0; color: #22D6DD;">✅ Letztes Speichern erfolgreich!</h3>
-                            <p style="margin: 0; color: #50575e;">Zeitpunkt: <?php echo current_time('d.m.Y H:i:s'); ?></p>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                
-                <!-- Einstellungen Tab -->
-                <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
-                    <?php if (!$is_free_active && !$is_license_valid): ?>
-                        <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%); padding: 40px; border-radius: 8px; border: 2px solid #ef4444; text-align: center; margin: 20px;">
-                            <span style="font-size: 64px;">🔒</span>
-                            <h2 style="margin: 20px 0 10px 0; color: #ef4444;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
-                            </p>
-                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>" class="germanfence-btn-primary">
-                                Zur Lizenz-Verwaltung →
-                            </a>
-                        </div>
-                    <?php else: ?>
                     
                     <!-- Performance-Optimierung Section -->
                     <div class="germanfence-section">

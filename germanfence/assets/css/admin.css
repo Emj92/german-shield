@@ -47,7 +47,7 @@
 .germanfence-header {
     background: #F2F5F8;
     padding: 30px 40px;
-    border-bottom: 2px solid #22D6DD;
+    border-bottom: 1px solid #d9dde1;
     border-radius: 9px 9px 0 0;
 }
 
@@ -63,7 +63,7 @@
 
 .germanfence-quote-of-day {
     background: #F2F5F8;
-    border: 2px solid #22D6DD;
+    border: 1px solid #d9dde1;
     border-radius: 9px;
     padding: 15px 20px;
     max-width: 450px;
