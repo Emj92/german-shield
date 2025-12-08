@@ -1,12 +1,12 @@
 {
-    "version":  "1.7.3",
+    "version":  "1.7.4",
     "sections":  {
-                     "changelog":  "\u003ch4\u003e1.7.3\u003c/h4\u003e\u003cul\u003e\u003cli\u003eDesign-System vereinheitlicht\u003c/li\u003e\u003cli\u003eUI Farben und Borders optimiert\u003c/li\u003e\u003c/ul\u003e",
+                     "changelog":  "\u003ch4\u003e1.7.4\u003c/h4\u003e\u003cul\u003e\u003cli\u003ePlugin Design-System einheitlich\u003c/li\u003e\u003cli\u003eBorders #d9dde1, Radius 9px\u003c/li\u003e\u003c/ul\u003e",
                      "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
                  },
     "author_homepage":  "https://germanfence.de",
     "download_url":  "https://germanfence.de/downloads/germanfence-plugin.zip",
-    "last_updated":  "2025-12-07 14:30:00",
+    "last_updated":  "2025-12-08 00:45:00",
     "banners":  {
                     "low":  "https://germanfence.de/assets/banner-772x250.png",
                     "high":  "https://germanfence.de/assets/banner-1544x500.png"
