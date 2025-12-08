@@ -145,18 +145,22 @@ class GermanFence {
             return array('valid' => false, 'message' => 'Sicherheitsprüfung fehlgeschlagen', 'reason' => 'Invalid nonce');
         }
         
-        // Check submission rate (Rate Limiting)
-        $rate_check = $this->antispam->check_submission_rate($ip);
-        if (!$rate_check['valid']) {
-            $this->statistics->log_block('rate_limit', $ip, $rate_check['reason']);
-            return $rate_check;
+        // Check submission rate (Rate Limiting) - nur wenn aktiviert
+        if (!empty($settings['rate_limit_enabled'])) {
+            $rate_check = $this->antispam->check_submission_rate($ip);
+            if (!$rate_check['valid']) {
+                $this->statistics->log_block('rate_limit', $ip, $rate_check['reason']);
+                return $rate_check;
+            }
         }
         
-        // Check for duplicate submissions
-        $duplicate_check = $this->antispam->check_duplicate_submission($data);
-        if (!$duplicate_check['valid']) {
-            $this->statistics->log_block('duplicate', $ip, $duplicate_check['reason']);
-            return $duplicate_check;
+        // Check for duplicate submissions - nur wenn aktiviert
+        if (!empty($settings['duplicate_check_enabled'])) {
+            $duplicate_check = $this->antispam->check_duplicate_submission($data);
+            if (!$duplicate_check['valid']) {
+                $this->statistics->log_block('duplicate', $ip, $duplicate_check['reason']);
+                return $duplicate_check;
+            }
         }
         
         // Honeypot
@@ -195,11 +199,13 @@ class GermanFence {
             }
         }
         
-        // HTTP Headers
-        $header_check = $this->antispam->check_http_headers();
-        if (!$header_check['valid']) {
-            $this->statistics->log_block('headers', $ip, $header_check['reason']);
-            return $header_check;
+        // HTTP Headers - nur wenn aktiviert
+        if (!empty($settings['http_headers_check'])) {
+            $header_check = $this->antispam->check_http_headers();
+            if (!$header_check['valid']) {
+                $this->statistics->log_block('headers', $ip, $header_check['reason']);
+                return $header_check;
+            }
         }
         
         // GEO Blocking

@@ -43,13 +43,23 @@ class GermanFence_Admin {
      * AJAX Handler: History löschen
      */
     public function ajax_clear_history() {
+        error_log('[GermanFence] ajax_clear_history aufgerufen');
+        
         // Nonce prüfen
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
+        if (!isset($_POST['nonce'])) {
+            error_log('[GermanFence] Nonce fehlt in POST');
+            wp_send_json_error('Nonce fehlt');
+            return;
+        }
+        
+        if (!wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
+            error_log('[GermanFence] Nonce-Validierung fehlgeschlagen');
             wp_send_json_error('Sicherheitsprüfung fehlgeschlagen');
             return;
         }
         
         if (!current_user_can('manage_options')) {
+            error_log('[GermanFence] User hat keine Berechtigung');
             wp_send_json_error('Keine Berechtigung');
             return;
         }
@@ -58,19 +68,32 @@ class GermanFence_Admin {
             // Lösche Datenbank-Einträge
             global $wpdb;
             $table_name = $wpdb->prefix . 'germanfence_stats';
+            
+            error_log('[GermanFence] Lösche Datenbank-Tabelle: ' . $table_name);
             $result = $wpdb->query("TRUNCATE TABLE $table_name");
             
             if ($result === false) {
+                error_log('[GermanFence] DB-Fehler: ' . $wpdb->last_error);
                 wp_send_json_error('Datenbankfehler: ' . $wpdb->last_error);
                 return;
             }
             
+            error_log('[GermanFence] Datenbank gelöscht, lösche History-Datei');
+            
             // Lösche History-Datei
             $stats = new GermanFence_Statistics();
-            $stats->clear_history();
+            $history_result = $stats->clear_history();
             
+            if ($history_result === false) {
+                error_log('[GermanFence] History-Datei konnte nicht gelöscht werden');
+            } else {
+                error_log('[GermanFence] History-Datei erfolgreich gelöscht');
+            }
+            
+            error_log('[GermanFence] Verlauf erfolgreich gelöscht');
             wp_send_json_success('Verlauf erfolgreich gelöscht');
         } catch (Exception $e) {
+            error_log('[GermanFence] Exception: ' . $e->getMessage());
             wp_send_json_error('Fehler: ' . $e->getMessage());
         }
     }
