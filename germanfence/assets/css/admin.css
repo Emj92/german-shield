@@ -1140,16 +1140,24 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 .germanfence-input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #d9dde1;
+    border: 1px solid #d9dde1 !important;
     border-radius: 9px;
     font-size: 14px;
     background: #ffffff;
-    outline: none;
-    transition: border-color 0.2s;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .germanfence-input:focus {
-    border-color: #d9dde1;
+    border-color: #d9dde1 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.germanfence-input:active {
+    border-color: #d9dde1 !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .germanfence-input::placeholder {
