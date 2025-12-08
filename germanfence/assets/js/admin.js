@@ -1022,65 +1022,167 @@
         
         // .htaccess Generator
         $('#generate-htaccess-btn').on('click', function() {
-            var htaccessCode = "# GermanFence Security Rules\n# Generated: " + new Date().toLocaleString() + "\n\n";
+            var htaccessCode = "# GermanFence Security & Performance Rules\n# Generated: " + new Date().toLocaleString() + "\n";
+            htaccessCode += "# Basierend auf Best Practices 2025\n\n";
             
             if ($('#htaccess-directory-listing').is(':checked')) {
-                htaccessCode += "# Disable Directory Listings\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# Directory Listings deaktivieren\n";
+                htaccessCode += "# ============================================\n";
                 htaccessCode += "Options -Indexes\n\n";
             }
             
             if ($('#htaccess-xmlrpc').is(':checked')) {
-                htaccessCode += "# Block XML-RPC\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# XML-RPC blockieren\n";
+                htaccessCode += "# ============================================\n";
                 htaccessCode += "<Files xmlrpc.php>\n";
-                htaccessCode += "    Order Deny,Allow\n";
-                htaccessCode += "    Deny from all\n";
+                htaccessCode += "    Require all denied\n";
                 htaccessCode += "</Files>\n\n";
             }
             
             if ($('#htaccess-wp-config').is(':checked')) {
-                htaccessCode += "# Protect wp-config.php\n";
-                htaccessCode += "<Files wp-config.php>\n";
-                htaccessCode += "    Order Allow,Deny\n";
-                htaccessCode += "    Deny from all\n";
-                htaccessCode += "</Files>\n\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# WordPress Dateien schützen\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<FilesMatch \"^(wp-config\\.php|php\\.ini|php5\\.ini|readme\\.html|license\\.txt)\">\n";
+                htaccessCode += "    Require all denied\n";
+                htaccessCode += "</FilesMatch>\n\n";
             }
             
             if ($('#htaccess-htaccess').is(':checked')) {
-                htaccessCode += "# Protect .htaccess\n";
+                htaccessCode += "# .htaccess selbst schützen\n";
                 htaccessCode += "<Files .htaccess>\n";
-                htaccessCode += "    Order Allow,Deny\n";
-                htaccessCode += "    Deny from all\n";
+                htaccessCode += "    Require all denied\n";
                 htaccessCode += "</Files>\n\n";
             }
             
             if ($('#htaccess-uploads').is(':checked')) {
-                htaccessCode += "# Block PHP execution in uploads\n";
-                htaccessCode += "<Directory wp-content/uploads>\n";
-                htaccessCode += "    <FilesMatch \"\\.php$\">\n";
-                htaccessCode += "        Order Allow,Deny\n";
-                htaccessCode += "        Deny from all\n";
-                htaccessCode += "    </FilesMatch>\n";
-                htaccessCode += "</Directory>\n\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# PHP in Uploads blockieren\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_rewrite.c>\n";
+                htaccessCode += "    RewriteEngine On\n";
+                htaccessCode += "    RewriteCond %{REQUEST_URI} ^.*/wp-content/uploads/.*$ [NC]\n";
+                htaccessCode += "    RewriteCond %{REQUEST_FILENAME} \\.php$ [NC]\n";
+                htaccessCode += "    RewriteRule .* - [F,L]\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if ($('#htaccess-author-scan').is(':checked')) {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# Autoren-Scans blockieren\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_rewrite.c>\n";
+                htaccessCode += "    RewriteCond %{QUERY_STRING} ^author=\\d+ [NC]\n";
+                htaccessCode += "    RewriteRule .* - [F,L]\n";
+                htaccessCode += "</IfModule>\n\n";
             }
             
             if ($('#htaccess-sql-injection').is(':checked')) {
-                htaccessCode += "# Block SQL Injection Patterns\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# SQL-Injection Schutz\n";
+                htaccessCode += "# ============================================\n";
                 htaccessCode += "<IfModule mod_rewrite.c>\n";
-                htaccessCode += "    RewriteEngine On\n";
                 htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]\n";
                 htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\\.\\.//?)+ [OR]\n";
                 htaccessCode += "    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [OR]\n";
                 htaccessCode += "    RewriteCond %{QUERY_STRING} (union|select|insert|drop|delete|update|replace|truncate) [NC]\n";
-                htaccessCode += "    RewriteRule .* - [F]\n";
+                htaccessCode += "    RewriteRule .* - [F,L]\n";
                 htaccessCode += "</IfModule>\n\n";
             }
             
-            if (htaccessCode === "# GermanFence Security Rules\n# Generated: " + new Date().toLocaleString() + "\n\n") {
-                htaccessCode += "# Keine Regeln ausgewählt\n";
+            if ($('#htaccess-security-headers').is(':checked')) {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# HTTP Security Headers\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_headers.c>\n";
+                htaccessCode += "    # HSTS - Force HTTPS (2 Jahre)\n";
+                htaccessCode += "    Header always set Strict-Transport-Security \"max-age=63072000; includeSubDomains; preload\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # X-Frame-Options - Clickjacking Schutz\n";
+                htaccessCode += "    Header always set X-Frame-Options \"SAMEORIGIN\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # X-Content-Type-Options - MIME-Sniffing verhindern\n";
+                htaccessCode += "    Header always set X-Content-Type-Options \"nosniff\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # Referrer-Policy - Datenschutz\n";
+                htaccessCode += "    Header always set Referrer-Policy \"strict-origin-when-cross-origin\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # Permissions-Policy - Browser Features einschränken\n";
+                htaccessCode += "    Header always set Permissions-Policy \"geolocation=(), microphone=(), camera=()\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # Content-Security-Policy - Upgrade zu HTTPS\n";
+                htaccessCode += "    Header always set Content-Security-Policy \"upgrade-insecure-requests;\"\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if ($('#htaccess-caching').is(':checked')) {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# Browser Caching\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_expires.c>\n";
+                htaccessCode += "    ExpiresActive On\n";
+                htaccessCode += "    ExpiresDefault \"access plus 1 month\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # Bilder\n";
+                htaccessCode += "    ExpiresByType image/jpg \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/jpeg \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/gif \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/png \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/webp \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/svg+xml \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType image/x-icon \"access plus 1 year\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # CSS und JavaScript\n";
+                htaccessCode += "    ExpiresByType text/css \"access plus 1 month\"\n";
+                htaccessCode += "    ExpiresByType text/javascript \"access plus 1 month\"\n";
+                htaccessCode += "    ExpiresByType application/javascript \"access plus 1 month\"\n";
+                htaccessCode += "    \n";
+                htaccessCode += "    # Fonts\n";
+                htaccessCode += "    ExpiresByType font/woff2 \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType font/woff \"access plus 1 year\"\n";
+                htaccessCode += "    ExpiresByType font/ttf \"access plus 1 year\"\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if ($('#htaccess-compression').is(':checked')) {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# GZIP Komprimierung\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_deflate.c>\n";
+                htaccessCode += "    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml\n";
+                htaccessCode += "    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript\n";
+                htaccessCode += "    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml\n";
+                htaccessCode += "    AddOutputFilterByType DEFLATE application/json\n";
+                htaccessCode += "    AddOutputFilterByType DEFLATE image/svg+xml\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if ($('#htaccess-hotlink').is(':checked')) {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# Hotlink Protection (Bilder)\n";
+                htaccessCode += "# WICHTIG: Ersetze DEINE-DOMAIN.DE mit deiner Domain!\n";
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "<IfModule mod_rewrite.c>\n";
+                htaccessCode += "    RewriteCond %{HTTP_REFERER} !^$\n";
+                htaccessCode += "    RewriteCond %{HTTP_REFERER} !^https?://(.+\\.)?(DEINE-DOMAIN\\.DE) [NC]\n";
+                htaccessCode += "    RewriteCond %{HTTP_REFERER} !google\\. [NC]\n";
+                htaccessCode += "    RewriteCond %{HTTP_REFERER} !bing\\. [NC]\n";
+                htaccessCode += "    RewriteRule \\.(jpg|jpeg|png|gif|webp|svg)$ - [F,NC,L]\n";
+                htaccessCode += "</IfModule>\n\n";
+            }
+            
+            if (htaccessCode === "# GermanFence Security & Performance Rules\n# Generated: " + new Date().toLocaleString() + "\n# Basierend auf Best Practices 2025\n\n") {
+                htaccessCode += "# ⚠️ Keine Regeln ausgewählt\n";
+            } else {
+                htaccessCode += "# ============================================\n";
+                htaccessCode += "# Ende der GermanFence Regeln\n";
+                htaccessCode += "# ============================================\n";
             }
             
             $('#htaccess-output').val(htaccessCode);
-            showToast('.htaccess erfolgreich generiert!', 'success');
+            showToast('✅ .htaccess erfolgreich generiert!', 'success');
         });
         
         // .htaccess Code kopieren

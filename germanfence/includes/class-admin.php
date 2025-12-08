@@ -12,6 +12,17 @@ class GermanFence_Admin {
     public function __construct() {
         // AJAX Handler für Log-Löschen
         add_action('wp_ajax_germanfence_clear_log', array($this, 'ajax_clear_log'));
+        
+        // WordPress Admin Footer entfernen (nur auf GermanFence-Seiten)
+        add_action('admin_init', array($this, 'remove_admin_footer'));
+    }
+    
+    public function remove_admin_footer() {
+        // Prüfen ob wir auf einer GermanFence-Seite sind
+        if (isset($_GET['page']) && strpos($_GET['page'], 'germanfence') !== false) {
+            add_filter('admin_footer_text', '__return_false');
+            add_filter('update_footer', '__return_false');
+        }
     }
     
     public function ajax_clear_log() {
@@ -1238,6 +1249,41 @@ class GermanFence_Admin {
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-sql-injection" checked>
                                             <span>💉 SQL-Injection blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-author-scan" checked>
+                                            <span>👤 Autoren-Scans blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-security-headers" checked>
+                                            <span>🔐 Security Headers setzen</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-caching" checked>
+                                            <span>⚡ Browser Caching aktivieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-compression" checked>
+                                            <span>📦 GZIP Komprimierung aktivieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" id="htaccess-hotlink">
+                                            <span>🖼️ Hotlink Protection (Bilder)</span>
                                         </label>
                                     </div>
                                     
