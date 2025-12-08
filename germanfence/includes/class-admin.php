@@ -81,21 +81,58 @@ class GermanFence_Admin {
     private function format_block_reason($reason) {
         // Mapping für bessere Beschreibungen
         $mappings = array(
-            'nonce: Invalid nonce' => '🔒 Sicherheitsprüfung fehlgeschlagen',
+            // Test Mode
             'test_mode:' => '🧪 Test-Modus aktiv',
-            'rate_limit:' => '⏱️ Zu viele Anfragen',
-            'duplicate:' => '📋 Doppelte Anfrage',
-            'honeypot:' => '🍯 Honeypot ausgelöst',
-            'timestamp:' => '⏰ Formular zu schnell',
-            'url_limit:' => '🔗 Zu viele URLs',
-            'domain_blocked:' => '🚫 E-Mail Domain blockiert',
-            'phrase:' => '📝 Blockierte Phrase',
-            'typing_speed:' => '⌨️ Unnatürliche Geschwindigkeit',
-            'geo: Land nicht in Whitelist' => '🌍 Land nicht erlaubt',
-            'javascript: Missing JS Token' => '🔒 JS-Check fehlgeschlagen',
-            'javascript: Invalid JS Token' => '🔒 JS-Token ungültig',
+            
+            // Nonce
+            'nonce: Invalid nonce' => '🔒 Sicherheitsprüfung fehlgeschlagen',
+            
+            // Rate Limit
+            'rate_limit: Rate limit exceeded' => '⏱️ Zu viele Anfragen',
+            
+            // Duplicate
+            'duplicate: Duplicate submission detected' => '📋 Doppelte Anfrage',
+            
+            // Honeypot
+            'honeypot: Honeypot field filled' => '🍯 Honeypot ausgelöst',
+            'honeypot: Honeypot field missing' => '🍯 Schutzfeld fehlt',
+            
+            // Timestamp
+            'timestamp: Missing timestamp' => '⏰ Zeitstempel fehlt',
+            'timestamp: Future timestamp detected' => '⏰ Ungültiger Zeitstempel',
+            'timestamp: Form submitted too fast' => '⏰ Formular zu schnell',
+            'timestamp: Form expired' => '⏰ Formular abgelaufen',
+            
+            // JavaScript
             'javascript: JavaScript not enabled' => '🔒 JavaScript deaktiviert',
-            'JavaScript not enabled' => '🔒 JavaScript deaktiviert'
+            'JavaScript not enabled' => '🔒 JavaScript deaktiviert',
+            'javascript: Missing JS Token' => '🔒 JS-Token fehlt',
+            'javascript: Invalid JS Token' => '🔒 JS-Token ungültig',
+            
+            // User Agent
+            'user_agent: Empty user agent' => '🤖 Kein User-Agent',
+            'user_agent: Bot user agent detected' => '🤖 Bot erkannt',
+            'user_agent: Suspiciously short user agent' => '🤖 Verdächtiger User-Agent',
+            
+            // HTTP Headers
+            'headers: Missing header' => '📡 Header fehlt',
+            'headers: External referer' => '📡 Externer Referer',
+            
+            // GEO Blocking
+            'geo: Land nicht in Whitelist' => '🌍 Land nicht erlaubt',
+            
+            // URL Limit
+            'url_limit: URL limit exceeded' => '🔗 Zu viele URLs',
+            
+            // Domain Blocking
+            'domain_blocked: Blocked domain detected' => '🚫 Domain blockiert',
+            
+            // Phrase Blocking
+            'phrase: Blocked phrase detected' => '📝 Blockierte Phrase',
+            
+            // Typing Speed
+            'typing_speed: Bot typing detected' => '⌨️ Bot-Tippgeschwindigkeit',
+            'typing_speed: Perfect typing intervals detected' => '⌨️ Perfekte Intervalle'
         );
         
         // Direkte Treffer
@@ -105,17 +142,41 @@ class GermanFence_Admin {
             }
         }
         
-        // Spezielle Fälle mit Details
+        // Spezielle Fälle mit Details (extrahiere wichtige Infos)
+        
+        // Phrase Blocking - zeige die blockierte Phrase
         if (preg_match('/phrase.*Blocked phrase detected: (.+)/', $reason, $matches)) {
             return '📝 Phrase: "' . substr($matches[1], 0, 15) . '"';
         }
         
-        if (preg_match('/domain_blocked.*Domain (.+) ist blockiert/', $reason, $matches)) {
+        // Domain Blocking - zeige die Domain
+        if (preg_match('/domain_blocked.*Blocked domain detected: ([a-z0-9.-]+)/', $reason, $matches)) {
             return '🚫 Domain: ' . $matches[1];
         }
         
+        // GEO Blocking - zeige Ländercode
         if (preg_match('/geo.*Land nicht in Whitelist: ([A-Z]{2})/', $reason, $matches)) {
             return '🌍 Land ' . $matches[1] . ' blockiert';
+        }
+        
+        // User Agent - zeige Bot-Pattern
+        if (preg_match('/user_agent.*Bot user agent detected: ([a-z]+)/', $reason, $matches)) {
+            return '🤖 Bot: ' . $matches[1];
+        }
+        
+        // URL Limit - zeige Anzahl
+        if (preg_match('/url_limit.*exceeded: (\d+)/', $reason, $matches)) {
+            return '🔗 ' . $matches[1] . ' URLs gefunden';
+        }
+        
+        // Rate Limit - zeige Anzahl
+        if (preg_match('/rate_limit.*exceeded: (\d+) submissions/', $reason, $matches)) {
+            return '⏱️ ' . $matches[1] . ' Anfragen/Min';
+        }
+        
+        // Timestamp - zeige Sekunden
+        if (preg_match('/timestamp.*too fast: (\d+)s/', $reason, $matches)) {
+            return '⏰ Nach ' . $matches[1] . 's abgeschickt';
         }
         
         // Fallback: Ersten 35 Zeichen
