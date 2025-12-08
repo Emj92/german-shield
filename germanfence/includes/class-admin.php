@@ -863,7 +863,7 @@ class GermanFence_Admin {
                 <!-- GEO Blocking Tab (NEU: Separates System) -->
                 <?php
                 $geo = new GermanFence_GeoBlocking();
-                $geo->render_tab($settings, $license_info);
+                $geo->render_tab($settings, $license_info, $is_license_valid);
                 ?>
                 
                 <!-- Phrase Blocking Tab -->
@@ -1495,7 +1495,7 @@ class GermanFence_Admin {
                                 </form>
                             <?php else: ?>
                                 <div style="flex: 1;">
-                                    <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">🆓 Kostenlose Version aktivieren</h3>
+                                    <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">🆓 Kostenlose Version aktivieren</h3>
                                     
                                     <!-- Tabs: E-Mail vs Key -->
                                     <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 1px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
@@ -1580,7 +1580,7 @@ class GermanFence_Admin {
                                 Upgrade jetzt auf PRO und schalte leistungsstarke Anti-Spam Features frei! Perfekt für professionelle Websites, die maximalen Schutz benötigen.
                             </p>
                             
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px;">
+                            <div style="background: #ffffff; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #d9dde1;">
                                 <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px; font-weight: 600;">🚀 Exklusive PRO-Features:</h4>
                                 <ul style="margin: 0; padding: 0 0 0 20px; list-style: none;">
                                     <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
@@ -1604,15 +1604,16 @@ class GermanFence_Admin {
                                 </ul>
                             </div>
                             
-                            <div style="background: #E8F9FA; padding: 12px; border-radius: 9px; margin-bottom: 15px; text-align: center;">
+                            <div style="background: #ffffff; padding: 12px; border-radius: 9px; margin-bottom: 15px; text-align: center; border: 1px solid #d9dde1;">
                                 <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600;">
                                     ✅ 14 Tage 100% Geld-zurück-Garantie
                                 </p>
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px; font-size: 15px; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                                    🚀 Jetzt PRO kaufen
+                                <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="text-decoration: none; display: inline-block;">
+                                    <span class="dashicons dashicons-cart"></span>
+                                    Jetzt PRO kaufen
                                 </a>
                             </div>
                         </div>

@@ -167,8 +167,9 @@ class GermanFence_GeoBlocking {
     /**
      * Render GEO Tab Content
      */
-    public function render_tab($settings, $license_info) {
-        $is_locked = empty($license_info['is_valid']);
+    public function render_tab($settings, $license_info, $is_license_valid = false) {
+        // Nur für FREE sperren, PRO-Lizenzen (SINGLE+) sind frei
+        $is_locked = !$is_license_valid;
         ?>
         <div class="germanfence-tab-content" id="tab-geo">
             <div class="germanfence-section">
