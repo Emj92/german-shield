@@ -386,6 +386,14 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>URL-Limit (SEO-Spam)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Domain-Blocking</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Tippgeschwindigkeit-Analyse</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -452,6 +460,14 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>URL-Limit (SEO-Spam)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>Domain-Blocking</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Tippgeschwindigkeit-Analyse</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -509,6 +525,14 @@ export default function Home() {
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
                     <span>Phrasen-Blocking (Regex)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>URL-Limit (SEO-Spam)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
+                    <span>Domain-Blocking</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />

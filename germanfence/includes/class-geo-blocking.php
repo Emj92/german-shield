@@ -168,19 +168,28 @@ class GermanFence_GeoBlocking {
      * Render GEO Tab Content
      */
     public function render_tab($settings, $license_info) {
+        $is_locked = empty($license_info['is_valid']);
         ?>
         <div class="germanfence-tab-content" id="tab-geo">
-            <div class="germanfence-section">
+            <div class="germanfence-section" style="position: relative;">
                 <h2>🌍 GEO Blocking</h2>
                 
-                <?php if (empty($license_info['is_valid'])): ?>
-                    <div style="background: rgba(34, 214, 221, 0.1); padding: 30px; border-radius: 6px; border: 2px solid rgba(34, 214, 221, 0.3); text-align: center;">
-                        <span style="font-size: 48px;">🔒</span>
-                        <h3 style="color: #22D6DD; margin: 15px 0 10px 0;">PRO-Feature</h3>
-                        <p style="color: #50575e; margin: 0 0 20px 0;">GEO Blocking ist nur mit einer aktiven Lizenz verfügbar.</p>
-                        <a href="<?php echo admin_url('admin.php?page=germanfence&tab=license'); ?>" class="germanfence-btn-primary">Jetzt Lizenz aktivieren →</a>
+                <?php if ($is_locked): ?>
+                    <!-- PRO-Feature Overlay -->
+                    <div style="position: absolute; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(242, 245, 248, 0.95); z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 9px;">
+                        <div style="text-align: center; background: white; padding: 40px; border-radius: 9px; border: 2px solid #22D6DD; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px;">
+                            <span style="font-size: 56px;">🔒</span>
+                            <h3 style="color: #22D6DD; margin: 15px 0 10px 0; font-size: 24px;">PRO-Feature</h3>
+                            <p style="color: #646970; margin: 0 0 25px 0; line-height: 1.6;">GEO Blocking ist nur mit einer PRO-Lizenz verfügbar. Upgrade jetzt und blockiere Spam aus beliebigen Ländern!</p>
+                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px; font-size: 16px; font-weight: 600;">
+                                🚀 Jetzt PRO kaufen
+                            </a>
+                        </div>
                     </div>
-                <?php else: ?>
+                <?php endif; ?>
+                
+                <!-- Content (ausgegraut für Free-User) -->
+                <div style="<?php echo $is_locked ? 'opacity: 0.5; pointer-events: none; user-select: none;' : ''; ?>">
                     
                     <!-- Toggle mit Modus-Buttons (Auto-Save) -->
                     <div style="background: #fff; padding: 25px; border: 1px solid #c3cbd5; border-radius: 6px; margin-bottom: 30px;">
@@ -256,8 +265,8 @@ class GermanFence_GeoBlocking {
                             </div>
                         </div>
                     </div>
-                    
-                <?php endif; ?>
+                
+                </div><!-- End Content Wrapper -->
             </div>
         </div>
         <?php
