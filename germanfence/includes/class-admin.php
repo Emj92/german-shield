@@ -1590,8 +1590,6 @@ class GermanFence_Admin {
                             </div>
                         </div>
                     </div>
-                    
-                    <?php endif; ?>
                 </div>
                 
                 <div class="germanfence-footer">
