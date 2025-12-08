@@ -25,22 +25,37 @@ export async function POST(request: NextRequest) {
 
     // Prüfen ob License-Key bereits existiert
     const existingLicense = await prisma.license.findUnique({
-      where: { licenseKey: licenseKey }
+      where: { licenseKey: licenseKey },
+      include: { activeDomains: true }
     });
 
     if (existingLicense) {
       console.log(`[FREE-LICENSE-API] License ${licenseKey} existiert bereits (${existingLicense.id})`);
       
       // Wenn Domain angegeben wurde, füge sie hinzu (falls noch nicht vorhanden)
-      if (domain && existingLicense.activatedDomain !== domain) {
-        await prisma.license.update({
-          where: { id: existingLicense.id },
-          data: { 
-            activatedDomain: domain,
-            lastChecked: new Date()
-          }
-        });
-        console.log(`[FREE-LICENSE-API] Domain aktualisiert: ${domain}`);
+      if (domain) {
+        const domainExists = existingLicense.activeDomains.some(d => d.domain === domain);
+        
+        if (!domainExists && existingLicense.activeDomains.length < existingLicense.maxDomains) {
+          await prisma.licenseDomain.create({
+            data: {
+              licenseId: existingLicense.id,
+              domain: domain,
+              lastSeenAt: new Date()
+            }
+          });
+          console.log(`[FREE-LICENSE-API] Domain hinzugefügt: ${domain}`);
+        } else if (domainExists) {
+          // Domain bereits vorhanden, aktualisiere lastSeenAt
+          await prisma.licenseDomain.updateMany({
+            where: { 
+              licenseId: existingLicense.id,
+              domain: domain 
+            },
+            data: { lastSeenAt: new Date() }
+          });
+          console.log(`[FREE-LICENSE-API] Domain aktualisiert: ${domain}`);
+        }
       }
 
       return NextResponse.json({ 
@@ -73,17 +88,25 @@ export async function POST(request: NextRequest) {
     }
 
     // Erstelle FREE-License in DB
+    // FREE-Lizenzen "laufen nie ab" = 100 Jahre in der Zukunft
+    const farFuture = new Date();
+    farFuture.setFullYear(farFuture.getFullYear() + 100);
+    
     const license = await prisma.license.create({
       data: {
         licenseKey: licenseKey,
         userId: user.id,
-        type: 'FREE',
+        packageType: 'FREE',
         status: 'ACTIVE',
         isActive: true,
-        activatedDomain: domain || null,
         maxDomains: 1,
-        expiresAt: null, // FREE-Lizenzen laufen nie ab
-        lastChecked: new Date()
+        expiresAt: farFuture,
+        activeDomains: domain ? {
+          create: {
+            domain: domain,
+            lastSeenAt: new Date()
+          }
+        } : undefined
       }
     });
 
