@@ -13,6 +13,9 @@ class GermanFence_Admin {
         // AJAX Handler für Log-Löschen
         add_action('wp_ajax_germanfence_clear_log', array($this, 'ajax_clear_log'));
         
+        // AJAX Handler für History-Löschen
+        add_action('wp_ajax_germanfence_clear_history', array($this, 'ajax_clear_history'));
+        
         // WordPress Admin Footer entfernen (nur auf GermanFence-Seiten)
         add_action('admin_init', array($this, 'remove_admin_footer'));
     }
@@ -34,6 +37,73 @@ class GermanFence_Admin {
         
         GermanFence_Logger::clear_log();
         wp_send_json_success('Log erfolgreich geleert');
+    }
+    
+    /**
+     * AJAX Handler: History löschen
+     */
+    public function ajax_clear_history() {
+        check_ajax_referer('germanfence_admin', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Keine Berechtigung');
+        }
+        
+        // Lösche Datenbank-Einträge
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'germanfence_stats';
+        $wpdb->query("TRUNCATE TABLE $table_name");
+        
+        // Lösche History-Datei
+        $stats = new GermanFence_Statistics();
+        $stats->clear_history();
+        
+        wp_send_json_success('Verlauf erfolgreich gelöscht');
+    }
+    
+    /**
+     * Verbessert Blockgründe für bessere Lesbarkeit (max 5-6 Wörter)
+     */
+    private function format_block_reason($reason) {
+        // Mapping für bessere Beschreibungen
+        $mappings = array(
+            'nonce: Invalid nonce' => '🔒 Sicherheitsprüfung fehlgeschlagen',
+            'test_mode:' => '🧪 Test-Modus aktiv',
+            'rate_limit:' => '⏱️ Zu viele Anfragen',
+            'duplicate:' => '📋 Doppelte Anfrage',
+            'honeypot:' => '🍯 Honeypot ausgelöst',
+            'timestamp:' => '⏰ Formular zu schnell',
+            'url_limit:' => '🔗 Zu viele URLs',
+            'domain_blocked:' => '🚫 E-Mail Domain blockiert',
+            'phrase:' => '📝 Blockierte Phrase',
+            'typing_speed:' => '⌨️ Unnatürliche Geschwindigkeit',
+            'geo: Land nicht in Whitelist' => '🌍 Land nicht erlaubt',
+            'javascript: Missing JS Token' => '🔒 JS-Check fehlgeschlagen',
+            'javascript: Invalid JS Token' => '🔒 JS-Token ungültig'
+        );
+        
+        // Direkte Treffer
+        foreach ($mappings as $pattern => $replacement) {
+            if (stripos($reason, $pattern) !== false) {
+                return $replacement;
+            }
+        }
+        
+        // Spezielle Fälle mit Details
+        if (preg_match('/phrase.*Blocked phrase detected: (.+)/', $reason, $matches)) {
+            return '📝 Phrase: "' . substr($matches[1], 0, 15) . '"';
+        }
+        
+        if (preg_match('/domain_blocked.*Domain (.+) ist blockiert/', $reason, $matches)) {
+            return '🚫 Domain: ' . $matches[1];
+        }
+        
+        if (preg_match('/geo.*Land nicht in Whitelist: ([A-Z]{2})/', $reason, $matches)) {
+            return '🌍 Land ' . $matches[1] . ' blockiert';
+        }
+        
+        // Fallback: Ersten 35 Zeichen
+        return mb_substr($reason, 0, 35) . (mb_strlen($reason) > 35 ? '...' : '');
     }
     
     public function add_admin_menu() {
@@ -483,6 +553,9 @@ class GermanFence_Admin {
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     ✅ Legitim
                                 </button>
+                                <button type="button" id="clear-history-btn" class="germanfence-btn-pink" style="margin-left: auto;">
+                                    🗑️ Verlauf löschen
+                                </button>
                             </div>
                         </div>
                         
@@ -519,7 +592,7 @@ class GermanFence_Admin {
                                             <?php endif; ?>
                                         </td>
                                         <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                            <?php echo esc_html($entry->reason ?? '-'); ?>
+                                            <?php echo esc_html($this->format_block_reason($entry->reason ?? '-')); ?>
                                         </td>
                                         <td>
                                             <button type="button" class="view-details-btn" data-id="<?php echo esc_attr($entry->id); ?>" style="padding: 6px 12px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;">
@@ -1512,10 +1585,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">E-Mail-Adresse:</label>
-                                            <input type="email" id="free-email-input" placeholder="deine@email.de" 
-                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; outline: none;"
-                                                onfocus="this.style.border='1px solid #d9dde1'"
-                                                onblur="this.style.border='1px solid #d9dde1'">
+                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
@@ -1547,10 +1617,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" 
-                                                style="width: 100%; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; text-transform: uppercase; outline: none;"
-                                                onfocus="this.style.border='1px solid #d9dde1'"
-                                                onblur="this.style.border='1px solid #d9dde1'">
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">

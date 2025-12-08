@@ -153,6 +153,11 @@
                 }
             });
             
+            // "Verlauf löschen" Button
+            if ($('#clear-history-btn').length) {
+                $('#clear-history-btn').html('🗑️ ' + (currentLang === 'en' ? 'Clear History' : 'Verlauf löschen'));
+            }
+            
             // Überschriften
             $('.germanfence-recent-blocks h2').each(function() {
                 var $h = $(this);
@@ -489,6 +494,42 @@
                 $('.stats-row').hide();
                 $('.stats-row[data-type="' + filter + '"]').show();
             }
+        });
+        
+        // 9.5 Verlauf löschen Button
+        $('#clear-history-btn').on('click', function() {
+            if (!confirm('Möchtest du wirklich den kompletten Anfragen-Verlauf löschen? Dies kann nicht rückgängig gemacht werden!')) {
+                return;
+            }
+            
+            var $btn = $(this);
+            $btn.prop('disabled', true).text('🔄 Lösche...');
+            
+            $.ajax({
+                url: germanfenceAdmin.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'germanfence_clear_history',
+                    nonce: germanfenceAdmin.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showToast('Verlauf erfolgreich gelöscht!', 'success');
+                        // Seite neu laden nach 1 Sekunde
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        showToast('Fehler: ' + (response.data || 'Unbekannter Fehler'), 'error');
+                        $btn.prop('disabled', false).html('🗑️ Verlauf löschen');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    error('AJAX Fehler beim Verlauf löschen:', error);
+                    showToast('Fehler beim Löschen des Verlaufs', 'error');
+                    $btn.prop('disabled', false).html('🗑️ Verlauf löschen');
+                }
+            });
         });
         
         // 10. Details-Modal

@@ -10,10 +10,57 @@ if (!defined('ABSPATH')) {
 class GermanFence_Statistics {
     
     private $table_name;
+    private $history_file;
     
     public function __construct() {
         global $wpdb;
         $this->table_name = $wpdb->prefix . 'germanfence_stats';
+        $this->history_file = WP_CONTENT_DIR . '/germanfence-history.log';
+        
+        // Stelle sicher, dass die History-Datei existiert
+        $this->ensure_history_file_exists();
+    }
+    
+    /**
+     * Stellt sicher, dass die History-Datei existiert
+     */
+    private function ensure_history_file_exists() {
+        if (!file_exists($this->history_file)) {
+            // Erstelle Datei mit Header
+            $header = "# GermanFence Request History\n";
+            $header .= "# Diese Datei speichert alle Anfragen dauerhaft und überlebt Plugin-Updates\n";
+            $header .= "# Format: [Timestamp] | Type | IP | Country | Reason\n";
+            $header .= "# ================================================================================\n\n";
+            file_put_contents($this->history_file, $header);
+        }
+    }
+    
+    /**
+     * Schreibt einen Eintrag in die History-Datei
+     */
+    private function write_to_history($type, $ip, $reason, $country = null) {
+        $timestamp = current_time('Y-m-d H:i:s');
+        $country_display = $country ? $country : 'N/A';
+        $line = sprintf("[%s] | %s | %s | %s | %s\n", 
+            $timestamp, 
+            strtoupper($type), 
+            $ip, 
+            $country_display, 
+            $reason
+        );
+        
+        // Append zur Datei (non-blocking)
+        file_put_contents($this->history_file, $line, FILE_APPEND | LOCK_EX);
+    }
+    
+    /**
+     * Löscht die komplette History
+     */
+    public function clear_history() {
+        if (file_exists($this->history_file)) {
+            unlink($this->history_file);
+            $this->ensure_history_file_exists();
+        }
     }
     
     /**
@@ -57,6 +104,9 @@ class GermanFence_Statistics {
         // Update daily counter
         $this->increment_counter('blocks_today');
         
+        // In History-Datei schreiben
+        $this->write_to_history('blocked', $ip, $type . ': ' . $reason, $country);
+        
         // Telemetrie senden (wenn aktiviert)
         $telemetry = new GermanFence_Telemetry();
         $telemetry->send_block_event($type, $ip, $reason, $country, $form_data);
@@ -87,6 +137,10 @@ class GermanFence_Statistics {
         global $wpdb;
         
         GermanFence_Logger::log('[STATS] ✅ log_legitimate() aufgerufen - IP: ' . $ip);
+        
+        // In History-Datei schreiben
+        $country = $this->get_country_from_ip($ip);
+        $this->write_to_history('legitimate', $ip, 'Legitimate request', $country);
         
         // Land ermitteln
         $country = $this->get_country_from_ip($ip);

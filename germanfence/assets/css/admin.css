@@ -1136,6 +1136,26 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     border-color: #3c434a !important;
 }
 
+/* Input Felder */
+.germanfence-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d9dde1;
+    border-radius: 9px;
+    font-size: 14px;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.germanfence-input:focus {
+    border-color: #d9dde1;
+}
+
+.germanfence-input::placeholder {
+    color: #8c8f94;
+}
+
 /* Buttons */
 .germanfence-btn,
 .germanfence-btn-primary,
@@ -1186,6 +1206,19 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 .germanfence-btn-danger:hover {
     background: #e91e63;
     border-color: #e91e63;
+}
+
+.germanfence-btn-pink {
+    background: #D81B60;
+    border-color: #D81B60;
+    color: #ffffff;
+    min-width: 180px !important;
+    height: 44px !important;
+    justify-content: center !important;
+}
+
+.germanfence-btn-pink:hover {
+    transform: translateY(-2px);
 }
 
 /* Toast Notifications */
