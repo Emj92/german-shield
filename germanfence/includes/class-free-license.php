@@ -46,14 +46,15 @@ class GermanFence_Free_License {
             if ($existing->is_verified) {
                 return array('success' => false, 'message' => 'Diese E-Mail ist bereits verifiziert');
             } else {
-                // Bestätigungsmail erneut senden
-                $this->send_verification_email($email, $existing->verification_token);
+                // Bestätigungsmail erneut senden (mit bestehendem Key)
+                $this->send_verification_email($email, $existing->verification_token, $existing->license_key);
                 return array('success' => true, 'message' => 'Bestätigungsmail wurde erneut gesendet!');
             }
         }
         
-        // Neuen Token generieren
+        // Neuen Token und License Key generieren
         $token = bin2hex(random_bytes(32));
+        $license_key = 'GS-FREE-' . strtoupper(substr(bin2hex(random_bytes(8)), 0, 12));
         
         // In Datenbank speichern
         $result = $wpdb->insert(
@@ -62,9 +63,10 @@ class GermanFence_Free_License {
                 'email' => $email,
                 'verification_token' => $token,
                 'is_verified' => 0,
+                'license_key' => $license_key,
                 'created_at' => current_time('mysql')
             ),
-            array('%s', '%s', '%d', '%s')
+            array('%s', '%s', '%d', '%s', '%s')
         );
         
         if (!$result) {
@@ -72,7 +74,7 @@ class GermanFence_Free_License {
         }
         
         // Bestätigungsmail senden
-        $sent = $this->send_verification_email($email, $token);
+        $sent = $this->send_verification_email($email, $token, $license_key);
         
         if ($sent) {
             return array('success' => true, 'message' => 'Bestätigungsmail wurde gesendet! Bitte prüfe dein Postfach.');
@@ -84,7 +86,7 @@ class GermanFence_Free_License {
     /**
      * Sendet Verifizierungs-E-Mail
      */
-    private function send_verification_email($email, $token) {
+    private function send_verification_email($email, $token, $license_key = '') {
         $verification_url = admin_url('admin.php?page=germanfence&tab=license&verify_token=' . $token);
         $portal_url = 'https://portal.germanfence.de/login';
         $password_reset_url = 'https://portal.germanfence.de/register?email=' . urlencode($email) . '&setPassword=true';
@@ -97,11 +99,16 @@ class GermanFence_Free_License {
         $message .= "👉 " . $verification_url . "\n\n";
         $message .= "Der Link ist 24 Stunden gültig.\n\n";
         $message .= "══════════════════════════════════════════\n\n";
-        $message .= "📦 NACH DER VERIFIZIERUNG:\n\n";
-        $message .= "• Du erhältst automatisch einen FREE-LICENSE-KEY\n";
-        $message .= "• Damit kannst du GermanFence auf weiteren Domains aktivieren\n";
-        $message .= "• Der Key wird dir nach der Verifizierung im Plugin angezeigt\n\n";
-        $message .= "══════════════════════════════════════════\n\n";
+        
+        if ($license_key) {
+            $message .= "🔑 DEIN FREE-LICENSE-KEY:\n\n";
+            $message .= $license_key . "\n\n";
+            $message .= "• Nutze diesen Key um GermanFence auf weiteren Domains zu aktivieren\n";
+            $message .= "• Der Key wird nach der Verifizierung auch im Plugin angezeigt\n";
+            $message .= "• Speichere ihn sicher ab!\n\n";
+            $message .= "══════════════════════════════════════════\n\n";
+        }
+        
         $message .= "🌐 PORTAL-ZUGANG:\n\n";
         $message .= "Ab jetzt kannst du dich im GermanFence Portal einloggen:\n";
         $message .= "👉 " . $portal_url . "\n\n";
@@ -145,8 +152,11 @@ class GermanFence_Free_License {
             return array('success' => false, 'message' => 'Der Verifizierungslink ist abgelaufen (24 Stunden)');
         }
         
-        // Free-License-Key generieren
-        $license_key = 'GS-FREE-' . strtoupper(substr(bin2hex(random_bytes(8)), 0, 12));
+        // Nutze existierenden License Key oder generiere neuen falls nicht vorhanden
+        $license_key = $user->license_key;
+        if (empty($license_key)) {
+            $license_key = 'GS-FREE-' . strtoupper(substr(bin2hex(random_bytes(8)), 0, 12));
+        }
         
         // Verifizieren
         $result = $wpdb->update(

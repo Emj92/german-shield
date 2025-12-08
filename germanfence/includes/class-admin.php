@@ -1502,7 +1502,7 @@ class GermanFence_Admin {
                                     <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">🆓 Kostenlose Version aktivieren</h3>
                                     
                                     <!-- Tabs: E-Mail vs Key -->
-                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 2px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
+                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 1px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
                                         <button type="button" id="free-email-tab" class="germanfence-free-tab active" 
                                             style="flex: 1; padding: 10px; background: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
                                             📧 Per E-Mail
@@ -1587,7 +1587,7 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-flex; text-decoration: none; padding: 12px 24px; justify-content: center; width: 100%; max-width: 250px; margin: 0 auto;">
+                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 20px; font-size: 14px;">
                                 Jetzt PRO kaufen →
                             </a>
                             </div>
