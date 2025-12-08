@@ -1574,22 +1574,46 @@ class GermanFence_Admin {
                         </div>
                         
                         <!-- PRO LIZENZ KAUFEN BOX -->
-                        <div style="background: #ffffff; padding: 25px; min-height: 280px; display: flex; flex-direction: column;">
-                            <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">💎 GermanFence PRO Lizenz</h3>
-                            <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px; flex: 1;">
-                                Noch keine Lizenz? Sichere dir jetzt GermanFence Premium und nutze alle Features!
+                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
+                            <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
+                            <p style="margin: 0 0 20px 0; color: #646970; font-size: 14px; line-height: 1.6;">
+                                Upgrade jetzt auf PRO und schalte leistungsstarke Anti-Spam Features frei! Perfekt für professionelle Websites, die maximalen Schutz benötigen.
                             </p>
                             
-                            <div style="padding: 12px; margin-bottom: 15px;">
-                                <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600; text-align: center;">
+                            <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px;">
+                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px; font-weight: 600;">🚀 Exklusive PRO-Features:</h4>
+                                <ul style="margin: 0; padding: 0 0 0 20px; list-style: none;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>GEO-Blocking</strong> – Blockiere Spam aus beliebigen Ländern
+                                    </li>
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Phrasen-Blocking</strong> – Intelligente Keyword & Regex-Filter
+                                    </li>
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>URL-Limit</strong> – SEO-Spam effektiv blockieren
+                                    </li>
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Domain-Blocking</strong> – Spam-Domains gezielt sperren
+                                    </li>
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Erweiterte Statistiken</strong> – Detaillierte Spam-Analyse
+                                    </li>
+                                    <li style="margin-bottom: 0; color: #1d2327; font-size: 13px;">
+                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Priority Support</strong> – Schnelle Hilfe bei Fragen
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: #E8F9FA; padding: 12px; border-radius: 9px; margin-bottom: 15px; text-align: center;">
+                                <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600;">
                                     ✅ 14 Tage 100% Geld-zurück-Garantie
                                 </p>
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 20px; font-size: 14px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                                Jetzt PRO kaufen
-                            </a>
+                                <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px; font-size: 15px; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    🚀 Jetzt PRO kaufen
+                                </a>
                             </div>
                         </div>
                         
