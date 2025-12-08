@@ -34,7 +34,7 @@ function PaymentSuccessContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F2F5F8] dark:bg-slate-950 flex items-center justify-center p-6">
       {/* Header */}
       <header className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-200 dark:border-slate-800">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
@@ -72,7 +72,7 @@ function PaymentSuccessContent() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Info: Lizenzschlüssel kommt per E-Mail */}
-          <div className="bg-[#22D6DD]/5 border-2 border-[#22D6DD] rounded-xl p-6 text-center">
+          <div className="bg-white border-2 border-[#22D6DD] rounded-xl p-6 text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Key className="w-5 h-5 text-[#22D6DD]" />
               <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Dein Lizenzschlüssel</span>
@@ -113,7 +113,7 @@ function PaymentSuccessContent() {
           </div>
 
           {/* E-Mail Hinweis */}
-          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800/50 rounded-xl p-5 border border-[#d9dde1] dark:border-slate-700">
             <div className="flex items-start gap-4">
               <div className="p-2 rounded-lg bg-[#22D6DD]/10">
                 <Mail className="w-6 h-6 text-[#22D6DD]" />
@@ -139,7 +139,7 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Nächste Schritte */}
-          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800/50 rounded-xl p-5 border border-[#d9dde1] dark:border-slate-700">
             <h3 className="font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               🚀 Nächste Schritte:
             </h3>
