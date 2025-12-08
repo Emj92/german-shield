@@ -553,10 +553,14 @@ class GermanFence_Admin {
                             </a>
                         </div>
                     <?php else: ?>
+                    
+                    <!-- SEKTION 1: Honeypot & Kommentar-Bots -->
                     <div class="germanfence-section">
-                        <h2>🛡️ Anti-Spam Methoden</h2>
+                        <h2>🍯 Honeypot & Kommentar-Schutz</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Unsichtbare Felder, die nur Bots ausfüllen + Schutz vor automatisierten Kommentaren.
+                        </p>
                         
-                        <!-- Zeile 1: Honeypot + JavaScript -->
                         <div class="germanfence-settings-grid">
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
@@ -564,26 +568,26 @@ class GermanFence_Admin {
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
-                                    <h3>Honeypot</h3>
+                                    <h3>Honeypot aktivieren</h3>
                                     <p>Unsichtbares Feld, das nur Bots ausfüllen. Sehr effektiv und benutzerfreundlich.</p>
                                 </div>
                             </div>
                             
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="javascript_check" value="1" <?php checked(isset($settings['javascript_check']) && $settings['javascript_check'] === '1'); ?>>
+                                    <input type="checkbox" name="block_comment_bots" value="1" <?php checked(isset($settings['block_comment_bots']) && $settings['block_comment_bots'] === '1'); ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
-                                    <h3>JavaScript-Prüfung</h3>
-                                    <p>Stellt sicher, dass JavaScript aktiviert ist. Blockiert einfache Bots.</p>
+                                    <h3>Kommentar-Bots blockieren</h3>
+                                    <p>Blockiert automatisierte Bot-Kommentare durch erweiterte Anti-Spam-Prüfungen.</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Honeypot-Einstellungen (full-width UNTER Honeypot+JavaScript) -->
-                        <div class="germanfence-subsetting" id="honeypot-settings" style="<?php echo $settings['honeypot_enabled'] !== '1' ? 'display:none;' : ''; ?>">
-                            <h3 style="margin-bottom: 20px;">🍯 Honeypot-Verwaltung</h3>
+                        <!-- Honeypot-Einstellungen -->
+                        <div class="germanfence-subsetting" id="honeypot-settings" style="<?php echo $settings['honeypot_enabled'] !== '1' ? 'display:none;' : ''; ?> margin-top: 20px;">
+                            <h3 style="margin-bottom: 20px;">Honeypot-Verwaltung</h3>
                             
                             <div class="setting-row" style="margin-bottom: 25px;">
                                 <label style="display: block; margin-bottom: 10px;"><strong>Anzahl aktiver Honeypots:</strong></label>
@@ -657,9 +661,27 @@ class GermanFence_Admin {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- SEKTION 2: JavaScript & User-Agent Prüfung -->
+                    <div class="germanfence-section">
+                        <h2>🔍 JavaScript & User-Agent Prüfung</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Prüfung auf aktiviertes JavaScript und Erkennung bekannter Bot User-Agents.
+                        </p>
                         
-                        <!-- Zeile 2: User-Agent + Tippgeschwindigkeit -->
                         <div class="germanfence-settings-grid">
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="javascript_check" value="1" <?php checked(isset($settings['javascript_check']) && $settings['javascript_check'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>JavaScript-Prüfung</h3>
+                                    <p>Stellt sicher, dass JavaScript aktiviert ist. Blockiert einfache Bots.</p>
+                                </div>
+                            </div>
+                            
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
                                     <input type="checkbox" name="user_agent_check" value="1" <?php checked(isset($settings['user_agent_check']) && $settings['user_agent_check'] === '1'); ?>>
@@ -667,23 +689,19 @@ class GermanFence_Admin {
                                 </label>
                                 <div class="setting-info">
                                     <h3>User-Agent-Prüfung</h3>
-                                    <p>Blockiert bekannte Bot User-Agents.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="typing_speed_check" value="1" <?php checked(isset($settings['typing_speed_check']) && $settings['typing_speed_check'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>Tippgeschwindigkeit-Analyse</h3>
-                                    <p>Erkennt unnatürlich schnelle Bot-Eingaben.</p>
+                                    <p>Blockiert bekannte Bot User-Agents und verdächtige Clients.</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- SEKTION 3: Timestamp & Tippgeschwindigkeit -->
+                    <div class="germanfence-section">
+                        <h2>⏱️ Zeit-basierte Prüfungen</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Analyse von Ausfüllzeit und Tippgeschwindigkeit zur Bot-Erkennung.
+                        </p>
                         
-                        <!-- Zeile 3: Timestamp + Kommentar-Bots -->
                         <div class="germanfence-settings-grid">
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
@@ -698,19 +716,19 @@ class GermanFence_Admin {
                             
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="block_comment_bots" value="1" <?php checked(isset($settings['block_comment_bots']) && $settings['block_comment_bots'] === '1'); ?>>
+                                    <input type="checkbox" name="typing_speed_check" value="1" <?php checked(isset($settings['typing_speed_check']) && $settings['typing_speed_check'] === '1'); ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
-                                    <h3>Kommentar-Bots blockieren</h3>
-                                    <p>Blockiert automatisierte Bot-Kommentare durch erweiterte Anti-Spam-Prüfungen.</p>
+                                    <h3>Tippgeschwindigkeit-Analyse</h3>
+                                    <p>Erkennt unnatürlich schnelle Bot-Eingaben durch Timing-Analyse.</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Timestamp-Einstellungen (full-width UNTER Timestamp+Kommentar-Bots) -->
-                        <div class="germanfence-subsetting" id="timestamp-settings" style="<?php echo $settings['timestamp_enabled'] !== '1' ? 'display:none;' : ''; ?>">
-                            <h3 style="margin-bottom: 20px;">⏱️ Timestamp-Einstellungen</h3>
+                        <!-- Timestamp-Einstellungen -->
+                        <div class="germanfence-subsetting" id="timestamp-settings" style="<?php echo $settings['timestamp_enabled'] !== '1' ? 'display:none;' : ''; ?> margin-top: 20px;">
+                            <h3 style="margin-bottom: 20px;">Timestamp-Einstellungen</h3>
                             
                             <div class="setting-row" style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 10px;"><strong>Minimale Ausfüllzeit (Sekunden):</strong></label>
@@ -748,84 +766,96 @@ class GermanFence_Admin {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- SEKTION 4: URL & Domain-Schutz -->
+                    <div class="germanfence-section">
+                        <h2>🔗 URL & Domain-Schutz</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Schutz vor SEO-Spam durch Link-Limits und Blockierung verdächtiger Domain-Endungen.
+                        </p>
                         
-                        <!-- URL-Limit & Domain-Blocking (2-spaltig) -->
-                        <div style="margin-top: 30px;">
-                            <h3 style="margin-bottom: 20px; font-size: 18px; color: #1d2327;">🔗 URL & Domain-Schutz</h3>
-                            
-                            <div class="germanfence-settings-grid">
-                                <!-- URL-Limit -->
-                                <div class="germanfence-subsetting">
-                                    <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
-                                        <label class="germanfence-toggle">
-                                            <input type="checkbox" name="url_limit_enabled" value="1" <?php checked(isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1'); ?>>
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                        <div class="setting-info">
-                                            <h3>URL-Limit aktivieren</h3>
-                                            <p>Blockiert Nachrichten mit zu vielen Links (effektiv gegen SEO-Spam)</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div id="url-limit-settings" style="<?php echo (isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1') ? '' : 'display:none;'; ?>">
-                                        <label style="display: block; margin-bottom: 10px;"><strong>Maximale Anzahl URLs:</strong></label>
-                                        <div style="display: flex; align-items: center; gap: 15px;">
-                                            <input 
-                                                type="range" 
-                                                name="url_limit_max" 
-                                                id="url-limit-slider"
-                                                min="0" 
-                                                max="5" 
-                                                value="<?php echo esc_attr($settings['url_limit_max'] ?? 1); ?>"
-                                                style="flex: 1; max-width: 200px;"
-                                            >
-                                            <span id="url-limit-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 50px;">
-                                                <?php echo esc_html($settings['url_limit_max'] ?? 1); ?>
-                                            </span>
-                                        </div>
-                                        <p class="description" style="margin-top: 5px;">
-                                            Nachrichten mit mehr URLs werden blockiert. 0 = keine URLs erlaubt, 1-2 empfohlen
-                                        </p>
+                        <div class="germanfence-settings-grid">
+                            <!-- URL-Limit -->
+                            <div style="border: none; padding: 0;">
+                                <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
+                                    <label class="germanfence-toggle">
+                                        <input type="checkbox" name="url_limit_enabled" value="1" <?php checked(isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1'); ?>>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h3>URL-Limit aktivieren</h3>
+                                        <p>Blockiert Nachrichten mit zu vielen Links (effektiv gegen SEO-Spam)</p>
                                     </div>
                                 </div>
-                                
-                                <!-- Domain-Blocking -->
-                                <div class="germanfence-subsetting">
-                                    <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
-                                        <label class="germanfence-toggle">
-                                            <input type="checkbox" name="domain_blocking_enabled" value="1" <?php checked(isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1'); ?>>
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                        <div class="setting-info">
-                                            <h3>Domain-Blocking aktivieren</h3>
-                                            <p>Blockiert URLs mit bestimmten Domain-Endungen (effektiv gegen Spam-Domains)</p>
-                                        </div>
-                                    </div>
                                     
-                                    <div id="domain-blocking-settings" style="<?php echo (isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1') ? '' : 'display:none;'; ?>">
-                                        <label style="display: block; margin-bottom: 10px;"><strong>Blockierte Domain-Endungen:</strong></label>
-                                        <textarea 
-                                            name="blocked_domains" 
-                                            placeholder=".xyz, .top, .click, .loan"
-                                            style="width: 100%; height: 120px; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; resize: vertical;"
-                                        ><?php echo esc_textarea($settings['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'); ?></textarea>
-                                        <p class="description" style="margin-top: 5px;">
-                                            Komma-getrennte Liste (z.B. .xyz, .top). URLs mit diesen Endungen werden geblockt.
-                                        </p>
+                                <div id="url-limit-settings" style="<?php echo (isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1') ? '' : 'display:none;'; ?>">
+                                    <label style="display: block; margin-bottom: 10px;"><strong>Maximale Anzahl URLs:</strong></label>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <input 
+                                            type="range" 
+                                            name="url_limit_max" 
+                                            id="url-limit-slider"
+                                            min="0" 
+                                            max="5" 
+                                            value="<?php echo esc_attr($settings['url_limit_max'] ?? 1); ?>"
+                                            style="flex: 1; max-width: 200px;"
+                                        >
+                                        <span id="url-limit-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 50px;">
+                                            <?php echo esc_html($settings['url_limit_max'] ?? 1); ?>
+                                        </span>
                                     </div>
+                                    <p class="description" style="margin-top: 5px;">
+                                        Nachrichten mit mehr URLs werden blockiert. 0 = keine URLs erlaubt, 1-2 empfohlen
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Domain-Blocking -->
+                            <div style="border: none; padding: 0;">
+                                <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
+                                    <label class="germanfence-toggle">
+                                        <input type="checkbox" name="domain_blocking_enabled" value="1" <?php checked(isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1'); ?>>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h3>Domain-Blocking aktivieren</h3>
+                                        <p>Blockiert URLs mit bestimmten Domain-Endungen (effektiv gegen Spam-Domains)</p>
+                                    </div>
+                                </div>
+                                    
+                                <div id="domain-blocking-settings" style="<?php echo (isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1') ? '' : 'display:none;'; ?>">
+                                    <label style="display: block; margin-bottom: 10px;"><strong>Blockierte Domain-Endungen:</strong></label>
+                                    <textarea 
+                                        name="blocked_domains" 
+                                        placeholder=".xyz, .top, .click, .loan"
+                                        style="width: 100%; height: 120px; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; resize: vertical;"
+                                    ><?php echo esc_textarea($settings['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'); ?></textarea>
+                                    <p class="description" style="margin-top: 5px;">
+                                        Komma-getrennte Liste (z.B. .xyz, .top). URLs mit diesen Endungen werden geblockt.
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- SEKTION 5: Test-Modus -->
+                    <div class="germanfence-section">
+                        <h2 style="color: #F06292;">🧪 Test-Modus</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            <strong style="color: #F06292;">⚠️ NUR FÜR TESTS:</strong> Blockiert ALLE Formular-Einreichungen (auch echte Benutzer).
+                        </p>
                         
-                        <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px; margin-top: 30px;">
+                        <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px;">
                             <label class="germanfence-toggle">
                                 <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
                                 <span class="toggle-slider"></span>
                             </label>
                             <div class="setting-info">
-                                <h3 style="color: #F06292;">🧪 TEST-MODUS: Alle Anfragen blockieren</h3>
-                                <p style="color: #F06292; font-weight: 600;">⚠️ ACHTUNG: Blockiert ALLE Formular-Submissions! Nur für Tests verwenden!</p>
-                                <p style="color: #888; font-size: 13px; margin-top: 10px;">Nutze dies um zu testen, ob die Blocking-Routine funktioniert. Deaktiviere es danach wieder!</p>
+                                <h3 style="color: #F06292;">Alle Anfragen blockieren</h3>
+                                <p style="color: #1d2327;">
+                                    Blockiert ALLE Formular-Submissions. Nutze dies um die Blockierungs-Benachrichtigungen und Logs zu testen. Danach unbedingt wieder deaktivieren!
+                                </p>
                             </div>
                         </div>
                     </div>
