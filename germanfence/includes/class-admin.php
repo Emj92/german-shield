@@ -553,7 +553,7 @@ class GermanFence_Admin {
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     ✅ Legitim
                                 </button>
-                                <button type="button" id="clear-history-btn" class="germanfence-btn-pink" style="margin-left: auto;">
+                                <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto;">
                                     🗑️ Verlauf löschen
                                 </button>
                             </div>

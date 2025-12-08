@@ -1210,11 +1210,15 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 
 .germanfence-btn-pink {
     background: #D81B60;
-    border-color: #D81B60;
+    border: none;
     color: #ffffff;
-    min-width: 180px !important;
-    height: 44px !important;
-    justify-content: center !important;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);
 }
 
 .germanfence-btn-pink:hover {

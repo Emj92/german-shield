@@ -497,13 +497,15 @@
         });
         
         // 9.5 Verlauf löschen Button
-        $('#clear-history-btn').on('click', function() {
+        $(document).on('click', '#clear-history-btn', function() {
             if (!confirm('Möchtest du wirklich den kompletten Anfragen-Verlauf löschen? Dies kann nicht rückgängig gemacht werden!')) {
                 return;
             }
             
             var $btn = $(this);
             $btn.prop('disabled', true).text('🔄 Lösche...');
+            
+            log('Sende AJAX Request: germanfence_clear_history');
             
             $.ajax({
                 url: germanfenceAdmin.ajaxurl,
@@ -513,6 +515,7 @@
                     nonce: germanfenceAdmin.nonce
                 },
                 success: function(response) {
+                    log('AJAX Response:', response);
                     if (response.success) {
                         showToast('Verlauf erfolgreich gelöscht!', 'success');
                         // Seite neu laden nach 1 Sekunde
@@ -524,8 +527,10 @@
                         $btn.prop('disabled', false).html('🗑️ Verlauf löschen');
                     }
                 },
-                error: function(xhr, status, error) {
-                    error('AJAX Fehler beim Verlauf löschen:', error);
+                error: function(xhr, status, err) {
+                    error('AJAX Fehler beim Verlauf löschen:', err);
+                    log('XHR:', xhr);
+                    log('Status:', status);
                     showToast('Fehler beim Löschen des Verlaufs', 'error');
                     $btn.prop('disabled', false).html('🗑️ Verlauf löschen');
                 }
