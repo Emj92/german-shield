@@ -738,7 +738,75 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                        <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 6px; margin-top: 20px;">
+                        <!-- URL-Limit & Domain-Blocking (2-spaltig) -->
+                        <div style="margin-top: 30px;">
+                            <h3 style="margin-bottom: 20px; font-size: 18px; color: #1d2327;">🔗 URL & Domain-Schutz</h3>
+                            
+                            <div class="germanfence-settings-grid">
+                                <!-- URL-Limit -->
+                                <div class="germanfence-subsetting">
+                                    <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
+                                        <label class="germanfence-toggle">
+                                            <input type="checkbox" name="url_limit_enabled" value="1" <?php checked(isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1'); ?>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="setting-info">
+                                            <h3>URL-Limit aktivieren</h3>
+                                            <p>Blockiert Nachrichten mit zu vielen Links (effektiv gegen SEO-Spam)</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="url-limit-settings" style="<?php echo (isset($settings['url_limit_enabled']) && $settings['url_limit_enabled'] === '1') ? '' : 'display:none;'; ?>">
+                                        <label style="display: block; margin-bottom: 10px;"><strong>Maximale Anzahl URLs:</strong></label>
+                                        <div style="display: flex; align-items: center; gap: 15px;">
+                                            <input 
+                                                type="range" 
+                                                name="url_limit_max" 
+                                                id="url-limit-slider"
+                                                min="0" 
+                                                max="5" 
+                                                value="<?php echo esc_attr($settings['url_limit_max'] ?? 1); ?>"
+                                                style="flex: 1; max-width: 200px;"
+                                            >
+                                            <span id="url-limit-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 50px;">
+                                                <?php echo esc_html($settings['url_limit_max'] ?? 1); ?>
+                                            </span>
+                                        </div>
+                                        <p class="description" style="margin-top: 5px;">
+                                            Nachrichten mit mehr URLs werden blockiert. 0 = keine URLs erlaubt, 1-2 empfohlen
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Domain-Blocking -->
+                                <div class="germanfence-subsetting">
+                                    <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
+                                        <label class="germanfence-toggle">
+                                            <input type="checkbox" name="domain_blocking_enabled" value="1" <?php checked(isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1'); ?>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <div class="setting-info">
+                                            <h3>Domain-Blocking aktivieren</h3>
+                                            <p>Blockiert URLs mit bestimmten Domain-Endungen (effektiv gegen Spam-Domains)</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="domain-blocking-settings" style="<?php echo (isset($settings['domain_blocking_enabled']) && $settings['domain_blocking_enabled'] === '1') ? '' : 'display:none;'; ?>">
+                                        <label style="display: block; margin-bottom: 10px;"><strong>Blockierte Domain-Endungen:</strong></label>
+                                        <textarea 
+                                            name="blocked_domains" 
+                                            placeholder=".xyz, .top, .click, .loan"
+                                            style="width: 100%; height: 120px; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px; font-family: monospace; resize: vertical;"
+                                        ><?php echo esc_textarea($settings['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'); ?></textarea>
+                                        <p class="description" style="margin-top: 5px;">
+                                            Komma-getrennte Liste (z.B. .xyz, .top). URLs mit diesen Endungen werden geblockt.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px; margin-top: 30px;">
                             <label class="germanfence-toggle">
                                 <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
                                 <span class="toggle-slider"></span>
@@ -1793,6 +1861,10 @@ class GermanFence_Admin {
             'user_agent_check' => isset($_POST['user_agent_check']) ? '1' : '0',
             'typing_speed_check' => isset($_POST['typing_speed_check']) ? '1' : '0',
             'test_mode_block_all' => isset($_POST['test_mode_block_all']) ? '1' : '0',
+            'url_limit_enabled' => isset($_POST['url_limit_enabled']) ? '1' : '0',
+            'url_limit_max' => intval($_POST['url_limit_max'] ?? 1),
+            'domain_blocking_enabled' => isset($_POST['domain_blocking_enabled']) ? '1' : '0',
+            'blocked_domains' => sanitize_textarea_field($_POST['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'),
             'geo_blocking_enabled' => isset($_POST['geo_blocking_enabled']) ? '1' : '0',
             'blocked_countries' => $_POST['blocked_countries'] ?? array(),
             'phrase_blocking_enabled' => isset($_POST['phrase_blocking_enabled']) ? '1' : '0',

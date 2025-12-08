@@ -211,6 +211,24 @@ class GermanFence {
             }
         }
         
+        // URL Limit Check
+        if (!empty($settings['url_limit_enabled'])) {
+            $url_check = $this->antispam->check_url_limit($data);
+            if (!$url_check['valid']) {
+                $this->statistics->log_block('url_limit', $ip, $url_check['reason']);
+                return $url_check;
+            }
+        }
+        
+        // Domain Blocking Check
+        if (!empty($settings['domain_blocking_enabled'])) {
+            $domain_check = $this->antispam->check_blocked_domains($data);
+            if (!$domain_check['valid']) {
+                $this->statistics->log_block('domain_blocked', $ip, $domain_check['reason']);
+                return $domain_check;
+            }
+        }
+        
         // Phrase Blocking
         if (!empty($settings['phrase_blocking_enabled'])) {
             $phrase_check = $this->phrase_blocking->check_phrases($data);

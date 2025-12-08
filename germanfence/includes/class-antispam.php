@@ -537,4 +537,102 @@ class GermanFence_AntiSpam {
         
         return $html;
     }
+    
+    /**
+     * Check URL limit
+     */
+    public function check_url_limit($data) {
+        $max_urls = intval($this->settings['url_limit_max'] ?? 1);
+        
+        // Collect all text content
+        $content = $this->collect_all_content($data);
+        
+        // Count URLs (http:// and https://)
+        $url_count = preg_match_all('/https?:\/\//i', $content);
+        
+        if ($url_count > $max_urls) {
+            return array(
+                'valid' => false,
+                'message' => 'Ihre Nachricht enthält zu viele Links (' . $url_count . '). Maximal erlaubt: ' . $max_urls,
+                'reason' => 'URL limit exceeded: ' . $url_count . ' (max: ' . $max_urls . ')'
+            );
+        }
+        
+        return array(
+            'valid' => true,
+            'message' => 'URL limit check passed'
+        );
+    }
+    
+    /**
+     * Check for blocked domains
+     */
+    public function check_blocked_domains($data) {
+        $blocked_domains = $this->settings['blocked_domains'] ?? '';
+        
+        if (empty($blocked_domains)) {
+            return array(
+                'valid' => true,
+                'message' => 'No domains blocked'
+            );
+        }
+        
+        // Parse blocked domains (komma-getrennt)
+        $blocked_list = array_map('trim', explode(',', $blocked_domains));
+        $blocked_list = array_filter($blocked_list);
+        
+        // Collect all text content
+        $content = $this->collect_all_content($data);
+        
+        // Extract all domains from URLs
+        preg_match_all('/https?:\/\/([a-z0-9.-]+)/i', $content, $matches);
+        $found_domains = $matches[1];
+        
+        foreach ($found_domains as $domain) {
+            foreach ($blocked_list as $blocked) {
+                // Check if domain ends with blocked TLD
+                if (stripos($domain, $blocked) !== false) {
+                    return array(
+                        'valid' => false,
+                        'message' => 'URLs mit der Domain-Endung "' . $blocked . '" sind nicht erlaubt',
+                        'reason' => 'Blocked domain detected: ' . $domain . ' (matches: ' . $blocked . ')'
+                    );
+                }
+            }
+        }
+        
+        return array(
+            'valid' => true,
+            'message' => 'Domain check passed'
+        );
+    }
+    
+    /**
+     * Collect all content from form data
+     */
+    private function collect_all_content($data) {
+        $content = array();
+        
+        // Skip system fields
+        $skip_fields = array(
+            'gs_timestamp', 'gs_js_token', '_wpnonce', '_wp_http_referer',
+            'action', 'submit', 'germanfence_nonce', 'gs_nonce'
+        );
+        
+        foreach ($data as $key => $value) {
+            // Skip system fields
+            if (in_array($key, $skip_fields) || strpos($key, 'gs_') === 0) {
+                continue;
+            }
+            
+            // Handle arrays
+            if (is_array($value)) {
+                $content[] = implode(' ', $value);
+            } else {
+                $content[] = $value;
+            }
+        }
+        
+        return implode(' ', $content);
+    }
 }

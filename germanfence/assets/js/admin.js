@@ -296,6 +296,12 @@
                     // Zeige/verstecke Einstellungsfelder
                     $('#timestamp-settings').toggle(isChecked);
                     return;
+                case 'url_limit_enabled':
+                    $('#url-limit-settings').toggle(isChecked);
+                    return;
+                case 'domain_blocking_enabled':
+                    $('#domain-blocking-settings').toggle(isChecked);
+                    return;
                 case 'phrase_blocking_enabled':
                     $target = $('#phrase-settings');
                     break;
@@ -866,11 +872,35 @@
             }
         });
         
+        // Toggle für URL-Limit
+        $('input[name="url_limit_enabled"]').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#url-limit-settings').slideDown(300);
+            } else {
+                $('#url-limit-settings').slideUp(300);
+            }
+        });
+        
+        // Toggle für Domain-Blocking
+        $('input[name="domain_blocking_enabled"]').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#domain-blocking-settings').slideDown(300);
+            } else {
+                $('#domain-blocking-settings').slideUp(300);
+            }
+        });
+        
         // Slider für Honeypot-Anzahl
         $('#honeypot-count-slider').on('input', function() {
             var count = $(this).val();
             $('#honeypot-count-value').text(count);
             updateHoneypotFields(count);
+        });
+        
+        // Slider für URL-Limit
+        $('#url-limit-slider').on('input', function() {
+            var limit = $(this).val();
+            $('#url-limit-value').text(limit);
         });
         
         // Slider für Badge Border Radius
