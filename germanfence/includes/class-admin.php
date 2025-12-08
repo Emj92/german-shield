@@ -885,7 +885,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                        <div class="germanfence-subsetting" id="phrase-settings" style="<?php echo ($settings['phrase_blocking_enabled'] !== '1' && $is_license_valid) ? 'display:none;' : ''; ?>; <?php echo !$is_license_valid ? 'opacity: 0.7; pointer-events: none;' : ''; ?>">
+                        <div class="germanfence-subsetting" id="phrase-settings" style="<?php echo !$is_license_valid ? 'opacity: 0.7; pointer-events: none;' : ''; ?>">
                             <h3>Blockierte Phrasen</h3>
                             
                             <!-- Regex-Modus Toggle -->
@@ -1365,7 +1365,7 @@ class GermanFence_Admin {
                                         </label>
                                     </div>
                                     
-                                    <button type="button" id="generate-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 20px; width: 100%;">
+                                    <button type="button" id="generate-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 0px; width: 100%;">
                                         <span class="dashicons dashicons-admin-tools"></span>
                                         .htaccess generieren
                                     </button>
@@ -1379,7 +1379,7 @@ class GermanFence_Admin {
                                         placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
                                     ></textarea>
                                     
-                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 10px; width: 100%;">
+                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 13px; width: 100%;">
                                         <span class="dashicons dashicons-clipboard"></span>
                                         Code kopieren
                                     </button>

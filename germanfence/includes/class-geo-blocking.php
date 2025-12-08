@@ -188,8 +188,8 @@ class GermanFence_GeoBlocking {
                                 <h3 style="margin: 0 0 5px 0;">GEO Blocking aktivieren</h3>
                                 <p style="margin: 0 0 15px 0;">Blockiere Anfragen aus bestimmten Ländern.</p>
                                 
-                                <!-- Modus-Buttons (klein, inline) -->
-                                <div id="geo-mode-buttons" style="<?php echo ($settings['geo_blocking_enabled'] !== '1' && !$is_locked) ? 'display:none;' : 'display:flex;'; ?> gap: 10px; margin-top: 15px; <?php echo $is_locked ? 'opacity: 0.6; pointer-events: none;' : ''; ?>">
+                                <!-- Modus-Buttons (klein, inline) - IMMER SICHTBAR -->
+                                <div id="geo-mode-buttons" style="display:flex; gap: 10px; margin-top: 15px; <?php echo $is_locked ? 'opacity: 0.6; pointer-events: none;' : ''; ?>">
                                     <!-- Blacklist (Ausschließlich) -->
                                     <label class="geo-mode-option <?php echo (!isset($settings['geo_blocking_mode']) || $settings['geo_blocking_mode'] === 'blacklist') ? 'active blacklist' : ''; ?>" data-mode="blacklist" style="flex: 1; padding: 10px 15px; border: 2px solid #F06292; border-radius: 6px; cursor: pointer; transition: all 0.2s; <?php echo (!isset($settings['geo_blocking_mode']) || $settings['geo_blocking_mode'] === 'blacklist') ? 'background: rgba(240, 98, 146, 0.1); box-shadow: 0 0 0 2px rgba(240, 98, 146, 0.2);' : 'background: #f9f9f9;'; ?>">
                                         <input type="radio" name="geo_blocking_mode" value="blacklist" <?php checked(isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist', 'blacklist'); ?> <?php echo $is_locked ? 'disabled' : ''; ?> style="display: none;">
@@ -218,8 +218,8 @@ class GermanFence_GeoBlocking {
                         </div>
                     </div>
                     
-                    <!-- Länder-Auswahl (Auto-Save wie alles andere) -->
-                    <div id="geo-countries-section" style="<?php echo ($settings['geo_blocking_enabled'] !== '1' && !$is_locked) ? 'display:none;' : ''; ?>">
+                    <!-- Länder-Auswahl (Auto-Save wie alles andere) - IMMER SICHTBAR -->
+                    <div id="geo-countries-section">
                         <?php 
                         $current_mode = isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist';
                         $mode_color = $current_mode === 'whitelist' ? '#22D6DD' : '#F06292';
