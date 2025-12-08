@@ -976,8 +976,8 @@ class GermanFence_Admin {
                                     <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
                                         <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
                                     </p>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 
@@ -1444,7 +1444,7 @@ class GermanFence_Admin {
                         <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
-                                <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ Kostenlose Version aktiviert</h3>
+                                <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">✅ Kostenlose Version aktiviert</h3>
                                 <p style="margin: 0 0 10px 0; color: #1d2327; font-size: 14px;">
                                     <strong>Verifizierte E-Mail:</strong> <?php echo esc_html($free_email); ?>
                                 </p>
@@ -1475,22 +1475,17 @@ class GermanFence_Admin {
                                     </p>
                                 </div>
                                 <?php endif; ?>
-                                <?php
-                                // Bestimme Lizenz-Typ für Button-Text
-                                $current_key = $free_manager->get_verified_email() ? get_option('germanfence_free_license_key', '') : '';
-                                $is_free_license = empty($current_key) || strpos($current_key, 'GS-FREE-') === 0;
-                                ?>
                                 <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 14px;">
-                                    <?php if ($is_free_license): ?>
-                                        Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
+                                    <?php if ($is_license_valid): ?>
+                                        Deine PRO-Lizenz ist aktiv. Du hast Zugriff auf alle Features!
                                     <?php else: ?>
-                                        Deine Lizenz ist aktiv. Du hast Zugriff auf alle PRO-Features!
+                                    Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
                                     <?php endif; ?>
                                 </p>
                                 <form method="post">
                                     <?php wp_nonce_field('germanfence_settings', 'germanfence_nonce'); ?>
                                     <button type="submit" name="deactivate_free" class="germanfence-btn-danger">
-                                        <?php echo $is_free_license ? 'Kostenlose Version deaktivieren' : 'Lizenz deaktivieren'; ?>
+                                        <?php echo $is_license_valid ? 'PRO-Lizenz deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
                                     </button>
                                 </form>
                             <?php else: ?>
@@ -1614,7 +1609,7 @@ class GermanFence_Admin {
                                 <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="text-decoration: none; display: inline-block;">
                                     <span class="dashicons dashicons-cart"></span>
                                     Jetzt PRO kaufen
-                                </a>
+                            </a>
                             </div>
                         </div>
                         

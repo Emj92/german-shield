@@ -1171,10 +1171,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 }
 
 .germanfence-btn-primary:hover {
-    background: #1bc5cc;
-    border-color: #1bc5cc;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(34, 214, 221, 0.3);
+    transform: translateY(-2px);
 }
 
 .germanfence-btn-danger {
