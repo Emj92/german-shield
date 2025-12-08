@@ -171,42 +171,28 @@ class GermanFence_GeoBlocking {
         $is_locked = empty($license_info['is_valid']);
         ?>
         <div class="germanfence-tab-content" id="tab-geo">
-            <div class="germanfence-section" style="position: relative;">
+            <div class="germanfence-section">
                 <h2>🌍 GEO Blocking</h2>
-                
-                <?php if ($is_locked): ?>
-                    <!-- PRO-Feature Overlay -->
-                    <div style="position: absolute; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(242, 245, 248, 0.95); z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 9px;">
-                        <div style="text-align: center; background: white; padding: 40px; border-radius: 9px; border: 2px solid #22D6DD; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px;">
-                            <span style="font-size: 56px;">🔒</span>
-                            <h3 style="color: #22D6DD; margin: 15px 0 10px 0; font-size: 24px;">PRO-Feature</h3>
-                            <p style="color: #646970; margin: 0 0 25px 0; line-height: 1.6;">GEO Blocking ist nur mit einer PRO-Lizenz verfügbar. Upgrade jetzt und blockiere Spam aus beliebigen Ländern!</p>
-                            <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px; font-size: 16px; font-weight: 600;">
-                                🚀 Jetzt PRO kaufen
-                            </a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-                
-                <!-- Content (ausgegraut für Free-User) -->
-                <div style="<?php echo $is_locked ? 'opacity: 0.5; pointer-events: none; user-select: none;' : ''; ?>">
                     
                     <!-- Toggle mit Modus-Buttons (Auto-Save) -->
                     <div style="background: #fff; padding: 25px; border: 1px solid #c3cbd5; border-radius: 6px; margin-bottom: 30px;">
                         <div class="germanfence-setting" style="border: none; padding: 0; margin: 0;">
-                            <label class="germanfence-toggle" id="geo-main-toggle">
-                                <input type="checkbox" name="geo_blocking_enabled" value="1" <?php checked($settings['geo_blocking_enabled'] === '1'); ?>>
+                            <label class="germanfence-toggle <?php echo $is_locked ? 'germanfence-toggle-locked' : ''; ?>" id="geo-main-toggle">
+                                <input type="checkbox" name="geo_blocking_enabled" value="1" <?php checked($settings['geo_blocking_enabled'] === '1'); ?> <?php echo $is_locked ? 'disabled' : ''; ?>>
                                 <span class="toggle-slider"></span>
+                                <?php if ($is_locked): ?>
+                                    <span class="toggle-lock-icon">🔒</span>
+                                <?php endif; ?>
                             </label>
                             <div class="setting-info">
                                 <h3 style="margin: 0 0 5px 0;">GEO Blocking aktivieren</h3>
                                 <p style="margin: 0 0 15px 0;">Blockiere Anfragen aus bestimmten Ländern.</p>
                                 
                                 <!-- Modus-Buttons (klein, inline) -->
-                                <div id="geo-mode-buttons" style="<?php echo $settings['geo_blocking_enabled'] !== '1' ? 'display:none;' : 'display:flex;'; ?> gap: 10px; margin-top: 15px;">
+                                <div id="geo-mode-buttons" style="<?php echo ($settings['geo_blocking_enabled'] !== '1' && !$is_locked) ? 'display:none;' : 'display:flex;'; ?> gap: 10px; margin-top: 15px; <?php echo $is_locked ? 'opacity: 0.6; pointer-events: none;' : ''; ?>">
                                     <!-- Blacklist (Ausschließlich) -->
                                     <label class="geo-mode-option <?php echo (!isset($settings['geo_blocking_mode']) || $settings['geo_blocking_mode'] === 'blacklist') ? 'active blacklist' : ''; ?>" data-mode="blacklist" style="flex: 1; padding: 10px 15px; border: 2px solid #F06292; border-radius: 6px; cursor: pointer; transition: all 0.2s; <?php echo (!isset($settings['geo_blocking_mode']) || $settings['geo_blocking_mode'] === 'blacklist') ? 'background: rgba(240, 98, 146, 0.1); box-shadow: 0 0 0 2px rgba(240, 98, 146, 0.2);' : 'background: #f9f9f9;'; ?>">
-                                        <input type="radio" name="geo_blocking_mode" value="blacklist" <?php checked(isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist', 'blacklist'); ?> style="display: none;">
+                                        <input type="radio" name="geo_blocking_mode" value="blacklist" <?php checked(isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist', 'blacklist'); ?> <?php echo $is_locked ? 'disabled' : ''; ?> style="display: none;">
                                         <div style="display: flex; align-items: center; gap: 8px;">
                                             <span style="font-size: 18px;">🚫</span>
                                             <div style="flex: 1;">
@@ -218,7 +204,7 @@ class GermanFence_GeoBlocking {
                                     
                                     <!-- Whitelist (Einschließlich) -->
                                     <label class="geo-mode-option <?php echo (isset($settings['geo_blocking_mode']) && $settings['geo_blocking_mode'] === 'whitelist') ? 'active whitelist' : ''; ?>" data-mode="whitelist" style="flex: 1; padding: 10px 15px; border: 2px solid #22D6DD; border-radius: 6px; cursor: pointer; transition: all 0.2s; <?php echo (isset($settings['geo_blocking_mode']) && $settings['geo_blocking_mode'] === 'whitelist') ? 'background: rgba(34, 214, 221, 0.1); box-shadow: 0 0 0 2px rgba(34, 214, 221, 0.2);' : 'background: #f9f9f9;'; ?>">
-                                        <input type="radio" name="geo_blocking_mode" value="whitelist" <?php checked(isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist', 'whitelist'); ?> style="display: none;">
+                                        <input type="radio" name="geo_blocking_mode" value="whitelist" <?php checked(isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist', 'whitelist'); ?> <?php echo $is_locked ? 'disabled' : ''; ?> style="display: none;">
                                         <div style="display: flex; align-items: center; gap: 8px;">
                                             <span style="font-size: 18px;">✅</span>
                                             <div style="flex: 1;">
@@ -233,7 +219,7 @@ class GermanFence_GeoBlocking {
                     </div>
                     
                     <!-- Länder-Auswahl (Auto-Save wie alles andere) -->
-                    <div id="geo-countries-section" style="<?php echo $settings['geo_blocking_enabled'] !== '1' ? 'display:none;' : ''; ?>">
+                    <div id="geo-countries-section" style="<?php echo ($settings['geo_blocking_enabled'] !== '1' && !$is_locked) ? 'display:none;' : ''; ?>">
                         <?php 
                         $current_mode = isset($settings['geo_blocking_mode']) ? $settings['geo_blocking_mode'] : 'blacklist';
                         $mode_color = $current_mode === 'whitelist' ? '#22D6DD' : '#F06292';
@@ -246,10 +232,10 @@ class GermanFence_GeoBlocking {
                             
                             <!-- Suchleiste -->
                             <div style="margin-bottom: 15px;">
-                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;">
+                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;" <?php echo $is_locked ? 'disabled' : ''; ?>>
                             </div>
                             
-                            <div class="country-grid" id="geo-country-grid" style="max-height: 500px; overflow-y: auto; padding: 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px;">
+                            <div class="country-grid" id="geo-country-grid" style="max-height: 500px; overflow-y: auto; padding: 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px; <?php echo $is_locked ? 'opacity: 0.7;' : ''; ?>">
                                 <?php
                                 $countries = $this->get_country_list();
                                 $blocked = $settings['blocked_countries'] ?? array();
@@ -257,7 +243,7 @@ class GermanFence_GeoBlocking {
                                     $is_blocked = in_array($code, $blocked);
                                 ?>
                                 <label class="country-item <?php echo $is_blocked ? 'blocked' : ''; ?>" data-country="<?php echo esc_attr($code); ?>" data-country-name="<?php echo esc_attr(strtolower($name)); ?>">
-                                    <input type="checkbox" name="blocked_countries[]" value="<?php echo esc_attr($code); ?>" <?php checked($is_blocked); ?>>
+                                    <input type="checkbox" name="blocked_countries[]" value="<?php echo esc_attr($code); ?>" <?php checked($is_blocked); ?> <?php echo $is_locked ? 'disabled' : ''; ?>>
                                     <span class="country-flag"><?php echo $this->get_flag_emoji($code); ?></span>
                                     <span class="country-code"><?php echo esc_html($code); ?></span>
                                 </label>
@@ -265,8 +251,6 @@ class GermanFence_GeoBlocking {
                             </div>
                         </div>
                     </div>
-                
-                </div><!-- End Content Wrapper -->
             </div>
         </div>
         <?php

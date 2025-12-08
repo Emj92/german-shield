@@ -1,7 +1,7 @@
 {
-    "version":  "1.8.6",
+    "version":  "1.8.7",
     "sections":  {
-                     "changelog":  "\u003ch4\u003e1.8.6\u003c/h4\u003e\u003cul\u003e\u003cli\u003ePRO-Tabs als Teaser freigeschaltet\u003c/li\u003e\u003cli\u003e.htaccess Button-Alignment\u003c/li\u003e\u003cli\u003ePreistafeln erweitert (URL-Limit, Domain-Block)\u003c/li\u003e\u003c/ul\u003e",
+                     "changelog":  "\u003ch4\u003e1.8.7\u003c/h4\u003e\u003cul\u003e\u003cli\u003ePRO-Features sichtbar, Switches disabled f\u00fcr Free\u003c/li\u003e\u003cli\u003eGEO L\u00e4nder-Liste als Teaser sichtbar\u003c/li\u003e\u003cli\u003ePRO-Badges entfernt\u003c/li\u003e\u003cli\u003eFree-License Portal-DB Integration\u003c/li\u003e\u003c/ul\u003e",
                      "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
                  },
     "author_homepage":  "https://germanfence.de",

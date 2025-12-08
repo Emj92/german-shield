@@ -371,17 +371,11 @@ class GermanFence_Admin {
                 <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-location"></span>
                     GEO Blocking
-                    <?php if ($is_free_active && !$is_license_valid): ?>
-                        <span class="pro-badge">PRO</span>
-                    <?php endif; ?>
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-editor-removeformatting"></span>
                     Phrasen-Blocking
-                    <?php if ($is_free_active && !$is_license_valid): ?>
-                        <span class="pro-badge">PRO</span>
-                    <?php endif; ?>
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
@@ -874,30 +868,16 @@ class GermanFence_Admin {
                 
                 <!-- Phrase Blocking Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'phrases' ? 'active' : ''; ?>" id="tab-phrases">
-                    <div class="germanfence-section" style="position: relative;">
+                    <div class="germanfence-section">
                         <h2>🚫 Phrasen-Blocking</h2>
                         
-                        <?php if (!$is_license_valid): ?>
-                            <!-- PRO-Feature Overlay -->
-                            <div style="position: absolute; top: 60px; left: 0; right: 0; bottom: 0; background: rgba(242, 245, 248, 0.95); z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 9px;">
-                                <div style="text-align: center; background: white; padding: 40px; border-radius: 9px; border: 2px solid #22D6DD; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px;">
-                                    <span style="font-size: 56px;">🔒</span>
-                                    <h3 style="color: #22D6DD; margin: 15px 0 10px 0; font-size: 24px;">PRO-Feature</h3>
-                                    <p style="color: #646970; margin: 0 0 25px 0; line-height: 1.6;">Phrasen-Blocking ist nur mit einer PRO-Lizenz verfügbar. Upgrade jetzt und blockiere Spam anhand von Keywords und Regex-Mustern!</p>
-                                    <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px; font-size: 16px; font-weight: 600;">
-                                        🚀 Jetzt PRO kaufen
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <!-- Content (ausgegraut für Free-User) -->
-                        <div style="<?php echo !$is_license_valid ? 'opacity: 0.5; pointer-events: none; user-select: none;' : ''; ?>">
-                        
                         <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
-                                <input type="checkbox" name="phrase_blocking_enabled" value="1" <?php checked($settings['phrase_blocking_enabled'] === '1'); ?>>
+                            <label class="germanfence-toggle <?php echo !$is_license_valid ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="phrase_blocking_enabled" value="1" <?php checked($settings['phrase_blocking_enabled'] === '1'); ?> <?php echo !$is_license_valid ? 'disabled' : ''; ?>>
                                 <span class="toggle-slider"></span>
+                                <?php if (!$is_license_valid): ?>
+                                    <span class="toggle-lock-icon">🔒</span>
+                                <?php endif; ?>
                             </label>
                             <div class="setting-info">
                                 <h3>Phrasen-Blocking aktivieren</h3>
@@ -905,14 +885,17 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                        <div class="germanfence-subsetting" id="phrase-settings" style="<?php echo $settings['phrase_blocking_enabled'] !== '1' ? 'display:none;' : ''; ?>">
+                        <div class="germanfence-subsetting" id="phrase-settings" style="<?php echo ($settings['phrase_blocking_enabled'] !== '1' && $is_license_valid) ? 'display:none;' : ''; ?>; <?php echo !$is_license_valid ? 'opacity: 0.7; pointer-events: none;' : ''; ?>">
                             <h3>Blockierte Phrasen</h3>
                             
                             <!-- Regex-Modus Toggle -->
                             <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 12px;">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="phrase_regex_mode" value="1" <?php checked(isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo !$is_license_valid ? 'germanfence-toggle-locked' : ''; ?>">
+                                    <input type="checkbox" name="phrase_regex_mode" value="1" <?php checked(isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1'); ?> <?php echo !$is_license_valid ? 'disabled' : ''; ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if (!$is_license_valid): ?>
+                                        <span class="toggle-lock-icon">🔒</span>
+                                    <?php endif; ?>
                                 </label>
                                 <div>
                                     <strong style="font-size: 14px; color: #1d2327;">🔧 Regex-Modus</strong>
@@ -934,6 +917,7 @@ class GermanFence_Admin {
                                 rows="8" 
                                 style="width: 100%; max-width: 600px; padding: 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 13px;"
                                 placeholder="<?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? 'z.B.: V.*i.*a.*g.*r.*a' : 'z.B.: casino, viagra, lottery, cheap pills'; ?>"
+                                <?php echo !$is_license_valid ? 'disabled' : ''; ?>
                             ><?php 
                                 $phrases = $settings['blocked_phrases'] ?? array();
                                 if (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') {
@@ -994,8 +978,6 @@ class GermanFence_Admin {
                                     </p>
                             </div>
                         </div>
-                        
-                        </div><!-- End Content Wrapper -->
                     </div>
                 </div>
                 
