@@ -43,22 +43,36 @@ class GermanFence_Admin {
      * AJAX Handler: History löschen
      */
     public function ajax_clear_history() {
-        check_ajax_referer('germanfence_admin', 'nonce');
+        // Nonce prüfen
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
+            wp_send_json_error('Sicherheitsprüfung fehlgeschlagen');
+            return;
+        }
         
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Keine Berechtigung');
+            return;
         }
         
-        // Lösche Datenbank-Einträge
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'germanfence_stats';
-        $wpdb->query("TRUNCATE TABLE $table_name");
-        
-        // Lösche History-Datei
-        $stats = new GermanFence_Statistics();
-        $stats->clear_history();
-        
-        wp_send_json_success('Verlauf erfolgreich gelöscht');
+        try {
+            // Lösche Datenbank-Einträge
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'germanfence_stats';
+            $result = $wpdb->query("TRUNCATE TABLE $table_name");
+            
+            if ($result === false) {
+                wp_send_json_error('Datenbankfehler: ' . $wpdb->last_error);
+                return;
+            }
+            
+            // Lösche History-Datei
+            $stats = new GermanFence_Statistics();
+            $stats->clear_history();
+            
+            wp_send_json_success('Verlauf erfolgreich gelöscht');
+        } catch (Exception $e) {
+            wp_send_json_error('Fehler: ' . $e->getMessage());
+        }
     }
     
     /**
@@ -79,7 +93,9 @@ class GermanFence_Admin {
             'typing_speed:' => '⌨️ Unnatürliche Geschwindigkeit',
             'geo: Land nicht in Whitelist' => '🌍 Land nicht erlaubt',
             'javascript: Missing JS Token' => '🔒 JS-Check fehlgeschlagen',
-            'javascript: Invalid JS Token' => '🔒 JS-Token ungültig'
+            'javascript: Invalid JS Token' => '🔒 JS-Token ungültig',
+            'javascript: JavaScript not enabled' => '🔒 JavaScript deaktiviert',
+            'JavaScript not enabled' => '🔒 JavaScript deaktiviert'
         );
         
         // Direkte Treffer

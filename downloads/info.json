@@ -1,7 +1,7 @@
 {
-    "version":  "1.10.1",
+    "version":  "1.10.2",
     "sections":  {
-                     "changelog":  "\u003ch4\u003e1.10.1\u003c/h4\u003e\u003cul\u003e\u003cli\u003eVerlauf-Button Design korrigiert\u003c/li\u003e\u003cli\u003eAJAX-Handler verbessert\u003c/li\u003e\u003c/ul\u003e",
+                     "changelog":  "\u003ch4\u003e1.10.2\u003c/h4\u003e\u003cul\u003e\u003cli\u003eJavaScript deaktiviert Blockgrund hinzugef\u00fcgt\u003c/li\u003e\u003cli\u003eAJAX Verlauf l\u00f6schen Fix\u003c/li\u003e\u003c/ul\u003e",
                      "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
                  },
     "author_homepage":  "https://germanfence.de",
