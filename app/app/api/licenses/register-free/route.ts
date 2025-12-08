@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
           name: email.split('@')[0], // Name aus E-Mail ableiten
           password: '', // Kein Passwort für Shadow-Accounts
           role: 'USER',
-          emailVerified: new Date() // Als verifiziert markieren
+          emailVerified: true // Als verifiziert markieren
         }
       });
       
