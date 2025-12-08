@@ -371,12 +371,12 @@ class GermanFence_Admin {
                 <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-location"></span>
                     GEO Blocking
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-editor-removeformatting"></span>
                     Phrasen-Blocking
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-bell"></span>
@@ -1120,12 +1120,12 @@ class GermanFence_Admin {
                         </div>
                         <?php endif; ?>
                         
-                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
+                        <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
                             <h3 style="margin-top: 0; color: #1d2327;">💾 Gespeicherte Einstellungen</h3>
                             <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
                         </div>
                         
-                        <div style="background: #F2F5F8; padding: 20px; border-radius: 6px;">
+                        <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; border: 1px solid #c3cbd5;">
                             <h3 style="margin-top: 0;">🔧 System-Info</h3>
                             <table class="germanfence-table">
                                 <tr>
@@ -1441,7 +1441,7 @@ class GermanFence_Admin {
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
                         <!-- FREE VERSION BOX -->
-                        <div style="background: #ffffff; padding: 25px; min-height: 280px; display: flex; flex-direction: column;">
+                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
                                 <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ Kostenlose Version aktiviert</h3>
@@ -1475,13 +1475,22 @@ class GermanFence_Admin {
                                     </p>
                                 </div>
                                 <?php endif; ?>
+                                <?php
+                                // Bestimme Lizenz-Typ für Button-Text
+                                $current_key = $free_manager->get_verified_email() ? get_option('germanfence_free_license_key', '') : '';
+                                $is_free_license = empty($current_key) || strpos($current_key, 'GS-FREE-') === 0;
+                                ?>
                                 <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 14px;">
-                                    Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
+                                    <?php if ($is_free_license): ?>
+                                        Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
+                                    <?php else: ?>
+                                        Deine Lizenz ist aktiv. Du hast Zugriff auf alle PRO-Features!
+                                    <?php endif; ?>
                                 </p>
                                 <form method="post">
                                     <?php wp_nonce_field('germanfence_settings', 'germanfence_nonce'); ?>
                                     <button type="submit" name="deactivate_free" class="germanfence-btn-danger">
-                                        Kostenlose Version deaktivieren
+                                        <?php echo $is_free_license ? 'Kostenlose Version deaktivieren' : 'Lizenz deaktivieren'; ?>
                                     </button>
                                 </form>
                             <?php else: ?>
@@ -1616,9 +1625,9 @@ class GermanFence_Admin {
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
-                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #fff;">
+                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 9px; font-family: monospace; font-size: 13px; background: #fff;">
                                     <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                        style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                                        style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600;">
                                         📋 Kopieren
                                     </button>
                                 </div>
