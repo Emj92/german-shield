@@ -297,6 +297,10 @@
                     // Zeige/verstecke Einstellungsfelder
                     $('#honeypot-settings').toggle(isChecked);
                     return;
+                case 'basic_protection_enabled':
+                    // Zeige/verstecke Basisschutz-Einstellungen
+                    $('#basic-protection-settings').toggle(isChecked);
+                    return;
                 case 'timestamp_enabled':
                     // Zeige/verstecke Einstellungsfelder
                     $('#timestamp-settings').toggle(isChecked);

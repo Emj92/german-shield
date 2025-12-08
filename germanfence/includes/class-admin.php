@@ -730,11 +730,11 @@ class GermanFence_Admin {
                         </div>
                     <?php else: ?>
                     
-                    <!-- SEKTION 1: Honeypot & Kommentar-Bots -->
+                    <!-- SEKTION 1: Honeypot & Basisschutz -->
                     <div class="germanfence-section">
-                        <h2>🍯 Honeypot & Kommentar-Schutz</h2>
+                        <h2>🍯 Honeypot & Basisschutz</h2>
                         <p class="description" style="margin-bottom: 20px;">
-                            Unsichtbare Felder, die nur Bots ausfüllen + Schutz vor automatisierten Kommentaren.
+                            Unsichtbare Felder + grundlegende Schutz-Mechanismen gegen automatisierte Bots.
                         </p>
                         
                         <div class="germanfence-settings-grid">
@@ -751,12 +751,52 @@ class GermanFence_Admin {
                             
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="block_comment_bots" value="1" <?php checked(isset($settings['block_comment_bots']) && $settings['block_comment_bots'] === '1'); ?>>
+                                    <input type="checkbox" name="basic_protection_enabled" value="1" <?php checked(isset($settings['basic_protection_enabled']) && $settings['basic_protection_enabled'] === '1'); ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
-                                    <h3>Kommentar-Bots blockieren</h3>
-                                    <p>Blockiert automatisierte Bot-Kommentare durch erweiterte Anti-Spam-Prüfungen.</p>
+                                    <h3>Basis-Schutz aktivieren</h3>
+                                    <p>Rate-Limiting, Duplikat-Check und HTTP-Header-Validierung.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Basisschutz-Einstellungen -->
+                        <div class="germanfence-subsetting" id="basic-protection-settings" style="<?php echo (isset($settings['basic_protection_enabled']) && $settings['basic_protection_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px; background: #F2F5F8; padding: 20px; border-radius: 9px; border: 1px solid #d9dde1;">
+                            <h3 style="margin-bottom: 20px; color: #1d2327;">⚙️ Basis-Schutz Optionen</h3>
+                            
+                            <div class="germanfence-settings-grid">
+                                <div class="germanfence-setting">
+                                    <label class="germanfence-toggle">
+                                        <input type="checkbox" name="rate_limit_enabled" value="1" <?php checked(isset($settings['rate_limit_enabled']) && $settings['rate_limit_enabled'] === '1'); ?>>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h3>Rate-Limiting</h3>
+                                        <p>Blockiert zu viele Anfragen pro IP (max. 5/Minute).</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="germanfence-setting">
+                                    <label class="germanfence-toggle">
+                                        <input type="checkbox" name="duplicate_check_enabled" value="1" <?php checked(isset($settings['duplicate_check_enabled']) && $settings['duplicate_check_enabled'] === '1'); ?>>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h3>Duplikat-Erkennung</h3>
+                                        <p>Verhindert identische Anfragen innerhalb von 5 Minuten.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="germanfence-setting">
+                                    <label class="germanfence-toggle">
+                                        <input type="checkbox" name="http_headers_check" value="1" <?php checked(isset($settings['http_headers_check']) && $settings['http_headers_check'] === '1'); ?>>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h3>HTTP-Header Prüfung</h3>
+                                        <p>Validiert Standard-HTTP-Header (Accept, Accept-Language).</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1015,23 +1055,36 @@ class GermanFence_Admin {
                         </div>
                     </div>
                     
-                    <!-- SEKTION 5: Test-Modus -->
+                    <!-- SEKTION 5: Kommentarschutz & Test-Modus -->
                     <div class="germanfence-section">
-                        <h2 style="color: #F06292;">🧪 Test-Modus</h2>
+                        <h2>💬 Kommentarschutz & Test-Modus</h2>
                         <p class="description" style="margin-bottom: 20px;">
-                            <strong style="color: #F06292;">⚠️ NUR FÜR TESTS:</strong> Blockiert ALLE Formular-Einreichungen (auch echte Benutzer).
+                            Optionaler Kommentar-Bot-Schutz und Test-Modus für Debugging.
                         </p>
                         
-                        <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px;">
-                            <label class="germanfence-toggle">
-                                <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
-                                <h3 style="color: #F06292;">Alle Anfragen blockieren</h3>
-                                <p style="color: #1d2327;">
-                                    Blockiert ALLE Formular-Submissions. Nutze dies um die Blockierungs-Benachrichtigungen und Logs zu testen. Danach unbedingt wieder deaktivieren!
-                                </p>
+                        <div class="germanfence-settings-grid">
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="block_comment_bots" value="1" <?php checked(isset($settings['block_comment_bots']) && $settings['block_comment_bots'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Kommentar-Bots blockieren</h3>
+                                    <p>Blockiert automatisierte Bot-Kommentare durch erweiterte Anti-Spam-Prüfungen.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px;">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3 style="color: #F06292;">🧪 Test-Modus</h3>
+                                    <p style="color: #1d2327;">
+                                        <strong style="color: #F06292;">⚠️ NUR FÜR TESTS:</strong> Blockiert ALLE Formular-Submissions (auch echte Benutzer).
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2182,12 +2235,17 @@ class GermanFence_Admin {
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
             'honeypot_count' => intval($_POST['honeypot_count'] ?? 3),
             'honeypot_fields' => $honeypot_fields,
+            'basic_protection_enabled' => isset($_POST['basic_protection_enabled']) ? '1' : '0',
+            'rate_limit_enabled' => isset($_POST['rate_limit_enabled']) ? '1' : '0',
+            'duplicate_check_enabled' => isset($_POST['duplicate_check_enabled']) ? '1' : '0',
+            'http_headers_check' => isset($_POST['http_headers_check']) ? '1' : '0',
             'timestamp_enabled' => isset($_POST['timestamp_enabled']) ? '1' : '0',
             'timestamp_min' => intval($_POST['timestamp_min'] ?? 3),
             'timestamp_max' => intval($_POST['timestamp_max'] ?? 3600),
             'javascript_check' => isset($_POST['javascript_check']) ? '1' : '0',
             'user_agent_check' => isset($_POST['user_agent_check']) ? '1' : '0',
             'typing_speed_check' => isset($_POST['typing_speed_check']) ? '1' : '0',
+            'block_comment_bots' => isset($_POST['block_comment_bots']) ? '1' : '0',
             'test_mode_block_all' => isset($_POST['test_mode_block_all']) ? '1' : '0',
             'url_limit_enabled' => isset($_POST['url_limit_enabled']) ? '1' : '0',
             'url_limit_max' => intval($_POST['url_limit_max'] ?? 1),
