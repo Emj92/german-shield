@@ -756,47 +756,7 @@ class GermanFence_Admin {
                                 </label>
                                 <div class="setting-info">
                                     <h3>Basis-Schutz aktivieren</h3>
-                                    <p>Rate-Limiting, Duplikat-Check und HTTP-Header-Validierung.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Basisschutz-Einstellungen -->
-                        <div class="germanfence-subsetting" id="basic-protection-settings" style="<?php echo (isset($settings['basic_protection_enabled']) && $settings['basic_protection_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px; background: #F2F5F8; padding: 20px; border-radius: 9px; border: 1px solid #d9dde1;">
-                            <h3 style="margin-bottom: 20px; color: #1d2327;">⚙️ Basis-Schutz Optionen</h3>
-                            
-                            <div class="germanfence-settings-grid">
-                                <div class="germanfence-setting">
-                                    <label class="germanfence-toggle">
-                                        <input type="checkbox" name="rate_limit_enabled" value="1" <?php checked(isset($settings['rate_limit_enabled']) && $settings['rate_limit_enabled'] === '1'); ?>>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="setting-info">
-                                        <h3>Rate-Limiting</h3>
-                                        <p>Blockiert zu viele Anfragen pro IP (max. 5/Minute).</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="germanfence-setting">
-                                    <label class="germanfence-toggle">
-                                        <input type="checkbox" name="duplicate_check_enabled" value="1" <?php checked(isset($settings['duplicate_check_enabled']) && $settings['duplicate_check_enabled'] === '1'); ?>>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="setting-info">
-                                        <h3>Duplikat-Erkennung</h3>
-                                        <p>Verhindert identische Anfragen innerhalb von 5 Minuten.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="germanfence-setting">
-                                    <label class="germanfence-toggle">
-                                        <input type="checkbox" name="http_headers_check" value="1" <?php checked(isset($settings['http_headers_check']) && $settings['http_headers_check'] === '1'); ?>>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="setting-info">
-                                        <h3>HTTP-Header Prüfung</h3>
-                                        <p>Validiert Standard-HTTP-Header (Accept, Accept-Language).</p>
-                                    </div>
+                                    <p>Rate-Limiting, Duplikat-Check und HTTP-Header-Validierung (alle 3 auf einmal).</p>
                                 </div>
                             </div>
                         </div>
@@ -1647,23 +1607,30 @@ class GermanFence_Admin {
                             settings_errors('germanfence_messages');
                         }
                         
-                        // Lizenz deaktivieren
-                        if (isset($_POST['deactivate_license'])) {
-                            $result = $license_manager->deactivate_license();
-                            add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
-                            settings_errors('germanfence_messages');
+                        // Lizenz deaktivieren (PRO oder FREE) - Plugin komplett sperren
+                        if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
+                            // Deaktiviere PRO-Lizenz
+                            if (isset($_POST['deactivate_license'])) {
+                                $result = $license_manager->deactivate_license();
+                            }
+                            
+                            // Deaktiviere FREE-Lizenz
+                            if (isset($_POST['deactivate_free'])) {
+                                $result = $free_manager->deactivate_free();
+                            }
+                            
+                            // Lösche BEIDE Lizenzen komplett, damit Plugin gesperrt wird
+                            $license_manager->deactivate_license();
+                            $free_manager->deactivate_free();
+                            
+                            // Status neu laden
                             $license_info = $license_manager->get_license_info();
                             $license_status = $license_manager->check_license();
-                        }
-                        
-                        // Free-Version deaktivieren
-                        if (isset($_POST['deactivate_free'])) {
-                            $result = $free_manager->deactivate_free();
-                            add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
-                            settings_errors('germanfence_messages');
                             $is_free_active = $free_manager->is_free_active();
                             $free_email = $free_manager->get_verified_email();
-                            $license_info = $license_manager->get_license_info();
+                            
+                            add_settings_error('germanfence_messages', 'germanfence_message', 'Lizenz deaktiviert - Plugin gesperrt. Bitte neue Lizenz aktivieren.', 'success');
+                            settings_errors('germanfence_messages');
                         }
                         ?>
                         
@@ -1695,9 +1662,9 @@ class GermanFence_Admin {
                                     </p>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
-                                            style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 4px; font-family: monospace; font-size: 13px; background: #fff;">
+                                            class="germanfence-input" style="flex: 1; font-family: monospace; font-size: 13px;">
                                         <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                            style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                                            style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                                             📋 Kopieren
                                         </button>
                                     </div>

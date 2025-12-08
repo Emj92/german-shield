@@ -1,7 +1,7 @@
 {
-    "version":  "1.12.0",
+    "version":  "1.12.1",
     "sections":  {
-                     "changelog":  "\u003ch4\u003e1.12.0\u003c/h4\u003e\u003cul\u003e\u003cli\u003eUI Restrukturierung: Honeypot \u0026 Basisschutz\u003c/li\u003e\u003cli\u003eKommentarschutz zu Test-Modus verschoben\u003c/li\u003e\u003cli\u003eBasisschutz mit 3 Sub-Optionen\u003c/li\u003e\u003c/ul\u003e",
+                     "changelog":  "\u003ch4\u003e1.12.1\u003c/h4\u003e\u003cul\u003e\u003cli\u003eBasisschutz: Alle 3 auf einmal (kein Sub-Menu)\u003c/li\u003e\u003cli\u003eLizenz-Textfeld Styles repariert\u003c/li\u003e\u003cli\u003eLizenz deaktivieren sperrt Plugin komplett\u003c/li\u003e\u003c/ul\u003e",
                      "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
                  },
     "author_homepage":  "https://germanfence.de",
