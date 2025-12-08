@@ -62,7 +62,7 @@
 }
 
 .germanfence-quote-of-day {
-    background: #F2F5F8;
+    background: #Ffffffff;
     border: 1px solid #d9dde1;
     border-radius: 9px;
     padding: 15px 20px;
@@ -96,7 +96,7 @@
     justify-content: center;
     padding: 10px 15px;
     background: #ffffff;
-    border: 2px solid #d9dde1;
+    border: 1px solid #d9dde1;
     border-radius: 9px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -109,16 +109,11 @@
     height: 48px !important;
 }
 
+
 .header-control-btn:hover {
-    border-color: #22D6DD;
-    background: rgba(34, 214, 221, 0.05);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 214, 221, 0.2);
 }
 
-.header-control-btn:active {
-    transform: translateY(0);
-}
 
 .language-flag {
     font-size: 20px;

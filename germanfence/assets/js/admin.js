@@ -302,6 +302,9 @@
                 case 'domain_blocking_enabled':
                     $('#domain-blocking-settings').toggle(isChecked);
                     return;
+                case 'login_limit_enabled':
+                    $('#login-limit-settings').toggle(isChecked);
+                    return;
                 case 'phrase_blocking_enabled':
                     $target = $('#phrase-settings');
                     break;
@@ -887,6 +890,15 @@
                 $('#domain-blocking-settings').slideDown(300);
             } else {
                 $('#domain-blocking-settings').slideUp(300);
+            }
+        });
+        
+        // Toggle für Login-Limit (Brute-Force Schutz)
+        $('input[name="login_limit_enabled"]').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#login-limit-settings').slideDown(300);
+            } else {
+                $('#login-limit-settings').slideUp(300);
             }
         });
         

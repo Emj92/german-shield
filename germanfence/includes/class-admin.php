@@ -634,7 +634,7 @@ class GermanFence_Admin {
                                     
                                     foreach ($honeypot_fields as $index => $field_name): 
                                     ?>
-                                    <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #F2F5F8; border: 1px solid #d9dde1; border-radius: 9px; margin-bottom: 10px;">
+                                    <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #ffffff; border: 1px solid #d9dde1; border-radius: 9px; margin-bottom: 10px;">
                                         <span style="min-width: 30px; font-weight: 600; color: #646970;">#<?php echo $index + 1; ?></span>
                                         <input 
                                             type="text" 
@@ -1228,6 +1228,63 @@ class GermanFence_Admin {
                         </div>
                     </div>
                     
+                    <!-- BRUTE-FORCE SCHUTZ Section -->
+                    <div class="germanfence-section">
+                        <h2>🔐 Brute-Force Schutz</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Schütze dein WordPress-Login vor automatisierten Angriffen durch Login-Versuchs-Limitierung.
+                        </p>
+                        
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="login_limit_enabled" value="1" <?php checked(isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>Login-Limitierung aktivieren</h3>
+                                <p>Blockiert IP-Adressen nach zu vielen fehlgeschlagenen Login-Versuchen</p>
+                            </div>
+                        </div>
+                        
+                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
+                            <div class="setting-row" style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 10px;"><strong>Maximale Login-Versuche:</strong></label>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <input 
+                                        type="number" 
+                                        name="login_max_attempts"
+                                        min="1" 
+                                        max="10" 
+                                        value="<?php echo esc_attr($settings['login_max_attempts'] ?? 3); ?>"
+                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                    >
+                                    <span style="color: #646970;">Versuche</span>
+                                </div>
+                                <p class="description" style="margin-top: 5px;">
+                                    Nach dieser Anzahl fehlgeschlagener Versuche wird die IP gesperrt. Empfohlen: 3-5
+                                </p>
+                            </div>
+                            
+                            <div class="setting-row">
+                                <label style="display: block; margin-bottom: 10px;"><strong>Sperrzeit:</strong></label>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <input 
+                                        type="number" 
+                                        name="login_lockout_duration"
+                                        min="5" 
+                                        max="1440" 
+                                        value="<?php echo esc_attr($settings['login_lockout_duration'] ?? 30); ?>"
+                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                    >
+                                    <span style="color: #646970;">Minuten</span>
+                                </div>
+                                <p class="description" style="margin-top: 5px;">
+                                    Dauer der Sperre nach fehlgeschlagenen Versuchen. Empfohlen: 30-60 Minuten
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- .HTACCESS GENERATOR Section -->
                     <div class="germanfence-section">
                         <h2>📄 .htaccess Sicherheits-Regeln</h2>
@@ -1774,7 +1831,7 @@ class GermanFence_Admin {
                             </div>
                             
                             <h3 style="margin-top: 30px;">Vorschau</h3>
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 6px; text-align: center;">
+                            <div style="padding: 20px; text-align: center;">
                                 <?php 
                                 $shadow_color = $settings['badge_shadow_color'] ?? '#22D6DD';
                                 $border_radius = $settings['badge_border_radius'] ?? 6;
@@ -1861,18 +1918,18 @@ class GermanFence_Admin {
                                     </ul>
                                 </div>
                                 
-                                <div style="padding: 20px 0; background: #ffffff; text-align: center;">
+                                <div style="padding: 15px 0 10px 0; background: #ffffff; text-align: center;">
                                     <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 14px;">
                                         📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
                                     </p>
                                     <a href="<?php echo GERMANFENCE_PLUGIN_URL; ?>data/av-vertrag.pdf" 
                                        target="_blank" 
                                        class="germanfence-btn-secondary"
-                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 14px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                                         <span class="dashicons dashicons-download" style="font-size: 18px;"></span>
                                         AV-Vertrag herunterladen (PDF)
                                     </a>
-                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px;">
+                                    <p style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
                                         Rechtlich verbindlicher Vertrag zur Auftragsverarbeitung gem. Art. 28 DSGVO
                                     </p>
                                 </div>
@@ -1940,6 +1997,9 @@ class GermanFence_Admin {
             'url_limit_max' => intval($_POST['url_limit_max'] ?? 1),
             'domain_blocking_enabled' => isset($_POST['domain_blocking_enabled']) ? '1' : '0',
             'blocked_domains' => sanitize_textarea_field($_POST['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'),
+            'login_limit_enabled' => isset($_POST['login_limit_enabled']) ? '1' : '0',
+            'login_max_attempts' => intval($_POST['login_max_attempts'] ?? 3),
+            'login_lockout_duration' => intval($_POST['login_lockout_duration'] ?? 30),
             'geo_blocking_enabled' => isset($_POST['geo_blocking_enabled']) ? '1' : '0',
             'blocked_countries' => $_POST['blocked_countries'] ?? array(),
             'phrase_blocking_enabled' => isset($_POST['phrase_blocking_enabled']) ? '1' : '0',
