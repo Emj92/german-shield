@@ -420,13 +420,13 @@ class GermanFence_Updater {
             'tested' => $update_info['tested'] ?? '6.4',
             'requires_php' => $update_info['requires_php'] ?? '7.4',
             'sections' => array(
-                'description' => $update_info['description'] ?? 'Zuverlässiger Anti-Spam für WordPress',
-                'changelog' => $update_info['changelog'] ?? '',
-                'installation' => 'Aktiviere das Plugin und konfiguriere die Einstellungen unter German Shield.',
+                'description' => $update_info['sections']['description'] ?? 'Zuverlässiger Anti-Spam für WordPress',
+                'changelog' => $update_info['sections']['changelog'] ?? '',
+                'installation' => 'Aktiviere das Plugin und konfiguriere die Einstellungen unter GermanFence.',
             ),
             'banners' => array(
-                'low' => $update_info['banner_low'] ?? '',
-                'high' => $update_info['banner_high'] ?? '',
+                'low' => $update_info['banners']['low'] ?? '',
+                'high' => $update_info['banners']['high'] ?? '',
             ),
         );
     }
