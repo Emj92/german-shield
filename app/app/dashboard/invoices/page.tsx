@@ -134,11 +134,11 @@ export default async function InvoicesPage() {
 
               {/* Aktionen */}
               <div className="flex gap-3 pt-4 border-t border-[#d9dde1]">
-                <Button className="flex-1 bg-[#22D6DD] text-white hover:bg-[#22D6DD] border-[#22D6DD]" style={{transform: 'none', transition: 'transform 0.2s'}} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                <Button className="flex-1 bg-[#22D6DD] text-white hover:bg-[#22D6DD] border-[#22D6DD] transition-transform hover:-translate-y-0.5">
                   <TrendingUp className="mr-2 h-4 w-4" />
                   Paket upgraden
                 </Button>
-                <Button className="flex-1 bg-[#F06292] text-white hover:bg-[#F06292] border-[#F06292]" style={{transform: 'none', transition: 'transform 0.2s'}} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                <Button className="flex-1 bg-[#F06292] text-white hover:bg-[#F06292] border-[#F06292] transition-transform hover:-translate-y-0.5">
                   <X className="mr-2 h-4 w-4" />
                   Abo kündigen
                 </Button>

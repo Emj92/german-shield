@@ -20,16 +20,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Prüfe ob User existiert
+    // Prüfe ob User existiert UND bereits verifiziert ist
     const existingUser = await prisma.user.findUnique({
       where: { email },
     })
 
-    if (existingUser) {
+    if (existingUser && existingUser.emailVerified) {
       return NextResponse.json(
-        { error: 'E-Mail bereits registriert' },
+        { error: 'E-Mail bereits registriert. Bitte melde dich an.' },
         { status: 400 }
       )
+    }
+
+    // Falls User existiert aber NICHT verifiziert ist, lösche ihn und erlaube Neuregistrierung
+    if (existingUser && !existingUser.emailVerified) {
+      console.log('🗑️ Lösche unverifizierten User:', existingUser.email)
+      await prisma.user.delete({
+        where: { id: existingUser.id }
+      })
     }
 
     // Erstelle Verifizierungs-Token
