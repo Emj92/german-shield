@@ -1140,14 +1140,14 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 .germanfence-input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #d9dde1 !important;
+    border: 1px solid #ffffff !important;
     border-radius: 9px;
-    font-size: 13px;
+    font-size: 14px;
     background: #ffffff;
     outline: none !important;
     box-shadow: none !important;
-    line-height: 1.5;
-    min-height: 44px;
+    line-height: 1.1;
+    min-height: 44px!important;
 }
 
 .germanfence-input:focus {
