@@ -1,24 +1,24 @@
 {
-    "version":  "1.12.9",
-    "sections":  {
-                     "changelog":  "\u003ch4\u003e1.12.9\u003c/h4\u003e\u003cul\u003e\u003cli\u003ePortal: Input transparent BG\u003c/li\u003e\u003cli\u003ePortal: Lizenz-Button normale Breite\u003c/li\u003e\u003cli\u003eAlle Inputs ohne weißen BG\u003c/li\u003e\u003c/ul\u003e",
-                     "description":  "Bestes WordPress Anti-Spam Plugin aus Deutschland! SchÃ¼tzt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany ðŸ‡©ðŸ‡ª"
-                 },
-    "author_homepage":  "https://germanfence.de",
-    "download_url":  "https://germanfence.de/downloads/germanfence-plugin.zip",
-    "last_updated":  "2025-12-08 02:00:00",
-    "banners":  {
-                    "low":  "https://germanfence.de/assets/banner-772x250.png",
-                    "high":  "https://germanfence.de/assets/banner-1544x500.png"
-                },
-    "name":  "GermanFence",
-    "tested":  "6.7",
-    "icons":  {
-                  "2x":  "https://germanfence.de/germanfence_logo.png",
-                  "1x":  "https://germanfence.de/germanfence_logo.png"
-              },
-    "requires_php":  "7.4",
-    "requires":  "5.0",
-    "author":  "GermanFence Team",
-    "homepage":  "https://germanfence.de"
+  "name": "GermanFence",
+  "version": "1.12.9",
+  "download_url": "https://germanfence.de/downloads/germanfence-plugin.zip",
+  "homepage": "https://germanfence.de",
+  "requires": "5.0",
+  "tested": "6.7",
+  "requires_php": "7.4",
+  "last_updated": "2025-12-09 12:00:00",
+  "author": "GermanFence Team",
+  "author_homepage": "https://germanfence.de",
+  "sections": {
+    "description": "Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪",
+    "changelog": "<h4>1.12.9</h4><ul><li>Portal: Input transparent BG</li><li>Portal: Lizenz-Button normale Breite</li><li>Alle Inputs ohne weißen BG</li></ul>"
+  },
+  "banners": {
+    "low": "https://germanfence.de/assets/banner-772x250.png",
+    "high": "https://germanfence.de/assets/banner-1544x500.png"
+  },
+  "icons": {
+    "1x": "https://germanfence.de/germanfence_logo.png",
+    "2x": "https://germanfence.de/germanfence_logo.png"
+  }
 }
