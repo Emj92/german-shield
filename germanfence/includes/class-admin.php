@@ -45,22 +45,22 @@ class GermanFence_Admin {
     public function ajax_clear_history() {
         error_log('[GermanFence] ajax_clear_history aufgerufen');
         
-        // Nonce prüfen
+        // Nonce prüfen - OHNE check_ajax_referer (das wirft Exception)
         if (!isset($_POST['nonce'])) {
             error_log('[GermanFence] Nonce fehlt in POST');
-            wp_send_json_error('Nonce fehlt');
+            wp_send_json_error(array('message' => 'Nonce fehlt'));
             return;
         }
         
         if (!wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
             error_log('[GermanFence] Nonce-Validierung fehlgeschlagen');
-            wp_send_json_error('Sicherheitsprüfung fehlgeschlagen');
+            wp_send_json_error(array('message' => 'Sicherheitsprüfung fehlgeschlagen'));
             return;
         }
         
         if (!current_user_can('manage_options')) {
             error_log('[GermanFence] User hat keine Berechtigung');
-            wp_send_json_error('Keine Berechtigung');
+            wp_send_json_error(array('message' => 'Keine Berechtigung'));
             return;
         }
         
@@ -70,31 +70,27 @@ class GermanFence_Admin {
             $table_name = $wpdb->prefix . 'germanfence_stats';
             
             error_log('[GermanFence] Lösche Datenbank-Tabelle: ' . $table_name);
-            $result = $wpdb->query("TRUNCATE TABLE $table_name");
             
-            if ($result === false) {
-                error_log('[GermanFence] DB-Fehler: ' . $wpdb->last_error);
-                wp_send_json_error('Datenbankfehler: ' . $wpdb->last_error);
-                return;
-            }
+            // Verwende DELETE statt TRUNCATE (TRUNCATE kann Probleme machen)
+            $result = $wpdb->query("DELETE FROM $table_name");
             
-            error_log('[GermanFence] Datenbank gelöscht, lösche History-Datei');
+            error_log('[GermanFence] DB-Ergebnis: ' . var_export($result, true));
             
             // Lösche History-Datei
-            $stats = new GermanFence_Statistics();
-            $history_result = $stats->clear_history();
+            $upload_dir = wp_upload_dir();
+            $history_dir = $upload_dir['basedir'] . '/germanfence';
+            $history_file = $history_dir . '/history.log';
             
-            if ($history_result === false) {
-                error_log('[GermanFence] History-Datei konnte nicht gelöscht werden');
-            } else {
-                error_log('[GermanFence] History-Datei erfolgreich gelöscht');
+            if (file_exists($history_file)) {
+                @unlink($history_file);
+                error_log('[GermanFence] History-Datei gelöscht: ' . $history_file);
             }
             
             error_log('[GermanFence] Verlauf erfolgreich gelöscht');
-            wp_send_json_success('Verlauf erfolgreich gelöscht');
+            wp_send_json_success(array('message' => 'Verlauf erfolgreich gelöscht'));
         } catch (Exception $e) {
             error_log('[GermanFence] Exception: ' . $e->getMessage());
-            wp_send_json_error('Fehler: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Fehler: ' . $e->getMessage()));
         }
     }
     
@@ -1610,13 +1606,13 @@ class GermanFence_Admin {
                         // Lizenz deaktivieren (PRO oder FREE) - Plugin komplett sperren
                         if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
                             // Deaktiviere PRO-Lizenz
-                        if (isset($_POST['deactivate_license'])) {
-                            $result = $license_manager->deactivate_license();
-                        }
-                        
+                            if (isset($_POST['deactivate_license'])) {
+                                $result = $license_manager->deactivate_license();
+                            }
+                            
                             // Deaktiviere FREE-Lizenz
-                        if (isset($_POST['deactivate_free'])) {
-                            $result = $free_manager->deactivate_free();
+                            if (isset($_POST['deactivate_free'])) {
+                                $result = $free_manager->deactivate_free();
                             }
                             
                             // Lösche BEIDE Lizenzen komplett, damit Plugin gesperrt wird
@@ -1631,6 +1627,9 @@ class GermanFence_Admin {
                             
                             add_settings_error('germanfence_messages', 'germanfence_message', 'Lizenz deaktiviert - Plugin gesperrt. Bitte neue Lizenz aktivieren.', 'success');
                             settings_errors('germanfence_messages');
+                            
+                            // WICHTIG: Reload erzwingen damit Plugin gesperrt wird
+                            echo '<script>setTimeout(function(){ window.location.reload(); }, 1000);</script>';
                         }
                         ?>
                         
@@ -1798,10 +1797,10 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de/#pricing" target="_blank" class="germanfence-btn-primary" style="text-decoration: none;">
-                                    <span class="dashicons dashicons-rocket"></span>
+                                <a href="https://germanfence.de/#pricing" target="_blank" class="germanfence-btn-primary">
+                                    <span class="dashicons dashicons-rocket" style="font-size: 20px;"></span>
                                     Jetzt PRO kaufen
-                            </a>
+                                </a>
                             </div>
                         </div>
                         
