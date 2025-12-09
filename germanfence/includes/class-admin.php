@@ -1796,9 +1796,11 @@ class GermanFence_Admin {
                                 </p>
                             </div>
                             
-                            <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de/#pricing" target="_blank" class="germanfence-btn-primary">
-                                    <span class="dashicons dashicons-rocket" style="font-size: 20px;"></span>
+                                <div style="text-align: center; margin-top: auto;">
+                                <a href="https://germanfence.de/#pricing" target="_blank" 
+                                   class="germanfence-btn-primary" 
+                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; line-height: 44px !important; text-decoration: none !important; gap: 8px !important;">
+                                    <span class="dashicons dashicons-rocket" style="font-size: 20px; line-height: 1;"></span>
                                     Jetzt PRO kaufen
                                 </a>
                             </div>
@@ -1836,9 +1838,9 @@ class GermanFence_Admin {
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
-                                        style="flex: 1; padding: 10px; border: 1px solid #c3cbd5; border-radius: 9px; font-family: monospace; font-size: 13px; background: #fff;">
+                                        class="germanfence-input" style="flex: 1; font-family: monospace;">
                                     <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                        style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600;">
+                                        style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
                                         📋 Kopieren
                                     </button>
                                 </div>
