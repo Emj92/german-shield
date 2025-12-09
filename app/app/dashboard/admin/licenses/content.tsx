@@ -267,7 +267,7 @@ export default function AdminLicensesContent() {
           <Button
             onClick={handleGenerate}
             disabled={loading}
-            className="w-full bg-[#22D6DD] hover:bg-[#1EBEC5] text-white"
+            className="bg-[#22D6DD] hover:bg-[#22D6DD] text-white transition-transform hover:-translate-y-0.5"
           >
             {loading ? (
               <>
