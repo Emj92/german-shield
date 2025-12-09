@@ -69,13 +69,16 @@ export default async function InvoicesPage() {
         </div>
 
         {/* Aktives Abo */}
+        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+          <CreditCard className="h-8 w-8" />
+          Abos
+        </h2>
         {activeSubscription ? (
-          <Card className="border-[#22D6DD]">
+          <Card className="border-[#d9dde1]">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-[#22D6DD]" />
                     Aktives Abonnement
                   </CardTitle>
                   <CardDescription>
@@ -93,7 +96,7 @@ export default async function InvoicesPage() {
                 <div className="space-y-4">
                   <div>
                     <div className="text-sm font-medium text-muted-foreground mb-1">Paket</div>
-                    <div className="text-2xl font-bold text-[#22D6DD]">
+                    <div className="text-2xl font-bold">
                       GermanFence {PACKAGE_NAMES[activeSubscription.packageType]}
                     </div>
                   </div>
@@ -131,11 +134,11 @@ export default async function InvoicesPage() {
 
               {/* Aktionen */}
               <div className="flex gap-3 pt-4 border-t border-[#d9dde1]">
-                <Button variant="outline" className="flex-1 border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
+                <Button className="flex-1 bg-[#22D6DD] text-white hover:bg-[#22D6DD] border-[#22D6DD]" style={{transform: 'none', transition: 'transform 0.2s'}} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   <TrendingUp className="mr-2 h-4 w-4" />
                   Paket upgraden
                 </Button>
-                <Button variant="outline" className="flex-1 border-red-500 text-red-500 hover:bg-red-50">
+                <Button className="flex-1 bg-[#F06292] text-white hover:bg-[#F06292] border-[#F06292]" style={{transform: 'none', transition: 'transform 0.2s'}} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   <X className="mr-2 h-4 w-4" />
                   Abo kündigen
                 </Button>
@@ -207,7 +210,10 @@ export default async function InvoicesPage() {
 
         {/* Rechnungen */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold">Rechnungen</h2>
+          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+            <FileText className="h-8 w-8" />
+            Rechnungen
+          </h2>
           {invoices.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
