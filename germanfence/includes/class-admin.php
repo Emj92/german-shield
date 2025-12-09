@@ -1799,7 +1799,7 @@ class GermanFence_Admin {
                                 <div style="text-align: center; margin-top: auto;">
                                 <a href="https://germanfence.de/#pricing" target="_blank" 
                                    class="germanfence-btn-primary" 
-                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; line-height: 44px !important; text-decoration: none !important; gap: 8px !important;">
+                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; !important; text-decoration: none !important; gap: 8px !important;">
                                     <span class="dashicons dashicons-rocket" style="font-size: 20px; line-height: 1;"></span>
                                     Jetzt PRO kaufen
                                 </a>

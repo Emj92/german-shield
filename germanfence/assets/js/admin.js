@@ -520,13 +520,19 @@
                 success: function(response) {
                     log('AJAX Response:', response);
                     if (response.success) {
-                        showToast('Verlauf erfolgreich gelöscht!', 'success');
+                        showToast(response.data.message || 'Verlauf erfolgreich gelöscht!', 'success');
                         // Seite neu laden nach 1 Sekunde
                         setTimeout(function() {
                             location.reload();
                         }, 1000);
                     } else {
-                        showToast('Fehler: ' + (response.data || 'Unbekannter Fehler'), 'error');
+                        var errorMsg = 'Unbekannter Fehler';
+                        if (response.data && response.data.message) {
+                            errorMsg = response.data.message;
+                        } else if (response.data) {
+                            errorMsg = response.data;
+                        }
+                        showToast('Fehler: ' + errorMsg, 'error');
                         $btn.prop('disabled', false).html('🗑️ Verlauf löschen');
                     }
                 },
