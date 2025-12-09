@@ -278,8 +278,8 @@ export default function Home() {
                   height={600}
                   className="w-full group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-[#22D6DD]/90 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                  <p className="text-white font-semibold text-lg">{screenshot.title}</p>
+                <div className="absolute inset-0 bg-[#22D6DD]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                  <p className="text-slate-900 font-bold text-xl drop-shadow-lg">{screenshot.title}</p>
                 </div>
               </div>
             ))}

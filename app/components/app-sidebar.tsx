@@ -138,10 +138,8 @@ export function AppSidebar({ user }: AppSidebarProps) {
           </div>
           
           <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-1 border-0 bg-transparent hover:bg-transparent"
+            <button
+              className="flex-1 flex items-center justify-center p-2 text-sidebar-foreground"
               onClick={toggleTheme}
             >
               {theme === 'dark' ? (
@@ -149,9 +147,13 @@ export function AppSidebar({ user }: AppSidebarProps) {
               ) : (
                 <Moon className="h-4 w-4" />
               )}
-            </Button>
+            </button>
             <form action="/api/auth/logout" method="POST" className="flex-1">
-              <Button variant="ghost" size="sm" className="w-full border-0 bg-transparent hover:bg-transparent" type="submit">
+              <Button 
+                size="sm" 
+                className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] border-0 transition-transform hover:-translate-y-0.5" 
+                type="submit"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
