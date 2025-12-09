@@ -10,8 +10,8 @@ if (!defined('ABSPATH')) {
 
 class GermanFence_Updater {
     
-    private $update_url = 'https://api.germanshield.com/v1'; // Dein Update-Server
-    private $plugin_slug = 'german-shield';
+    private $update_url = 'https://germanfence.de/downloads/info.json';
+    private $plugin_slug = 'germanfence';
     private $version;
     private $plugin_file;
     
@@ -57,15 +57,9 @@ class GermanFence_Updater {
             return $cached;
         }
         
-        $response = wp_remote_get($this->update_url . '/check', array(
+        $response = wp_remote_get($this->update_url, array(
             'timeout' => 10,
-            'body' => array(
-                'plugin' => $this->plugin_slug,
-                'version' => $this->version,
-                'site_url' => get_site_url(),
-                'php_version' => PHP_VERSION,
-                'wp_version' => get_bloginfo('version'),
-            )
+            'sslverify' => true,
         ));
         
         if (is_wp_error($response)) {
@@ -416,11 +410,11 @@ class GermanFence_Updater {
         }
         
         return (object) array(
-            'name' => 'German Shield',
+            'name' => 'GermanFence',
             'slug' => $this->plugin_slug,
             'version' => $update_info['version'],
-            'author' => '<a href="https://germanshield.com">German Shield Team</a>',
-            'homepage' => 'https://germanshield.com',
+            'author' => '<a href="https://germanfence.de">GermanFence Team</a>',
+            'homepage' => 'https://germanfence.de',
             'download_link' => $update_info['download_url'],
             'requires' => $update_info['requires'] ?? '5.0',
             'tested' => $update_info['tested'] ?? '6.4',
@@ -449,7 +443,7 @@ class GermanFence_Updater {
      * Get changelog
      */
     public function get_changelog() {
-        $response = wp_remote_get($this->update_url . '/changelog', array(
+        $response = wp_remote_get($this->update_url, array(
             'timeout' => 10,
         ));
         

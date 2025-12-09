@@ -69,8 +69,8 @@ export default async function InvoicesPage() {
         </div>
 
         {/* Aktives Abo */}
-        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <CreditCard className="h-8 w-8" />
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <CreditCard className="h-5 w-5 text-[#22D6DD]" />
           Abos
         </h2>
         {activeSubscription ? (
@@ -210,8 +210,8 @@ export default async function InvoicesPage() {
 
         {/* Rechnungen */}
         <div className="space-y-4">
-          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <FileText className="h-8 w-8" />
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <FileText className="h-5 w-5 text-[#22D6DD]" />
             Rechnungen
           </h2>
           {invoices.length === 0 ? (
