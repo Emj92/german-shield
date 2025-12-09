@@ -85,7 +85,7 @@ export default function Home() {
           {/* Hero Image */}
           <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-200 dark:border-slate-800">
             <Image 
-              src="/screenshots/dashboard.png" 
+              src="/screenshots/gf_dashboard.png" 
               alt="GermanFence Dashboard" 
               width={1200} 
               height={700}
@@ -261,24 +261,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
-              { src: "/screenshots/dashboard.png", title: "Dashboard" },
-              { src: "/screenshots/anti-spam.png", title: "Anti-Spam" },
-              { src: "/screenshots/geo-blocking.png", title: "GEO-Blocking" },
-              { src: "/screenshots/phrasen-blocking.png", title: "Phrasen-Blocking" },
-              { src: "/screenshots/sicherheit.png", title: "Sicherheit" },
-              { src: "/screenshots/wordpress-spam.png", title: "WordPress Spam" },
+              { src: "/screenshots/gf_dashboard.png", title: "Dashboard" },
+              { src: "/screenshots/gf_antispam.png", title: "Anti-Spam" },
+              { src: "/screenshots/gf_geoblocking.png", title: "GEO-Blocking" },
+              { src: "/screenshots/gf_phrasenblock.png", title: "Phrasen-Blocking" },
+              { src: "/screenshots/gf_sicherheit.png", title: "Sicherheit" },
+              { src: "/screenshots/gf_wpspam.png", title: "WordPress Spam" },
             ].map((screenshot, index) => (
               <div key={index} className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-700 hover:border-[#22D6DD]">
                 <Image 
                   src={screenshot.src} 
                   alt={screenshot.title} 
-                  width={600} 
-                  height={400}
+                  width={800} 
+                  height={600}
                   className="w-full group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                <div className="absolute inset-0 bg-[#22D6DD]/90 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                   <p className="text-white font-semibold text-lg">{screenshot.title}</p>
                 </div>
               </div>
@@ -594,7 +594,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 px-6 bg-slate-900 text-white">
+      <footer className="pt-20 pb-5 px-6 bg-slate-900 text-white">
         <div className="container mx-auto max-w-7xl">
           <div className="grid md:grid-cols-5 gap-12 mb-12">
             <div className="md:col-span-2">
