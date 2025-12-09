@@ -1195,11 +1195,18 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     color: #ffffff;
     min-width: 180px !important;
     height: 44px !important;
+    padding: 12px 24px !important;
     justify-content: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
 }
 
 .germanfence-btn-primary:hover {
     transform: translateY(-2px);
+    background: #22D6DD !important;
+    border-color: #22D6DD !important;
+    color: #ffffff !important;
 }
 
 .germanfence-btn-danger {

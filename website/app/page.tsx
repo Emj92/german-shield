@@ -261,14 +261,14 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { src: "/screenshots/anti-spam.png", title: "Anti-Spam Einstellungen" },
+              { src: "/screenshots/dashboard.png", title: "Dashboard" },
+              { src: "/screenshots/anti-spam.png", title: "Anti-Spam" },
               { src: "/screenshots/geo-blocking.png", title: "GEO-Blocking" },
               { src: "/screenshots/phrasen-blocking.png", title: "Phrasen-Blocking" },
-              { src: "/screenshots/einstellungen-settings.png", title: "Einstellungen" },
-              { src: "/screenshots/wordpress-spam.png", title: "WordPress Spam Blocker" },
-              { src: "/screenshots/dashboard.png", title: "Dashboard" },
+              { src: "/screenshots/sicherheit.png", title: "Sicherheit" },
+              { src: "/screenshots/wordpress-spam.png", title: "WordPress Spam" },
             ].map((screenshot, index) => (
               <div key={index} className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-700 hover:border-[#22D6DD]">
                 <Image 

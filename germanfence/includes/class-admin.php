@@ -1035,11 +1035,11 @@ class GermanFence_Admin {
                             </div>
                             
                             <div class="germanfence-setting" style="border: 2px solid #F06292; background: rgba(240, 98, 146, 0.05); padding: 20px; border-radius: 9px;">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="test_mode_block_all" value="1" <?php checked(isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
                                     <h3 style="color: #F06292;">🧪 Test-Modus</h3>
                                     <p style="color: #1d2327;">
                                         <strong style="color: #F06292;">⚠️ NUR FÜR TESTS:</strong> Blockiert ALLE Formular-Submissions (auch echte Benutzer).
@@ -1610,13 +1610,13 @@ class GermanFence_Admin {
                         // Lizenz deaktivieren (PRO oder FREE) - Plugin komplett sperren
                         if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
                             // Deaktiviere PRO-Lizenz
-                            if (isset($_POST['deactivate_license'])) {
-                                $result = $license_manager->deactivate_license();
-                            }
-                            
+                        if (isset($_POST['deactivate_license'])) {
+                            $result = $license_manager->deactivate_license();
+                        }
+                        
                             // Deaktiviere FREE-Lizenz
-                            if (isset($_POST['deactivate_free'])) {
-                                $result = $free_manager->deactivate_free();
+                        if (isset($_POST['deactivate_free'])) {
+                            $result = $free_manager->deactivate_free();
                             }
                             
                             // Lösche BEIDE Lizenzen komplett, damit Plugin gesperrt wird
@@ -1710,7 +1710,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">E-Mail-Adresse:</label>
-                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input">
+                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input" style="font-size: 13px;">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
@@ -1742,7 +1742,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #1d2327;">License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase;">
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; font-size: 13px; text-transform: uppercase;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
@@ -1798,8 +1798,8 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de" target="_blank" class="germanfence-btn-primary" style="text-decoration: none; display: inline-block;">
-                                    <span class="dashicons dashicons-cart"></span>
+                                <a href="https://germanfence.de/#pricing" target="_blank" class="germanfence-btn-primary" style="text-decoration: none;">
+                                    <span class="dashicons dashicons-rocket"></span>
                                     Jetzt PRO kaufen
                             </a>
                             </div>
