@@ -1,6 +1,6 @@
 {
   "name": "GermanFence",
-  "version": "1.13.2",
+  "version": "1.13.3",
   "download_url": "https://germanfence.de/downloads/germanfence-plugin.zip",
   "homepage": "https://germanfence.de",
   "requires": "5.0",
@@ -11,7 +11,7 @@
   "author_homepage": "https://germanfence.de",
   "sections": {
     "description": "Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪",
-    "changelog": "<h4>1.13.2</h4><ul><li>✅ PRO-Button Höhe gefixt (44px)</li><li>✅ Lizenz-Textfeld Styling korrigiert</li><li>✅ Kein blauer Focus-Rand mehr</li><li>✅ Alle Input-Felder gleiche Höhe</li></ul>"
+    "changelog": "<h4>1.13.3</h4><ul><li>🎨 Icons zu Buttons hinzugefügt (Verlauf löschen + PRO kaufen)</li><li>✅ Alle Lizenz-Input-Felder vereinheitlicht</li><li>✅ Kein blauer Focus-Rand mehr</li><li>✅ Verlauf löschen Button gefixt</li></ul>"
   },
   "banners": {
     "low": "https://germanfence.de/assets/banner-772x250.png",
