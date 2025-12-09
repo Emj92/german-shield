@@ -654,8 +654,9 @@ class GermanFence_Admin {
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     ✅ Legitim
                                 </button>
-                                <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto;">
-                                    🗑️ Verlauf löschen
+                                <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
+                                    <span class="dashicons dashicons-trash" style="font-size: 16px;"></span>
+                                    Verlauf löschen
                                 </button>
                             </div>
                         </div>
@@ -1663,7 +1664,7 @@ class GermanFence_Admin {
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
                                             class="germanfence-input" style="flex: 1; font-family: monospace;">
                                         <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                            style="padding: 10px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                            style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
                                             📋 Kopieren
                                         </button>
                                     </div>
@@ -1799,8 +1800,8 @@ class GermanFence_Admin {
                                 <div style="text-align: center; margin-top: auto;">
                                 <a href="https://germanfence.de/#pricing" target="_blank" 
                                    class="germanfence-btn-primary" 
-                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; !important; text-decoration: none !important; gap: 8px !important;">
-                                    <span class="dashicons dashicons-rocket" style="font-size: 20px; line-height: 1;"></span>
+                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; text-decoration: none !important; gap: 8px !important;">
+                                    <span class="dashicons dashicons-cart" style="font-size: 18px;"></span>
                                     Jetzt PRO kaufen
                                 </a>
                             </div>
