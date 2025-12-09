@@ -102,9 +102,9 @@ require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-ajax.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-updater.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-telemetry.php';
 
-// Initialize the plugin
+// Initialize the plugin IMMEDIATELY (for AJAX handlers)
 function germanfence_init() {
-    GermanFence_Logger::log_hook('Plugin wird initialisiert (plugins_loaded)');
+    GermanFence_Logger::log_hook('Plugin wird initialisiert');
     
     // Prüfe und update Datenbank bei jedem Admin-Load
     if (is_admin()) {
@@ -128,7 +128,9 @@ function germanfence_init() {
     
     GermanFence_Logger::log_hook('Plugin erfolgreich initialisiert');
 }
-add_action('plugins_loaded', 'germanfence_init');
+
+// Init immediately for AJAX handlers, but after WordPress core is loaded
+germanfence_init();
 
 // Activation hook
 register_activation_hook(__FILE__, 'germanfence_activate');
