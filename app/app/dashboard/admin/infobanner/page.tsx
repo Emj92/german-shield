@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { 
   Megaphone, Plus, Trash2, Eye, EyeOff, Calendar, 
-  Globe, Layout, X, Check 
+  Globe, Layout, X 
 } from 'lucide-react'
 
 interface InfoBanner {

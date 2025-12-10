@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Search, Mail, AlertCircle, CheckCircle2, Trash2, Ban, MoreHorizontal } from 'lucide-react'
+import { Search, Mail, AlertCircle, CheckCircle2, Trash2, Ban } from 'lucide-react'
 import {
   Table,
   TableBody,
