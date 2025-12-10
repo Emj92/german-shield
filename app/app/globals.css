@@ -17,6 +17,20 @@ textarea:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+/* Input/Textarea Focus & Filled State - Türkis Hintergrund */
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: #e9fbfc !important;
+  border-color: #22D6DD !important;
+  outline: none !important;
+}
+
+input:not(:placeholder-shown),
+textarea:not(:placeholder-shown) {
+  background-color: #e9fbfc !important;
+}
+
 @layer base {
   :root {
     /* Plugin-Farben White Mode */
@@ -99,6 +113,21 @@ textarea:-webkit-autofill:active {
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 16px;
+  }
+  
+  /* Base font size 16px für alle Textelemente */
+  p, span, label, td, th, li, div {
+    font-size: 16px;
+  }
+  
+  /* Kleinere Elemente explizit */
+  small, .text-xs {
+    font-size: 12px;
+  }
+  
+  .text-sm {
+    font-size: 14px;
   }
 }
 

@@ -1425,103 +1425,92 @@ class GermanFence_Admin {
                     <div class="germanfence-section">
                         <h2>📄 .htaccess Sicherheits-Regeln</h2>
                         <p class="description" style="margin-bottom: 20px;">
-                            Generiere .htaccess-Regeln zum Schutz wichtiger WordPress-Dateien.
+                            Professionelle .htaccess-Regeln für Speed & Security. Code wird automatisch bei Auswahl generiert.
                         </p>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                                 <!-- Linke Spalte: Optionen -->
                                 <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">🔒 Sicherheit:</h3>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-directory-listing" checked>
-                                            <span style="font-size: 15px;">🚫 Directory Listings blockieren</span>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-8g-firewall">
+                                            <span style="font-size: 15px;">🔥 8G Firewall (Komplettschutz)</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-xmlrpc" checked>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-wp-files" checked>
+                                            <span style="font-size: 15px;">🔐 WordPress-Dateien schützen</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-xmlrpc" checked>
                                             <span style="font-size: 15px;">🛡️ XML-RPC blockieren</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-wp-config" checked>
-                                            <span style="font-size: 15px;">🔐 wp-config.php schützen</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 15px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-htaccess" checked>
-                                            <span style="font-size: 15px;">🔒 .htaccess schützen</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 15px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-uploads" checked>
-                                            <span style="font-size: 15px;">📁 PHP in Uploads blockieren</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 15px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-sql-injection" checked>
-                                            <span style="font-size: 15px;">💉 SQL-Injection blockieren</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 15px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-author-scan" checked>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-author-scan" checked>
                                             <span style="font-size: 15px;">👤 Autoren-Scans blockieren</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-security-headers" checked>
-                                            <span style="font-size: 15px;">🔐 Security Headers setzen</span>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-security-headers" checked>
+                                            <span style="font-size: 15px;">🔐 Security Headers (HSTS, CSP)</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <h3 style="margin: 20px 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">⚡ Performance:</h3>
+                                    
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-caching" checked>
-                                            <span style="font-size: 15px;">⚡ Browser Caching aktivieren</span>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-caching" checked>
+                                            <span style="font-size: 15px;">⚡ Browser Caching (1 Jahr)</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-compression" checked>
-                                            <span style="font-size: 15px;">📦 GZIP Komprimierung aktivieren</span>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-compression" checked>
+                                            <span style="font-size: 15px;">📦 GZIP Komprimierung</span>
                                         </label>
                                     </div>
                                     
-                                    <div style="margin-bottom: 15px;">
+                                    <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="htaccess-hotlink">
-                                            <span style="font-size: 15px;">🖼️ Hotlink Protection (Bilder)</span>
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-cors">
+                                            <span style="font-size: 15px;">🌐 CORS für Fonts/Assets</span>
                                         </label>
                                     </div>
                                     
-                                    <button type="button" id="generate-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 0px; width: 100%;">
-                                        <span class="dashicons dashicons-admin-tools"></span>
-                                        .htaccess generieren
-                                    </button>
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-hotlink">
+                                            <span style="font-size: 15px;">🖼️ Hotlink Protection</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px; padding: 15px; background: #fff8e1; border-radius: 9px;">
+                                        <p style="margin: 0; font-size: 15px; color: #856404;">
+                                            💡 <strong>Tipp:</strong> Die 8G Firewall enthält umfassenden Schutz gegen SQL-Injection, XSS, Bots und mehr.
+                                        </p>
+                                    </div>
                                 </div>
                                 
                                 <!-- Rechte Spalte: Code-Feld -->
                                 <div>
                                     <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
                                     <textarea id="htaccess-output" readonly 
-                                        style="width: 100%; height: 347px; font-family: monospace; font-size: 15px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
-                                        placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
+                                        style="width: 100%; height: 450px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
+                                        placeholder="Wähle Sicherheitsregeln aus - Code wird automatisch generiert..."
                                     ></textarea>
                                     
                                     <button type="button" id="copy-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 13px; width: 100%;">
@@ -1530,7 +1519,7 @@ class GermanFence_Admin {
                                     </button>
                                     
                                     <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px;">
-                                        ⚠️ <strong>Wichtig:</strong> Erstelle vorher ein Backup deiner .htaccess Datei! Fehlerhafte Regeln können deine Website unzugänglich machen.
+                                        ⚠️ <strong>Wichtig:</strong> Backup deiner .htaccess erstellen! Füge den Code am <strong>Anfang</strong> deiner .htaccess ein.
                                     </p>
                                 </div>
                             </div>
@@ -1769,7 +1758,7 @@ class GermanFence_Admin {
                         
                         <!-- PRO LIZENZ AKTIV -->
                         <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
-                        <div style="background: #ffffff; padding: 25px; margin-bottom: 30px;">
+                        <div style="background: #E9FBFC; padding: 25px; margin-bottom: 30px; border-radius: 9px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
                                 <div>
