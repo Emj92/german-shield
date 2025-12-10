@@ -1890,10 +1890,6 @@ class GermanFence_Admin {
                                         <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
                                         <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
                                     </select>
-                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 15px;">
-                                        <strong>Global:</strong> Auf jeder Seite<br>
-                                        <strong>Formulare:</strong> Nur bei CF7, WPForms, etc.
-                                    </p>
                                 </div>
                                 
                                 <div class="setting-row">
@@ -1907,15 +1903,18 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <!-- 2-Spalten Layout für Badge-Text & Logo (gleiche Breite wie Dropdowns oben) -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                            <!-- Badge-Text (80% Breite) -->
+                            <div style="margin-bottom: 20px; width: 80%;">
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
                                     <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
                                         style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="Geschützt durch GermanFence">
                                 </div>
-                                
+                            </div>
+                            
+                            <!-- Eigenes Icon/Logo -->
+                            <div style="margin-bottom: 20px; width: 80%;">
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
                                     <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 

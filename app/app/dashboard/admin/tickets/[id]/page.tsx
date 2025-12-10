@@ -190,10 +190,14 @@ export default function TicketDetailPage() {
 
   return (
     <DashboardLayout user={{ email: '', role: 'ADMIN' }}>
-      <div className="p-12 space-y-6 max-w-4xl">
+      <div className="p-12 space-y-6 max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => router.back()}>
+          <Button 
+            variant="ghost" 
+            onClick={() => router.back()}
+            className="hover:bg-transparent hover:text-inherit"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Zurück
           </Button>

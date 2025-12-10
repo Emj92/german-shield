@@ -26,7 +26,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (mounted) {
       localStorage.setItem('german-shield-theme', theme)
-      document.documentElement.setAttribute('data-theme', theme)
+      // Tailwind verwendet die 'dark' Klasse
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
     }
   }, [theme, mounted])
 

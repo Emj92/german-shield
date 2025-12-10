@@ -41,3 +41,28 @@ export async function GET(
   }
 }
 
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await getUser()
+    
+    if (!user || user.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { id } = await params
+
+    // Ticket löschen (Responses werden durch Cascade gelöscht)
+    await prisma.supportTicket.delete({
+      where: { id },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error deleting ticket:', error)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
+}
+
