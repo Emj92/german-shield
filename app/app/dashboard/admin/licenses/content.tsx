@@ -361,7 +361,7 @@ export default function AdminLicensesContent() {
                             variant="ghost"
                             size="sm"
                             onClick={() => copyToClipboard(license.licenseKey, license.id)}
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 hover:bg-transparent transition-transform hover:-translate-y-0.5"
                             title="Kopieren"
                           >
                             {copiedId === license.id ? <Check className="h-4 w-4 text-[#22D6DD]" /> : <Copy className="h-4 w-4" />}
@@ -370,19 +370,19 @@ export default function AdminLicensesContent() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleToggleLicense(license.id, license.isActive)}
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 hover:bg-transparent transition-transform hover:-translate-y-0.5"
                             title={license.isActive ? 'Sperren' : 'Entsperren'}
                           >
-                            {license.isActive ? <Lock className="h-4 w-4 text-orange-600" /> : <Unlock className="h-4 w-4 text-green-600" />}
+                            {license.isActive ? <Lock className="h-4 w-4 text-[#22D6DD]" /> : <Unlock className="h-4 w-4 text-[#22D6DD]" />}
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleDeleteLicense(license.id, license.licenseKey)}
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 hover:bg-transparent transition-transform hover:-translate-y-0.5"
                             title="Löschen"
                           >
-                            <Trash2 className="h-4 w-4 text-red-600" />
+                            <Trash2 className="h-4 w-4 text-[#D81B60]" />
                           </Button>
                         </div>
                       </td>
