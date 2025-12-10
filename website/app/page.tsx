@@ -29,9 +29,9 @@ export default function Home() {
             />
           </div>
           <nav className="hidden md:flex items-center gap-4">
-            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Leistungen</a>
-            <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
-            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
+            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.nav.features}</a>
+            <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.nav.screenshots}</a>
+            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.nav.pricing}</a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-transparent hover:border-[#22D6DD] hover:text-[#22D6DD]">
                 <LogIn className="mr-2 h-4 w-4" />
@@ -159,120 +159,96 @@ export default function Home() {
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Zap className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Intelligenter Honeypot</CardTitle>
-                <CardDescription>
-                  Unsichtbare Spam-Falle die Bots automatisch erkennt und blockiert
-                </CardDescription>
+                <CardTitle>{t.features.honeypot}</CardTitle>
+                <CardDescription>{t.features.honeypotDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <CheckCircle2 className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Zeitstempel-Validierung</CardTitle>
-                <CardDescription>
-                  Erkennt unnatürlich schnelle Bot-Submissions automatisch
-                </CardDescription>
+                <CardTitle>{t.features.timestamp}</CardTitle>
+                <CardDescription>{t.features.timestampDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Globe className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>GEO-Blocking</CardTitle>
-                <CardDescription>
-                  Blockiere gezielt Spam aus bestimmten Ländern mit einem Klick
-                </CardDescription>
+                <CardTitle>{t.features.geoBlocking}</CardTitle>
+                <CardDescription>{t.features.geoBlockingDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Filter className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Phrasen-Blocking</CardTitle>
-                <CardDescription>
-                  Filtere Spam-Keywords mit intelligenter Regex-Unterstützung
-                </CardDescription>
+                <CardTitle>{t.features.phraseBlocking}</CardTitle>
+                <CardDescription>{t.features.phraseBlockingDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <BadgeIcon className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Badge-System</CardTitle>
-                <CardDescription>
-                  Zeige Besuchern dass deine Seite professionell geschützt ist
-                </CardDescription>
+                <CardTitle>{t.features.badge}</CardTitle>
+                <CardDescription>{t.features.badgeDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Settings className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Live-Statistiken</CardTitle>
-                <CardDescription>
-                  Echtzeitüberwachung aller Anfragen mit detaillierten Analytics
-                </CardDescription>
+                <CardTitle>{t.features.statistics}</CardTitle>
+                <CardDescription>{t.features.statisticsDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Zap className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Bestes Preis-Leistungs-Verhältnis</CardTitle>
-                <CardDescription>
-                  Premium-Schutz ab 29€/Jahr - günstiger als die Konkurrenz
-                </CardDescription>
+                <CardTitle>{t.features.pricing}</CardTitle>
+                <CardDescription>{t.features.pricingDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>100% Made in Germany</CardTitle>
-                <CardDescription>
-                  Alle Daten werden ausschließlich in Deutschland verarbeitet & gespeichert
-                </CardDescription>
+                <CardTitle>{t.features.madeInGermany}</CardTitle>
+                <CardDescription>{t.features.madeInGermanyDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Lock className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Ohne Captchas</CardTitle>
-                <CardDescription>
-                  Kein nerviges Captcha - deine User merken nichts vom Spam-Schutz
-                </CardDescription>
+                <CardTitle>{t.features.noCaptcha}</CardTitle>
+                <CardDescription>{t.features.noCaptchaDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>E-Mail-Schutz</CardTitle>
-                <CardDescription>
-                  Schützt E-Mail-Adressen vor Spam-Bots durch intelligente Verschleierung
-                </CardDescription>
+                <CardTitle>{t.features.emailProtection}</CardTitle>
+                <CardDescription>{t.features.emailProtectionDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Lock className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>WordPress-Firewall</CardTitle>
-                <CardDescription>
-                  XML-RPC, REST API & Datei-Editor Schutz für maximale Sicherheit
-                </CardDescription>
+                <CardTitle>{t.features.firewall}</CardTitle>
+                <CardDescription>{t.features.firewallDesc}</CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
               <CardHeader>
                 <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
-                <CardTitle>Brute-Force-Schutz</CardTitle>
-                <CardDescription>
-                  Login-Limitierung schützt vor automatisierten Angriffen
-                </CardDescription>
+                <CardTitle>{t.features.bruteForce}</CardTitle>
+                <CardDescription>{t.features.bruteForceDesc}</CardDescription>
               </CardHeader>
             </Card>
           </div>
@@ -284,10 +260,10 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-              Screenshots
+              {t.screenshots.title}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              Modernes Dashboard & intuitive Bedienung
+              {t.screenshots.subtitle}
             </p>
           </div>
 
@@ -322,10 +298,10 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-              Flexible Jahreslizenzen
+              {t.pricing.title}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              Faire Preise für professionellen Spam-Schutz 🛡️
+              {t.pricing.subtitle}
             </p>
           </div>
 
@@ -336,7 +312,7 @@ export default function Home() {
                 <Badge className="w-fit mb-4 bg-slate-100 text-slate-700">FREE</Badge>
                 <CardTitle className="text-4xl">0€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-slate-600">Freemium</span> · 1 Website
+                  <span className="font-semibold text-slate-600">{t.pricing.freemium}</span> · 1 {t.pricing.website}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -355,11 +331,11 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
-                    <span>WP-Mail Blocker (An/Aus)</span>
+                    <span>WP-Mail Blocker</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
-                    <span>Kommentar-Blocker (An/Aus)</span>
+                    <span>Kommentar-Blocker</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-slate-500 flex-shrink-0" />
@@ -373,7 +349,7 @@ export default function Home() {
                 <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download className="block">
                   <Button variant="outline" className="w-full border-slate-300 text-slate-700 hover:border-slate-300 hover:text-slate-700 transition-transform hover:-translate-y-1">
                     <Download className="mr-2 h-4 w-4" />
-                    Kostenlos testen
+                    {t.pricing.free}
                   </Button>
                 </a>
               </CardContent>
@@ -382,21 +358,21 @@ export default function Home() {
             {/* SINGLE */}
             <Card className="border-2 flex flex-col h-full">
               <CardHeader className="text-center">
-                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">Single</Badge>
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.single}</Badge>
                 <CardTitle className="text-4xl">29€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 1 Website
+                  <span className="font-semibold text-[#22D6DD]">{t.pricing.singleDesc}</span> · 1 {t.pricing.website}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span className="font-semibold">Alles aus FREE</span>
+                    <span className="font-semibold">{t.pricing.allFromFree}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span className="font-semibold">🏷️ White Label (Badge ausblenden)</span>
+                    <span className="font-semibold">🏷️ White Label</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
@@ -464,25 +440,25 @@ export default function Home() {
             <Card className="border-4 border-[#22D6DD] relative shadow-xl scale-105 flex flex-col h-full">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                 <Badge className="bg-[#22D6DD] text-white px-4 py-1">
-                  ⭐ Beliebt
+                  ⭐ {t.pricing.popular}
                 </Badge>
               </div>
               <CardHeader className="text-center">
-                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">Freelancer</Badge>
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.freelancer}</Badge>
                 <CardTitle className="text-4xl">99€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">zzgl. Steuer</span> · 5 Websites
+                  <span className="font-semibold text-[#22D6DD]">{t.pricing.freelancerDesc}</span> · 5 {t.pricing.websites}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span className="font-semibold">Alles aus Single</span>
+                    <span className="font-semibold">{t.pricing.allFromSingle}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span className="font-semibold">Bis zu 5 Websites</span>
+                    <span className="font-semibold">{t.pricing.upTo} 5 {t.pricing.websites}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
@@ -536,21 +512,21 @@ export default function Home() {
             {/* AGENCY */}
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader className="text-center">
-                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency</Badge>
+                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">{t.pricing.agency}</Badge>
                 <CardTitle className="text-4xl">0.50€</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">zzgl. Steuer</span> · 25 Websites <span className="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">TEST</span>
+                  <span className="font-semibold text-[#F06292]">{t.pricing.agencyDesc}</span> · 25 {t.pricing.websites} <span className="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">TEST</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
-                    <span className="font-semibold">Alles aus Freelancer</span>
+                    <span className="font-semibold">{t.pricing.allFromFreelancer}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
-                    <span className="font-semibold">Bis zu 25 Websites</span>
+                    <span className="font-semibold">{t.pricing.upTo} 25 {t.pricing.websites}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
@@ -613,22 +589,22 @@ export default function Home() {
       <section className="py-20 px-6 bg-[#22D6DD]">
         <div className="container mx-auto text-center max-w-3xl">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            Bereit deine Website zu schützen?
+            {t.cta.title}
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            Jahreslizenz sichern und Spam für immer blockieren!
+            {t.cta.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-white hover:text-[#22D6DD] px-8 py-6 text-lg font-semibold transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
-                Jetzt kaufen
+                {t.cta.buyNow}
               </Button>
             </a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-[#F06292] text-white hover:bg-[#F06292] hover:text-white px-8 py-6 text-lg shadow-lg transition-transform hover:-translate-y-1">
                 <LogIn className="mr-2 h-5 w-5" />
-                Zum Portal
+                {t.cta.toPortal}
               </Button>
             </a>
           </div>
@@ -640,10 +616,10 @@ export default function Home() {
         <div className="container mx-auto max-w-[800px]">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-              Kontakt
+              {t.contact.title}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              Hast du Fragen? Wir helfen dir gerne weiter!
+              {t.contact.subtitle}
             </p>
           </div>
 
@@ -651,7 +627,7 @@ export default function Home() {
             {/* Name + Nachname */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Vorname</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.firstName}</label>
                 <input 
                   type="text" 
                   name="firstName" 
@@ -661,7 +637,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Nachname</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.lastName}</label>
                 <input 
                   type="text" 
                   name="lastName" 
@@ -675,52 +651,52 @@ export default function Home() {
             {/* Firma + Anliegen */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Firma (optional)</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.company}</label>
                 <input 
                   type="text" 
                   name="company"
                   className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                  placeholder="Meine Firma GmbH"
+                  placeholder="My Company GmbH"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Anliegen</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.subject}</label>
                 <select 
                   name="subject" 
                   required
                   className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                 >
-                  <option value="">Bitte wählen...</option>
-                  <option value="support">Technischer Support</option>
-                  <option value="sales">Kaufanfrage</option>
-                  <option value="partnership">Partnerschaft</option>
-                  <option value="feedback">Feedback</option>
-                  <option value="other">Sonstiges</option>
+                  <option value="">{t.contact.selectPlaceholder}</option>
+                  <option value="support">{t.contact.support}</option>
+                  <option value="sales">{t.contact.sales}</option>
+                  <option value="partnership">{t.contact.partnership}</option>
+                  <option value="feedback">{t.contact.feedback}</option>
+                  <option value="other">{t.contact.other}</option>
                 </select>
               </div>
             </div>
 
             {/* E-Mail */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">E-Mail</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.email}</label>
               <input 
                 type="email" 
                 name="email" 
                 required
                 className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                placeholder="max@mustermann.de"
+                placeholder="max@example.com"
               />
             </div>
 
             {/* Nachricht */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Nachricht</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.message}</label>
               <textarea 
                 name="message" 
                 required
                 rows={6}
                 className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
-                placeholder="Deine Nachricht..."
+                placeholder={t.contact.messagePlaceholder}
               />
             </div>
 
@@ -729,7 +705,7 @@ export default function Home() {
               type="submit" 
               className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] py-6 text-lg font-semibold transition-transform hover:-translate-y-1"
             >
-              📧 Nachricht senden
+              📧 {t.contact.send}
             </Button>
           </form>
         </div>

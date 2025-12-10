@@ -1915,7 +1915,7 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <!-- 2-Spalten Layout für Badge-Text & Logo -->
+                            <!-- 2-Spalten Layout für Badge-Text & Logo (gleiche Breite wie Dropdowns oben) -->
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
@@ -1926,12 +1926,12 @@ class GermanFence_Admin {
                                 
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
-                                    <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
-                                        placeholder="https://example.com/logo.png">
-                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 15px;">
-                                        Leer = Standard-Icon 🛡️
-                                    </p>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
+                                            placeholder="https://example.com/logo.png">
+                                        <span style="white-space: nowrap; color: #646970; font-size: 15px;">Leer = Standard-Icon 🛡️</span>
+                                    </div>
                                 </div>
                             </div>
                             
