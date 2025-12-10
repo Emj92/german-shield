@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -43,11 +43,7 @@ export default function TicketDetailPage() {
   const [sending, setSending] = useState(false)
   const [updating, setUpdating] = useState(false)
 
-  useEffect(() => {
-    fetchTicket()
-  }, [params.id])
-
-  async function fetchTicket() {
+  const fetchTicket = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/tickets/${params.id}`)
       if (res.ok) {
@@ -59,7 +55,11 @@ export default function TicketDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    fetchTicket()
+  }, [fetchTicket])
 
   async function handleStatusChange(newStatus: string) {
     setUpdating(true)
