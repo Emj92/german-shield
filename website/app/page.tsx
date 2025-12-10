@@ -776,20 +776,20 @@ export default function Home() {
           </div>
           <div className="border-t border-slate-800 pt-8 space-y-4">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-slate-400">© 2024-2025 GermanFence. Alle Rechte vorbehalten.</p>
+              <p className="text-slate-400">{t.footer.copyright}</p>
               <div className="flex items-center gap-2 text-slate-400">
-                <span>Made with</span>
+                <span>{t.footer.madeWith}</span>
                 <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#F06292] hover:text-[#F06292]/80 transition">
                   ❤️
                 </a>
-                <span className="flex items-center gap-1">in Germany <Image src="/flags/de.svg" alt="DE" width={16} height={11} className="inline rounded-sm" /> by</span>
+                <span className="flex items-center gap-1">{t.footer.inGermany} <Image src="/flags/de.svg" alt="DE" width={16} height={11} className="inline rounded-sm" /> {t.footer.by}</span>
                 <a href="https://meindl-webdesign.de" target="_blank" rel="noopener noreferrer" className="text-[#22D6DD] hover:text-[#22D6DD]/80 transition font-semibold">
                   Meindl Webdesign
                 </a>
               </div>
             </div>
             <div className="text-center text-sm text-slate-500">
-              💶 Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer | All prices plus VAT
+              {t.footer.priceNotice}
             </div>
           </div>
         </div>

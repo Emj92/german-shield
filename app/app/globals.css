@@ -99,8 +99,21 @@ textarea:-webkit-autofill:active {
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #FAFAFA;
   }
+}
+
+/* Dark Mode Autofill */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #2c3338 inset !important;
+  box-shadow: 0 0 0 1000px #2c3338 inset !important;
+  -webkit-text-fill-color: #f0f0f1 !important;
 }
 
 /* Hintergrund-Animation für Portal */

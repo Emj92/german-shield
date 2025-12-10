@@ -19,7 +19,7 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full relative overflow-hidden bg-[#FAFAFA]">
+      <div className="flex min-h-screen w-full relative overflow-hidden bg-background">
         <AnimatedBackground />
         <AppSidebar user={user} />
         <main className="flex-1 overflow-auto relative z-10">
