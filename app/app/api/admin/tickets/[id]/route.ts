@@ -26,14 +26,6 @@ export async function GET(
         },
         responses: {
           orderBy: { createdAt: 'asc' },
-          include: {
-            user: {
-              select: {
-                email: true,
-                name: true,
-              },
-            },
-          },
         },
       },
     })
