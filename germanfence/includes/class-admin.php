@@ -817,7 +817,7 @@ class GermanFence_Admin {
                                     </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <p class="description" style="margin-top: 10px;">
+                                <p class="description" style="margin-top: 10px; max-width: 700px;">
                                     💡 <strong>Tipp:</strong> Benutze realistische Feldnamen wie "website_url" oder "contact_link". 
                                     Das <span class="dashicons dashicons-update" style="font-size: 15px;"></span> Symbol generiert einen neuen zufälligen Namen.
                                 </p>
@@ -1396,21 +1396,25 @@ class GermanFence_Admin {
                                 
                                 <!-- Rechte Spalte: Email-Zähler -->
                                 <div style="text-align: center; padding: 20px 0;">
+                                    <?php 
+                                    if (class_exists('GermanFence_Email_Obfuscation')) {
+                                        $email_obfuscation = new GermanFence_Email_Obfuscation();
+                                        $email_stats = $email_obfuscation->count_emails_on_site();
+                                        $total = $email_stats['total'];
+                                        $unique = $email_stats['unique'];
+                                    } else {
+                                        $total = 0;
+                                        $unique = 0;
+                                    }
+                                    ?>
                                     <div style="font-size: 48px; font-weight: 700; color: #22D6DD; line-height: 1;">
-                                        <?php 
-                                        if (class_exists('GermanFence_Email_Obfuscation')) {
-                                            $email_obfuscation = new GermanFence_Email_Obfuscation();
-                                            echo esc_html($email_obfuscation->count_emails_on_site()); 
-                                        } else {
-                                            echo '0';
-                                        }
-                                        ?>
+                                        <?php echo esc_html($total); ?>
                                     </div>
                                     <div style="font-size: 15px; color: #22D6DD; font-weight: 600; margin-top: 5px;">
                                         📧 E-Mails gefunden
                                     </div>
                                     <div style="font-size: 15px; color: #646970; margin-top: 5px;">
-                                        werden geschützt
+                                        (<?php echo esc_html($unique); ?> verschiedene)
                                     </div>
                                 </div>
                             </div>
@@ -1819,6 +1823,17 @@ class GermanFence_Admin {
                         </p>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
+                                    <input type="checkbox" name="defer_scripts" value="1" <?php checked(isset($settings['defer_scripts']) && $settings['defer_scripts'] === '1'); ?>>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
+                                    <h3>Scripts verzögert laden (defer)</h3>
+                                    <p>⚡ Lädt Scripts asynchron für maximale Performance. Empfohlen!</p>
+                                </div>
+                            </div>
+                            
                             <div style="padding: 20px 0;">
                                 <h3 style="margin-top: 0; color: #1d2327;">📍 Script-Ladeposition</h3>
                                 <div style="margin-top: 15px;">
@@ -1834,17 +1849,6 @@ class GermanFence_Admin {
                                         <input type="radio" name="script_position" value="body" <?php checked($settings['script_position'] ?? 'footer', 'body'); ?>>
                                         <strong>Body</strong> - Gute Balance
                                     </label>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="defer_scripts" value="1" <?php checked(isset($settings['defer_scripts']) && $settings['defer_scripts'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>Scripts verzögert laden (defer)</h3>
-                                    <p>⚡ Lädt Scripts asynchron für maximale Performance. Empfohlen!</p>
                                 </div>
                             </div>
                         </div>
@@ -1890,7 +1894,7 @@ class GermanFence_Admin {
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Anzeige-Bereich:</strong></label>
-                                    <select name="badge_display_type" style="width: 100%; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
+                                    <select name="badge_display_type" style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
                                         <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
                                         <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
                                     </select>
@@ -1902,7 +1906,7 @@ class GermanFence_Admin {
                                 
                                 <div class="setting-row">
                                     <label><strong>Position:</strong></label>
-                                    <select name="badge_position" style="width: 100%; padding: 8px; border: 1px solid #c3cbd5; border-radius: 6px;">
+                                    <select name="badge_position" style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
                                         <option value="bottom-right" <?php selected($settings['badge_position'] ?? 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
                                         <option value="bottom-left" <?php selected($settings['badge_position'] ?? '', 'bottom-left'); ?>>Unten Links</option>
                                         <option value="top-right" <?php selected($settings['badge_position'] ?? '', 'top-right'); ?>>Oben Rechts</option>

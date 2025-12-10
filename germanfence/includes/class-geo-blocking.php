@@ -176,7 +176,7 @@ class GermanFence_GeoBlocking {
                 <h2>🌍 GEO Blocking</h2>
                     
                     <!-- Toggle mit Modus-Buttons (Auto-Save) -->
-                    <div style="background: #fff; padding: 25px; border: 1px solid #c3cbd5; border-radius: 6px; margin-bottom: 30px;">
+                    <div style="background: #fff; padding: 25px; border: none; border-radius: 6px; margin-bottom: 30px;">
                         <div class="germanfence-setting" style="border: none; padding: 0; margin: 0;">
                             <label class="germanfence-toggle <?php echo $is_locked ? 'germanfence-toggle-locked' : ''; ?>" id="geo-main-toggle">
                                 <input type="checkbox" name="geo_blocking_enabled" value="1" <?php checked($settings['geo_blocking_enabled'] === '1'); ?> <?php echo $is_locked ? 'disabled' : ''; ?>>

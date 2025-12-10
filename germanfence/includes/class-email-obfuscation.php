@@ -106,11 +106,11 @@ class GermanFence_Email_Obfuscation {
         }
         
         echo '<script type="text/javascript">';
-        echo '(function(){';
+        echo 'document.addEventListener("DOMContentLoaded", function(){';
         foreach ($this->email_scripts as $script) {
             echo $script;
         }
-        echo '})();';
+        echo '});';
         echo '</script>';
     }
     
@@ -185,12 +185,12 @@ class GermanFence_Email_Obfuscation {
     
     /**
      * Zählt E-Mails auf der gesamten Website
+     * Gibt Array zurück: ['unique' => Anzahl verschiedener E-Mails, 'total' => Gesamt-Vorkommen]
      */
     public function count_emails_on_site() {
         global $wpdb;
         
-        $email_count = 0;
-        $found_emails = array();
+        $found_emails = array(); // Email => Anzahl
         
         $pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b/';
         
@@ -206,7 +206,10 @@ class GermanFence_Email_Obfuscation {
             preg_match_all($pattern, $post->post_content, $matches);
             if (!empty($matches[0])) {
                 foreach ($matches[0] as $email) {
-                    $found_emails[$email] = true;
+                    if (!isset($found_emails[$email])) {
+                        $found_emails[$email] = 0;
+                    }
+                    $found_emails[$email]++;
                 }
             }
         }
@@ -225,7 +228,10 @@ class GermanFence_Email_Obfuscation {
                 preg_match_all($pattern, $text, $matches);
                 if (!empty($matches[0])) {
                     foreach ($matches[0] as $email) {
-                        $found_emails[$email] = true;
+                        if (!isset($found_emails[$email])) {
+                            $found_emails[$email] = 0;
+                        }
+                        $found_emails[$email]++;
                     }
                 }
             }
@@ -245,13 +251,19 @@ class GermanFence_Email_Obfuscation {
                 preg_match_all($pattern, $content, $matches);
                 if (!empty($matches[0])) {
                     foreach ($matches[0] as $email) {
-                        $found_emails[$email] = true;
+                        if (!isset($found_emails[$email])) {
+                            $found_emails[$email] = 0;
+                        }
+                        $found_emails[$email]++;
                     }
                 }
             }
         }
         
-        return count($found_emails);
+        return array(
+            'unique' => count($found_emails),
+            'total' => array_sum($found_emails)
+        );
     }
 }
 
