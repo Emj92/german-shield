@@ -140,7 +140,7 @@ export default function LoginPage() {
         <div className="text-center text-sm text-muted-foreground">
           <p>© 2024 GermanCore. Alle Rechte vorbehalten.</p>
           <p className="mt-1">
-            Made with ♥ by{' '}
+            Supported ♥ by{' '}
             <a
               href="https://www.meindl-webdesign.de"
               target="_blank"

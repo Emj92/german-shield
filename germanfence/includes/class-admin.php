@@ -2116,7 +2116,7 @@ class GermanFence_Admin {
                 <div class="germanfence-footer">
                     <div style="text-align: center; padding: 20px; color: #646970; font-size: 15px;">
                         <div style="margin-bottom: 15px; font-weight: 600; color: #22D6DD;">
-                            GermanFence v1.13.4 Beta by GermanPlugin
+                            GermanFence v1.13.4 Beta by GermanCore
                         </div>
                         <div style="font-size: 15px;">
                             <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">AGB</a>
