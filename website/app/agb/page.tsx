@@ -194,7 +194,7 @@ export default function AGBPage() {
             <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">§ 11 Kontakt & Meldung von Verstößen</h2>
             <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-6">
               <p className="text-slate-700 dark:text-slate-300 mb-3">
-                <strong>Meindl Webdesign</strong><br />
+                <strong>GermanCore</strong><br />
                 Erwin Meindl<br />
               </p>
               <p className="text-slate-700 dark:text-slate-300 mb-3">
@@ -209,7 +209,7 @@ export default function AGBPage() {
           </section>
 
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-8 pt-8 border-t border-slate-300 dark:border-slate-700">
-            © 2024-2025 GermanFence by Meindl Webdesign. Alle Rechte vorbehalten.
+            © 2024-2025 GermanFence by GermanCore. Alle Rechte vorbehalten.
           </p>
         </div>
       </div>
