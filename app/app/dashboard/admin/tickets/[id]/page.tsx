@@ -1,23 +1,21 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { ArrowLeft, Send, Clock, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { ArrowLeft, Send, Clock, CheckCircle2, AlertCircle, Loader2, Upload, X, FileImage } from 'lucide-react'
 
 interface Response {
   id: string
   message: string
   isAdmin: boolean
   createdAt: string
-  user: {
-    email: string
-    name: string | null
-  }
+  attachmentUrl?: string
+  attachmentName?: string
 }
 
 interface Ticket {
@@ -37,11 +35,14 @@ interface Ticket {
 export default function TicketDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [ticket, setTicket] = useState<Ticket | null>(null)
   const [loading, setLoading] = useState(true)
   const [reply, setReply] = useState('')
   const [sending, setSending] = useState(false)
   const [updating, setUpdating] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [uploadError, setUploadError] = useState<string | null>(null)
 
   const fetchTicket = useCallback(async () => {
     try {
@@ -79,17 +80,65 @@ export default function TicketDetailPage() {
     }
   }
 
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    setUploadError(null)
+    
+    if (!file) return
+    
+    // Erlaubte Typen: png, jpg, jpeg, webp
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError('Nur PNG, JPG, JPEG und WEBP erlaubt')
+      return
+    }
+    
+    // Max 10MB für Admin
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError('Maximale Dateigröße: 10MB')
+      return
+    }
+    
+    setSelectedFile(file)
+  }
+
   async function handleReply() {
-    if (!reply.trim()) return
+    if (!reply.trim() && !selectedFile) return
     setSending(true)
     try {
+      let attachmentUrl = null
+      let attachmentName = null
+      
+      // Datei hochladen falls vorhanden
+      if (selectedFile) {
+        const formData = new FormData()
+        formData.append('file', selectedFile)
+        
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+        
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json()
+          attachmentUrl = uploadData.url
+          attachmentName = selectedFile.name
+        }
+      }
+      
       const res = await fetch(`/api/admin/tickets/${params.id}/reply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: reply }),
+        body: JSON.stringify({ 
+          message: reply,
+          attachmentUrl,
+          attachmentName
+        }),
       })
       if (res.ok) {
         setReply('')
+        setSelectedFile(null)
+        if (fileInputRef.current) fileInputRef.current.value = ''
         fetchTicket()
       }
     } catch (error) {
@@ -269,9 +318,56 @@ export default function TicketDetailPage() {
                 rows={4}
                 className="mb-4"
               />
+              
+              {/* Datei-Upload */}
+              <div className="flex items-center gap-4 mb-4">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.webp"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  id="admin-file-upload"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-[#d9dde1]"
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Bild anhängen
+                </Button>
+                
+                {selectedFile && (
+                  <div className="flex items-center gap-2 bg-[#F2F5F8] px-3 py-2 rounded-[9px]">
+                    <FileImage className="h-4 w-4 text-[#22D6DD]" />
+                    <span className="text-sm">{selectedFile.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedFile(null)
+                        if (fileInputRef.current) fileInputRef.current.value = ''
+                      }}
+                      className="text-slate-500 hover:text-red-500"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+                
+                {uploadError && (
+                  <span className="text-red-500 text-sm">{uploadError}</span>
+                )}
+              </div>
+              
+              <p className="text-xs text-muted-foreground mb-4">
+                Erlaubt: PNG, JPG, JPEG, WEBP (max. 10MB)
+              </p>
+              
               <Button
                 onClick={handleReply}
-                disabled={sending || !reply.trim()}
+                disabled={sending || (!reply.trim() && !selectedFile)}
                 className="bg-[#22D6DD] hover:bg-[#1BA8B0]"
               >
                 {sending ? (
