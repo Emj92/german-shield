@@ -350,10 +350,27 @@ body.germanfence-dark-mode input[type="text"],
 body.germanfence-dark-mode input[type="number"],
 body.germanfence-dark-mode input[type="email"],
 body.germanfence-dark-mode textarea,
-body.germanfence-dark-mode select {
+body.germanfence-dark-mode select,
+body.germanfence-dark-mode .germanfence-input {
     background: #2c3338 !important;
     border-color: #3c434a !important;
     color: #f0f0f1 !important;
+}
+
+/* Browser Autofill im Dark Mode */
+body.germanfence-dark-mode input:-webkit-autofill,
+body.germanfence-dark-mode input:-webkit-autofill:hover,
+body.germanfence-dark-mode input:-webkit-autofill:focus,
+body.germanfence-dark-mode input:-webkit-autofill:active,
+body.germanfence-dark-mode .germanfence-input:-webkit-autofill,
+body.germanfence-dark-mode .germanfence-input:-webkit-autofill:hover,
+body.germanfence-dark-mode .germanfence-input:-webkit-autofill:focus,
+body.germanfence-dark-mode .germanfence-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #2c3338 inset !important;
+    box-shadow: 0 0 0 1000px #2c3338 inset !important;
+    -webkit-text-fill-color: #f0f0f1 !important;
+    border-color: #3c434a !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 body.germanfence-dark-mode .germanfence-table {
@@ -1159,6 +1176,22 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 .germanfence-input {
     outline: none !important;
     box-shadow: none !important;
+}
+
+/* Browser Autofill überschreiben - unsere Farbe statt blau */
+.germanfence-wrapper input:-webkit-autofill,
+.germanfence-wrapper input:-webkit-autofill:hover,
+.germanfence-wrapper input:-webkit-autofill:focus,
+.germanfence-wrapper input:-webkit-autofill:active,
+.germanfence-input:-webkit-autofill,
+.germanfence-input:-webkit-autofill:hover,
+.germanfence-input:-webkit-autofill:focus,
+.germanfence-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #F2F5F8 inset !important;
+    box-shadow: 0 0 0 1000px #F2F5F8 inset !important;
+    -webkit-text-fill-color: #1d2327 !important;
+    border-color: #d9dde1 !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .germanfence-wrapper input[type="text"]:focus,

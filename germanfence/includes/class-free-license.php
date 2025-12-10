@@ -36,7 +36,13 @@ class GermanFence_Free_License {
             return array('success' => false, 'message' => 'Ungültige E-Mail-Adresse');
         }
         
-        // Prüfen ob E-Mail bereits registriert
+        // ZUERST: Prüfen ob E-Mail bereits im Portal registriert ist
+        $portal_check = $this->check_email_in_portal($email);
+        if ($portal_check['exists'] && $portal_check['verified']) {
+            return array('success' => false, 'message' => 'E-Mail bereits verifiziert. Falls du dein Plugin erneut aktivieren möchtest, findest du den Key in den E-Mails oder in deinem Portal.');
+        }
+        
+        // Prüfen ob E-Mail bereits lokal registriert
         $existing = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE email = %s",
             $email
@@ -44,7 +50,7 @@ class GermanFence_Free_License {
         
         if ($existing) {
             if ($existing->is_verified) {
-                return array('success' => false, 'message' => 'Diese E-Mail ist bereits verifiziert');
+                return array('success' => false, 'message' => 'E-Mail bereits verifiziert. Falls du dein Plugin erneut aktivieren möchtest, findest du den Key in den E-Mails oder in deinem Portal.');
             } else {
                 // Bestätigungsmail erneut senden (mit bestehendem Key)
                 $this->send_verification_email($email, $existing->verification_token, $existing->license_key);
@@ -498,6 +504,43 @@ class GermanFence_Free_License {
         $site_url = get_site_url();
         $parsed = parse_url($site_url);
         return isset($parsed['host']) ? $parsed['host'] : '';
+    }
+    
+    /**
+     * Prüft ob E-Mail bereits im Portal registriert und verifiziert ist
+     */
+    private function check_email_in_portal($email) {
+        $portal_url = 'https://portal.germanfence.de/api/auth/check-email?email=' . urlencode($email);
+        
+        $args = array(
+            'method' => 'GET',
+            'timeout' => 10,
+            'headers' => array(
+                'Content-Type' => 'application/json'
+            )
+        );
+        
+        GermanFence_Logger::log('[FREE-LICENSE] Prüfe Email im Portal: ' . $email);
+        
+        $response = wp_remote_get($portal_url, $args);
+        
+        if (is_wp_error($response)) {
+            GermanFence_Logger::log('[FREE-LICENSE] Portal-Check Fehler: ' . $response->get_error_message());
+            // Bei Fehler: Weiter machen (nicht blockieren)
+            return array('exists' => false, 'verified' => false);
+        }
+        
+        $body = wp_remote_retrieve_body($response);
+        $result = json_decode($body, true);
+        
+        GermanFence_Logger::log('[FREE-LICENSE] Portal-Check Response: ' . $body);
+        
+        // Wenn User existiert und verifiziert ist
+        if (isset($result['exists']) && $result['exists'] && isset($result['verified']) && $result['verified']) {
+            return array('exists' => true, 'verified' => true);
+        }
+        
+        return array('exists' => false, 'verified' => false);
     }
 }
 
