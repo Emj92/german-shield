@@ -33,7 +33,7 @@ export async function POST(
     const response = await prisma.ticketResponse.create({
       data: {
         ticketId: id,
-        userId: user.id,
+        authorId: user.id,
         message: message.trim(),
         isAdmin: true,
       },
