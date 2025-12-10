@@ -15,17 +15,8 @@ class GermanFence_Email_Obfuscation {
         // Shortcode registrieren
         add_shortcode('germanfence_email', array($this, 'email_shortcode'));
         
-        // Content-Filter für automatische Erkennung (MEHR HOOKS!)
-        add_filter('the_content', array($this, 'obfuscate_emails_in_content'), 999);
-        add_filter('widget_text', array($this, 'obfuscate_emails_in_content'), 999);
-        add_filter('get_the_excerpt', array($this, 'obfuscate_emails_in_content'), 999);
-        add_filter('comment_text', array($this, 'obfuscate_emails_in_content'), 999);
-        
-        // WICHTIG: Footer & Header via Output Buffering
+        // NUR Output Buffering verwenden - erfasst ALLES (Header, Footer, Content)
         add_action('template_redirect', array($this, 'start_buffer'), 0);
-        
-        // JavaScript in Footer laden
-        add_action('wp_footer', array($this, 'output_scripts'), 999);
     }
     
     /**
@@ -45,7 +36,24 @@ class GermanFence_Email_Obfuscation {
             return $html;
         }
         
-        return $this->obfuscate_emails_in_content($html);
+        // E-Mails verschleiern
+        $html = $this->obfuscate_emails_in_content($html);
+        
+        // JavaScript direkt vor </body> einfügen (nicht über wp_footer, da Buffer)
+        if (!empty($this->email_scripts)) {
+            $script = '<script type="text/javascript">';
+            $script .= 'document.addEventListener("DOMContentLoaded", function(){';
+            foreach ($this->email_scripts as $js) {
+                $script .= $js;
+            }
+            $script .= '});';
+            $script .= '</script>';
+            
+            // Vor </body> einfügen
+            $html = str_replace('</body>', $script . '</body>', $html);
+        }
+        
+        return $html;
     }
     
     /**
@@ -98,20 +106,11 @@ class GermanFence_Email_Obfuscation {
     }
     
     /**
-     * JavaScript-Code im Footer ausgeben
+     * JavaScript-Code im Footer ausgeben (nicht mehr verwendet - Output Buffering)
      */
     public function output_scripts() {
-        if (empty($this->email_scripts)) {
-            return;
-        }
-        
-        echo '<script type="text/javascript">';
-        echo 'document.addEventListener("DOMContentLoaded", function(){';
-        foreach ($this->email_scripts as $script) {
-            echo $script;
-        }
-        echo '});';
-        echo '</script>';
+        // Wird nicht mehr verwendet - Scripts werden direkt im Buffer eingefügt
+        return;
     }
     
     /**
@@ -138,26 +137,22 @@ class GermanFence_Email_Obfuscation {
      */
     private function obfuscate_javascript($email) {
         $encoded = base64_encode($email);
-        $id = 'gf-email-' . substr(md5($email . microtime()), 0, 8);
+        $id = 'gf-email-' . substr(md5($email . microtime() . mt_rand()), 0, 10);
         
-        // JavaScript in Array speichern (wird später im Footer ausgegeben)
-        $this->email_scripts[] = '
-            var el' . $id . ' = document.getElementById("' . esc_js($id) . '");
-            if(el' . $id . ') {
+        // JavaScript in Array speichern - wird im Buffer vor </body> eingefügt
+        $this->email_scripts[] = '(function(){
+            var el = document.getElementById("' . esc_js($id) . '");
+            if(el) {
                 try {
                     var email = atob("' . esc_js($encoded) . '");
-                    var styles = window.getComputedStyle(el' . $id . ');
-                    var color = styles.color || "#22D6DD";
-                    var fontSize = styles.fontSize || "inherit";
-                    var fontFamily = styles.fontFamily || "inherit";
-                    el' . $id . '.innerHTML = \'<a href="mailto:\' + email + \'" style="color: \' + color + \'; font-size: \' + fontSize + \'; font-family: \' + fontFamily + \'; text-decoration: none;">\' + email + \'</a>\';
+                    el.innerHTML = \'<a href="mailto:\' + email + \'">\' + email + \'</a>\';
                 } catch(e) {
-                    el' . $id . '.innerHTML = "[E-Mail geschützt]";
+                    el.textContent = "[E-Mail geschützt]";
                 }
             }
-        ';
+        })();';
         
-        return '<span id="' . esc_attr($id) . '" class="gf-email-protected" style="display: inline; font-size: inherit; color: inherit;">[E-Mail wird geladen...]</span>';
+        return '<span id="' . esc_attr($id) . '" class="gf-email-protected">[E-Mail wird geladen...]</span>';
     }
     
     /**

@@ -312,23 +312,23 @@ export default function UserLicensesContent() {
                   </h4>
                   
                   {license.activeDomains.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                       {license.activeDomains.map((domain) => (
                         <div
                           key={domain.id}
                           className="flex items-center justify-between p-2 bg-white border border-[#d9dde1] rounded-[9px]"
                         >
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{domain.domain}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm truncate">{domain.domain}</p>
                             <p className="text-xs text-slate-500">
-                              Registriert: {domain.activatedAt ? new Date(domain.activatedAt).toLocaleDateString('de-DE') : 'Kürzlich'}
+                              {domain.activatedAt ? new Date(domain.activatedAt).toLocaleDateString('de-DE') : 'Kürzlich'}
                             </p>
                           </div>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => confirmRemoveDomain(domain.id, domain.domain)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 flex-shrink-0"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

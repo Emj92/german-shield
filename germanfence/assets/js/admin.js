@@ -1280,8 +1280,28 @@
         
         // Obfuscation-Method Radio-Button - Auto-Save
         $('input[name="email_obfuscation_method"]').on('change', function() {
-            log('Email-Verschlüsselungsmethode geändert, speichere...');
-            saveSettingsAjax();
+            var value = $(this).val();
+            log('Email-Verschlüsselungsmethode geändert auf:', value);
+            
+            $.post({
+                url: germanfenceAdmin.ajaxUrl,
+                data: {
+                    action: 'germanfence_auto_save',
+                    nonce: germanfenceAdmin.nonce,
+                    field: 'email_obfuscation_method',
+                    value: value
+                },
+                success: function(response) {
+                    if (response && response.success) {
+                        showToast('Gespeichert', 'success');
+                    } else {
+                        showToast('Fehler beim Speichern', 'error');
+                    }
+                },
+                error: function() {
+                    showToast('Fehler beim Speichern', 'error');
+                }
+            });
         });
         
         log('Init abgeschlossen.');
