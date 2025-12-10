@@ -1178,7 +1178,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     box-shadow: none !important;
 }
 
-/* Browser Autofill überschreiben - unsere Farbe statt blau */
+/* Browser Autofill überschreiben - leichtes Türkis statt blau */
 .germanfence-wrapper input:-webkit-autofill,
 .germanfence-wrapper input:-webkit-autofill:hover,
 .germanfence-wrapper input:-webkit-autofill:focus,
@@ -1187,8 +1187,8 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 .germanfence-input:-webkit-autofill:hover,
 .germanfence-input:-webkit-autofill:focus,
 .germanfence-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #F2F5F8 inset !important;
-    box-shadow: 0 0 0 1000px #F2F5F8 inset !important;
+    -webkit-box-shadow: 0 0 0 1000px #E9FBFC inset !important;
+    box-shadow: 0 0 0 1000px #E9FBFC inset !important;
     -webkit-text-fill-color: #1d2327 !important;
     border-color: #d9dde1 !important;
     transition: background-color 5000s ease-in-out 0s;

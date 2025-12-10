@@ -41,16 +41,24 @@ class GermanFence_Email_Obfuscation {
         
         // JavaScript direkt vor </body> einfügen (nicht über wp_footer, da Buffer)
         if (!empty($this->email_scripts)) {
-            $script = '<script type="text/javascript">';
-            $script .= 'document.addEventListener("DOMContentLoaded", function(){';
+            $script = "\n<!-- GermanFence Email Protection -->\n";
+            $script .= '<script type="text/javascript">' . "\n";
+            $script .= '(function() {' . "\n";
+            $script .= '  function gfDecodeEmails() {' . "\n";
             foreach ($this->email_scripts as $js) {
-                $script .= $js;
+                $script .= '    ' . trim($js) . "\n";
             }
-            $script .= '});';
-            $script .= '</script>';
+            $script .= '  }' . "\n";
+            $script .= '  if (document.readyState === "loading") {' . "\n";
+            $script .= '    document.addEventListener("DOMContentLoaded", gfDecodeEmails);' . "\n";
+            $script .= '  } else {' . "\n";
+            $script .= '    gfDecodeEmails();' . "\n";
+            $script .= '  }' . "\n";
+            $script .= '})();' . "\n";
+            $script .= '</script>' . "\n";
             
-            // Vor </body> einfügen
-            $html = str_replace('</body>', $script . '</body>', $html);
+            // Vor </body> einfügen (case-insensitive)
+            $html = preg_replace('/<\/body>/i', $script . '</body>', $html, 1);
         }
         
         return $html;
@@ -93,14 +101,63 @@ class GermanFence_Email_Obfuscation {
         
         $method = $settings['email_obfuscation_method'] ?? 'javascript';
         
-        // VERBESSERTE Regex: Ignoriert E-Mails in bestehenden <a> Tags
-        // Ersetzt nur Plain-Text E-Mails
-        $pattern = '/(?![^<]*>)(?![^<>]*<\/a>)\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b(?![^<]*<\/a>)/';
+        // Schritt 1: Entferne bereits geschützte Spans (falls mehrfach verarbeitet)
+        $content = preg_replace('/<span[^>]*class="gf-email-protected"[^>]*>.*?<\/span>/s', '', $content);
         
-        $content = preg_replace_callback($pattern, function($matches) use ($method) {
-            $email = $matches[1];
-            return $this->obfuscate_email($email, $method);
-        }, $content);
+        // Schritt 2: Finde E-Mails die NICHT in href="mailto:" oder bereits in <a> Tags sind
+        // Wir verwenden einen anderen Ansatz: Zuerst alle <a> Tags entfernen, dann E-Mails finden
+        $email_pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\b/i';
+        
+        // Finde alle E-Mails
+        preg_match_all($email_pattern, $content, $all_matches, PREG_OFFSET_CAPTURE);
+        
+        if (empty($all_matches[0])) {
+            return $content;
+        }
+        
+        // Von hinten nach vorne ersetzen um Offsets nicht zu verschieben
+        $replacements = array();
+        
+        foreach ($all_matches[0] as $match) {
+            $email = $match[0];
+            $offset = $match[1];
+            
+            // Prüfe ob diese E-Mail in einem <a>-Tag ist
+            $before = substr($content, 0, $offset);
+            $after = substr($content, $offset + strlen($email), 200); // Nächste 200 Zeichen
+            
+            // Ist die E-Mail in einem href="mailto:..." ?
+            if (preg_match('/href\s*=\s*["\']mailto:[^"\']*$/i', $before)) {
+                continue; // Überspringe mailto-Links
+            }
+            
+            // Ist die E-Mail zwischen <a> und </a>?
+            $last_a_open = strrpos($before, '<a');
+            $last_a_close = strrpos($before, '</a>');
+            
+            if ($last_a_open !== false && ($last_a_close === false || $last_a_open > $last_a_close)) {
+                continue; // Überspringe E-Mails in <a> Tags
+            }
+            
+            // Ist die E-Mail in einem Tag-Attribut (z.B. href, value)?
+            if (preg_match('/<[^>]*$/s', $before)) {
+                continue; // Überspringe E-Mails in HTML-Attributen
+            }
+            
+            $replacements[] = array(
+                'offset' => $offset,
+                'length' => strlen($email),
+                'email' => $email,
+                'replacement' => $this->obfuscate_email($email, $method)
+            );
+        }
+        
+        // Von hinten nach vorne ersetzen
+        $replacements = array_reverse($replacements);
+        
+        foreach ($replacements as $r) {
+            $content = substr_replace($content, $r['replacement'], $r['offset'], $r['length']);
+        }
         
         return $content;
     }
