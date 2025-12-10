@@ -1924,7 +1924,7 @@ class GermanFence_Admin {
                                 <?php if (!$has_whitelabel): ?>
                                     <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single-Lizenz</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
                                 <?php else: ?>
-                                    <br><strong style="color: #10b981;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
+                                    <br><strong style="color: #22D6DD;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
                                 <?php endif; ?>
                                 </p>
                             </div>
@@ -2159,7 +2159,7 @@ class GermanFence_Admin {
                 <div class="germanfence-footer">
                     <div style="text-align: center; padding: 20px; color: #646970; font-size: 13px;">
                         <div style="margin-bottom: 15px; font-weight: 600; color: #22D6DD;">
-                            GermanFence v0.93 Beta by GermanProWeb
+                            GermanFence v1.13.4 Beta by GermanPlugin
                         </div>
                         <div style="font-size: 12px;">
                             <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">AGB</a>
