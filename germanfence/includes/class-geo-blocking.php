@@ -197,8 +197,8 @@ class GermanFence_GeoBlocking {
                                         <div style="display: flex; align-items: center; gap: 8px;">
                                             <span style="font-size: 18px;">🚫</span>
                                             <div style="flex: 1;">
-                                                <div style="font-weight: 600; color: #F06292; font-size: 13px; margin-bottom: 2px;">Ausschließlich</div>
-                                                <div style="color: #646970; font-size: 11px;">Ausgewählte Länder blockieren</div>
+                                                <div style="font-weight: 600; color: #F06292; font-size: 15px; margin-bottom: 2px;">Ausschließlich</div>
+                                                <div style="color: #646970; font-size: 15px;">Ausgewählte Länder blockieren</div>
                                             </div>
                                         </div>
                                     </label>
@@ -209,8 +209,8 @@ class GermanFence_GeoBlocking {
                                         <div style="display: flex; align-items: center; gap: 8px;">
                                             <span style="font-size: 18px;">✅</span>
                                             <div style="flex: 1;">
-                                                <div style="font-weight: 600; color: #22D6DD; font-size: 13px; margin-bottom: 2px;">Einschließlich</div>
-                                                <div style="color: #646970; font-size: 11px;">Nur ausgewählte Länder erlauben</div>
+                                                <div style="font-weight: 600; color: #22D6DD; font-size: 15px; margin-bottom: 2px;">Einschließlich</div>
+                                                <div style="color: #646970; font-size: 15px;">Nur ausgewählte Länder erlauben</div>
                                             </div>
                                         </div>
                                     </label>
@@ -233,7 +233,7 @@ class GermanFence_GeoBlocking {
                             
                             <!-- Suchleiste -->
                             <div style="margin-bottom: 15px;">
-                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;" <?php echo $is_locked ? 'disabled' : ''; ?>>
+                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;" <?php echo $is_locked ? 'disabled' : ''; ?>>
                             </div>
                             
                             <div class="country-grid" id="geo-country-grid" style="max-height: 500px; overflow-y: auto; padding: 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px; <?php echo $is_locked ? 'opacity: 0.7;' : ''; ?>">
@@ -261,7 +261,7 @@ class GermanFence_GeoBlocking {
         // Konvertiere Ländercode zu Flaggen-Bild (funktioniert auf allen Systemen)
         $code = strtoupper($code);
         if ($code === 'LOCAL') {
-            return '<span style="font-size: 16px;">🏠</span>';
+            return '<span style="font-size: 15px;">🏠</span>';
         }
         
         // Verwende Flagpedia CDN für zuverlässige Flaggen-Anzeige

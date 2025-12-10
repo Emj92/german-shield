@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
                 .license-key { font-size: 24px; font-weight: bold; font-family: monospace; color: #22D6DD; letter-spacing: 2px; }
                 .button { display: inline-block; background: #22D6DD; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
                 .button:hover { background: #1EBEC5; }
-                .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 16px; }
+                .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 15px; }
               </style>
             </head>
             <body>
@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
                   <p>Deine Zahlung war erfolgreich. Hier ist dein Lizenzschlüssel für <strong>GermanFence ${packageType}</strong>:</p>
                   
                   <div class="license-box">
-                    <div style="font-size: 16px; color: #6b7280; margin-bottom: 10px;">Dein Lizenzschlüssel:</div>
+                    <div style="font-size: 15px; color: #6b7280; margin-bottom: 10px;">Dein Lizenzschlüssel:</div>
                     <div class="license-key">${licenseKey}</div>
                   </div>
 

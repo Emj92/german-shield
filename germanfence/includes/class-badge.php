@@ -77,7 +77,7 @@ class GermanFence_Badge {
                 <?php else: ?>
                     <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php endif; ?>
-                <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
+                <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
             </a>
         </div>
         <?php
@@ -124,7 +124,7 @@ class GermanFence_Badge {
                     <?php else: ?>
                         <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php endif; ?>
-                    <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
+                    <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
                 </a>
             </div>
         </template>
@@ -224,7 +224,7 @@ class GermanFence_Badge {
         }
         
         .germanfence-badge-text {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -272,7 +272,7 @@ class GermanFence_Badge {
         @media (max-width: 768px) {
             .germanfence-badge > .germanfence-badge-inner {
                 padding: 8px 12px;
-                font-size: 11px;
+                font-size: 15px;
             }
         }
             ';
@@ -307,7 +307,7 @@ class GermanFence_Badge {
         @media (max-width: 768px) {
             .germanfence-badge-form-local .germanfence-badge-inner {
                 padding: 8px 12px;
-                font-size: 11px;
+                font-size: 15px;
             }
             .germanfence-badge-form-local {
                 margin: 10px 0;

@@ -47,7 +47,6 @@
 .germanfence-header {
     background: #F2F5F8;
     padding: 30px 40px;
-    border-bottom: 1px solid #d9dde1;
     border-radius: 9px 9px 0 0;
 }
 
@@ -74,7 +73,7 @@
 }
 
 .germanfence-version {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     color: #22D6DD;
     background: rgba(34, 214, 221, 0.1);
@@ -101,7 +100,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     gap: 5px;
     min-width: 100px !important;
@@ -512,7 +511,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     color: #50575e;
     padding: 18px 24px;
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -541,7 +540,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 }
 
 .lock-badge {
-    font-size: 12px;
+    font-size: 15px;
     margin-left: 5px;
 }
 
@@ -662,7 +661,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 
 .stat-content p {
     margin: 0;
-    font-size: 16px;
+    font-size: 15px;
     color: #50575e;
 }
 
@@ -691,7 +690,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     color: #1d2327;
     padding: 20px;
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -733,7 +732,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     text-align: left;
     font-weight: 600;
     color: #1d2327;
-    font-size: 13px;
+    font-size: 15px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid #d9dde1;
@@ -743,7 +742,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     padding: 15px 20px;
     border-top: 1px solid #f0f0f1;
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .germanfence-table tbody tr:hover {
@@ -754,7 +753,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     display: inline-block;
     padding: 4px 12px;
     border-radius: 9px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -819,7 +818,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 
 .germanfence-section h3 {
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     margin: 0 0 10px 0;
 }
@@ -847,14 +846,14 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 .setting-info h3 {
     margin: 0 0 5px 0;
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .setting-info p {
     margin: 0;
     color: #50575e;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.5;
 }
 
@@ -925,7 +924,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     right: -30px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 16px;
+    font-size: 15px;
 }
 
 /* Subsettings */
@@ -942,7 +941,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 
 .germanfence-subsetting h3 {
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     margin: 0 0 15px 0;
 }
@@ -960,7 +959,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 
 .setting-row label {
     color: #1d2327;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     min-width: 180px;
 }
@@ -972,7 +971,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     color: #1d2327;
     padding: 10px 15px;
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     width: 120px;
 }
 
@@ -1008,7 +1007,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
-    font-size: 16px;
+    font-size: 15px;
     min-height: 50px;
     position: relative; /* Wichtig für absolute positionierte Child-Elemente */
     z-index: 10; /* Über anderen Elementen */
@@ -1071,7 +1070,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     color: #ffffff;
     padding: 6px 12px;
     border-radius: 9px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 500;
     white-space: nowrap;
     opacity: 0;
@@ -1089,7 +1088,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 .description {
     margin-top: 10px;
     color: #646970;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 /* Phrase List */
@@ -1114,7 +1113,7 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
     color: #1d2327;
     padding: 12px 15px;
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .phrase-item input[type="text"]:focus {
@@ -1178,7 +1177,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     padding: 12px;
     border: 1px solid #d9dde1 !important;
     border-radius: 9px;
-    font-size: 16px;
+    font-size: 15px;
     background: #ffffff;
     outline: none !important;
     box-shadow: none !important;
@@ -1188,8 +1187,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
 
 .germanfence-input::placeholder {
     color: #ffffff;
-    border: 1px solid #d9dde1 !important;
-
+    background: #ffffff;
 }
 
 /* Buttons */
@@ -1202,7 +1200,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     color: #1d2327;
     padding: 12px 24px;
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1258,7 +1256,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     padding: 8px 16px;
     border-radius: 9px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
     cursor: pointer;
     transition: transform 0.2s;
     box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);
@@ -1281,7 +1279,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     z-index: 999999;
     opacity: 0;
@@ -1320,7 +1318,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     padding: 15px 20px;
     border-radius: 9px;
     margin: 20px 40px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     border-left: 4px solid;
 }
@@ -1353,7 +1351,7 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     
     .germanfence-tab {
         padding: 15px 18px;
-        font-size: 13px;
+        font-size: 15px;
     }
     
     .germanfence-tab-content {

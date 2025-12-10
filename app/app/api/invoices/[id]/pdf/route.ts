@@ -79,7 +79,7 @@ interface InvoiceData {
 
 function generateInvoiceHTML(invoice: InvoiceData): string {
   const taxExemptText = invoice.taxExempt 
-    ? '<div style="color: #059669; font-size: 16px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
+    ? '<div style="color: #059669; font-size: 15px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
     : ''
 
   return `
@@ -191,7 +191,7 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
         72622 Nürtingen<br>
         Deutschland
       </div>
-      <div style="margin-top: 10px; font-size: 16px;">
+      <div style="margin-top: 10px; font-size: 15px;">
         <strong>USt-IdNr.:</strong> DE323799140<br>
         <strong>Steuernr.:</strong> 74307/17133
       </div>
@@ -199,7 +199,7 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
     <div class="invoice-info">
       <div class="invoice-number">RECHNUNG</div>
       <div style="font-size: 18px; margin-top: 10px;">#${invoice.invoiceNumber}</div>
-      <div style="margin-top: 20px; font-size: 16px;">
+      <div style="margin-top: 20px; font-size: 15px;">
         <strong>Datum:</strong> ${new Date(invoice.issuedAt).toLocaleDateString('de-DE')}<br>
         ${invoice.paidAt ? `<strong>Bezahlt am:</strong> ${new Date(invoice.paidAt).toLocaleDateString('de-DE')}<br>` : ''}
       </div>
@@ -261,7 +261,7 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
     ${invoice.molliePaymentId ? `Transaktions-ID: ${invoice.molliePaymentId}<br>` : ''}
   </div>
 
-  <div style="margin-top: 40px; font-size: 16px; color: #6b7280;">
+  <div style="margin-top: 40px; font-size: 15px; color: #6b7280;">
     <p><strong>Hinweis:</strong> Dies ist eine rechtsgültige Rechnung für digitale Dienstleistungen. 
     Bitte bewahren Sie diese Rechnung für Ihre Unterlagen auf.</p>
   </div>

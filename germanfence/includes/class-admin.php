@@ -482,7 +482,7 @@ class GermanFence_Admin {
                         <!-- Language Switcher -->
                         <button id="germanfence-language-toggle" class="header-control-btn" title="Sprache wechseln">
                             <span class="language-flag"><img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;"></span>
-                            <span class="language-code" style="font-size: 11px; font-weight: 700; margin-left: 3px;">DE</span>
+                            <span class="language-code" style="font-size: 15px; font-weight: 700; margin-left: 3px;">DE</span>
                         </button>
                     </div>
                     
@@ -518,10 +518,10 @@ class GermanFence_Admin {
                     ?>
                     
                     <div class="germanfence-quote-of-day">
-                        <div style="font-size: 11px; color: #22D6DD; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 5px; text-transform: uppercase;">
+                        <div style="font-size: 15px; color: #22D6DD; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 5px; text-transform: uppercase;">
                             💡 Spruch des Tages
                         </div>
-                        <div style="font-size: 16px; color: #1d2327; font-style: italic; line-height: 1.4;">
+                        <div style="font-size: 15px; color: #1d2327; font-style: italic; line-height: 1.4;">
                             "<?php echo esc_html($todays_quote); ?>"
                         </div>
                     </div>
@@ -576,7 +576,7 @@ class GermanFence_Admin {
                         <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px 0;">
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 16px;">
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
                             <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
@@ -654,8 +654,8 @@ class GermanFence_Admin {
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     ✅ Legitim
                                 </button>
-                                <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
-                                    <span class="dashicons dashicons-trash" style="font-size: 16px;"></span>
+                                <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
+                                    <span class="dashicons dashicons-trash" style="font-size: 15px;"></span>
                                     Verlauf löschen
                                 </button>
                             </div>
@@ -679,9 +679,9 @@ class GermanFence_Admin {
                                         <td><?php echo esc_html(date('d.m.Y H:i', strtotime($entry->created_at))); ?></td>
                                         <td>
                                             <?php if ($entry->type === 'blocked'): ?>
-                                                <span class="block-type-badge blocked" style="background: rgba(240, 98, 146, 0.1); color: #F06292; padding: 4px 12px; border-radius: 4px; font-weight: 600; font-size: 11px;">🚫 GEBLOCKT</span>
+                                                <span class="block-type-badge blocked" style="background: rgba(240, 98, 146, 0.1); color: #F06292; padding: 4px 12px; border-radius: 4px; font-weight: 600; font-size: 15px;">🚫 GEBLOCKT</span>
                                             <?php else: ?>
-                                                <span class="block-type-badge legitimate" style="background: rgba(34, 214, 221, 0.1); color: #22D6DD; padding: 4px 12px; border-radius: 4px; font-weight: 600; font-size: 11px;">✅ LEGITIM</span>
+                                                <span class="block-type-badge legitimate" style="background: rgba(34, 214, 221, 0.1); color: #22D6DD; padding: 4px 12px; border-radius: 4px; font-weight: 600; font-size: 15px;">✅ LEGITIM</span>
                                             <?php endif; ?>
                                         </td>
                                         <td><?php echo esc_html($entry->ip_address); ?></td>
@@ -697,7 +697,7 @@ class GermanFence_Admin {
                                             <?php echo esc_html($this->format_block_reason($entry->reason ?? '-')); ?>
                                         </td>
                                         <td>
-                                            <button type="button" class="view-details-btn" data-id="<?php echo esc_attr($entry->id); ?>" style="padding: 6px 12px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;">
+                                            <button type="button" class="view-details-btn" data-id="<?php echo esc_attr($entry->id); ?>" style="padding: 6px 12px; background: #22D6DD; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 15px;">
                                                 👁️ Details
                                             </button>
                                         </td>
@@ -716,7 +716,7 @@ class GermanFence_Admin {
                         <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px;">
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 16px;">
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
                                 Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
                             </p>
                             <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
@@ -830,7 +830,7 @@ class GermanFence_Admin {
                                 </div>
                                 <p class="description" style="margin-top: 10px;">
                                     💡 <strong>Tipp:</strong> Benutze realistische Feldnamen wie "website_url" oder "contact_link". 
-                                    Das <span class="dashicons dashicons-update" style="font-size: 16px;"></span> Symbol generiert einen neuen zufälligen Namen.
+                                    Das <span class="dashicons dashicons-update" style="font-size: 15px;"></span> Symbol generiert einen neuen zufälligen Namen.
                                 </p>
                             </div>
                             </div>
@@ -912,7 +912,7 @@ class GermanFence_Admin {
                                         min="1" 
                                         max="60" 
                                         value="<?php echo esc_attr($settings['timestamp_min'] ?? 3); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 16px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Sekunden</span>
                                 </div>
@@ -930,7 +930,7 @@ class GermanFence_Admin {
                                         min="60" 
                                         max="86400" 
                                         value="<?php echo esc_attr($settings['timestamp_max'] ?? 3600); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 16px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Sekunden (<?php echo esc_html(round(($settings['timestamp_max'] ?? 3600) / 60)); ?> Min)</span>
                                 </div>
@@ -1002,7 +1002,7 @@ class GermanFence_Admin {
                                     <textarea 
                                         name="blocked_domains" 
                                         placeholder=".xyz, .top, .click, .loan"
-                                        style="width: 100%; height: 120px; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px; font-family: monospace; resize: vertical;"
+                                        style="width: 100%; height: 120px; padding: 12px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px; font-family: monospace; resize: vertical;"
                                     ><?php echo esc_textarea($settings['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'); ?></textarea>
                                     <p class="description" style="margin-top: 5px;">
                                         Komma-getrennte Liste (z.B. .xyz, .top). URLs mit diesen Endungen werden geblockt.
@@ -1086,7 +1086,7 @@ class GermanFence_Admin {
                                     <?php endif; ?>
                                 </label>
                                 <div>
-                                    <strong style="font-size: 16px; color: #1d2327;">🔧 Regex-Modus</strong>
+                                    <strong style="font-size: 15px; color: #1d2327;">🔧 Regex-Modus</strong>
                                     <span class="description" style="margin-left: 8px;">Erweiterte Muster-Erkennung aktivieren</span>
                                 </div>
                             </div>
@@ -1103,7 +1103,7 @@ class GermanFence_Admin {
                             <textarea 
                                 name="blocked_phrases_text" 
                                 rows="8" 
-                                style="width: 100%; max-width: 600px; padding: 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 13px;"
+                                style="width: 100%; max-width: 600px; padding: 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 15px;"
                                 placeholder="<?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? 'z.B.: V.*i.*a.*g.*r.*a' : 'z.B.: casino, viagra, lottery, cheap pills'; ?>"
                                 <?php echo !$is_license_valid ? 'disabled' : ''; ?>
                             ><?php 
@@ -1132,7 +1132,7 @@ class GermanFence_Admin {
                                             <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
                                                 V.*i.*a.*g.*r.*a
                                             </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
                                                 Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
                                             </td>
                                         </tr>
@@ -1140,7 +1140,7 @@ class GermanFence_Admin {
                                             <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
                                                 c[a@4]s[i1!]n[o0]
                                             </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
                                                 Findet: casino, cas1no, c@sino, cas!n0
                                             </td>
                                         </tr>
@@ -1148,7 +1148,7 @@ class GermanFence_Admin {
                                             <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
                                                 \b(buy|click)\s+here\b
                                             </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
                                                 Findet: "buy here", "click here" (ganze Wörter)
                                             </td>
                                         </tr>
@@ -1156,12 +1156,12 @@ class GermanFence_Admin {
                                             <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
                                                 \d{10,}
                                             </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 13px;">
+                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
                                                 Findet: 10+ aufeinanderfolgende Zahlen
                                             </td>
                                         </tr>
                                     </table>
-                                    <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
+                                    <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
                                         <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
                                     </p>
                                 </div>
@@ -1250,7 +1250,7 @@ class GermanFence_Admin {
                         <div style="background: #d1ecf1; padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #0c5460;">
                             <h3 style="margin-top: 0; color: #0c5460;">📋 Vollständiges Debug-Log</h3>
                             <p style="color: #0c5460;">Hier siehst du ALLE Aktionen des Plugins in Echtzeit:</p>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 11px; max-height: 500px; font-family: 'Courier New', monospace;"><?php 
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 15px; max-height: 500px; font-family: 'Courier New', monospace;"><?php 
                                 echo esc_html(GermanFence_Logger::get_log()); 
                             ?></pre>
                             <button type="button" class="germanfence-btn-danger" id="clear-debug-log" style="margin-top: 10px;">
@@ -1299,7 +1299,7 @@ class GermanFence_Admin {
                         <?php if (!empty($_POST)): ?>
                         <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #22D6DD;">
                             <h3 style="margin-top: 0;">📝 Empfangene POST-Daten</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 300px;"><?php 
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 15px; max-height: 300px;"><?php 
                                 $post_data = $_POST;
                                 unset($post_data['germanfence_nonce']);
                                 unset($post_data['_wp_http_referer']);
@@ -1310,7 +1310,7 @@ class GermanFence_Admin {
                         
                         <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
                             <h3 style="margin-top: 0; color: #1d2327;">💾 Gespeicherte Einstellungen</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
+                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 15px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
                         </div>
                         
                         <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; border: 1px solid #c3cbd5;">
@@ -1435,7 +1435,7 @@ class GermanFence_Admin {
                                         min="1" 
                                         max="10" 
                                         value="<?php echo esc_attr($settings['login_max_attempts'] ?? 3); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Versuche</span>
                                 </div>
@@ -1453,7 +1453,7 @@ class GermanFence_Admin {
                                         min="5" 
                                         max="1440" 
                                         value="<?php echo esc_attr($settings['login_lockout_duration'] ?? 30); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Minuten</span>
                                 </div>
@@ -1474,7 +1474,7 @@ class GermanFence_Admin {
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                                 <!-- Linke Spalte: Optionen -->
                                 <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 15px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
@@ -1561,9 +1561,9 @@ class GermanFence_Admin {
                                 
                                 <!-- Rechte Spalte: Code-Feld -->
                                 <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 15px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
                                     <textarea id="htaccess-output" readonly 
-                                        style="width: 100%; height: 347px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
+                                        style="width: 100%; height: 347px; font-family: monospace; font-size: 15px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
                                         placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
                                     ></textarea>
                                     
@@ -1572,7 +1572,7 @@ class GermanFence_Admin {
                                         Code kopieren
                                     </button>
                                     
-                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px;">
+                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px;">
                                         ⚠️ <strong>Wichtig:</strong> Erstelle vorher ein Backup deiner .htaccess Datei! Fehlerhafte Regeln können deine Website unzugänglich machen.
                                     </p>
                                 </div>
@@ -1643,12 +1643,12 @@ class GermanFence_Admin {
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
                                 <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">✅ Kostenlose Version aktiviert</h3>
-                                <p style="margin: 0 0 10px 0; color: #1d2327; font-size: 16px;">
+                                <p style="margin: 0 0 10px 0; color: #1d2327; font-size: 15px;">
                                     <strong>Verifizierte E-Mail:</strong> <?php echo esc_html($free_email); ?>
                                 </p>
                                 <?php if ($current_key): ?>
                                 <div style="margin: 15px 0;">
-                                    <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
+                                    <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
                                         🔑 Dein License-Key<?php 
                                         $key_type = 'FREE';
                                         if (strpos($current_key, 'GS-PRO-') === 0) $key_type = 'PRO';
@@ -1668,12 +1668,12 @@ class GermanFence_Admin {
                                             📋 Kopieren
                                         </button>
                                     </div>
-                                    <p style="margin: 8px 0 0 0; color: #646970; font-size: 11px;">
+                                    <p style="margin: 8px 0 0 0; color: #646970; font-size: 15px;">
                                         💡 Nutze diesen Key um GermanFence auf weiteren Domains zu aktivieren!
                                     </p>
                                 </div>
                                 <?php endif; ?>
-                                <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
+                                <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
                                     <?php if ($is_license_valid): ?>
                                         Deine PRO-Lizenz ist aktiv. Du hast Zugriff auf alle Features!
                                     <?php else: ?>
@@ -1704,19 +1704,19 @@ class GermanFence_Admin {
                                     
                                     <!-- E-Mail Aktivierung -->
                                     <div id="free-email-content" class="germanfence-free-content">
-                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
+                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
                                             Gib deine E-Mail-Adresse ein und bestätige sie, um GermanFence kostenlos zu nutzen!
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 16px; color: #1d2327;">E-Mail-Adresse:</label>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">E-Mail-Adresse:</label>
                                             <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
                                         <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="free-agb-checkbox" style="margin-top: 4px; cursor: pointer;">
-                                            <span style="font-size: 13px; color: #1d2327;">
+                                            <span style="font-size: 15px; color: #1d2327;">
                                                 Ich akzeptiere die <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #22D6DD; text-decoration: underline;">AGB</a> und die <a href="<?php echo admin_url('admin.php?page=germanfence&show=datenschutz'); ?>" style="color: #22D6DD; text-decoration: underline;">Datenschutzerklärung</a>
                                             </span>
                                         </label>
@@ -1729,19 +1729,19 @@ class GermanFence_Admin {
                                             </button>
                                         </div>
                                         
-                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px; text-align: center;">
+                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
                                             💡 Du erhältst eine E-Mail mit einem Bestätigungslink. Nach der Verifizierung bekommst du einen License-Key!
                                         </p>
                                     </div>
                                     
                                     <!-- Key Aktivierung -->
                                     <div id="free-key-content" class="germanfence-free-content" style="display: none;">
-                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 16px;">
+                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
                                             Hast du bereits einen License-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY oder manuell generiert)
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 16px; color: #1d2327;">License-Key:</label>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">License-Key:</label>
                                             <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase;">
                                         </div>
                                         
@@ -1752,7 +1752,7 @@ class GermanFence_Admin {
                                             </button>
                                         </div>
                                         
-                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 12px; text-align: center;">
+                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
                                             💡 Kostenlose Keys erhältst du nach der E-Mail-Verifizierung. PRO-Keys kannst du auf germanfence.de kaufen oder von einem Admin erhalten.
                                         </p>
                                     </div>
@@ -1763,36 +1763,36 @@ class GermanFence_Admin {
                         <!-- PRO LIZENZ KAUFEN BOX -->
                         <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
                             <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
-                            <p style="margin: 0 0 20px 0; color: #646970; font-size: 16px; line-height: 1.6;">
+                            <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
                                 Upgrade jetzt auf PRO und schalte leistungsstarke Anti-Spam Features frei! Perfekt für professionelle Websites, die maximalen Schutz benötigen.
                             </p>
                             
                             <div style="background: #ffffff; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #d9dde1;">
-                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px; font-weight: 600;">🚀 Exklusive PRO-Features:</h4>
+                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px; font-weight: 600;">🚀 Exklusive PRO-Features:</h4>
                                 <ul style="margin: 0; padding: 0 0 0 20px; list-style: none;">
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>GEO-Blocking</strong> – Blockiere Spam aus beliebigen Ländern
                                     </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Phrasen-Blocking</strong> – Intelligente Keyword & Regex-Filter
                                     </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>URL-Limit</strong> – SEO-Spam effektiv blockieren
                                     </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Domain-Blocking</strong> – Spam-Domains gezielt sperren
                                     </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Erweiterte Statistiken</strong> – Detaillierte Spam-Analyse
                                     </li>
-                                    <li style="margin-bottom: 0; color: #1d2327; font-size: 13px;">
+                                    <li style="margin-bottom: 0; color: #1d2327; font-size: 15px;">
                                         <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Priority Support</strong> – Schnelle Hilfe bei Fragen
                                     </li>
                                 </ul>
                             </div>
                             
                             <div style="background: #ffffff; padding: 12px; border-radius: 9px; margin-bottom: 15px; text-align: center; border: 1px solid #d9dde1;">
-                                <p style="margin: 0; color: #1d2327; font-size: 13px; font-weight: 600;">
+                                <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;">
                                     ✅ 14 Tage 100% Geld-zurück-Garantie
                                 </p>
                             </div>
@@ -1816,25 +1816,25 @@ class GermanFence_Admin {
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
                                 <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Paket:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 16px; font-weight: 600;"><?php echo esc_html($license_info['package_type']); ?></p>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Paket:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['package_type']); ?></p>
                                 </div>
                                 <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Gültig bis:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 16px; font-weight: 600;"><?php echo esc_html($license_info['expires_at']); ?></p>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Gültig bis:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['expires_at']); ?></p>
                                 </div>
                                 <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Domains:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 16px; font-weight: 600;"><?php echo esc_html($license_info['active_domains']); ?> / <?php echo esc_html($license_info['max_domains']); ?></p>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Domains:</p>
+                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['active_domains']); ?> / <?php echo esc_html($license_info['max_domains']); ?></p>
                                 </div>
                                 <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 12px;">Status:</p>
-                                    <p style="margin: 0; color: #22D6DD; font-size: 16px; font-weight: 600;">✓ Aktiv</p>
+                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Status:</p>
+                                    <p style="margin: 0; color: #22D6DD; font-size: 15px; font-weight: 600;">✓ Aktiv</p>
                                 </div>
                             </div>
                             
                             <div style="margin: 15px 0;">
-                                <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 13px; font-weight: 600;">
+                                <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
                                     🔑 Dein License-Key:
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -1941,7 +1941,7 @@ class GermanFence_Admin {
                                         <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
                                         <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
                                     </select>
-                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 12px;">
+                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 15px;">
                                         <strong>Global:</strong> Auf jeder Seite<br>
                                         <strong>Formulare:</strong> Nur bei CF7, WPForms, etc.
                                     </p>
@@ -1963,16 +1963,16 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
                                     <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="Geschützt durch GermanFence">
                                 </div>
                                 
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
                                     <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;"
+                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="https://example.com/logo.png">
-                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 12px;">
+                                    <p class="description" style="margin-top: 5px; color: #646970; font-size: 15px;">
                                         Leer = Standard-Icon 🛡️
                                     </p>
                                 </div>
@@ -1986,7 +1986,7 @@ class GermanFence_Admin {
                                         <input type="color" name="badge_text_color" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
-                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 16px;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#1d2327">
                                     </div>
                                 </div>
@@ -1997,7 +1997,7 @@ class GermanFence_Admin {
                                         <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
-                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 16px;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#22D6DD">
                                     </div>
                                 </div>
@@ -2010,7 +2010,7 @@ class GermanFence_Admin {
                                         <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
-                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 16px;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#ffffff">
                                     </div>
                                 </div>
@@ -2021,7 +2021,7 @@ class GermanFence_Admin {
                                         <input type="color" name="badge_shadow_color" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
                                         <input type="text" name="badge_shadow_color_hex" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
-                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 16px;"
+                                            style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#22D6DD">
                                     </div>
                                 </div>
@@ -2067,7 +2067,7 @@ class GermanFence_Admin {
                                     <span id="badge-icon">
                                         <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
-                                    <span id="badge-text-preview" style="font-size: 13px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
+                                    <span id="badge-text-preview" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -2098,11 +2098,11 @@ class GermanFence_Admin {
                             </div>
                             
                             <div style="padding: 20px 0;">
-                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px;">🔒 Was wird gesendet?</h4>
+                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px;">🔒 Was wird gesendet?</h4>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                                     <div>
                                         <span style="color: #22D6DD; font-weight: 600;">✓ Anonymisiert:</span>
-                                        <ul style="margin: 8px 0 0 20px; color: #646970; font-size: 13px; line-height: 1.8;">
+                                        <ul style="margin: 8px 0 0 20px; color: #646970; font-size: 15px; line-height: 1.8;">
                                             <li>IP-Adresse (gehasht, SHA-256)</li>
                                             <li>Ursprungsland (ISO-Code)</li>
                                             <li>Block-Methode & Grund</li>
@@ -2113,7 +2113,7 @@ class GermanFence_Admin {
                                     </div>
                                     <div>
                                         <span style="color: #F06292; font-weight: 600;">✗ Nicht gespeichert:</span>
-                                        <ul style="margin: 8px 0 0 20px; color: #646970; font-size: 13px; line-height: 1.8;">
+                                        <ul style="margin: 8px 0 0 20px; color: #646970; font-size: 15px; line-height: 1.8;">
                                             <li>Keine echten IP-Adressen</li>
                                             <li>Keine E-Mail-Adressen</li>
                                             <li>Keine Nachrichten/Inhalte</li>
@@ -2124,10 +2124,10 @@ class GermanFence_Admin {
                                 </div>
                                 
                                 <div style="padding: 15px 0; margin-bottom: 15px;">
-                                    <h4 style="margin: 0 0 8px 0; color: #22D6DD; font-size: 13px; display: flex; align-items: center; gap: 8px;">
+                                    <h4 style="margin: 0 0 8px 0; color: #22D6DD; font-size: 15px; display: flex; align-items: center; gap: 8px;">
                                         <span>🇩🇪</span> <strong>100% DSGVO-konform</strong>
                                     </h4>
-                                    <ul style="margin: 0; padding-left: 20px; color: #646970; font-size: 12px; line-height: 1.8;">
+                                    <ul style="margin: 0; padding-left: 20px; color: #646970; font-size: 15px; line-height: 1.8;">
                                         <li>Datenverarbeitung <strong>nur in Deutschland</strong> (Hetzner Server)</li>
                                         <li>Zweck: <strong>Ausschließlich Gefahrenabwehr</strong> und Spam-Muster-Erkennung</li>
                                         <li>Keine Weitergabe an Dritte</li>
@@ -2137,17 +2137,17 @@ class GermanFence_Admin {
                                 </div>
                                 
                                 <div style="padding: 15px 0 10px 0; background: #ffffff; text-align: center;">
-                                    <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px;">
+                                    <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px;">
                                         📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
                                     </p>
                                     <a href="<?php echo GERMANFENCE_PLUGIN_URL; ?>data/av-vertrag.pdf" 
                                        target="_blank" 
                                        class="germanfence-btn-secondary"
-                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 16px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                                         <span class="dashicons dashicons-download" style="font-size: 18px;"></span>
                                         AV-Vertrag herunterladen (PDF)
                                     </a>
-                                    <p style="margin: 10px 0 0 0; color: #646970; font-size: 12px;">
+                                    <p style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
                                         Rechtlich verbindlicher Vertrag zur Auftragsverarbeitung gem. Art. 28 DSGVO
                                     </p>
                                 </div>
@@ -2157,11 +2157,11 @@ class GermanFence_Admin {
                 </div>
                 
                 <div class="germanfence-footer">
-                    <div style="text-align: center; padding: 20px; color: #646970; font-size: 13px;">
+                    <div style="text-align: center; padding: 20px; color: #646970; font-size: 15px;">
                         <div style="margin-bottom: 15px; font-weight: 600; color: #22D6DD;">
                             GermanFence v1.13.4 Beta by GermanPlugin
                         </div>
-                        <div style="font-size: 12px;">
+                        <div style="font-size: 15px;">
                             <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">AGB</a>
                             <span style="color: #c3cbd5;">|</span>
                             <a href="<?php echo admin_url('admin.php?page=germanfence&show=datenschutz'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">Datenschutz</a>
@@ -2275,7 +2275,7 @@ class GermanFence_Admin {
         // Konvertiere Ländercode zu Flaggen-Bild (funktioniert auf allen Systemen)
         $code = strtoupper($code);
         if ($code === 'LOCAL') {
-            return '<span style="font-size: 16px;">🏠</span>';
+            return '<span style="font-size: 15px;">🏠</span>';
         }
         
         // Verwende Flagpedia CDN für zuverlässige Flaggen-Anzeige
