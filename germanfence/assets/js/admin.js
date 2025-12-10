@@ -1278,14 +1278,11 @@
             }
         });
         
-        // Obfuscation-Method Radio-Button Styling
-        $('.obfuscation-method-option input[type="radio"]').on('change', function() {
-            $('.obfuscation-method-option').css('border-color', '#d9dde1');
-            $(this).closest('.obfuscation-method-option').css('border-color', '#22D6DD');
+        // Obfuscation-Method Radio-Button - Auto-Save
+        $('input[name="email_obfuscation_method"]').on('change', function() {
+            log('Email-Verschlüsselungsmethode geändert, speichere...');
+            saveSettingsAjax();
         });
-        
-        // Initial Border für ausgewählte Methode
-        $('.obfuscation-method-option input[type="radio"]:checked').closest('.obfuscation-method-option').css('border-color', '#22D6DD');
         
         log('Init abgeschlossen.');
     });

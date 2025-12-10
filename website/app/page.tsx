@@ -29,9 +29,9 @@ export default function Home() {
             />
           </div>
           <nav className="hidden md:flex items-center gap-4">
-            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.features.title}</a>
+            <a href="#features" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Leistungen</a>
             <a href="#screenshots" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Screenshots</a>
-            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">{t.pricing.title}</a>
+            <a href="#pricing" className="text-slate-600 dark:text-slate-300 hover:text-[#22D6DD] transition">Preise</a>
             <a href="https://portal.germanfence.de/login" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" className="border-2 border-[#22D6DD] text-[#22D6DD] hover:bg-transparent hover:border-[#22D6DD] hover:text-[#22D6DD]">
                 <LogIn className="mr-2 h-4 w-4" />
@@ -245,6 +245,36 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
             </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>E-Mail-Schutz</CardTitle>
+                <CardDescription>
+                  Schützt E-Mail-Adressen vor Spam-Bots durch intelligente Verschleierung
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Lock className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>WordPress-Firewall</CardTitle>
+                <CardDescription>
+                  XML-RPC, REST API & Datei-Editor Schutz für maximale Sicherheit
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-[#22D6DD] transition-all hover:shadow-lg">
+              <CardHeader>
+                <Shield className="h-10 w-10 text-[#22D6DD] mb-2" />
+                <CardTitle>Brute-Force-Schutz</CardTitle>
+                <CardDescription>
+                  Login-Limitierung schützt vor automatisierten Angriffen
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </div>
       </section>
@@ -395,6 +425,18 @@ export default function Home() {
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
                     <span>Tippgeschwindigkeit-Analyse</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>📧 E-Mail-Schutz (Obfuscation)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>🔐 WordPress-Firewall</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
+                    <span>🛡️ Brute-Force-Schutz</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
@@ -574,7 +616,7 @@ export default function Home() {
             Bereit deine Website zu schützen?
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            Lifetime-Lizenz sichern und Spam für immer blockieren!
+            Jahreslizenz sichern und Spam für immer blockieren!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
@@ -590,6 +632,106 @@ export default function Home() {
               </Button>
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* Kontaktformular */}
+      <section id="contact" className="py-20 px-6 bg-white dark:bg-slate-900">
+        <div className="container mx-auto max-w-[800px]">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
+              Kontakt
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400">
+              Hast du Fragen? Wir helfen dir gerne weiter!
+            </p>
+          </div>
+
+          <form className="space-y-6" action="/api/contact" method="POST">
+            {/* Name + Nachname */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Vorname</label>
+                <input 
+                  type="text" 
+                  name="firstName" 
+                  required
+                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  placeholder="Max"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Nachname</label>
+                <input 
+                  type="text" 
+                  name="lastName" 
+                  required
+                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  placeholder="Mustermann"
+                />
+              </div>
+            </div>
+
+            {/* Firma + Anliegen */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Firma (optional)</label>
+                <input 
+                  type="text" 
+                  name="company"
+                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  placeholder="Meine Firma GmbH"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Anliegen</label>
+                <select 
+                  name="subject" 
+                  required
+                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                >
+                  <option value="">Bitte wählen...</option>
+                  <option value="support">Technischer Support</option>
+                  <option value="sales">Kaufanfrage</option>
+                  <option value="partnership">Partnerschaft</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="other">Sonstiges</option>
+                </select>
+              </div>
+            </div>
+
+            {/* E-Mail */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">E-Mail</label>
+              <input 
+                type="email" 
+                name="email" 
+                required
+                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                placeholder="max@mustermann.de"
+              />
+            </div>
+
+            {/* Nachricht */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Nachricht</label>
+              <textarea 
+                name="message" 
+                required
+                rows={6}
+                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
+                placeholder="Deine Nachricht..."
+              />
+            </div>
+
+            {/* Submit Button */}
+            <Button 
+              type="submit" 
+              className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] py-6 text-lg font-semibold transition-transform hover:-translate-y-1"
+            >
+              📧 Nachricht senden
+            </Button>
+          </form>
         </div>
       </section>
 

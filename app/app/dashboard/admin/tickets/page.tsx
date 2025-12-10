@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/db'
 import { Badge } from '@/components/ui/badge'
-import { MessageSquare } from 'lucide-react'
+import { MessageSquare, ExternalLink } from 'lucide-react'
 
 async function getAllTickets() {
   return await prisma.supportTicket.findMany({
@@ -75,9 +76,10 @@ export default async function TicketsAdminPage() {
                 </p>
               ) : (
                 tickets.map((ticket) => (
-                  <div
+                  <Link
                     key={ticket.id}
-                    className="border border-[#d9dde1] rounded-[9px] p-4 hover:bg-[#F2F5F8] transition-colors"
+                    href={`/dashboard/admin/tickets/${ticket.id}`}
+                    className="block border border-[#d9dde1] rounded-[9px] p-4 hover:bg-[#F2F5F8] hover:border-[#22D6DD] transition-all group"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -85,7 +87,7 @@ export default async function TicketsAdminPage() {
                           <span className="text-lg">
                             {categoryEmoji[ticket.category]}
                           </span>
-                          <h3 className="font-semibold">{ticket.subject}</h3>
+                          <h3 className="font-semibold group-hover:text-[#22D6DD] transition-colors">{ticket.subject}</h3>
                           <Badge variant={statusColors[ticket.status]}>
                             {ticket.status}
                           </Badge>
@@ -102,8 +104,9 @@ export default async function TicketsAdminPage() {
                           <span>{ticket._count.responses} Antworten</span>
                         </div>
                       </div>
+                      <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                  </div>
+                  </Link>
                 ))
               )}
             </div>
