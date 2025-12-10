@@ -536,12 +536,12 @@ class GermanFence_Admin {
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="antispam" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-shield-alt"></span>
-                    Anti-Spam
+                    🛡️ Formular-Schutz
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-location"></span>
-                    GEO Blocking
+                    🌍 Geo & Content-Filter
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
@@ -551,12 +551,12 @@ class GermanFence_Admin {
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-bell"></span>
-                    WordPress Spam
+                    💬 WordPress-Schutz
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-shield"></span>
-                    Sicherheit
+                    🔐 Sicherheit & Firewall
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
