@@ -9,13 +9,43 @@ if (!defined('ABSPATH')) {
 
 class GermanFence_Email_Obfuscation {
     
+    private $email_scripts = array();
+    
     public function __construct() {
         // Shortcode registrieren
         add_shortcode('germanfence_email', array($this, 'email_shortcode'));
         
-        // Content-Filter für automatische Erkennung
+        // Content-Filter für automatische Erkennung (MEHR HOOKS!)
         add_filter('the_content', array($this, 'obfuscate_emails_in_content'), 999);
         add_filter('widget_text', array($this, 'obfuscate_emails_in_content'), 999);
+        add_filter('get_the_excerpt', array($this, 'obfuscate_emails_in_content'), 999);
+        add_filter('comment_text', array($this, 'obfuscate_emails_in_content'), 999);
+        
+        // WICHTIG: Footer & Header via Output Buffering
+        add_action('template_redirect', array($this, 'start_buffer'), 0);
+        
+        // JavaScript in Footer laden
+        add_action('wp_footer', array($this, 'output_scripts'), 999);
+    }
+    
+    /**
+     * Output Buffering starten für Header/Footer
+     */
+    public function start_buffer() {
+        ob_start(array($this, 'obfuscate_emails_in_html'));
+    }
+    
+    /**
+     * Output Buffer verarbeiten
+     */
+    public function obfuscate_emails_in_html($html) {
+        $settings = get_option('germanfence_settings', array());
+        
+        if (empty($settings['email_obfuscation_enabled']) || $settings['email_obfuscation_enabled'] !== '1') {
+            return $html;
+        }
+        
+        return $this->obfuscate_emails_in_content($html);
     }
     
     /**
@@ -55,8 +85,9 @@ class GermanFence_Email_Obfuscation {
         
         $method = $settings['email_obfuscation_method'] ?? 'javascript';
         
-        // Regex für E-Mail-Adressen (auch in mailto: Links)
-        $pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b/';
+        // VERBESSERTE Regex: Ignoriert E-Mails in bestehenden <a> Tags
+        // Ersetzt nur Plain-Text E-Mails
+        $pattern = '/(?![^<]*>)(?![^<>]*<\/a>)\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b(?![^<]*<\/a>)/';
         
         $content = preg_replace_callback($pattern, function($matches) use ($method) {
             $email = $matches[1];
@@ -64,6 +95,23 @@ class GermanFence_Email_Obfuscation {
         }, $content);
         
         return $content;
+    }
+    
+    /**
+     * JavaScript-Code im Footer ausgeben
+     */
+    public function output_scripts() {
+        if (empty($this->email_scripts)) {
+            return;
+        }
+        
+        echo '<script type="text/javascript">';
+        echo '(function(){';
+        foreach ($this->email_scripts as $script) {
+            echo $script;
+        }
+        echo '})();';
+        echo '</script>';
     }
     
     /**
@@ -90,18 +138,26 @@ class GermanFence_Email_Obfuscation {
      */
     private function obfuscate_javascript($email) {
         $encoded = base64_encode($email);
-        $id = 'gf-email-' . substr(md5($email . time()), 0, 8);
+        $id = 'gf-email-' . substr(md5($email . microtime()), 0, 8);
         
-        return '<span id="' . esc_attr($id) . '" data-email="' . esc_attr($encoded) . '"></span>
-        <script>
-        (function(){
-            var el = document.getElementById("' . esc_js($id) . '");
-            if(el) {
-                var email = atob(el.getAttribute("data-email"));
-                el.innerHTML = \'<a href="mailto:\' + email + \'" style="color: #22D6DD; text-decoration: none;">\' + email + \'</a>\';
+        // JavaScript in Array speichern (wird später im Footer ausgegeben)
+        $this->email_scripts[] = '
+            var el' . $id . ' = document.getElementById("' . esc_js($id) . '");
+            if(el' . $id . ') {
+                try {
+                    var email = atob("' . esc_js($encoded) . '");
+                    var styles = window.getComputedStyle(el' . $id . ');
+                    var color = styles.color || "#22D6DD";
+                    var fontSize = styles.fontSize || "inherit";
+                    var fontFamily = styles.fontFamily || "inherit";
+                    el' . $id . '.innerHTML = \'<a href="mailto:\' + email + \'" style="color: \' + color + \'; font-size: \' + fontSize + \'; font-family: \' + fontFamily + \'; text-decoration: none;">\' + email + \'</a>\';
+                } catch(e) {
+                    el' . $id . '.innerHTML = "[E-Mail geschützt]";
+                }
             }
-        })();
-        </script>';
+        ';
+        
+        return '<span id="' . esc_attr($id) . '" class="gf-email-protected" style="display: inline; font-size: inherit; color: inherit;">[E-Mail wird geladen...]</span>';
     }
     
     /**
@@ -112,7 +168,7 @@ class GermanFence_Email_Obfuscation {
         for ($i = 0; $i < strlen($email); $i++) {
             $encoded .= '&#' . ord($email[$i]) . ';';
         }
-        return '<a href="mailto:' . $encoded . '" style="color: #22D6DD; text-decoration: none;">' . $encoded . '</a>';
+        return '<a href="mailto:' . $encoded . '" style="color: inherit; font-size: inherit; text-decoration: none;">' . $encoded . '</a>';
     }
     
     /**
@@ -120,12 +176,11 @@ class GermanFence_Email_Obfuscation {
      */
     private function obfuscate_css($email) {
         $reversed = strrev($email);
-        $id = 'gf-email-' . substr(md5($email . time()), 0, 8);
+        $id = 'gf-email-' . substr(md5($email . microtime()), 0, 8);
         
-        return '<span id="' . esc_attr($id) . '" style="unicode-bidi: bidi-override; direction: rtl;">' . 
+        return '<a href="mailto:' . esc_attr($email) . '" id="' . esc_attr($id) . '" class="gf-email-css" style="unicode-bidi: bidi-override; direction: rtl; color: inherit; font-size: inherit; text-decoration: none;">' . 
                esc_html($reversed) . 
-               '</span>
-               <style>#' . esc_attr($id) . ' { color: #22D6DD; }</style>';
+               '</a>';
     }
     
     /**
@@ -135,6 +190,9 @@ class GermanFence_Email_Obfuscation {
         global $wpdb;
         
         $email_count = 0;
+        $found_emails = array();
+        
+        $pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b/';
         
         // Zähle E-Mails in Posts/Pages
         $posts = $wpdb->get_results("
@@ -144,11 +202,13 @@ class GermanFence_Email_Obfuscation {
             AND post_type IN ('post', 'page')
         ");
         
-        $pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b/';
-        
         foreach ($posts as $post) {
             preg_match_all($pattern, $post->post_content, $matches);
-            $email_count += count($matches[0]);
+            if (!empty($matches[0])) {
+                foreach ($matches[0] as $email) {
+                    $found_emails[$email] = true;
+                }
+            }
         }
         
         // Zähle E-Mails in Widgets
@@ -163,11 +223,35 @@ class GermanFence_Email_Obfuscation {
                 $data = maybe_unserialize($widget->option_value);
                 $text = is_array($data) ? json_encode($data) : (string)$data;
                 preg_match_all($pattern, $text, $matches);
-                $email_count += count($matches[0]);
+                if (!empty($matches[0])) {
+                    foreach ($matches[0] as $email) {
+                        $found_emails[$email] = true;
+                    }
+                }
             }
         }
         
-        return $email_count;
+        // Zähle E-Mails in Theme-Dateien (Header/Footer)
+        $theme_locations = array(
+            get_template_directory() . '/header.php',
+            get_template_directory() . '/footer.php',
+            get_stylesheet_directory() . '/header.php',
+            get_stylesheet_directory() . '/footer.php',
+        );
+        
+        foreach ($theme_locations as $file) {
+            if (file_exists($file)) {
+                $content = file_get_contents($file);
+                preg_match_all($pattern, $content, $matches);
+                if (!empty($matches[0])) {
+                    foreach ($matches[0] as $email) {
+                        $found_emails[$email] = true;
+                    }
+                }
+            }
+        }
+        
+        return count($found_emails);
     }
 }
 

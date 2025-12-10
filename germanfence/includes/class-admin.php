@@ -1062,20 +1062,20 @@ class GermanFence_Admin {
                                 <div class="setting-info">
                                     <h3>Alle Admin-Benachrichtigungen blockieren</h3>
                                     <p>Versteckt alle WordPress Admin-Notices (außer kritische Fehler).</p>
-                                </div>
                             </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
+                            </div>
+                        
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
                                     <input type="checkbox" name="block_plugin_ads" value="1" <?php checked(isset($settings['block_plugin_ads']) && $settings['block_plugin_ads'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
                                     <h3>Plugin-Werbung blockieren</h3>
                                     <p>Blockiert Upgrade-Hinweise und Werbung von Plugins (z.B. "Jetzt Premium kaufen").</p>
-                                </div>
                             </div>
-                            
+                        </div>
+                        
                             <div class="germanfence-setting">
                                 <label class="germanfence-toggle">
                                     <input type="checkbox" name="block_update_notices" value="1" <?php checked(isset($settings['block_update_notices']) && $settings['block_update_notices'] === '1'); ?>>
@@ -1156,7 +1156,7 @@ class GermanFence_Admin {
                                     <td><?php 
                                         if (isset($_POST['germanfence_nonce'])) {
                                             echo wp_verify_nonce($_POST['germanfence_nonce'], 'germanfence_settings') ? '✅ JA' : '❌ NEIN (FEHLER!)';
-                                        } else {
+                                } else {
                                             echo '⚠️ Nicht geprüft';
                                         }
                                     ?></td>
@@ -1181,7 +1181,7 @@ class GermanFence_Admin {
                                 unset($post_data['_wp_http_referer']);
                                 echo esc_html(print_r($post_data, true)); 
                             ?></pre>
-                        </div>
+                            </div>
                         <?php endif; ?>
                         
                         <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
@@ -1195,16 +1195,16 @@ class GermanFence_Admin {
                                 <tr>
                                     <td><strong>WordPress Version:</strong></td>
                                     <td><?php echo get_bloginfo('version'); ?></td>
-                                </tr>
-                                <tr>
+                                        </tr>
+                                        <tr>
                                     <td><strong>PHP Version:</strong></td>
                                     <td><?php echo PHP_VERSION; ?></td>
-                                </tr>
-                                <tr>
+                                        </tr>
+                                        <tr>
                                     <td><strong>Plugin Version:</strong></td>
                                     <td><?php echo GERMANFENCE_VERSION; ?></td>
-                                </tr>
-                                <tr>
+                                        </tr>
+                                        <tr>
                                     <td><strong>Admin URL:</strong></td>
                                     <td><?php echo admin_url('admin.php?page=germanfence'); ?></td>
                                 </tr>
@@ -1215,9 +1215,9 @@ class GermanFence_Admin {
                                 <tr>
                                     <td><strong>Current User Can:</strong></td>
                                     <td><?php echo current_user_can('manage_options') ? '✅ manage_options' : '❌ KEINE RECHTE!'; ?></td>
-                                </tr>
-                            </table>
-                        </div>
+                                        </tr>
+                                    </table>
+                                </div>
                         
                         <?php if ($saved): ?>
                         <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-top: 20px; border-left: 4px solid #22D6DD;">
@@ -1238,50 +1238,50 @@ class GermanFence_Admin {
                             Schütze deine WordPress-Installation mit zusätzlichen Firewall-Regeln.
                         </p>
                         
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
                                 <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
                                 <h3>XML-RPC deaktivieren</h3>
                                 <p>Blockiert XML-RPC Zugriffe (häufig für Brute-Force-Attacken missbraucht)</p>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
                                 <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
                                 <h3>Datei-Editor deaktivieren</h3>
                                 <p>Verhindert das Bearbeiten von Theme- und Plugin-Dateien im WordPress-Admin</p>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
                                 <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
                                 <h3>WordPress-Version verstecken</h3>
                                 <p>Entfernt die WordPress-Version aus dem HTML-Head</p>
                             </div>
                         </div>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
                                 <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
                                 <h3>REST API User-Enumeration blockieren</h3>
                                 <p>Verhindert das Auslesen von Benutzernamen über die REST API</p>
                             </div>
-                        </div>
-                    </div>
+                                </div>
+                            </div>
                     
                     <!-- BRUTE-FORCE SCHUTZ Section -->
                     <div class="germanfence-section">
@@ -1289,17 +1289,17 @@ class GermanFence_Admin {
                         <p class="description" style="margin-bottom: 20px;">
                             Schütze dein WordPress-Login vor automatisierten Angriffen durch Login-Versuchs-Limitierung.
                         </p>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
+                            
+                            <div class="germanfence-setting">
+                                <label class="germanfence-toggle">
                                 <input type="checkbox" name="login_limit_enabled" value="1" <?php checked(isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div class="setting-info">
                                 <h3>Login-Limitierung aktivieren</h3>
                                 <p>Blockiert IP-Adressen nach zu vielen fehlgeschlagenen Login-Versuchen</p>
+                                </div>
                             </div>
-                        </div>
                         
                         <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
                             <div class="setting-row" style="margin-bottom: 20px;">
@@ -1318,8 +1318,8 @@ class GermanFence_Admin {
                                 <p class="description" style="margin-top: 5px;">
                                     Nach dieser Anzahl fehlgeschlagener Versuche wird die IP gesperrt. Empfohlen: 3-5
                                 </p>
-                            </div>
-                            
+                        </div>
+                        
                             <div class="setting-row">
                                 <label style="display: block; margin-bottom: 10px;"><strong>Sperrzeit:</strong></label>
                                 <div style="display: flex; align-items: center; gap: 15px;">
@@ -1335,11 +1335,11 @@ class GermanFence_Admin {
                                 </div>
                                 <p class="description" style="margin-top: 5px;">
                                     Dauer der Sperre nach fehlgeschlagenen Versuchen. Empfohlen: 30-60 Minuten
-                                </p>
-                            </div>
+                            </p>
                         </div>
                     </div>
-                    
+                </div>
+                
                     <!-- EMAIL OBFUSCATION Section -->
                     <div class="germanfence-section">
                         <h2>📧 E-Mail-Schutz (Obfuscation)</h2>
@@ -1448,77 +1448,77 @@ class GermanFence_Admin {
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-directory-listing" checked>
-                                            <span>🚫 Directory Listings blockieren</span>
+                                            <span style="font-size: 15px;">🚫 Directory Listings blockieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-xmlrpc" checked>
-                                            <span>🛡️ XML-RPC blockieren</span>
+                                            <span style="font-size: 15px;">🛡️ XML-RPC blockieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-wp-config" checked>
-                                            <span>🔐 wp-config.php schützen</span>
+                                            <span style="font-size: 15px;">🔐 wp-config.php schützen</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-htaccess" checked>
-                                            <span>🔒 .htaccess schützen</span>
+                                            <span style="font-size: 15px;">🔒 .htaccess schützen</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-uploads" checked>
-                                            <span>📁 PHP in Uploads blockieren</span>
+                                            <span style="font-size: 15px;">📁 PHP in Uploads blockieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-sql-injection" checked>
-                                            <span>💉 SQL-Injection blockieren</span>
+                                            <span style="font-size: 15px;">💉 SQL-Injection blockieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-author-scan" checked>
-                                            <span>👤 Autoren-Scans blockieren</span>
+                                            <span style="font-size: 15px;">👤 Autoren-Scans blockieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-security-headers" checked>
-                                            <span>🔐 Security Headers setzen</span>
+                                            <span style="font-size: 15px;">🔐 Security Headers setzen</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-caching" checked>
-                                            <span>⚡ Browser Caching aktivieren</span>
+                                            <span style="font-size: 15px;">⚡ Browser Caching aktivieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-compression" checked>
-                                            <span>📦 GZIP Komprimierung aktivieren</span>
+                                            <span style="font-size: 15px;">📦 GZIP Komprimierung aktivieren</span>
                                         </label>
                                     </div>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="htaccess-hotlink">
-                                            <span>🖼️ Hotlink Protection (Bilder)</span>
+                                            <span style="font-size: 15px;">🖼️ Hotlink Protection (Bilder)</span>
                                         </label>
                                     </div>
                                     
@@ -1838,15 +1838,15 @@ class GermanFence_Admin {
                             <div style="padding: 20px 0;">
                                 <h3 style="margin-top: 0; color: #1d2327;">📍 Script-Ladeposition</h3>
                                 <div style="margin-top: 15px;">
-                                    <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+                                    <label style="display: block; margin-bottom: 10px; cursor: pointer; font-size: 15px;">
                                         <input type="radio" name="script_position" value="header" <?php checked($settings['script_position'] ?? 'footer', 'header'); ?>>
                                         <strong>Header</strong> - Früh geladen
                                     </label>
-                                    <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+                                    <label style="display: block; margin-bottom: 10px; cursor: pointer; font-size: 15px;">
                                         <input type="radio" name="script_position" value="footer" <?php checked($settings['script_position'] ?? 'footer', 'footer'); ?>>
                                         <strong>Footer</strong> - ⚡ Empfohlen
                                     </label>
-                                    <label style="display: block; cursor: pointer;">
+                                    <label style="display: block; cursor: pointer; font-size: 15px;">
                                         <input type="radio" name="script_position" value="body" <?php checked($settings['script_position'] ?? 'footer', 'body'); ?>>
                                         <strong>Body</strong> - Gute Balance
                                     </label>
