@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
+// CORS Headers für Website-Zugriff
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 // GET: Aktives Banner für Website oder Portal
 export async function GET(request: NextRequest) {
   try {
@@ -23,13 +34,13 @@ export async function GET(request: NextRequest) {
     })
 
     if (!banner) {
-      return NextResponse.json({ banner: null })
+      return NextResponse.json({ banner: null }, { headers: corsHeaders })
     }
 
-    return NextResponse.json({ banner })
+    return NextResponse.json({ banner }, { headers: corsHeaders })
   } catch (error) {
     console.error('Error fetching active banner:', error)
-    return NextResponse.json({ banner: null })
+    return NextResponse.json({ banner: null }, { headers: corsHeaders })
   }
 }
 

@@ -18,8 +18,9 @@ export function InfoBanner() {
   useEffect(() => {
     const dismissedBanners = JSON.parse(localStorage.getItem('dismissedBanners') || '[]')
     
-    // API vom Portal aufrufen (mit voller URL)
-    fetch('https://app.germanfence.de/api/infobanner?target=website')
+    // API vom Portal aufrufen
+    const apiUrl = process.env.NEXT_PUBLIC_PORTAL_URL || 'https://app.germanfence.de'
+    fetch(`${apiUrl}/api/infobanner?target=website`)
       .then(res => res.json())
       .then(data => {
         if (data.banner && !dismissedBanners.includes(data.banner.id)) {
