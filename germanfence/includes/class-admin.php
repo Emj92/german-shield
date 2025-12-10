@@ -544,11 +544,6 @@ class GermanFence_Admin {
                     🌍 Geo & Content-Filter
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'phrases' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="phrases" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-editor-removeformatting"></span>
-                    Phrasen-Blocking
-                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
-                </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     <span class="dashicons dashicons-bell"></span>
                     💬 WordPress-Schutz
@@ -1054,120 +1049,7 @@ class GermanFence_Admin {
                 $geo->render_tab($settings, $license_info, $is_license_valid);
                 ?>
                 
-                <!-- Phrase Blocking Tab -->
-                <div class="germanfence-tab-content <?php echo $active_tab === 'phrases' ? 'active' : ''; ?>" id="tab-phrases">
-                    <div class="germanfence-section">
-                        <h2>🚫 Phrasen-Blocking</h2>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle <?php echo !$is_license_valid ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="phrase_blocking_enabled" value="1" <?php checked($settings['phrase_blocking_enabled'] === '1'); ?> <?php echo !$is_license_valid ? 'disabled' : ''; ?>>
-                                <span class="toggle-slider"></span>
-                                <?php if (!$is_license_valid): ?>
-                                    <span class="toggle-lock-icon">🔒</span>
-                                <?php endif; ?>
-                            </label>
-                            <div class="setting-info">
-                                <h3>Phrasen-Blocking aktivieren</h3>
-                                <p>Blockiere Formulare, die bestimmte Wörter oder Phrasen enthalten.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="germanfence-subsetting" id="phrase-settings" style="<?php echo !$is_license_valid ? 'opacity: 0.7; pointer-events: none;' : ''; ?>">
-                            <h3>Blockierte Phrasen</h3>
-                            
-                            <!-- Regex-Modus Toggle -->
-                            <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 12px;">
-                                <label class="germanfence-toggle <?php echo !$is_license_valid ? 'germanfence-toggle-locked' : ''; ?>">
-                                    <input type="checkbox" name="phrase_regex_mode" value="1" <?php checked(isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1'); ?> <?php echo !$is_license_valid ? 'disabled' : ''; ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if (!$is_license_valid): ?>
-                                        <span class="toggle-lock-icon">🔒</span>
-                                    <?php endif; ?>
-                                </label>
-                                <div>
-                                    <strong style="font-size: 15px; color: #1d2327;">🔧 Regex-Modus</strong>
-                                    <span class="description" style="margin-left: 8px;">Erweiterte Muster-Erkennung aktivieren</span>
-                                </div>
-                            </div>
-                            
-                            <p class="description" style="margin-bottom: 10px;">
-                                <span id="phrase-help-normal" style="<?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? 'display:none;' : ''; ?>">
-                                    Geben Sie Wörter oder Phrasen ein, die blockiert werden sollen. Trennen Sie mehrere Einträge mit <strong>Komma</strong>.
-                                </span>
-                                <span id="phrase-help-regex" style="<?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? '' : 'display:none;'; ?>">
-                                    <strong>Regex-Modus:</strong> Geben Sie Regex-Muster ein (ein Muster pro Zeile). Jedes Muster wird als regulärer Ausdruck interpretiert.
-                                </span>
-                            </p>
-                            
-                            <textarea 
-                                name="blocked_phrases_text" 
-                                rows="8" 
-                                style="width: 100%; max-width: 600px; padding: 12px; border: 1px solid #c3cbd5; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 15px;"
-                                placeholder="<?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? 'z.B.: V.*i.*a.*g.*r.*a' : 'z.B.: casino, viagra, lottery, cheap pills'; ?>"
-                                <?php echo !$is_license_valid ? 'disabled' : ''; ?>
-                            ><?php 
-                                $phrases = $settings['blocked_phrases'] ?? array();
-                                if (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') {
-                                    // Regex-Modus: Eine pro Zeile
-                                    echo esc_textarea(implode("\n", $phrases));
-                                } else {
-                                    // Normal-Modus: Komma-getrennt
-                                    echo esc_textarea(implode(', ', $phrases));
-                                }
-                            ?></textarea>
-                            
-                            <div id="phrase-examples-normal" style="margin-top: 10px; <?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? 'display:none;' : ''; ?>">
-                                <p class="description" style="color: #646970;">
-                                    <strong>Beispiele:</strong> <code>spam, viagra, casino, gewinnspiel, lottery</code>
-                                </p>
-                            </div>
-                            
-                            <div id="phrase-examples-regex" style="margin-top: 10px; <?php echo (isset($settings['phrase_regex_mode']) && $settings['phrase_regex_mode'] === '1') ? '' : 'display:none;'; ?>">
-                                <p class="description" style="color: #646970; margin-bottom: 12px;">
-                                    <strong>💡 Regex-Beispiele:</strong>
-                                </p>
-                                <table style="width: 100%; max-width: 700px; border-collapse: collapse;">
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                V.*i.*a.*g.*r.*a
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
-                                                Findet: Viagra, V-i-a-g-r-a, V111iagra, V...i...a...
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                c[a@4]s[i1!]n[o0]
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
-                                                Findet: casino, cas1no, c@sino, cas!n0
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                \b(buy|click)\s+here\b
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
-                                                Findet: "buy here", "click here" (ganze Wörter)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 5px 10px 5px 0; font-family: 'Courier New', monospace; color: #D63638; font-weight: 600;">
-                                                \d{10,}
-                                            </td>
-                                            <td style="padding: 5px 0; color: #646970; font-size: 15px;">
-                                                Findet: 10+ aufeinanderfolgende Zahlen
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <p class="description" style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
-                                        <strong>Tipp:</strong> <code>.*</code> = beliebige Zeichen, <code>[a@4]</code> = a oder @ oder 4, <code>\b</code> = Wortgrenze, <code>\d</code> = Ziffer
-                                    </p>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+                <!-- Phrase Blocking Tab REMOVED - Now integrated in Geo Tab -->
                 
                 <!-- WordPress Spam Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'notices' ? 'active' : ''; ?>" id="tab-notices">
