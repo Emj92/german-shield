@@ -23,7 +23,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-[#FAFAFA] dark:bg-[#1D2327]`}>
+        <div className="animated-background" />
         <ThemeProvider>
           <ToastProvider>
             {children}

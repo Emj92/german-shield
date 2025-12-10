@@ -31,8 +31,9 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FAFAFA] dark:bg-slate-950`}
       >
+        <div className="animated-background" />
         <LanguageProvider>
           {children}
         </LanguageProvider>

@@ -118,5 +118,29 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #FAFAFA;
   }
+}
+
+/* Hintergrund-Animation */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: 
+    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(34, 214, 221, 0.15), transparent),
+    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(240, 98, 146, 0.08), transparent),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(34, 214, 221, 0.08), transparent);
+  background-color: #FAFAFA;
+}
+
+.dark .animated-background {
+  background: 
+    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(34, 214, 221, 0.1), transparent),
+    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(240, 98, 146, 0.05), transparent),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(34, 214, 221, 0.05), transparent);
+  background-color: #0f172a;
 }

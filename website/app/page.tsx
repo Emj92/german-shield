@@ -783,9 +783,9 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-lg mb-6 text-white">Support & Legal</h3>
               <ul className="space-y-3 text-slate-400">
-                <li><a href="#" className="hover:text-[#22D6DD] transition">Support Center</a></li>
-                <li><a href="#" className="hover:text-[#22D6DD] transition">FAQ</a></li>
-                <li><a href="#" className="hover:text-[#22D6DD] transition">Kontakt</a></li>
+                <li><Link href="/support" className="hover:text-[#22D6DD] transition">Support Center</Link></li>
+                <li><Link href="/support#faq" className="hover:text-[#22D6DD] transition">FAQ</Link></li>
+                <li><a href="#contact" className="hover:text-[#22D6DD] transition">Kontakt</a></li>
                 <li><Link href="/impressum" className="hover:text-[#22D6DD] transition">Impressum</Link></li>
                 <li><Link href="/datenschutz" className="hover:text-[#22D6DD] transition">Datenschutz</Link></li>
                 <li><Link href="/agb" className="hover:text-[#22D6DD] transition">AGB</Link></li>
