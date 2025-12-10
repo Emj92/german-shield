@@ -101,65 +101,94 @@ class GermanFence_Email_Obfuscation {
         
         $method = $settings['email_obfuscation_method'] ?? 'javascript';
         
-        // Schritt 1: Entferne bereits geschützte Spans (falls mehrfach verarbeitet)
-        $content = preg_replace('/<span[^>]*class="gf-email-protected"[^>]*>.*?<\/span>/s', '', $content);
+        // NEUER ANSATZ: Ersetze NUR komplette mailto-Links
+        // Das ist sicherer und verhindert doppelte Ersetzungen
         
-        // Schritt 2: Finde E-Mails die NICHT in href="mailto:" oder bereits in <a> Tags sind
-        // Wir verwenden einen anderen Ansatz: Zuerst alle <a> Tags entfernen, dann E-Mails finden
-        $email_pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\b/i';
+        // Pattern für: <a href="mailto:email">beliebiger Text</a>
+        $mailto_pattern = '/<a\s+([^>]*href\s*=\s*["\']mailto:([^"\']+)["\'][^>]*)>([^<]*)<\/a>/i';
         
-        // Finde alle E-Mails
-        preg_match_all($email_pattern, $content, $all_matches, PREG_OFFSET_CAPTURE);
-        
-        if (empty($all_matches[0])) {
-            return $content;
-        }
-        
-        // Von hinten nach vorne ersetzen um Offsets nicht zu verschieben
-        $replacements = array();
-        
-        foreach ($all_matches[0] as $match) {
-            $email = $match[0];
-            $offset = $match[1];
+        $self = $this;
+        $content = preg_replace_callback($mailto_pattern, function($matches) use ($method, $self) {
+            $email = $matches[2]; // Die Email aus dem mailto
+            $link_text = $matches[3]; // Der sichtbare Text
             
-            // Prüfe ob diese E-Mail in einem <a>-Tag ist
-            $before = substr($content, 0, $offset);
-            $after = substr($content, $offset + strlen($email), 200); // Nächste 200 Zeichen
+            // Wenn der sichtbare Text die Email ist, verschleiern wir alles
+            // Wenn nicht, lassen wir es (z.B. "Kontakt" als Link-Text)
+            $email_in_text = stripos($link_text, $email) !== false || 
+                             stripos($link_text, str_replace('@', '', $email)) !== false;
             
-            // Ist die E-Mail in einem href="mailto:..." ?
-            if (preg_match('/href\s*=\s*["\']mailto:[^"\']*$/i', $before)) {
-                continue; // Überspringe mailto-Links
+            if (!$email_in_text && strpos($link_text, '@') === false) {
+                // Link-Text enthält keine Email (z.B. "Kontaktieren Sie uns")
+                // Trotzdem mailto verschleiern
+                return $self->obfuscate_mailto_link($email, $link_text, $method);
             }
             
-            // Ist die E-Mail zwischen <a> und </a>?
-            $last_a_open = strrpos($before, '<a');
-            $last_a_close = strrpos($before, '</a>');
+            // Kompletten Link verschleiern
+            return $self->obfuscate_email($email, $method);
+        }, $content);
+        
+        // Zusätzlich: Plain-Text E-Mails die NICHT in HTML-Tags sind
+        // Aber NUR wenn sie wirklich alleinstehend sind
+        $email_pattern = '/(?<!["\'=>:\/])(?<![a-zA-Z0-9._%+-])([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})(?![a-zA-Z0-9._%+-])(?!["\'])/i';
+        
+        $content = preg_replace_callback($email_pattern, function($matches) use ($method, $content) {
+            $email = $matches[1];
+            $full_match = $matches[0];
             
-            if ($last_a_open !== false && ($last_a_close === false || $last_a_open > $last_a_close)) {
-                continue; // Überspringe E-Mails in <a> Tags
+            // Prüfe ob diese Email bereits verschleiert wurde
+            if (strpos($content, 'gf-email-protected') !== false) {
+                // Prüfe ob diese spezifische Email in einem geschützten Block ist
+                if (preg_match('/class="gf-email-[^"]*"[^>]*>[^<]*' . preg_quote($email, '/') . '/i', $content)) {
+                    return $full_match;
+                }
             }
             
-            // Ist die E-Mail in einem Tag-Attribut (z.B. href, value)?
-            if (preg_match('/<[^>]*$/s', $before)) {
-                continue; // Überspringe E-Mails in HTML-Attributen
-            }
-            
-            $replacements[] = array(
-                'offset' => $offset,
-                'length' => strlen($email),
-                'email' => $email,
-                'replacement' => $this->obfuscate_email($email, $method)
-            );
-        }
-        
-        // Von hinten nach vorne ersetzen
-        $replacements = array_reverse($replacements);
-        
-        foreach ($replacements as $r) {
-            $content = substr_replace($content, $r['replacement'], $r['offset'], $r['length']);
-        }
+            return $this->obfuscate_email($email, $method);
+        }, $content);
         
         return $content;
+    }
+    
+    /**
+     * Verschleiert einen mailto-Link mit benutzerdefiniertem Text
+     */
+    public function obfuscate_mailto_link($email, $link_text, $method) {
+        switch ($method) {
+            case 'javascript':
+                $encoded_email = base64_encode($email);
+                $encoded_text = base64_encode($link_text);
+                $id = 'gf-email-' . substr(md5($email . microtime() . mt_rand()), 0, 10);
+                
+                $this->email_scripts[] = '(function(){
+                    var el = document.getElementById("' . esc_js($id) . '");
+                    if(el) {
+                        try {
+                            var email = atob("' . esc_js($encoded_email) . '");
+                            var text = atob("' . esc_js($encoded_text) . '");
+                            el.innerHTML = \'<a href="mailto:\' + email + \'">\' + text + \'</a>\';
+                        } catch(e) {
+                            el.textContent = "[E-Mail geschützt]";
+                        }
+                    }
+                })();';
+                
+                return '<span id="' . esc_attr($id) . '" class="gf-email-protected">[E-Mail wird geladen...]</span>';
+            
+            case 'entities':
+                $encoded = '';
+                for ($i = 0; $i < strlen($email); $i++) {
+                    $encoded .= '&#' . ord($email[$i]) . ';';
+                }
+                $encoded_text = '';
+                for ($i = 0; $i < strlen($link_text); $i++) {
+                    $encoded_text .= '&#' . ord($link_text[$i]) . ';';
+                }
+                return '<a href="mailto:' . $encoded . '">' . $encoded_text . '</a>';
+            
+            case 'css':
+            default:
+                return '<a href="mailto:' . esc_attr($email) . '">' . esc_html($link_text) . '</a>';
+        }
     }
     
     /**
@@ -173,7 +202,7 @@ class GermanFence_Email_Obfuscation {
     /**
      * Verschleiert eine E-Mail-Adresse
      */
-    private function obfuscate_email($email, $method = 'javascript') {
+    public function obfuscate_email($email, $method = 'javascript') {
         switch ($method) {
             case 'javascript':
                 return $this->obfuscate_javascript($email);
