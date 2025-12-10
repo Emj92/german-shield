@@ -3,7 +3,7 @@
  * Plugin Name: GermanFence
  * Plugin URI: https://germanfence.de
  * Description: Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle WordPress-Formulare vor Spam mit modernsten Techniken: Honeypot, Zeitstempel, GEO-Blocking, intelligente Phrasen-Erkennung und mehr. Made in Germany 🇩🇪
- * Version: 1.15.0
+ * Version: 1.15.1
  * Author: GermanFence Team
  * Author URI: https://germanfence.de
  * License: GPL v2 or later + Proprietary
@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GERMANFENCE_VERSION', '1.15.0');
+define('GERMANFENCE_VERSION', '1.15.1');
 define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
@@ -98,6 +98,7 @@ require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-stats.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-badge.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-notice-blocker.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-free-license.php';
+require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-email-obfuscation.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-ajax.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-updater.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-telemetry.php';
@@ -125,7 +126,10 @@ function germanfence_init() {
     
     // Initialize Free License Manager
     new GermanFence_Free_License();
-    
+
+    // Initialize Email Obfuscation
+    new GermanFence_Email_Obfuscation();
+
     GermanFence_Logger::log_hook('Plugin erfolgreich initialisiert');
 }
 

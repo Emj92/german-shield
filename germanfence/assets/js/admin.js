@@ -566,7 +566,7 @@
                     
                     for (var key in formData) {
                         if (formData.hasOwnProperty(key)) {
-                            formDataHtml += '<div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;"><strong style="color: #22D6DD;">' + key + ':</strong><br><span style="font-family: monospace; font-size: 13px; word-wrap: break-word;">' + formData[key] + '</span></div>';
+                            formDataHtml += '<div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd;"><strong style="color: #22D6DD;">' + key + ':</strong><br><span style="font-family: monospace; font-size: 15px; word-wrap: break-word;">' + formData[key] + '</span></div>';
                         }
                     }
                     
@@ -588,7 +588,7 @@
                         '<div style="margin-bottom: 15px;"><strong>Zeit:</strong> <span style="margin-left: 10px;">' + time + '</span></div>' +
                         '<div style="margin-bottom: 15px;"><strong>IP-Adresse:</strong> <span style="margin-left: 10px;">' + ip + '</span></div>' +
                         '<div style="margin-bottom: 15px;"><strong>Land:</strong> <span style="margin-left: 10px;">' + country + '</span></div>' +
-                        '<div><strong>Grund/Details:</strong><br><div style="background: #fff; padding: 15px; border-radius: 6px; margin-top: 10px; font-family: monospace; font-size: 13px; word-wrap: break-word; max-height: 200px; overflow-y: auto;">' + reason + '</div></div>' +
+                        '<div><strong>Grund/Details:</strong><br><div style="background: #fff; padding: 15px; border-radius: 6px; margin-top: 10px; font-family: monospace; font-size: 15px; word-wrap: break-word; max-height: 200px; overflow-y: auto;">' + reason + '</div></div>' +
                         formDataHtml +
                     '</div>' +
                 '</div>' +
@@ -1268,6 +1268,24 @@
             document.execCommand('copy');
             showToast('Code kopiert!', 'success');
         });
+        
+        // Email-Obfuscation Toggle
+        $('input[name="email_obfuscation_enabled"]').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#email-obfuscation-settings').slideDown(300);
+            } else {
+                $('#email-obfuscation-settings').slideUp(300);
+            }
+        });
+        
+        // Obfuscation-Method Radio-Button Styling
+        $('.obfuscation-method-option input[type="radio"]').on('change', function() {
+            $('.obfuscation-method-option').css('border-color', '#d9dde1');
+            $(this).closest('.obfuscation-method-option').css('border-color', '#22D6DD');
+        });
+        
+        // Initial Border für ausgewählte Methode
+        $('.obfuscation-method-option input[type="radio"]:checked').closest('.obfuscation-method-option').css('border-color', '#22D6DD');
         
         log('Init abgeschlossen.');
     });

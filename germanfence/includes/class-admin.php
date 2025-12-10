@@ -530,33 +530,27 @@ class GermanFence_Admin {
             
             <div class="germanfence-tabs">
                 <button class="germanfence-tab <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="dashboard" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-dashboard"></span>
-                    Dashboard
+                    📊 Dashboard
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="antispam" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-shield-alt"></span>
                     🛡️ Formular-Schutz
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-location"></span>
                     🌍 Geo & Content-Filter
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-bell"></span>
                     💬 WordPress-Schutz
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-shield"></span>
                     🔐 Sicherheit & Firewall
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    <span class="dashicons dashicons-admin-settings"></span>
-                    Einstellungen
+                    ⚙️ Einstellungen
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
             </div>
@@ -1110,7 +1104,7 @@ class GermanFence_Admin {
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
-                                    <h3>📧 WordPress Update-E-Mails blockieren</h3>
+                                    <h3>WordPress Update-E-Mails blockieren</h3>
                                     <p>Blockiert automatische E-Mail-Benachrichtigungen über verfügbare Plugin-, Theme- und Core-Updates. Updates bleiben weiterhin möglich, nur die E-Mails werden unterdrückt.</p>
                                 </div>
                             </div>
@@ -1346,6 +1340,99 @@ class GermanFence_Admin {
                         </div>
                     </div>
                     
+                    <!-- EMAIL OBFUSCATION Section -->
+                    <div class="germanfence-section">
+                        <h2>📧 E-Mail-Schutz (Obfuscation)</h2>
+                        <p class="description" style="margin-bottom: 20px;">
+                            Schütze E-Mail-Adressen auf deiner Website vor Spam-Bots durch intelligente Verschleierung. Besucher können die E-Mails normal lesen, aber Bots können sie nicht automatisch extrahieren.
+                        </p>
+                        
+                        <div class="germanfence-setting">
+                            <label class="germanfence-toggle">
+                                <input type="checkbox" name="email_obfuscation_enabled" value="1" <?php checked(isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1'); ?>>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-info">
+                                <h3>E-Mail-Schutz aktivieren</h3>
+                                <p>Verschleiert automatisch alle E-Mail-Adressen auf deiner Website (Posts, Pages, Widgets, Impressum, Datenschutz)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="germanfence-subsetting" id="email-obfuscation-settings" style="<?php echo (isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
+                            
+                            <!-- Email-Zähler -->
+                            <div style="background: linear-gradient(135deg, #22D6DD 0%, #1BA8B0 100%); color: white; padding: 20px; border-radius: 9px; margin-bottom: 20px; text-align: center;">
+                                <div style="font-size: 42px; font-weight: 700; margin-bottom: 5px;">
+                                    <?php 
+                                    if (class_exists('GermanFence_Email_Obfuscation')) {
+                                        $email_obfuscation = new GermanFence_Email_Obfuscation();
+                                        echo esc_html($email_obfuscation->count_emails_on_site()); 
+                                    } else {
+                                        echo '0';
+                                    }
+                                    ?>
+                                </div>
+                                <div style="font-size: 16px; opacity: 0.95;">
+                                    📧 E-Mail-Adressen gefunden
+                                </div>
+                                <div style="font-size: 15px; margin-top: 8px; opacity: 0.85;">
+                                    Diese werden automatisch geschützt
+                                </div>
+                            </div>
+                            
+                            <!-- Verschlüsselungsmethode -->
+                            <div class="setting-row" style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 12px;"><strong style="font-size: 16px;">🔐 Verschlüsselungsmethode:</strong></label>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
+                                        <input type="radio" name="email_obfuscation_method" value="javascript" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'javascript'); ?> style="margin-top: 3px;">
+                                        <div>
+                                            <strong style="font-size: 16px; color: #1d2327;">JavaScript (Empfohlen)</strong>
+                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
+                                                Beste Schutz-Stufe. E-Mails werden Base64-kodiert und erst beim Laden der Seite entschlüsselt. Bots können die E-Mail-Adressen nicht im Quellcode finden.
+                                            </p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
+                                        <input type="radio" name="email_obfuscation_method" value="entities" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'entities'); ?> style="margin-top: 3px;">
+                                        <div>
+                                            <strong style="font-size: 16px; color: #1d2327;">HTML-Entities</strong>
+                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
+                                                Mittlerer Schutz. E-Mails werden in HTML-Entities umgewandelt (z.B. &#105;&#110;&#102;&#111;). Funktioniert auch ohne JavaScript.
+                                            </p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
+                                        <input type="radio" name="email_obfuscation_method" value="css" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'css'); ?> style="margin-top: 3px;">
+                                        <div>
+                                            <strong style="font-size: 16px; color: #1d2327;">CSS-Umkehrung</strong>
+                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
+                                                Guter Schutz. E-Mails werden rückwärts geschrieben und per CSS wieder richtig angezeigt. Funktioniert auch ohne JavaScript.
+                                            </p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Shortcode-Hilfe -->
+                            <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; border-left: 4px solid #22D6DD;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #1d2327;">💡 Shortcode verwenden</h3>
+                                <p style="margin: 0 0 10px 0; color: #646970; font-size: 15px;">
+                                    Du kannst E-Mails auch manuell mit einem Shortcode schützen:
+                                </p>
+                                <code style="display: block; background: white; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 15px; color: #D63638;">
+                                    [germanfence_email]info@example.com[/germanfence_email]
+                                </code>
+                                <p style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
+                                    Verwende diesen Shortcode in Posts, Pages oder Widgets, um einzelne E-Mail-Adressen zu schützen.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- .HTACCESS GENERATOR Section -->
                     <div class="germanfence-section">
                         <h2>📄 .htaccess Sicherheits-Regeln</h2>
@@ -1356,7 +1443,7 @@ class GermanFence_Admin {
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                                 <!-- Linke Spalte: Optionen -->
                                 <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 15px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Sicherheitsregeln auswählen:</h3>
                                     
                                     <div style="margin-bottom: 15px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
@@ -1443,7 +1530,7 @@ class GermanFence_Admin {
                                 
                                 <!-- Rechte Spalte: Code-Feld -->
                                 <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 15px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
                                     <textarea id="htaccess-output" readonly 
                                         style="width: 100%; height: 347px; font-family: monospace; font-size: 15px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
                                         placeholder="Wähle Sicherheitsregeln und klicke auf 'generieren'..."
