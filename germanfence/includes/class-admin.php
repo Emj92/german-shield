@@ -1360,75 +1360,59 @@ class GermanFence_Admin {
                         
                         <div class="germanfence-subsetting" id="email-obfuscation-settings" style="<?php echo (isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
                             
-                            <!-- Email-Zähler -->
-                            <div style="background: linear-gradient(135deg, #22D6DD 0%, #1BA8B0 100%); color: white; padding: 20px; border-radius: 9px; margin-bottom: 20px; text-align: center;">
-                                <div style="font-size: 42px; font-weight: 700; margin-bottom: 5px;">
-                                    <?php 
-                                    if (class_exists('GermanFence_Email_Obfuscation')) {
-                                        $email_obfuscation = new GermanFence_Email_Obfuscation();
-                                        echo esc_html($email_obfuscation->count_emails_on_site()); 
-                                    } else {
-                                        echo '0';
-                                    }
-                                    ?>
-                                </div>
-                                <div style="font-size: 16px; opacity: 0.95;">
-                                    📧 E-Mail-Adressen gefunden
-                                </div>
-                                <div style="font-size: 15px; margin-top: 8px; opacity: 0.85;">
-                                    Diese werden automatisch geschützt
-                                </div>
-                            </div>
-                            
-                            <!-- Verschlüsselungsmethode -->
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 12px;"><strong style="font-size: 16px;">🔐 Verschlüsselungsmethode:</strong></label>
+                            <!-- 2-Spalten Layout: Links Methode, Rechts Zähler -->
+                            <div style="display: grid; grid-template-columns: 1fr 200px; gap: 30px; align-items: start;">
                                 
-                                <div style="display: flex; flex-direction: column; gap: 12px;">
-                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
-                                        <input type="radio" name="email_obfuscation_method" value="javascript" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'javascript'); ?> style="margin-top: 3px;">
-                                        <div>
-                                            <strong style="font-size: 16px; color: #1d2327;">JavaScript (Empfohlen)</strong>
-                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
-                                                Beste Schutz-Stufe. E-Mails werden Base64-kodiert und erst beim Laden der Seite entschlüsselt. Bots können die E-Mail-Adressen nicht im Quellcode finden.
-                                            </p>
-                                        </div>
-                                    </label>
+                                <!-- Linke Spalte: Verschlüsselungsmethode -->
+                                <div>
+                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #1d2327;">🔐 Verschlüsselungsmethode</h3>
                                     
-                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
-                                        <input type="radio" name="email_obfuscation_method" value="entities" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'entities'); ?> style="margin-top: 3px;">
-                                        <div>
-                                            <strong style="font-size: 16px; color: #1d2327;">HTML-Entities</strong>
-                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
-                                                Mittlerer Schutz. E-Mails werden in HTML-Entities umgewandelt (z.B. &#105;&#110;&#102;&#111;). Funktioniert auch ohne JavaScript.
-                                            </p>
-                                        </div>
-                                    </label>
+                                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
+                                            <input type="radio" name="email_obfuscation_method" value="javascript" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'javascript'); ?>>
+                                            <strong>JavaScript (Empfohlen)</strong>
+                                            <span style="color: #646970;">– Beste Schutz-Stufe, Base64-kodiert</span>
+                                        </label>
+                                        
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
+                                            <input type="radio" name="email_obfuscation_method" value="entities" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'entities'); ?>>
+                                            <strong>HTML-Entities</strong>
+                                            <span style="color: #646970;">– Mittlerer Schutz, ohne JavaScript</span>
+                                        </label>
+                                        
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
+                                            <input type="radio" name="email_obfuscation_method" value="css" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'css'); ?>>
+                                            <strong>CSS-Umkehrung</strong>
+                                            <span style="color: #646970;">– Guter Schutz, ohne JavaScript</span>
+                                        </label>
+                                    </div>
                                     
-                                    <label style="display: flex; align-items: flex-start; gap: 12px; padding: 15px; border: 2px solid #d9dde1; border-radius: 9px; cursor: pointer; transition: all 0.2s;" class="obfuscation-method-option">
-                                        <input type="radio" name="email_obfuscation_method" value="css" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'css'); ?> style="margin-top: 3px;">
-                                        <div>
-                                            <strong style="font-size: 16px; color: #1d2327;">CSS-Umkehrung</strong>
-                                            <p style="margin: 5px 0 0 0; color: #646970; font-size: 15px;">
-                                                Guter Schutz. E-Mails werden rückwärts geschrieben und per CSS wieder richtig angezeigt. Funktioniert auch ohne JavaScript.
-                                            </p>
-                                        </div>
-                                    </label>
+                                    <!-- Shortcode Hinweis (inline) -->
+                                    <p style="margin: 20px 0 0 0; color: #646970; font-size: 15px;">
+                                        💡 <strong>Shortcode:</strong> 
+                                        <code style="background: #F2F5F8; padding: 4px 8px; border-radius: 4px; font-family: monospace; color: #D63638;">[germanfence_email]info@example.com[/germanfence_email]</code>
+                                    </p>
                                 </div>
-                            </div>
-                            
-                            <!-- Shortcode-Hilfe -->
-                            <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; border-left: 4px solid #22D6DD;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #1d2327;">💡 Shortcode verwenden</h3>
-                                <p style="margin: 0 0 10px 0; color: #646970; font-size: 15px;">
-                                    Du kannst E-Mails auch manuell mit einem Shortcode schützen:
-                                </p>
-                                <code style="display: block; background: white; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 15px; color: #D63638;">
-                                    [germanfence_email]info@example.com[/germanfence_email]
-                                </code>
-                                <p style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
-                                    Verwende diesen Shortcode in Posts, Pages oder Widgets, um einzelne E-Mail-Adressen zu schützen.
-                                </p>
+                                
+                                <!-- Rechte Spalte: Email-Zähler -->
+                                <div style="text-align: center; padding: 20px 0;">
+                                    <div style="font-size: 48px; font-weight: 700; color: #22D6DD; line-height: 1;">
+                                        <?php 
+                                        if (class_exists('GermanFence_Email_Obfuscation')) {
+                                            $email_obfuscation = new GermanFence_Email_Obfuscation();
+                                            echo esc_html($email_obfuscation->count_emails_on_site()); 
+                                        } else {
+                                            echo '0';
+                                        }
+                                        ?>
+                                    </div>
+                                    <div style="font-size: 15px; color: #22D6DD; font-weight: 600; margin-top: 5px;">
+                                        📧 E-Mails gefunden
+                                    </div>
+                                    <div style="font-size: 15px; color: #646970; margin-top: 5px;">
+                                        werden geschützt
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

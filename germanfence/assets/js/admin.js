@@ -511,7 +511,7 @@
             log('Sende AJAX Request: germanfence_clear_history');
             
             $.ajax({
-                url: germanfenceAdmin.ajaxurl,
+                url: germanfenceAdmin.ajaxUrl,
                 type: 'POST',
                 data: {
                     action: 'germanfence_clear_history',
