@@ -1650,11 +1650,11 @@ class GermanFence_Admin {
                                     <!-- Tabs: E-Mail vs Key -->
                                     <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 1px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
                                         <button type="button" id="free-email-tab" class="germanfence-free-tab active" 
-                                            style="flex: 1; padding: 10px; background: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
+                                            style="flex: 1; padding: 10px; background: #ffffff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
                                             📧 Per E-Mail
                                         </button>
                                         <button type="button" id="free-key-tab" class="germanfence-free-tab" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
+                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
                                             🔑 Mit License-Key
                                         </button>
                                     </div>
