@@ -22,7 +22,7 @@ export default function ImpressumPage() {
             <h2>Angaben gemäß § 5 TMG</h2>
             <p>
               Erwin Meindl<br />
-              German Fence<br />
+              GermanCore<br />
               Oberensingerstraße 70<br />
               72622 Nürtingen
             </p>

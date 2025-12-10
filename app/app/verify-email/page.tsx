@@ -58,7 +58,7 @@ function VerifyEmailContent() {
           <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary shadow-lg shadow-primary/20">
             <Shield className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold">German Fence</h1>
+          <h1 className="text-3xl font-bold">GermanCore</h1>
           <p className="text-muted-foreground">E-Mail-Verifizierung</p>
         </div>
 
@@ -110,7 +110,7 @@ function VerifyEmailContent() {
 
         {/* Footer */}
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2024 German Fence. Alle Rechte vorbehalten.</p>
+          <p>© 2024 GermanCore. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </div>

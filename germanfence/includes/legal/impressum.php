@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     <h1 style="font-size: 32px; margin-bottom: 30px; color: #1d2327;">Impressum</h1>
     
     <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #22D6DD;">
-        <p style="margin: 0; font-size: 14px; color: #646970;">
+        <p style="margin: 0; font-size: 16px; color: #646970;">
             <strong>German Shield by GermanProWeb</strong><br>
             Angaben gemäß § 5 TMG
         </p>
@@ -72,7 +72,7 @@ if (!defined('ABSPATH')) {
     </section>
     
     <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #c3cbd5;">
-        <p style="text-align: center; color: #646970; font-size: 14px;">
+        <p style="text-align: center; color: #646970; font-size: 16px;">
             <strong>GermanProWeb - German Shield v0.93 Beta</strong><br>
             Website: <a href="https://german-shield.de" target="_blank" style="color: #22D6DD; text-decoration: underline;">german-shield.de</a><br>
             Kontakt: kontakt@germanproweb.de

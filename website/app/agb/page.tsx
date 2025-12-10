@@ -15,7 +15,7 @@ export default function AGBPage() {
             <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">§ 1 Geltungsbereich</h2>
             <p className="text-slate-700 dark:text-slate-300 mb-4">
               Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge über den Erwerb und die Nutzung 
-              der Software "GermanFence" (nachfolgend "Plugin" genannt) zwischen dem Betreiber Meindl Webdesign 
+              der Software "GermanFence" (nachfolgend "Plugin" genannt) zwischen dem Betreiber GermanCore 
               (nachfolgend "Anbieter" genannt) und dem Kunden (nachfolgend "Lizenznehmer" genannt).
             </p>
             <p className="text-slate-700 dark:text-slate-300">

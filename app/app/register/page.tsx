@@ -370,7 +370,7 @@ function RegisterForm() {
 
         {/* Footer */}
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2024 German Fence. Alle Rechte vorbehalten.</p>
+          <p>© 2024 GermanCore. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </div>

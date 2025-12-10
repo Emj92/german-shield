@@ -30,7 +30,7 @@ export default async function DownloadsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Plugin-Downloads</h1>
           <p className="text-muted-foreground">
-            Laden Sie die neueste Version des German Fence Plugins herunter
+            Laden Sie die neueste Version des GermanFence Plugins herunter
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export default async function DownloadsPage() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-6 w-6 text-[#22D6DD]" />
-                    German Fence v{latestRelease.version}
+                    GermanFence v{latestRelease.version}
                   </CardTitle>
                   <CardDescription>
                     Veröffentlicht am {new Date(latestRelease.releaseDate).toLocaleDateString('de-DE')}
@@ -111,7 +111,7 @@ export default async function DownloadsPage() {
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-6 w-6 text-[#22D6DD]" />
-                    German Fence Plugin v1.6.1
+                    GermanFence Plugin v1.6.1
                   </CardTitle>
                   <CardDescription>
                     Aktuelle Version herunterladen

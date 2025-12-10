@@ -33,7 +33,7 @@ export default function DatenschutzPage() {
             <p>
               Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
               Erwin Meindl<br />
-              German Fence<br />
+              GermanCore<br />
               Oberensingerstr 70<br />
               72622 Nürtingen<br /><br />
               Telefon: 0151 222 62 199<br />
@@ -110,7 +110,7 @@ export default function DatenschutzPage() {
             <p>
               Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
               Erwin Meindl<br />
-              German Fence<br />
+              GermanCore<br />
               Oberensingerstr 70<br />
               72622 Nürtingen<br /><br />
               Telefon: 0151 222 62 199<br />
@@ -286,7 +286,7 @@ export default function DatenschutzPage() {
               Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
             </p>
             <p>
-              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Erwin Meindl, German Fence, Oberensingerstr 70, 
+              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Erwin Meindl, GermanCore, Oberensingerstr 70, 
               72622 Nürtingen, E-Mail: support@germanfence.de) mittels einer eindeutigen Erklärung 
               (z. B. ein mit der Post versandter Brief oder E-Mail) über Ihren Entschluss, diesen Vertrag zu 
               widerrufen, informieren.

@@ -233,7 +233,7 @@ class GermanFence_GeoBlocking {
                             
                             <!-- Suchleiste -->
                             <div style="margin-bottom: 15px;">
-                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 14px;" <?php echo $is_locked ? 'disabled' : ''; ?>>
+                                <input type="text" id="country-search" placeholder="🔍 Land suchen..." style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 16px;" <?php echo $is_locked ? 'disabled' : ''; ?>>
                             </div>
                             
                             <div class="country-grid" id="geo-country-grid" style="max-height: 500px; overflow-y: auto; padding: 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px; <?php echo $is_locked ? 'opacity: 0.7;' : ''; ?>">

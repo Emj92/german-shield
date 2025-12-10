@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
                 .content { background: #ffffff; padding: 40px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px; }
                 .button { display: inline-block; background: #22D6DD; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
                 .button:hover { background: #1EBEC5; }
-                .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
+                .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 16px; }
               </style>
             </head>
             <body>
@@ -100,12 +100,12 @@ export async function POST(request: NextRequest) {
                     </a>
                   </div>
                   
-                  <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+                  <p style="color: #6b7280; font-size: 16px; margin-top: 30px;">
                     Falls der Button nicht funktioniert, kopiere diesen Link in deinen Browser:<br>
                     <a href="${verificationUrl}" style="color: #22D6DD; word-break: break-all;">${verificationUrl}</a>
                   </p>
                   
-                  <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">
+                  <p style="color: #6b7280; font-size: 16px; margin-top: 20px;">
                     Dieser Link ist 24 Stunden gültig.
                   </p>
                   
