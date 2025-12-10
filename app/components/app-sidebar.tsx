@@ -15,6 +15,7 @@ import {
   Sun,
   Key,
   UserCog,
+  Megaphone,
 } from 'lucide-react'
 
 import {
@@ -61,6 +62,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
     { name: 'Benutzerverwaltung', href: '/dashboard/admin/users', icon: UserCog },
     { name: 'Lizenzverwaltung', href: '/dashboard/admin/licenses', icon: Key },
     { name: 'Support-Tickets', href: '/dashboard/admin/tickets', icon: MessageSquare },
+    { name: 'Infoleisten', href: '/dashboard/admin/infobanner', icon: Megaphone },
     { name: 'Einstellungen', href: '/dashboard/admin/settings', icon: Settings },
   ]
 

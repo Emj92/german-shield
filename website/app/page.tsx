@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { BuyButton } from "@/components/BuyButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { InfoBanner } from "@/components/info-banner";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
@@ -15,7 +16,12 @@ export default function Home() {
   const { t } = useLanguage()
   
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
+    <div className="min-h-screen relative">
+      {/* Animated Background */}
+      <div className="animated-background" />
+      
+      {/* Info Banner */}
+      <InfoBanner />
       {/* Header/Nav */}
       <header className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-200 dark:border-slate-800">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">

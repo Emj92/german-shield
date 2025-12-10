@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Search, Mail, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Search, Mail, AlertCircle, CheckCircle2, Trash2, Ban, MoreHorizontal } from 'lucide-react'
 import {
   Table,
   TableBody,
@@ -20,6 +20,8 @@ interface User {
   name: string | null
   role: 'ADMIN' | 'USER'
   createdAt: string
+  emailVerified: boolean
+  suspended?: boolean
   licenses: {
     id: string
     licenseKey: string
@@ -53,6 +55,34 @@ export default function AdminUsersContent() {
       console.error('Failed to fetch users:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteUser = async (userId: string, email: string) => {
+    if (!confirm(`Benutzer "${email}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`)) return
+    
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, { method: 'DELETE' })
+      if (res.ok) {
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to delete user:', error)
+    }
+  }
+
+  const handleSuspendUser = async (userId: string, currentlySuspended: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/users/${userId}/suspend`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ suspended: !currentlySuspended })
+      })
+      if (res.ok) {
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to suspend user:', error)
     }
   }
 
@@ -117,12 +147,13 @@ export default function AdminUsersContent() {
                   <TableHead className="font-semibold">Domains</TableHead>
                   <TableHead className="font-semibold">Tickets</TableHead>
                   <TableHead className="font-semibold">Registriert</TableHead>
+                  <TableHead className="font-semibold text-right">Aktionen</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-slate-500">
+                    <TableCell colSpan={7} className="text-center py-8 text-slate-500">
                       Keine Benutzer gefunden
                     </TableCell>
                   </TableRow>
@@ -207,6 +238,28 @@ export default function AdminUsersContent() {
                             year: 'numeric'
                           })}
                         </span>
+                      </TableCell>
+
+                      {/* Aktionen */}
+                      <TableCell className="text-right">
+                        {user.role !== 'ADMIN' && (
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              onClick={() => handleSuspendUser(user.id, user.suspended || false)}
+                              className="p-2 text-slate-500"
+                              title={user.suspended ? 'Entsperren' : 'Sperren'}
+                            >
+                              <Ban className={`h-4 w-4 ${user.suspended ? 'text-orange-500' : ''}`} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(user.id, user.email)}
+                              className="p-2 text-slate-500"
+                              title="Löschen"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))

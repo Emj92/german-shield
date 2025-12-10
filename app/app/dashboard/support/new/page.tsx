@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +17,14 @@ export default function NewSupportTicketPage() {
   const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [user, setUser] = useState<{ email: string; role: string } | null>(null)
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => setUser(data.user))
+      .catch(console.error)
+  }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
@@ -73,15 +82,16 @@ export default function NewSupportTicketPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-3xl py-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Neues Support-Ticket</h1>
-        <p className="text-muted-foreground">
-          Beschreiben Sie Ihr Anliegen so detailliert wie möglich
-        </p>
-      </div>
+    <DashboardLayout user={user || { email: '', role: 'USER' }}>
+      <div className="p-12 max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Neues Support-Ticket</h1>
+          <p className="text-muted-foreground">
+            Beschreiben Sie Ihr Anliegen so detailliert wie möglich
+          </p>
+        </div>
 
-      <Card>
+        <Card>
         <CardHeader>
           <CardTitle>Ticket-Informationen</CardTitle>
           <CardDescription>
@@ -192,14 +202,15 @@ export default function NewSupportTicketPage() {
               >
                 Abbrechen
               </Button>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading} className="bg-[#22D6DD] hover:bg-[#22D6DD]/90">
                 {isLoading ? 'Wird erstellt...' : 'Ticket erstellen'}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }
 
