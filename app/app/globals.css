@@ -116,18 +116,37 @@ textarea:not(:placeholder-shown) {
     font-size: 16px;
   }
   
-  /* Base font size 16px für alle Textelemente */
-  p, span, label, td, th, li, div {
+  /* Base font size 16px für Portal */
+  html {
     font-size: 16px;
   }
   
-  /* Kleinere Elemente explizit */
+  p, span, label, td, th, li, a, button {
+    font-size: 16px;
+  }
+  
+  /* Tabellen */
+  table, .text-base {
+    font-size: 16px;
+  }
+  
+  /* Inputs */
+  input, textarea, select {
+    font-size: 16px;
+  }
+  
+  /* Nur wenn explizit klein */
   small, .text-xs {
-    font-size: 12px;
+    font-size: 12px !important;
   }
   
   .text-sm {
-    font-size: 14px;
+    font-size: 14px !important;
+  }
+  
+  /* Muted text */
+  .text-muted-foreground {
+    font-size: 16px;
   }
 }
 

@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 
 class GermanFence_Telemetry {
     
-    private $portal_url = 'http://localhost:3000'; // Lokal testen, später auf https://portal.germanfence.de ändern
+    private $portal_url = 'https://app.germanfence.de';
     private $enabled = false;
     
     public function __construct() {

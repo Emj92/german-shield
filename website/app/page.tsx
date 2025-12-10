@@ -9,6 +9,7 @@ import { BuyButton } from "@/components/BuyButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { InfoBanner } from "@/components/info-banner";
+import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
@@ -16,9 +17,9 @@ export default function Home() {
   const { t } = useLanguage()
   
   return (
-    <div className="min-h-screen relative">
-      {/* Animated Background */}
-      <div className="animated-background" />
+    <div className="min-h-screen relative bg-[#FAFAFA] dark:bg-slate-950">
+      {/* Animated Background - Geometrische Formen */}
+      <AnimatedBackground />
       
       {/* Info Banner */}
       <InfoBanner />
