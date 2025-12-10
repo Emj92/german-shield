@@ -1433,9 +1433,9 @@ input[type="range"] {
     width: 100%;
     height: 8px;
     border-radius: 9px;
-    background: #ffffff;
+    background: #d9dde1;
     outline: none;
-    opacity: 0.9;
+    opacity: 1;
     transition: opacity 0.2s;
 }
 
@@ -1486,22 +1486,22 @@ input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 8px;
     cursor: pointer;
-    background: linear-gradient(to right, #22D6DD 0%, #22D6DD var(--value), #ddd var(--value), #ddd 100%);
-    border-radius: 5px;
+    background: linear-gradient(to right, #22D6DD 0%, #22D6DD var(--value), #d9dde1 var(--value), #d9dde1 100%);
+    border-radius: 9px;
 }
 
 input[type="range"]::-moz-range-track {
     width: 100%;
     height: 8px;
     cursor: pointer;
-    background: #ddd;
-    border-radius: 5px;
+    background: #d9dde1;
+    border-radius: 9px;
 }
 
 input[type="range"]::-moz-range-progress {
     background: #22D6DD;
     height: 8px;
-    border-radius: 5px;
+    border-radius: 9px;
 }
 
 /* Dark Mode für Slider */

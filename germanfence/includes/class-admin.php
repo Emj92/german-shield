@@ -1173,7 +1173,7 @@ class GermanFence_Admin {
                 <div class="germanfence-tab-content <?php echo $active_tab === 'notices' ? 'active' : ''; ?>" id="tab-notices">
                     <div class="germanfence-section">
                         <h2>🔕 WordPress Spam blockieren</h2>
-                        <p class="description" style="margin-bottom: 20px;">
+                        <p class="description" style="margin-bottom: 20px; font-size: 15px;">
                             Blockiere nervige Update-Hinweise, Plugin-Werbung und andere Admin-Benachrichtigungen für ein sauberes Dashboard.
                         </p>
                         
@@ -1236,7 +1236,7 @@ class GermanFence_Admin {
                         
                         <div style="padding: 20px 0; margin-top: 20px;">
                             <h3 style="margin-top: 0; color: #22D6DD;">⚠️ Hinweis</h3>
-                            <p style="color: #50575e; margin: 0;">
+                            <p style="color: #50575e; margin: 0; font-size: 15px;">
                                 Kritische Sicherheits- und Fehler-Meldungen werden NICHT blockiert, um die Sicherheit deiner Website zu gewährleisten.
                             </p>
                         </div>
@@ -1861,7 +1861,7 @@ class GermanFence_Admin {
                     <!-- Performance-Optimierung Section -->
                     <div class="germanfence-section">
                         <h2>⚡ Performance-Optimierung</h2>
-                        <p class="description" style="margin-bottom: 20px;">
+                        <p class="description" style="margin-bottom: 20px; font-size: 15px;">
                             Optimiere die Ladegeschwindigkeit durch die richtige Script-Position.
                         </p>
                         
