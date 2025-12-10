@@ -3,7 +3,7 @@ import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Shield, AlertTriangle, CheckCircle, Activity, Key, Users, Globe } from 'lucide-react'
+import { Shield, AlertTriangle, CheckCircle, Activity, Key, Users, Globe, MapPin, Ban, TrendingUp } from 'lucide-react'
 import { prisma } from '@/lib/db'
 
 type PackageStats = {
@@ -13,14 +13,28 @@ type PackageStats = {
   AGENCY: number
 }
 
+type BlockMethodStats = {
+  method: string
+  count: number
+}
+
+type CountryStats = {
+  country: string
+  count: number
+}
+
 type AdminDashboardData = {
   totalUsers: number
   totalInstallations: number
   totalDomains: number
   recentTickets: number
   totalBlocks: number
+  todayBlocks: number
+  yesterdayBlocks: number
   packageStats: PackageStats
   totalLicenses: number
+  blockMethods: BlockMethodStats[]
+  topCountries: CountryStats[]
 }
 
 type UserDashboardData = {
@@ -32,17 +46,38 @@ type UserDashboardData = {
 
 async function getDashboardData(userId: string, isAdmin: boolean): Promise<AdminDashboardData | UserDashboardData> {
   if (isAdmin) {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+
     // Admin: Globale Statistiken
-    const [totalUsers, totalInstallations, totalDomains, recentTickets, totalBlocks, licenses] = await Promise.all([
+    const [totalUsers, totalInstallations, totalDomains, recentTickets, totalBlocks, todayBlocks, yesterdayBlocks, licenses, blockMethodsRaw, countriesRaw] = await Promise.all([
       prisma.user.count(),
       prisma.installation.count(),
-      prisma.licenseDomain.count(), // Aktivierte Domains = Installationen
+      prisma.licenseDomain.count(),
       prisma.supportTicket.count({ where: { status: 'OPEN' } }),
       prisma.telemetryEvent.count(),
+      prisma.telemetryEvent.count({ where: { timestamp: { gte: today } } }),
+      prisma.telemetryEvent.count({ where: { timestamp: { gte: yesterday, lt: today } } }),
       prisma.license.findMany({ select: { packageType: true } }),
+      // Top Blockgründe
+      prisma.telemetryEvent.groupBy({
+        by: ['blockMethod'],
+        _count: { blockMethod: true },
+        orderBy: { _count: { blockMethod: 'desc' } },
+        take: 5,
+      }),
+      // Top Länder
+      prisma.telemetryEvent.groupBy({
+        by: ['countryCode'],
+        _count: { countryCode: true },
+        orderBy: { _count: { countryCode: 'desc' } },
+        take: 5,
+        where: { countryCode: { not: null } },
+      }),
     ])
 
-    // Paket-Statistiken berechnen
     const packageStats: PackageStats = {
       FREE: licenses.filter(l => l.packageType === 'FREE').length,
       SINGLE: licenses.filter(l => l.packageType === 'SINGLE').length,
@@ -50,17 +85,30 @@ async function getDashboardData(userId: string, isAdmin: boolean): Promise<Admin
       AGENCY: licenses.filter(l => l.packageType === 'AGENCY').length,
     }
 
+    const blockMethods: BlockMethodStats[] = blockMethodsRaw.map(b => ({
+      method: b.blockMethod,
+      count: b._count.blockMethod,
+    }))
+
+    const topCountries: CountryStats[] = countriesRaw.map(c => ({
+      country: c.countryCode || 'Unbekannt',
+      count: c._count.countryCode,
+    }))
+
     return {
       totalUsers,
       totalInstallations,
       totalDomains,
       recentTickets,
       totalBlocks,
+      todayBlocks,
+      yesterdayBlocks,
       packageStats,
       totalLicenses: licenses.length,
+      blockMethods,
+      topCountries,
     }
   } else {
-    // User: Persönliche Statistiken
     const [installations, invoices, tickets, licenses] = await Promise.all([
       prisma.installation.count({ where: { userId } }),
       prisma.invoice.count({ where: { userId } }),
@@ -75,6 +123,43 @@ async function getDashboardData(userId: string, isAdmin: boolean): Promise<Admin
       licenses,
     }
   }
+}
+
+// Hilfsfunktion für Ländernamen
+function getCountryName(code: string): string {
+  const countries: Record<string, string> = {
+    'DE': '🇩🇪 Deutschland',
+    'US': '🇺🇸 USA',
+    'CN': '🇨🇳 China',
+    'RU': '🇷🇺 Russland',
+    'IN': '🇮🇳 Indien',
+    'BR': '🇧🇷 Brasilien',
+    'FR': '🇫🇷 Frankreich',
+    'GB': '🇬🇧 UK',
+    'NL': '🇳🇱 Niederlande',
+    'PL': '🇵🇱 Polen',
+    'UA': '🇺🇦 Ukraine',
+    'VN': '🇻🇳 Vietnam',
+    'ID': '🇮🇩 Indonesien',
+    'TR': '🇹🇷 Türkei',
+    'PK': '🇵🇰 Pakistan',
+  }
+  return countries[code] || `🌍 ${code}`
+}
+
+// Hilfsfunktion für Blockgrund-Namen
+function getBlockMethodName(method: string): string {
+  const methods: Record<string, string> = {
+    'honeypot': '🍯 Honeypot',
+    'timestamp': '⏱️ Zeitstempel',
+    'geo': '🌍 GEO-Blocking',
+    'phrase': '🔤 Phrasen',
+    'user_agent': '🤖 User-Agent',
+    'url': '🔗 URL-Filter',
+    'javascript': '📜 JavaScript',
+    'rate_limit': '⚡ Rate-Limit',
+  }
+  return methods[method] || method
 }
 
 export default async function DashboardPage() {
@@ -148,38 +233,131 @@ export default async function DashboardPage() {
               </Card>
             </div>
 
-            {/* Lizenz-Statistiken */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Key className="h-5 w-5 text-[#22D6DD]" />
-                  Lizenz-Übersicht
-                </CardTitle>
-                <CardDescription>
-                  {'totalLicenses' in data ? data.totalLicenses : 0} Lizenzen insgesamt
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
-                    <Badge className="bg-slate-100 text-slate-700 mb-2">FREE</Badge>
-                    <div className="text-2xl font-bold">{'packageStats' in data ? data.packageStats.FREE : 0}</div>
+            {/* Telemetrie-Analyse */}
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Top Blockgründe */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Ban className="h-5 w-5 text-[#EC4899]" />
+                    Top Blockgründe
+                  </CardTitle>
+                  <CardDescription>
+                    Häufigste Spam-Erkennungsmethoden
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {'blockMethods' in data && data.blockMethods.length > 0 ? (
+                      data.blockMethods.map((item, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                          <span className="font-medium">{getBlockMethodName(item.method)}</span>
+                          <Badge variant="secondary" className="bg-[#EC4899]/10 text-[#EC4899]">
+                            {item.count.toLocaleString()}
+                          </Badge>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-muted-foreground text-center py-4">Noch keine Daten</p>
+                    )}
                   </div>
-                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
-                    <Badge className="bg-[#22D6DD]/10 text-[#22D6DD] mb-2">SINGLE</Badge>
-                    <div className="text-2xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.SINGLE : 0}</div>
+                </CardContent>
+              </Card>
+
+              {/* Top Ursprungsländer */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-[#22D6DD]" />
+                    Top Ursprungsländer
+                  </CardTitle>
+                  <CardDescription>
+                    Spam-Herkunft nach Land
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {'topCountries' in data && data.topCountries.length > 0 ? (
+                      data.topCountries.map((item, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                          <span className="font-medium">{getCountryName(item.country)}</span>
+                          <Badge variant="secondary" className="bg-[#22D6DD]/10 text-[#22D6DD]">
+                            {item.count.toLocaleString()}
+                          </Badge>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-muted-foreground text-center py-4">Noch keine Daten</p>
+                    )}
                   </div>
-                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
-                    <Badge className="bg-[#22D6DD]/20 text-[#22D6DD] mb-2">FREELANCER</Badge>
-                    <div className="text-2xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.FREELANCER : 0}</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Trend & Lizenz-Statistiken */}
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Heute vs. Gestern */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-green-500" />
+                    Trend
+                  </CardTitle>
+                  <CardDescription>
+                    Spam-Aktivität im Vergleich
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <p className="text-sm text-muted-foreground mb-1">Heute</p>
+                      <div className="text-3xl font-bold text-[#22D6DD]">
+                        {'todayBlocks' in data ? data.todayBlocks.toLocaleString() : 0}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <p className="text-sm text-muted-foreground mb-1">Gestern</p>
+                      <div className="text-3xl font-bold text-slate-500">
+                        {'yesterdayBlocks' in data ? data.yesterdayBlocks.toLocaleString() : 0}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
-                    <Badge className="bg-[#EC4899]/10 text-[#EC4899] mb-2">AGENCY</Badge>
-                    <div className="text-2xl font-bold text-[#EC4899]">{'packageStats' in data ? data.packageStats.AGENCY : 0}</div>
+                </CardContent>
+              </Card>
+
+              {/* Lizenz-Übersicht */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Key className="h-5 w-5 text-[#22D6DD]" />
+                    Lizenz-Übersicht
+                  </CardTitle>
+                  <CardDescription>
+                    {'totalLicenses' in data ? data.totalLicenses : 0} Lizenzen insgesamt
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <Badge className="bg-slate-100 text-slate-700 mb-1 text-xs">FREE</Badge>
+                      <div className="text-xl font-bold">{'packageStats' in data ? data.packageStats.FREE : 0}</div>
+                    </div>
+                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <Badge className="bg-[#22D6DD]/10 text-[#22D6DD] mb-1 text-xs">SINGLE</Badge>
+                      <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.SINGLE : 0}</div>
+                    </div>
+                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <Badge className="bg-[#22D6DD]/20 text-[#22D6DD] mb-1 text-xs">FREELANCER</Badge>
+                      <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.FREELANCER : 0}</div>
+                    </div>
+                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                      <Badge className="bg-[#EC4899]/10 text-[#EC4899] mb-1 text-xs">AGENCY</Badge>
+                      <div className="text-xl font-bold text-[#EC4899]">{'packageStats' in data ? data.packageStats.AGENCY : 0}</div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </>
         ) : (
           // User Dashboard
@@ -219,39 +397,6 @@ export default async function DashboardPage() {
           </div>
         )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Schnellzugriff</CardTitle>
-            <CardDescription>
-              Die wichtigsten Funktionen für Sie
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="/dashboard/downloads"
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-card-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                <Shield className="h-5 w-5" />
-                <span>Plugin herunterladen</span>
-              </a>
-              <a
-                href="/dashboard/support"
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-card-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                <AlertTriangle className="h-5 w-5" />
-                <span>Support kontaktieren</span>
-              </a>
-              <a
-                href="/dashboard/invoices"
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-card-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                <CheckCircle className="h-5 w-5" />
-                <span>Rechnungen ansehen</span>
-              </a>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </DashboardLayout>
   )
