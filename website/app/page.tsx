@@ -10,6 +10,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { InfoBanner } from "@/components/info-banner";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { CookieBanner } from "@/components/CookieBanner";
 import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
@@ -795,6 +796,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      
+      {/* Cookie Banner */}
+      <CookieBanner />
     </div>
   );
 }
