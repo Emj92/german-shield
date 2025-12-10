@@ -976,9 +976,9 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 }
 
 .setting-row input[type="number"]:focus {
-    outline: none;
-    border-color: #22D6DD;
-    box-shadow: 0 0 0 1px #22D6DD;
+    outline: none !important;
+    border-color: #d9dde1 !important;
+    box-shadow: none !important;
 }
 
 /* Country Grid */
@@ -1027,6 +1027,19 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 .country-item input[type="checkbox"] {
     margin: 0;
     cursor: pointer;
+    accent-color: #22D6DD !important;
+}
+
+/* ALLE Checkboxen im Plugin - Türkiser Haken */
+.germanfence-wrapper input[type="checkbox"] {
+    accent-color: #22D6DD !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.germanfence-wrapper input[type="checkbox"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .country-flag {
@@ -1117,9 +1130,9 @@ body.germanfence-dark-mode [style*="border: 2px solid #22D6DD"] {
 }
 
 .phrase-item input[type="text"]:focus {
-    outline: none;
-    border-color: #22D6DD;
-    box-shadow: 0 0 0 1px #22D6DD;
+    outline: none !important;
+    border-color: #d9dde1 !important;
+    box-shadow: none !important;
 }
 
 /* Textarea Focus - KEIN blauer Rahmen */
