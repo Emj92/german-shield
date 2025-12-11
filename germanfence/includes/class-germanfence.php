@@ -248,26 +248,23 @@ class GermanFence {
             }
         }
         
-        // JavaScript
-        if (!empty($settings['javascript_check'])) {
+        // JavaScript, User-Agent und HTTP Headers - Teil des Basisschutzes
+        if (!empty($settings['basic_protection_enabled'])) {
+            // JavaScript Check
             $js_check = $this->antispam->check_javascript($data);
             if (!$js_check['valid']) {
                 $js_check['block_type'] = 'javascript';
                 return $js_check;
             }
-        }
-        
-        // User-Agent
-        if (!empty($settings['user_agent_check'])) {
+            
+            // User-Agent Check
             $ua_check = $this->antispam->check_user_agent();
             if (!$ua_check['valid']) {
                 $ua_check['block_type'] = 'user_agent';
                 return $ua_check;
             }
-        }
-        
-        // HTTP Headers - nur wenn Basisschutz aktiviert
-        if (!empty($settings['basic_protection_enabled'])) {
+            
+            // HTTP Headers Check
             $header_check = $this->antispam->check_http_headers();
             if (!$header_check['valid']) {
                 $header_check['block_type'] = 'headers';

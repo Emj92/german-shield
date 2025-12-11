@@ -29,12 +29,9 @@ class GermanFence_FormDetector {
         // CF7 Fehlermeldung anpassen
         add_filter('wpcf7_display_message', array($this, 'cf7_custom_message'), 10, 2);
         
-        // Elementor Pro Forms - MEHRERE Hooks für maximalen Schutz!
+        // Elementor Pro Forms - SOFORTIGER STOP bei Spam!
         add_action('elementor_pro/forms/validation', array($this, 'validate_elementor_form'), 10, 2);
         add_filter('elementor_pro/forms/render/item', array($this, 'protect_elementor_form'), 10, 3);
-        // KRITISCH: Diese Hooks stoppen den E-Mail-Versand WIRKLICH
-        add_action('elementor_pro/forms/new_record', array($this, 'check_elementor_spam_flag'), 1, 2);
-        add_action('elementor_pro/forms/process', array($this, 'stop_elementor_if_spam'), 1, 3);
         
         // Divi Contact Form
         add_filter('et_pb_contact_form_content', array($this, 'protect_divi_form'), 10, 3);
@@ -163,12 +160,6 @@ class GermanFence_FormDetector {
         return $item;
     }
     
-    /**
-     * Elementor Spam Flag - statisch um zwischen Hooks zu kommunizieren
-     */
-    private static $elementor_is_spam = false;
-    private static $elementor_spam_message = '';
-    
     public function validate_elementor_form($record, $ajax_handler) {
         $data = $record->get('fields');
         
@@ -186,42 +177,14 @@ class GermanFence_FormDetector {
         if (!$validation['valid']) {
             GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['message']);
             
-            // KRITISCH: Statisches Flag setzen für andere Hooks
-            self::$elementor_is_spam = true;
-            self::$elementor_spam_message = $validation['message'];
-            
-            // Fehlermeldung setzen
-            $ajax_handler->add_error_message($validation['message']);
-            $ajax_handler->set_success(false);
-        }
-    }
-    
-    /**
-     * Stoppt Elementor-Verarbeitung wenn Spam erkannt
-     */
-    public function stop_elementor_if_spam($record, $ajax_handler, $form) {
-        if (self::$elementor_is_spam) {
-            GermanFence_Logger::log('[Elementor] 🛑 Process gestoppt wegen Spam');
-            
-            // Alle Actions leeren
-            $record->set('actions', array());
-            
-            // Response setzen und SOFORT beenden
-            $ajax_handler->add_error_message(self::$elementor_spam_message);
-            $ajax_handler->set_success(false);
-            $ajax_handler->send();
-            
-            // KRITISCH: PHP-Ausführung beenden!
-            exit;
-        }
-    }
-    
-    /**
-     * Prüft Spam-Flag bei neuem Record
-     */
-    public function check_elementor_spam_flag($record, $ajax_handler) {
-        if (self::$elementor_is_spam) {
-            GermanFence_Logger::log('[Elementor] 🛑 New Record abgebrochen wegen Spam');
+            // SOFORTIGER STOP - kein Warten auf andere Hooks!
+            // Sende Error-Response und beende PHP
+            wp_send_json_error(array(
+                'message' => $validation['message'],
+                'errors' => array($validation['message']),
+                'data' => array()
+            ));
+            // wp_send_json_error ruft bereits exit() auf, aber zur Sicherheit:
             exit;
         }
     }

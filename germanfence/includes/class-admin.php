@@ -742,7 +742,7 @@ class GermanFence_Admin {
                                 </label>
                                 <div class="setting-info">
                                     <h3>Basis-Schutz aktivieren</h3>
-                                    <p>Rate-Limiting, Duplikat-Check und HTTP-Header-Validierung (alle 3 auf einmal).</p>
+                                    <p>Rate-Limiting, Duplikat-Check, HTTP-Header, JavaScript-Prüfung und User-Agent-Erkennung (alle 5 auf einmal).</p>
                                 </div>
                             </div>
                         </div>
@@ -825,39 +825,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                    <!-- SEKTION 2: JavaScript & User-Agent Prüfung -->
-                    <div class="germanfence-section">
-                        <h2>🔍 JavaScript & User-Agent Prüfung</h2>
-                        <p class="description" style="margin-bottom: 20px;">
-                            Prüfung auf aktiviertes JavaScript und Erkennung bekannter Bot User-Agents.
-                        </p>
-                        
-                        <div class="germanfence-settings-grid">
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="javascript_check" value="1" <?php checked(isset($settings['javascript_check']) && $settings['javascript_check'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>JavaScript-Prüfung</h3>
-                                    <p>Stellt sicher, dass JavaScript aktiviert ist. Blockiert einfache Bots.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                    <input type="checkbox" name="user_agent_check" value="1" <?php checked(isset($settings['user_agent_check']) && $settings['user_agent_check'] === '1'); ?>>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <div class="setting-info">
-                                    <h3>User-Agent-Prüfung</h3>
-                                    <p>Blockiert bekannte Bot User-Agents und verdächtige Clients.</p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    <!-- SEKTION 3: Timestamp & Tippgeschwindigkeit -->
+                    <!-- SEKTION 2: Timestamp & Tippgeschwindigkeit -->
                     <div class="germanfence-section">
                         <h2>⏱️ Zeit-basierte Prüfungen</h2>
                         <p class="description" style="margin-bottom: 20px;">

@@ -61,13 +61,13 @@ class GermanFence_Telemetry {
     }
     
     /**
-     * Sendet Telemetrie-Daten SOFORT (non-blocking)
+     * Sendet Telemetrie-Daten SOFORT (blocking mit kurzem Timeout)
      */
     private function send_immediately($telemetry_data) {
-        // Non-blocking HTTP POST
+        // Blocking HTTP POST mit kurzem Timeout
         $response = wp_remote_post($this->portal_url . '/api/telemetry', array(
-            'timeout' => 0.5, // Kurzes Timeout für non-blocking
-            'blocking' => false, // Non-blocking!
+            'timeout' => 5, // 5 Sekunden Timeout
+            'blocking' => true, // Blocking für zuverlässige Übertragung
             'headers' => array(
                 'Content-Type' => 'application/json',
                 'X-Plugin-Version' => GERMANFENCE_VERSION,
@@ -75,7 +75,13 @@ class GermanFence_Telemetry {
             'body' => json_encode($telemetry_data),
         ));
         
-        GermanFence_Logger::log('[TELEMETRY] ✅ Event gesendet (non-blocking)');
+        if (is_wp_error($response)) {
+            GermanFence_Logger::log('[TELEMETRY] ❌ Fehler: ' . $response->get_error_message());
+        } else {
+            $code = wp_remote_retrieve_response_code($response);
+            $body = wp_remote_retrieve_body($response);
+            GermanFence_Logger::log('[TELEMETRY] ✅ Gesendet! HTTP ' . $code . ' - ' . substr($body, 0, 100));
+        }
     }
     
     /**
