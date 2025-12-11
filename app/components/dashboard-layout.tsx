@@ -5,7 +5,7 @@ import { AppSidebar } from '@/components/app-sidebar'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Button } from '@/components/ui/button'
-import { Download } from 'lucide-react'
+import { Download, ExternalLink } from 'lucide-react'
 import { InfoBanner } from '@/components/info-banner'
 
 interface DashboardLayoutProps {
@@ -30,6 +30,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           <div className="flex justify-end items-center gap-3 px-6 border-b border-[#d9dde1] dark:border-slate-700 bg-white/80 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
             <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer">
               <Button size="sm" className="bg-[#D81B60] hover:bg-[#D81B60] text-white transition-transform hover:-translate-y-0.5">
+                <ExternalLink className="mr-2 h-4 w-4" />
                 zur Website
               </Button>
             </a>

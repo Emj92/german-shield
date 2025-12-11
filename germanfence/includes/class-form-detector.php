@@ -177,12 +177,18 @@ class GermanFence_FormDetector {
         if (!$validation['valid']) {
             GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['message']);
             
-            // KRITISCH: Exception werfen um E-Mail-Versand zu STOPPEN
-            // set_success(false) allein reicht bei Elementor NICHT aus!
+            // Fehlermeldung setzen
             $ajax_handler->add_error_message($validation['message']);
             
-            // Exception werfen - das ist der EINZIGE Weg, Elementor wirklich zu stoppen
-            throw new \Exception($validation['message']);
+            // KRITISCH: Alle Actions entfernen um E-Mail-Versand zu stoppen
+            // Dies ist der saubere Weg ohne 500-Error
+            $record->set('actions', array());
+            
+            // Zusätzlich: Flag setzen für andere Hooks
+            $ajax_handler->set_success(false);
+            
+            // Marker für späteren Hook
+            add_filter('elementor_pro/forms/actions/send_email/should_send', '__return_false');
         }
     }
     

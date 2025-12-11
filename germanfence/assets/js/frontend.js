@@ -132,7 +132,8 @@
         
         $(document).on('keydown', 'form input[type="text"], form input[type="email"], form textarea', function(e) {
             // Nur sichtbare Zeichen zählen (keine Ctrl/Alt/Shift etc.)
-            if (e.key.length === 1) {
+            // Absicherung: e.key kann in alten Browsern undefined sein
+            if (e.key && e.key.length === 1) {
                 const now = Date.now();
                 keyPresses++;
                 

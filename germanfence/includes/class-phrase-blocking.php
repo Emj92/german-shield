@@ -37,12 +37,26 @@ class GermanFence_PhraseBlocking {
         
         $blocked_phrases = $this->settings['blocked_phrases'] ?? array();
         
+        // Falls als String gespeichert (komma- oder zeilengetrennt), in Array umwandeln
+        if (is_string($blocked_phrases)) {
+            if (strpos($blocked_phrases, "\n") !== false) {
+                $blocked_phrases = array_filter(array_map('trim', explode("\n", $blocked_phrases)));
+            } elseif (strpos($blocked_phrases, ',') !== false) {
+                $blocked_phrases = array_filter(array_map('trim', explode(',', $blocked_phrases)));
+            } else {
+                $blocked_phrases = array_filter(array(trim($blocked_phrases)));
+            }
+        }
+        
         if (empty($blocked_phrases)) {
+            GermanFence_Logger::log('[PHRASE] Keine Phrasen konfiguriert');
             return array(
                 'valid' => true,
                 'message' => 'No phrases blocked'
             );
         }
+        
+        GermanFence_Logger::log('[PHRASE] Prüfe ' . count($blocked_phrases) . ' Phrasen');
         
         // Collect all text content from submission
         $content = $this->collect_content($data);
