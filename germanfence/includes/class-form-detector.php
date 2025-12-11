@@ -177,15 +177,11 @@ class GermanFence_FormDetector {
         if (!$validation['valid']) {
             GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['message']);
             
-            // Fehlermeldung setzen
+            // Fehlermeldung unter dem Formular anzeigen (nicht bei einzelnen Feldern)
             $ajax_handler->add_error_message($validation['message']);
             
-            // Alle Felder als fehlerhaft markieren (stoppt E-Mail-Versand)
-            $fields = $record->get('fields');
-            foreach ($fields as $field_id => $field) {
-                $ajax_handler->add_error($field_id, $validation['message']);
-                break; // Nur erstes Feld
-            }
+            // Formular als fehlgeschlagen markieren (stoppt E-Mail-Versand)
+            $ajax_handler->set_success(false);
         }
     }
     
