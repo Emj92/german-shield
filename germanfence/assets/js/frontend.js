@@ -129,6 +129,9 @@
         let keyTimes = [];
         let firstKeyTime = null;
         let lastKeyTime = null;
+        let lastKey = null;
+        let repeatCount = 0;
+        let suspiciousKeyRepeat = false;
         
         $(document).on('keydown', 'form input[type="text"], form input[type="email"], form textarea', function(e) {
             // Nur sichtbare Zeichen zählen (keine Ctrl/Alt/Shift etc.)
@@ -136,6 +139,24 @@
             if (e.key && e.key.length === 1) {
                 const now = Date.now();
                 keyPresses++;
+                
+                // Key-Repeat-Erkennung: Gleiche Taste mehrfach hintereinander
+                if (e.key === lastKey && lastKeyTime !== null) {
+                    const interval = now - lastKeyTime;
+                    // Key-Repeat hat typischerweise 30-60ms Intervalle
+                    if (interval < 80) {
+                        repeatCount++;
+                        // Mehr als 10 schnelle Wiederholungen = verdächtig
+                        if (repeatCount > 10) {
+                            suspiciousKeyRepeat = true;
+                        }
+                    } else {
+                        repeatCount = 0;
+                    }
+                } else {
+                    repeatCount = 0;
+                    lastKey = e.key;
+                }
                 
                 if (firstKeyTime === null) {
                     firstKeyTime = now;
@@ -276,6 +297,28 @@
                     .attr('type', 'hidden')
                     .attr('name', 'gs_typing_keys')
                     .val(keyTimes.length)
+            );
+            
+            // Key-Repeat Flag senden
+            $form.append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'gs_key_repeat')
+                    .val(suspiciousKeyRepeat ? '1' : '0')
+            );
+            
+            // Varianz der Tippgeschwindigkeit (niedrige Varianz = Bot-verdächtig)
+            let typingVariance = 0;
+            if (keyTimes.length > 3) {
+                const mean = keyTimes.reduce((a, b) => a + b, 0) / keyTimes.length;
+                const squaredDiffs = keyTimes.map(val => Math.pow(val - mean, 2));
+                typingVariance = Math.round(Math.sqrt(squaredDiffs.reduce((a, b) => a + b, 0) / keyTimes.length));
+            }
+            $form.append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'gs_typing_variance')
+                    .val(typingVariance)
             );
             
             // Check if form was filled too quickly (additional client-side check)

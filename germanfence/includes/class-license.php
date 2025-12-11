@@ -421,7 +421,7 @@ class GermanFence_License {
         
         GermanFence_Logger::log('[LICENSE] Entferne Domain aus Portal: ' . $domain);
         
-        $response = wp_remote_post('https://app.germanfence.de/api/licenses/domains/remove', array(
+        $response = wp_remote_post('https://portal.germanfence.de/api/licenses/domains/remove', array(
             'timeout' => 15,
             'headers' => array(
                 'Content-Type' => 'application/json',

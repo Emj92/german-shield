@@ -580,15 +580,15 @@
             var modalHtml = '<div class="germanfence-modal-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 99999; display: flex; align-items: center; justify-content: center;">' +
                 '<div class="germanfence-modal" style="background: #fff; border-radius: 12px; max-width: 700px; width: 90%; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;">' +
                     '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">' +
-                        '<h2 style="margin: 0; color: #1d2327;">📋 Anfrage-Details</h2>' +
-                        '<button class="modal-close-btn" style="background: #F06292; color: #fff; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold;">×</button>' +
+                        '<h2 style="margin: 0; color: #1d2327; font-size: 16px;">📋 Anfrage-Details</h2>' +
+                        '<button class="modal-close-btn" style="background: #22D6DD; color: #fff; border: none; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 18px; font-weight: bold; transition: transform 0.2s;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'translateY(0)\'">×</button>' +
                     '</div>' +
-                    '<div style="background: #F2F5F8; padding: 20px; border-radius: 8px; margin-bottom: 15px;">' +
-                        '<div style="margin-bottom: 15px;"><strong>Status:</strong> <span style="margin-left: 10px;">' + (type === 'blocked' ? '🚫 Geblockt' : '✅ Legitim') + '</span></div>' +
-                        '<div style="margin-bottom: 15px;"><strong>Zeit:</strong> <span style="margin-left: 10px;">' + time + '</span></div>' +
-                        '<div style="margin-bottom: 15px;"><strong>IP-Adresse:</strong> <span style="margin-left: 10px;">' + ip + '</span></div>' +
-                        '<div style="margin-bottom: 15px;"><strong>Land:</strong> <span style="margin-left: 10px;">' + country + '</span></div>' +
-                        '<div><strong>Grund/Details:</strong><br><div style="background: #fff; padding: 15px; border-radius: 6px; margin-top: 10px; font-family: monospace; font-size: 15px; word-wrap: break-word; max-height: 200px; overflow-y: auto;">' + reason + '</div></div>' +
+                    '<div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 15px; font-size: 16px;">' +
+                        '<div style="margin-bottom: 15px; font-size: 16px;"><strong>Status:</strong> <span style="margin-left: 10px;">' + (type === 'blocked' ? '🚫 Geblockt' : '✅ Legitim') + '</span></div>' +
+                        '<div style="margin-bottom: 15px; font-size: 16px;"><strong>Zeit:</strong> <span style="margin-left: 10px;">' + time + '</span></div>' +
+                        '<div style="margin-bottom: 15px; font-size: 16px;"><strong>IP-Adresse:</strong> <span style="margin-left: 10px;">' + ip + '</span></div>' +
+                        '<div style="margin-bottom: 15px; font-size: 16px;"><strong>Land:</strong> <span style="margin-left: 10px;">' + country + '</span></div>' +
+                        '<div style="font-size: 16px;"><strong>Grund/Details:</strong><br><div style="background: #fff; padding: 15px; border-radius: 9px; margin-top: 10px; font-family: monospace; font-size: 16px; word-wrap: break-word; max-height: 200px; overflow-y: auto;">' + reason + '</div></div>' +
                         formDataHtml +
                     '</div>' +
                 '</div>' +

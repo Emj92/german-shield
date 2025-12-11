@@ -163,6 +163,47 @@ class GermanFence_Translations {
             'Sicherheit' => 'Security',
             '.htaccess generieren' => 'Generate .htaccess',
             'Code kopieren' => 'Copy Code',
+            
+            // Tab Navigation (Dashboard)
+            'Formular-Schutz' => 'Form Protection',
+            'Geo & Content-Filter' => 'Geo & Content Filter',
+            'WordPress-Schutz' => 'WordPress Protection',
+            'Sicherheit & Firewall' => 'Security & Firewall',
+            
+            // Dashboard Stats & Labels
+            'Zeit' => 'Time',
+            'IP-Adresse' => 'IP Address',
+            'Land' => 'Country',
+            'Aktion' => 'Action',
+            'Verlauf löschen' => 'Clear History',
+            'Anfrage-Details' => 'Request Details',
+            'Grund/Details' => 'Reason/Details',
+            'Eingegebene Formulardaten' => 'Submitted Form Data',
+            
+            // Honeypot & Settings
+            'Honeypot-Verwaltung' => 'Honeypot Management',
+            'Anzahl aktiver Honeypots' => 'Number of Active Honeypots',
+            'Honeypot-Feldnamen' => 'Honeypot Field Names',
+            'Neu generieren' => 'Regenerate',
+            'Minimale Ausfüllzeit' => 'Minimum Fill Time',
+            'Maximale Formular-Gültigkeit' => 'Maximum Form Validity',
+            'Sekunden' => 'Seconds',
+            
+            // GEO Blocking
+            'Land suchen' => 'Search Country',
+            'Ausgewählte Länder' => 'Selected Countries',
+            
+            // Messages
+            'Gespeichert' => 'Saved',
+            'Fehler beim Speichern' => 'Error saving',
+            'Verbindungsproblem' => 'Connection problem',
+            'Möchtest du wirklich den kompletten Anfragen-Verlauf löschen?' => 'Do you really want to delete the complete request history?',
+            'Verlauf erfolgreich gelöscht' => 'History successfully deleted',
+            
+            // License
+            'Zur Lizenz-Verwaltung' => 'To License Management',
+            'Lizenz aktiviert' => 'License Activated',
+            'Lizenz deaktiviert' => 'License Deactivated',
         )
     );
     

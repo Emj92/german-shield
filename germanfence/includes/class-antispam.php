@@ -255,15 +255,27 @@ class GermanFence_AntiSpam {
         
         $avg_speed = intval($data['gs_typing_speed']);
         $num_keys = intval($data['gs_typing_keys']);
+        $key_repeat = isset($data['gs_key_repeat']) ? $data['gs_key_repeat'] === '1' : false;
+        $typing_variance = isset($data['gs_typing_variance']) ? intval($data['gs_typing_variance']) : 999;
         
         // Zu wenige Tastendrücke für Analyse
         if ($num_keys < 5) {
             return array('valid' => true, 'message' => 'Not enough typing data');
         }
         
-        // BOT-MUSTER: Extrem schnelles Tippen (< 20ms durchschnittlich)
+        // KEY-REPEAT-ERKENNUNG: Taste wurde gedrückt gehalten (z.B. "sssssssssss")
+        if ($key_repeat) {
+            return array(
+                'valid' => false,
+                'message' => 'Spam erkannt: Unnatürliches Tippverhalten',
+                'reason' => 'Key-repeat pattern detected (key held down)'
+            );
+        }
+        
+        // BOT-MUSTER: Extrem schnelles Tippen (< 30ms durchschnittlich)
         // Menschliche Tipper: 100-300ms zwischen Tasten
-        if ($avg_speed < 20) {
+        // Key-Repeat: 30-60ms (daher Schwelle erhöht)
+        if ($avg_speed < 30 && $num_keys > 10) {
             return array(
                 'valid' => false,
                 'message' => 'Spam erkannt: Unnatürliche Tippgeschwindigkeit',
@@ -271,8 +283,18 @@ class GermanFence_AntiSpam {
             );
         }
         
-        // BOT-MUSTER: Perfekt gleichmäßiges Tippen (genau gleiche Intervalle)
-        // Dies ist schwer zu erkennen ohne vollständige Daten, aber wenn avg_speed = 0 ist...
+        // BOT-MUSTER: Perfekt gleichmäßiges Tippen (sehr niedrige Varianz)
+        // Menschen haben natürliche Varianz in ihrer Tippgeschwindigkeit
+        // Key-Repeat und Bots haben sehr gleichmäßige Intervalle
+        if ($typing_variance < 15 && $num_keys > 15 && $avg_speed < 80) {
+            return array(
+                'valid' => false,
+                'message' => 'Spam erkannt: Unnatürlich gleichmäßiges Tippen',
+                'reason' => 'Robotic typing pattern: variance ' . $typing_variance . 'ms, avg ' . $avg_speed . 'ms'
+            );
+        }
+        
+        // BOT-MUSTER: avg_speed = 0 bei vielen Tastendrücken
         if ($avg_speed === 0 && $num_keys > 5) {
             return array(
                 'valid' => false,
