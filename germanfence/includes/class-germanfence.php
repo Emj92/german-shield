@@ -145,33 +145,42 @@ class GermanFence {
     
     /**
      * Cache für Validierungsergebnis (verhindert mehrfaches Logging pro Request)
+     * WICHTIG: Statische Variablen gelten pro PHP-Request, nicht pro Instanz
      */
     private static $validation_cache = null;
-    private static $has_logged_result = false;
+    private static $validation_logged = false;
     
     public function perform_validation($data) {
         // Wenn bereits validiert in diesem Request, gecachtes Ergebnis zurückgeben
         if (self::$validation_cache !== null) {
-            GermanFence_Logger::log('[VALIDATION] ♻️ Gecachtes Ergebnis: ' . (self::$validation_cache['valid'] ? 'LEGITIM' : 'BLOCKIERT'));
+            GermanFence_Logger::log('[VALIDATION] ♻️ Cache-Hit: ' . (self::$validation_cache['valid'] ? 'LEGITIM' : 'BLOCKIERT'));
             return self::$validation_cache;
         }
         
         $ip = $this->get_client_ip();
         $settings = get_option('germanfence_settings', array());
         
-        GermanFence_Logger::log('[VALIDATION] 🔍 perform_validation() aufgerufen - IP: ' . $ip);
+        GermanFence_Logger::log('[VALIDATION] 🔍 Neue Validierung - IP: ' . $ip);
         
-        // Führe alle Checks durch und cache das Ergebnis
+        // Führe alle Checks durch
         $result = $this->do_validation_checks($data, $ip, $settings);
         
-        // Logge NUR EINMAL pro Request
-        if (!self::$has_logged_result) {
+        // WICHTIG: Logging erfolgt HIER zentral - NUR EINMAL pro Request
+        if (!self::$validation_logged) {
+            self::$validation_logged = true; // ZUERST setzen, dann loggen
+            
             if ($result['valid']) {
                 $this->statistics->log_legitimate($ip);
                 GermanFence_Logger::log('[VALIDATION] ✅ LEGITIM geloggt');
+            } else {
+                // Block loggen mit dem spezifischen Grund
+                $block_type = $result['block_type'] ?? 'unknown';
+                $block_reason = $result['reason'] ?? 'Unknown reason';
+                $country = $result['country'] ?? null;
+                
+                $this->statistics->log_block($block_type, $ip, $block_reason, $country);
+                GermanFence_Logger::log('[VALIDATION] 🚫 BLOCKIERT - Type: ' . $block_type . ', Reason: ' . $block_reason);
             }
-            // Block-Logging passiert bereits in do_validation_checks
-            self::$has_logged_result = true;
         }
         
         // Cache das Ergebnis
@@ -181,26 +190,33 @@ class GermanFence {
     }
     
     /**
+     * Cache zurücksetzen (für Unit Tests)
+     */
+    public static function reset_validation_cache() {
+        self::$validation_cache = null;
+        self::$validation_logged = false;
+    }
+    
+    /**
      * Führt alle Validierungs-Checks durch
+     * WICHTIG: Logging erfolgt NICHT hier, sondern zentral in perform_validation
      */
     private function do_validation_checks($data, $ip, $settings) {
         // TEST-MODUS
         if (isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1') {
-            $this->statistics->log_block('test_mode', $ip, 'Test-Modus aktiviert');
-            return array('valid' => false, 'message' => '🧪 TEST-MODUS aktiv', 'reason' => 'Test mode');
+            return array('valid' => false, 'message' => '🧪 TEST-MODUS aktiv', 'reason' => 'Test-Modus aktiviert', 'block_type' => 'test_mode');
         }
         
         // Nonce Check
         if (!isset($data['gs_nonce']) || !wp_verify_nonce($data['gs_nonce'], 'germanfence_nonce')) {
-            $this->statistics->log_block('nonce', $ip, 'Invalid nonce');
-            return array('valid' => false, 'message' => 'Sicherheitsprüfung fehlgeschlagen', 'reason' => 'Invalid nonce');
+            return array('valid' => false, 'message' => 'Sicherheitsprüfung fehlgeschlagen', 'reason' => 'Invalid nonce', 'block_type' => 'nonce');
         }
         
         // Check submission rate (Rate Limiting) - nur wenn Basisschutz aktiviert
         if (!empty($settings['basic_protection_enabled'])) {
             $rate_check = $this->antispam->check_submission_rate($ip);
             if (!$rate_check['valid']) {
-                $this->statistics->log_block('rate_limit', $ip, $rate_check['reason']);
+                $rate_check['block_type'] = 'rate_limit';
                 return $rate_check;
             }
         }
@@ -209,7 +225,7 @@ class GermanFence {
         if (!empty($settings['basic_protection_enabled'])) {
             $duplicate_check = $this->antispam->check_duplicate_submission($data);
             if (!$duplicate_check['valid']) {
-                $this->statistics->log_block('duplicate', $ip, $duplicate_check['reason']);
+                $duplicate_check['block_type'] = 'duplicate';
                 return $duplicate_check;
             }
         }
@@ -218,7 +234,7 @@ class GermanFence {
         if (!empty($settings['honeypot_enabled'])) {
             $honeypot_check = $this->antispam->check_honeypot($data);
             if (!$honeypot_check['valid']) {
-                $this->statistics->log_block('honeypot', $ip, $honeypot_check['reason']);
+                $honeypot_check['block_type'] = 'honeypot';
                 return $honeypot_check;
             }
         }
@@ -227,7 +243,7 @@ class GermanFence {
         if (!empty($settings['timestamp_enabled'])) {
             $timestamp_check = $this->antispam->check_timestamp($data);
             if (!$timestamp_check['valid']) {
-                $this->statistics->log_block('timestamp', $ip, $timestamp_check['reason']);
+                $timestamp_check['block_type'] = 'timestamp';
                 return $timestamp_check;
             }
         }
@@ -236,7 +252,7 @@ class GermanFence {
         if (!empty($settings['javascript_check'])) {
             $js_check = $this->antispam->check_javascript($data);
             if (!$js_check['valid']) {
-                $this->statistics->log_block('javascript', $ip, $js_check['reason']);
+                $js_check['block_type'] = 'javascript';
                 return $js_check;
             }
         }
@@ -245,7 +261,7 @@ class GermanFence {
         if (!empty($settings['user_agent_check'])) {
             $ua_check = $this->antispam->check_user_agent();
             if (!$ua_check['valid']) {
-                $this->statistics->log_block('user_agent', $ip, $ua_check['reason']);
+                $ua_check['block_type'] = 'user_agent';
                 return $ua_check;
             }
         }
@@ -254,7 +270,7 @@ class GermanFence {
         if (!empty($settings['basic_protection_enabled'])) {
             $header_check = $this->antispam->check_http_headers();
             if (!$header_check['valid']) {
-                $this->statistics->log_block('headers', $ip, $header_check['reason']);
+                $header_check['block_type'] = 'headers';
                 return $header_check;
             }
         }
@@ -263,7 +279,7 @@ class GermanFence {
         if (!empty($settings['geo_blocking_enabled'])) {
             $geo_check = $this->geo_blocking->check_country($ip);
             if (!$geo_check['valid']) {
-                $this->statistics->log_block('geo', $ip, $geo_check['reason'], $geo_check['country']);
+                $geo_check['block_type'] = 'geo';
                 return $geo_check;
             }
         }
@@ -272,7 +288,7 @@ class GermanFence {
         if (!empty($settings['url_limit_enabled'])) {
             $url_check = $this->antispam->check_url_limit($data);
             if (!$url_check['valid']) {
-                $this->statistics->log_block('url_limit', $ip, $url_check['reason']);
+                $url_check['block_type'] = 'url_limit';
                 return $url_check;
             }
         }
@@ -281,7 +297,7 @@ class GermanFence {
         if (!empty($settings['domain_blocking_enabled'])) {
             $domain_check = $this->antispam->check_blocked_domains($data);
             if (!$domain_check['valid']) {
-                $this->statistics->log_block('domain_blocked', $ip, $domain_check['reason']);
+                $domain_check['block_type'] = 'domain_blocked';
                 return $domain_check;
             }
         }
@@ -290,7 +306,7 @@ class GermanFence {
         if (!empty($settings['phrase_blocking_enabled'])) {
             $phrase_check = $this->phrase_blocking->check_phrases($data);
             if (!$phrase_check['valid']) {
-                $this->statistics->log_block('phrase', $ip, $phrase_check['reason']);
+                $phrase_check['block_type'] = 'phrase';
                 return $phrase_check;
             }
         }
@@ -299,7 +315,7 @@ class GermanFence {
         if (!empty($settings['typing_speed_check'])) {
             $typing_check = $this->antispam->check_typing_speed($data);
             if (!$typing_check['valid']) {
-                $this->statistics->log_block('typing_speed', $ip, $typing_check['reason']);
+                $typing_check['block_type'] = 'typing_speed';
                 return $typing_check;
             }
         }

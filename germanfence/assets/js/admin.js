@@ -1157,38 +1157,123 @@
                 code += "</IfModule>\n\n";
             }
             
-            // 8G Firewall
+            // Block Nuisance Requests
+            if ($('#htaccess-nuisance').is(':checked')) {
+                code += "# ----------------------------------------------------------------------\n";
+                code += "# Block Nuisance Requests (lästige Bot-Anfragen)\n";
+                code += "# ----------------------------------------------------------------------\n";
+                code += "<IfModule mod_alias.c>\n";
+                code += "    RedirectMatch 403 (?i)\\.php\\.suspected\n";
+                code += "    RedirectMatch 403 (?i)apple-app-site-association\n";
+                code += "    RedirectMatch 403 (?i)/autodiscover/autodiscover.xml\n";
+                code += "</IfModule>\n\n";
+            }
+            
+            // 8G Firewall VOLLSTÄNDIG
             if ($('#htaccess-8g-firewall').is(':checked')) {
                 code += "# ----------------------------------------------------------------------\n";
-                code += "# 8G FIREWALL v1.4 - Komplettschutz gegen Angriffe\n";
+                code += "# 8G FIREWALL v1.4 2025 - VOLLSTÄNDIGER SCHUTZ\n";
                 code += "# https://perishablepress.com/8g-firewall/\n";
                 code += "# ----------------------------------------------------------------------\n";
                 code += "ServerSignature Off\n";
                 code += "Options -Indexes\n";
                 code += "RewriteEngine On\n";
                 code += "RewriteBase /\n\n";
+                
+                // QUERY STRING Rules
                 code += "# 8G:[QUERY STRING]\n";
                 code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{QUERY_STRING} ^(%2d|-)[^=]+$ [NC,OR]\n";
                 code += "    RewriteCond %{QUERY_STRING} ([a-z0-9]{4000,}) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (/|%2f)(:|%3a)(/|%2f) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (etc/(hosts|motd|shadow)) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (order(\\s|%20)by(\\s|%20)1--) [NC,OR]\n";
                 code += "    RewriteCond %{QUERY_STRING} (`|<|>|\\^|\\||\\\\|0x00|%00|%0d%0a) [NC,OR]\n";
-                code += "    RewriteCond %{QUERY_STRING} (localhost|127\\.0\\.0\\.1) [NC,OR]\n";
-                code += "    RewriteCond %{QUERY_STRING} (globals|mosconfig|request)(=|\\[) [NC,OR]\n";
-                code += "    RewriteCond %{QUERY_STRING} (base64_decode|eval|fopen|passthru|shell_exec|system) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (localhost|127(\\.%2e)0(\\.%2e)0(\\.%2e)1) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (globals|mosconfig([a-z_]{1,22})|request)(=|\\[) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (base64_(en|de)code|benchmark|curl_exec|fopen|fwrite|passthru|popen|proc_open|shell_exec|system)(.*)\\( [NC,OR]\n";
                 code += "    RewriteCond %{QUERY_STRING} (union)(.*)(select)(.*)\\( [NC,OR]\n";
                 code += "    RewriteCond %{QUERY_STRING} (concat|eval)(.*)\\( [NC]\n";
                 code += "    RewriteRule .* - [F]\n";
                 code += "</IfModule>\n\n";
+                
+                // REQUEST URI Rules
+                code += "# 8G:[REQUEST URI]\n";
+                code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{REQUEST_URI} (,,,) [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} (\\^|`|<|>|\\\\|\\|) [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} ([a-z0-9]{2000,}) [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} (///|\\?\\?|/&&|/\\*(.*?)\\*/|/:/|\\\\\\\\|0x00|%00|%0d%0a) [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} (/)(c99|php|web)?shell [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} (thumbs?(_editor|open)?|tim(thumbs?)?)((\\.%2e)php) [NC,OR]\n";
+                code += "    RewriteCond %{REQUEST_URI} (\\.)(7z|bak|cfg|cgi|conf|db|dll|exe|git|hg|ini|log|old|orig|pl|sql|svn|tar|tmp|zip)$ [NC]\n";
+                code += "    RewriteRule .* - [F]\n";
+                code += "</IfModule>\n\n";
+                
+                // USER AGENT Rules
                 code += "# 8G:[USER AGENT]\n";
                 code += "<IfModule mod_rewrite.c>\n";
                 code += "    RewriteCond %{HTTP_USER_AGENT} ([a-z0-9]{2000,}) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (<|%0a|%0d|%27|%3c|%3e|%00|0x00) [NC,OR]\n";
                 code += "    RewriteCond %{HTTP_USER_AGENT} (ahrefs|archiver|curl|libwww-perl|pycurl|scan) [NC,OR]\n";
-                code += "    RewriteCond %{HTTP_USER_AGENT} (nikto|sqlmap|wget|semalt|mj12bot|dotbot) [NC]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (base64_decode|eval|unserializ) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (acapbot|alexibot|backdoor|binlar|blackwidow|blekkobot|blex|blowfish|bullseye|bunnys) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (casper|checkpriv|cheesebot|cherrypick|chinaclaw|choppy|clshttp|cmsworld|copernic|copyrightcheck) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (cosmos|crescent|dotbot|emailcollector|emailsiphon|emailwolf|extract|eyenetie|feedfinder|flaming) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (getright|gigabot|go-ahead-got|gozilla|grabnet|grafula|harvest|heritrix|httrack|icarus6j) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (jetbot|jetcar|jikespider|kmccrew|leechftp|libweb|linkwalker|lwp-download|majestic|masscan) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (mauibot|mj12bot|morfeus|netmechanic|nikto|ninja|nutch|octopus|pagegrabber|petalbot) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (planetwork|postrank|purebot|queryn|radian6|radiation|realdownload|rogerbot|semalt|siclab) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (sindice|sistrix|sitebot|sitesnagger|skygrid|smartdownload|snoopy|sosospider|spankbot|spbot) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (sqlmap|sucker|teleport|true_robots|turingos|turnit|vampire|voideye|webleacher|webreaper) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_USER_AGENT} (webstripper|webvac|webviewer|webwhacker|winhttp|woxbot|xaldon|xxxyy|zeus|zmeu|zune|zyborg) [NC]\n";
                 code += "    RewriteRule .* - [F]\n";
                 code += "</IfModule>\n\n";
+                
+                // REQUEST METHOD
                 code += "# 8G:[REQUEST METHOD]\n";
                 code += "<IfModule mod_rewrite.c>\n";
                 code += "    RewriteCond %{REQUEST_METHOD} ^(connect|debug|move|trace|track) [NC]\n";
                 code += "    RewriteRule .* - [F]\n";
+                code += "</IfModule>\n\n";
+                
+                // HTTP REFERRER
+                code += "# 8G:[HTTP REFERRER]\n";
+                code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{HTTP_REFERER} (order(\\s|%20)by(\\s|%20)1--) [NC,OR]\n";
+                code += "    RewriteCond %{HTTP_REFERER} (semalt\\.com|pornhelm|viagra|cialis|phentermin) [NC]\n";
+                code += "    RewriteRule .* - [F]\n";
+                code += "</IfModule>\n\n";
+                
+                // HTTP COOKIE
+                code += "# 8G:[HTTP COOKIE]\n";
+                code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{HTTP_COOKIE} (<|>|\\'|%0A|%0D|%27|%3C|%3E|%00) [NC]\n";
+                code += "    RewriteRule .* - [F]\n";
+                code += "</IfModule>\n\n";
+            }
+            
+            // 8G Addon: Rogue PHP Files
+            if ($('#htaccess-8g-addon').is(':checked')) {
+                code += "# ----------------------------------------------------------------------\n";
+                code += "# 8G ADDON: Block Rogue PHP Files\n";
+                code += "# ----------------------------------------------------------------------\n";
+                code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{REQUEST_URI} /(0|00|0byte|0day|1|a|abc|admin|alfa|b374k|bypass|c99|cmd|config|db|exploit|filemanager|hack|index1|info|install|mysql|php|priv|r57|root|setup|shell|sql|system|test|tmp|upload|wso|x|xx|xxx)\\.php [NC]\n";
+                code += "    RewriteRule .* - [F,L]\n";
+                code += "</IfModule>\n\n";
+            }
+            
+            // ReallyLongRequest Bandit
+            if ($('#htaccess-reallylongrequest').is(':checked')) {
+                code += "# ----------------------------------------------------------------------\n";
+                code += "# Block ReallyLongRequest Bandit\n";
+                code += "# ----------------------------------------------------------------------\n";
+                code += "<IfModule mod_rewrite.c>\n";
+                code += "    RewriteCond %{REQUEST_METHOD} .* [NC]\n";
+                code += "    RewriteCond %{THE_REQUEST} (YesThisIsAReallyLongRequest|ScanningForResearchPurpose) [NC,OR]\n";
+                code += "    RewriteCond %{QUERY_STRING} (YesThisIsAReallyLongRequest|ScanningForResearchPurpose) [NC]\n";
+                code += "    RewriteRule .* - [F,L]\n";
                 code += "</IfModule>\n\n";
             }
             

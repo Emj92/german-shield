@@ -1438,8 +1438,29 @@ class GermanFence_Admin {
                                     
                                     <div style="margin-bottom: 12px;">
                                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-nuisance" checked>
+                                            <span style="font-size: 15px;">🚫 Nuisance Requests blockieren</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" class="htaccess-option" id="htaccess-8g-firewall">
                                             <span style="font-size: 15px;">🔥 8G Firewall (Komplettschutz)</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-8g-addon">
+                                            <span style="font-size: 15px;">🔒 8G Addon (Rogue PHP Files)</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                            <input type="checkbox" class="htaccess-option" id="htaccess-reallylongrequest">
+                                            <span style="font-size: 15px;">🛑 ReallyLongRequest Bandit</span>
                                         </label>
                                     </div>
                                     
