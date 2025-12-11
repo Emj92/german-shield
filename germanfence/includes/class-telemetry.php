@@ -32,13 +32,11 @@ class GermanFence_Telemetry {
     public function send_block_event($type, $ip, $reason, $country = null, $form_data = null) {
         // Prüfe ob Telemetrie aktiviert ist
         if (!$this->enabled) {
+            GermanFence_Logger::log('[TELEMETRY] Nicht aktiviert - Event wird nicht gesendet');
             return;
         }
         
-        // Prüfe ob Portal-URL konfiguriert ist
-        if (empty($this->portal_url)) {
-            return;
-        }
+        GermanFence_Logger::log('[TELEMETRY] Sende Event: ' . $type . ' für IP-Hash');
         
         try {
             // Anonymisiere Daten
@@ -51,13 +49,48 @@ class GermanFence_Telemetry {
                 'spam_domains' => $this->extract_spam_domains($form_data),
                 'user_agent_hash' => $this->hash_user_agent(),
                 'plugin_version' => GERMANFENCE_VERSION,
-                'site_url_hash' => hash('sha256', get_site_url()), // Anonymisiert
+                'site_url_hash' => hash('sha256', get_site_url()),
             );
             
-            // Sende async (non-blocking) - KRITISCH: Darf Blockierung nicht verzögern!
-            wp_remote_post($this->portal_url . '/api/telemetry', array(
-                'timeout' => 3,
-                'blocking' => false, // NON-BLOCKING - Validierung geht vor!
+            // Queue für Hintergrund-Versand um Validierung nicht zu verzögern
+            $queue = get_option('germanfence_telemetry_queue', array());
+            $queue[] = $telemetry_data;
+            
+            // Limitiere Queue auf 50 Einträge
+            if (count($queue) > 50) {
+                $queue = array_slice($queue, -50);
+            }
+            
+            update_option('germanfence_telemetry_queue', $queue, false);
+            
+            // Sofortiger Versand via wp_schedule_single_event (wenn nicht bereits geplant)
+            if (!wp_next_scheduled('germanfence_send_telemetry')) {
+                wp_schedule_single_event(time() + 5, 'germanfence_send_telemetry');
+            }
+            
+            GermanFence_Logger::log('[TELEMETRY] Event zur Queue hinzugefügt (' . count($queue) . ' in Queue)');
+            
+        } catch (Exception $e) {
+            GermanFence_Logger::log('[TELEMETRY] Fehler: ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Sendet alle Events aus der Queue (wird via wp_cron aufgerufen)
+     */
+    public function process_queue() {
+        $queue = get_option('germanfence_telemetry_queue', array());
+        
+        if (empty($queue)) {
+            return;
+        }
+        
+        GermanFence_Logger::log('[TELEMETRY] Verarbeite Queue: ' . count($queue) . ' Events');
+        
+        foreach ($queue as $telemetry_data) {
+            $response = wp_remote_post($this->portal_url . '/api/telemetry', array(
+                'timeout' => 10,
+                'blocking' => true,
                 'headers' => array(
                     'Content-Type' => 'application/json',
                     'X-Plugin-Version' => GERMANFENCE_VERSION,
@@ -65,10 +98,18 @@ class GermanFence_Telemetry {
                 'body' => json_encode($telemetry_data),
             ));
             
-        } catch (Exception $e) {
-            // Silent fail - Telemetrie darf Plugin nicht beeinträchtigen
-            error_log('[GermanFence Telemetry] Fehler: ' . $e->getMessage());
+            if (is_wp_error($response)) {
+                GermanFence_Logger::log('[TELEMETRY] Fehler beim Senden: ' . $response->get_error_message());
+            } else {
+                $code = wp_remote_retrieve_response_code($response);
+                $body = wp_remote_retrieve_body($response);
+                GermanFence_Logger::log('[TELEMETRY] Gesendet! HTTP ' . $code . ' - ' . $body);
+            }
         }
+        
+        // Queue leeren
+        delete_option('germanfence_telemetry_queue');
+        GermanFence_Logger::log('[TELEMETRY] Queue geleert');
     }
     
     /**

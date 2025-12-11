@@ -387,20 +387,64 @@ class GermanFence_License {
     }
     
     /**
-     * Deaktiviert eine Lizenz (Placeholder für Admin-Seite)
+     * Deaktiviert eine Lizenz
      */
     public function deactivate_license() {
-        // Entferne Lizenzschlüssel aus Einstellungen
         $settings = get_option('germanfence_settings', array());
+        $license_key = $settings['license_key'] ?? '';
+        
+        // Domain aus Portal entfernen BEVOR Lizenz gelöscht wird
+        if (!empty($license_key)) {
+            $this->remove_domain_from_portal($license_key);
+        }
+        
+        // Entferne Lizenzschlüssel aus Einstellungen
         unset($settings['license_key']);
         update_option('germanfence_settings', $settings);
         
         // Cache leeren
         $this->clear_cache();
         
+        GermanFence_Logger::log('[LICENSE] PRO-Lizenz deaktiviert');
+        
         return array(
             'success' => true,
             'message' => 'Lizenz erfolgreich deaktiviert'
         );
+    }
+    
+    /**
+     * Entfernt die aktuelle Domain aus dem Portal
+     */
+    private function remove_domain_from_portal($license_key) {
+        $domain = get_site_url();
+        
+        GermanFence_Logger::log('[LICENSE] Entferne Domain aus Portal: ' . $domain);
+        
+        $response = wp_remote_post('https://app.germanfence.de/api/licenses/domains/remove', array(
+            'timeout' => 15,
+            'headers' => array(
+                'Content-Type' => 'application/json',
+            ),
+            'body' => json_encode(array(
+                'licenseKey' => $license_key,
+                'domain' => $domain,
+            )),
+        ));
+        
+        if (is_wp_error($response)) {
+            GermanFence_Logger::log('[LICENSE] Fehler beim Entfernen der Domain: ' . $response->get_error_message());
+            return false;
+        }
+        
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        
+        if (!empty($body['success'])) {
+            GermanFence_Logger::log('[LICENSE] ✅ Domain erfolgreich aus Portal entfernt');
+            return true;
+        }
+        
+        GermanFence_Logger::log('[LICENSE] Domain-Entfernung fehlgeschlagen: ' . ($body['error'] ?? 'Unbekannter Fehler'));
+        return false;
     }
 }

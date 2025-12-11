@@ -425,6 +425,14 @@ class GermanFence_Free_License {
      * Deaktiviert Free-Lizenz
      */
     public function deactivate_free() {
+        // Hole Lizenzschlüssel BEVOR er gelöscht wird
+        $license_key = get_option('germanfence_free_license_key', '');
+        
+        // Domain aus Portal entfernen
+        if (!empty($license_key)) {
+            $this->remove_domain_from_portal($license_key);
+        }
+        
         delete_option('germanfence_free_email');
         delete_option('germanfence_free_verified');
         delete_option('germanfence_free_license_key');
@@ -437,6 +445,41 @@ class GermanFence_Free_License {
         GermanFence_Logger::log('[FREE-LICENSE] Kostenlose Version deaktiviert');
         
         return array('success' => true, 'message' => 'Kostenlose Version deaktiviert');
+    }
+    
+    /**
+     * Entfernt die aktuelle Domain aus dem Portal
+     */
+    private function remove_domain_from_portal($license_key) {
+        $domain = get_site_url();
+        
+        GermanFence_Logger::log('[FREE-LICENSE] Entferne Domain aus Portal: ' . $domain);
+        
+        $response = wp_remote_post('https://app.germanfence.de/api/licenses/domains/remove', array(
+            'timeout' => 15,
+            'headers' => array(
+                'Content-Type' => 'application/json',
+            ),
+            'body' => json_encode(array(
+                'licenseKey' => $license_key,
+                'domain' => $domain,
+            )),
+        ));
+        
+        if (is_wp_error($response)) {
+            GermanFence_Logger::log('[FREE-LICENSE] Fehler beim Entfernen der Domain: ' . $response->get_error_message());
+            return false;
+        }
+        
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        
+        if (!empty($body['success'])) {
+            GermanFence_Logger::log('[FREE-LICENSE] ✅ Domain erfolgreich aus Portal entfernt');
+            return true;
+        }
+        
+        GermanFence_Logger::log('[FREE-LICENSE] Domain-Entfernung fehlgeschlagen: ' . ($body['error'] ?? 'Unbekannter Fehler'));
+        return false;
     }
     
     /**

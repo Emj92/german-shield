@@ -307,6 +307,29 @@ export default function TicketDetailPage() {
                       </span>
                     </div>
                     <p className="whitespace-pre-wrap">{response.message}</p>
+                    
+                    {/* Anhang anzeigen */}
+                    {response.attachmentUrl && (
+                      <div className="mt-3 p-3 bg-white rounded-[9px] border border-[#d9dde1]">
+                        <a 
+                          href={response.attachmentUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-[#22D6DD] hover:underline"
+                        >
+                          <FileImage className="h-4 w-4" />
+                          <span className="text-sm">{response.attachmentName || 'Anhang öffnen'}</span>
+                        </a>
+                        {/* Bild-Vorschau */}
+                        {response.attachmentUrl.match(/\.(png|jpg|jpeg|webp|gif)$/i) && (
+                          <img 
+                            src={response.attachmentUrl} 
+                            alt={response.attachmentName || 'Anhang'}
+                            className="mt-2 max-w-full max-h-64 rounded-[9px] object-contain"
+                          />
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))
               )}

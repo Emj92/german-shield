@@ -17,6 +17,7 @@ class GermanFence {
     protected $phrase_blocking;
     protected $statistics;
     protected $form_detector;
+    protected $telemetry;
     
     public static function get_instance() {
         if (null === self::$instance) {
@@ -40,6 +41,7 @@ class GermanFence {
         $this->phrase_blocking = new GermanFence_PhraseBlocking();
         $this->statistics = new GermanFence_Statistics();
         $this->form_detector = new GermanFence_FormDetector();
+        $this->telemetry = new GermanFence_Telemetry();
         
         // Update-Mail Blockierung laden
         $settings = get_option('germanfence_settings', array());
@@ -94,6 +96,19 @@ class GermanFence {
         // Initialize AJAX Handler
         new GermanFence_Ajax();
         GermanFence_Logger::log_hook('AJAX-Handler initialisiert');
+        
+        // Telemetrie Cron-Job
+        add_action('germanfence_send_telemetry', array($this, 'process_telemetry_queue'));
+        GermanFence_Logger::log_hook('Telemetrie-Cron registriert');
+    }
+    
+    /**
+     * Verarbeitet die Telemetrie-Queue (via wp_cron)
+     */
+    public function process_telemetry_queue() {
+        if ($this->telemetry) {
+            $this->telemetry->process_queue();
+        }
     }
     
     public function validate_submission($commentdata) {
