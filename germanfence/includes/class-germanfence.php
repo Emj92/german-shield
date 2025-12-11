@@ -128,12 +128,47 @@ class GermanFence {
         wp_send_json($validation);
     }
     
+    /**
+     * Cache für Validierungsergebnis (verhindert mehrfaches Logging pro Request)
+     */
+    private static $validation_cache = null;
+    private static $has_logged_result = false;
+    
     public function perform_validation($data) {
+        // Wenn bereits validiert in diesem Request, gecachtes Ergebnis zurückgeben
+        if (self::$validation_cache !== null) {
+            GermanFence_Logger::log('[VALIDATION] ♻️ Gecachtes Ergebnis: ' . (self::$validation_cache['valid'] ? 'LEGITIM' : 'BLOCKIERT'));
+            return self::$validation_cache;
+        }
+        
         $ip = $this->get_client_ip();
         $settings = get_option('germanfence_settings', array());
         
-        GermanFence_Logger::log('[VALIDATION] 🔍 perform_validation() aufgerufen - IP: ' . $ip . ', POST-Keys: ' . implode(', ', array_keys($data)));
+        GermanFence_Logger::log('[VALIDATION] 🔍 perform_validation() aufgerufen - IP: ' . $ip);
         
+        // Führe alle Checks durch und cache das Ergebnis
+        $result = $this->do_validation_checks($data, $ip, $settings);
+        
+        // Logge NUR EINMAL pro Request
+        if (!self::$has_logged_result) {
+            if ($result['valid']) {
+                $this->statistics->log_legitimate($ip);
+                GermanFence_Logger::log('[VALIDATION] ✅ LEGITIM geloggt');
+            }
+            // Block-Logging passiert bereits in do_validation_checks
+            self::$has_logged_result = true;
+        }
+        
+        // Cache das Ergebnis
+        self::$validation_cache = $result;
+        
+        return $result;
+    }
+    
+    /**
+     * Führt alle Validierungs-Checks durch
+     */
+    private function do_validation_checks($data, $ip, $settings) {
         // TEST-MODUS
         if (isset($settings['test_mode_block_all']) && $settings['test_mode_block_all'] === '1') {
             $this->statistics->log_block('test_mode', $ip, 'Test-Modus aktiviert');
@@ -254,9 +289,7 @@ class GermanFence {
             }
         }
         
-        // Log Legitimate
-        $this->statistics->log_legitimate($ip);
-        
+        // Alle Checks bestanden
         return array('valid' => true, 'message' => 'Valid submission');
     }
     
