@@ -79,7 +79,7 @@ interface InvoiceData {
 
 function generateInvoiceHTML(invoice: InvoiceData): string {
   const taxExemptText = invoice.taxExempt 
-    ? '<div style="color: #059669; font-size: 15px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
+    ? '<div style="color: #059669; font-size: 13px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
     : ''
 
   return `
@@ -87,199 +87,341 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Rechnung ${invoice.invoiceNumber}</title>
+  <title>Rechnung ${invoice.invoiceNumber} - GermanFence</title>
   <style>
     @page { 
       size: A4;
-      margin: 2cm;
+      margin: 1.5cm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
-      font-family: 'Helvetica', 'Arial', sans-serif;
-      line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.5;
       color: #1d2327;
       max-width: 800px;
       margin: 0 auto;
-      padding: 40px;
+      padding: 30px;
+      background: #fff;
     }
     .header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 60px;
-      border-bottom: 3px solid #22D6DD;
+      align-items: flex-start;
+      margin-bottom: 40px;
       padding-bottom: 20px;
+      border-bottom: 3px solid #22D6DD;
     }
-    .company-info {
-      flex: 1;
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .company-logo {
-      font-size: 32px;
-      font-weight: bold;
-      color: #22D6DD;
-      margin-bottom: 10px;
-    }
-    .invoice-info {
-      text-align: right;
-    }
-    .invoice-number {
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #22D6DD 0%, #1EBEC5 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
       font-size: 24px;
       font-weight: bold;
+    }
+    .company-name {
+      font-size: 24px;
+      font-weight: 700;
       color: #22D6DD;
     }
-    .customer-address {
-      margin: 40px 0;
-      padding: 20px;
-      background: #f8f9fa;
-      border-left: 4px solid #22D6DD;
+    .company-details {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 15px;
+      line-height: 1.6;
     }
-    table {
+    .invoice-header {
+      text-align: right;
+    }
+    .invoice-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #22D6DD;
+      letter-spacing: 2px;
+    }
+    .invoice-number {
+      font-size: 16px;
+      color: #1d2327;
+      margin-top: 5px;
+    }
+    .invoice-date {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 10px;
+    }
+    .addresses {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+      gap: 40px;
+    }
+    .address-box {
+      flex: 1;
+    }
+    .address-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .address-content {
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .address-content strong {
+      font-size: 14px;
+    }
+    .items-table {
       width: 100%;
       border-collapse: collapse;
       margin: 30px 0;
     }
-    th {
+    .items-table th {
       background: #22D6DD;
       color: white;
-      padding: 12px;
+      padding: 12px 15px;
       text-align: left;
+      font-size: 12px;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .totals {
-      margin-top: 30px;
+    .items-table th:last-child,
+    .items-table td:last-child {
       text-align: right;
     }
-    .totals table {
-      width: 300px;
-      margin-left: auto;
+    .items-table td {
+      padding: 15px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 13px;
     }
-    .totals .grand-total {
-      font-size: 20px;
-      font-weight: bold;
-      background: #f0f9ff;
+    .totals-section {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .totals-table {
+      width: 280px;
+    }
+    .totals-table tr td {
+      padding: 8px 0;
+      font-size: 13px;
+    }
+    .totals-table tr td:last-child {
+      text-align: right;
+      font-weight: 500;
+    }
+    .totals-table .grand-total td {
+      padding-top: 12px;
       border-top: 2px solid #22D6DD;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .totals-table .grand-total td:last-child {
+      color: #22D6DD;
+    }
+    .payment-box {
+      background: #f0f9ff;
+      border-left: 4px solid #22D6DD;
+      padding: 20px;
+      margin: 30px 0;
+      font-size: 13px;
+    }
+    .payment-box h4 {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .status-paid {
+      color: #059669;
+      font-weight: 600;
+    }
+    .bank-info {
+      background: #f8f9fa;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .bank-info h4 {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #1d2327;
     }
     .footer {
-      margin-top: 60px;
+      margin-top: 40px;
       padding-top: 20px;
       border-top: 1px solid #e5e7eb;
-      font-size: 12px;
-      color: #6b7280;
       text-align: center;
+      font-size: 11px;
+      color: #6b7280;
     }
-    .payment-info {
-      background: #f0f9ff;
-      padding: 20px;
+    .footer p {
+      margin: 5px 0;
+    }
+    .legal-note {
+      margin-top: 30px;
+      padding: 15px;
+      background: #fefce8;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #854d0e;
+    }
+    .print-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #22D6DD;
+      color: white;
+      border: none;
+      padding: 12px 24px;
       border-radius: 8px;
-      margin: 30px 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(34, 214, 221, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .print-button:hover {
+      background: #1EBEC5;
     }
     @media print {
       body { padding: 0; }
-      .no-print { display: none; }
+      .no-print { display: none !important; }
+      .print-button { display: none !important; }
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <div class="company-info">
-      <div class="company-logo">🛡️ GermanFence</div>
-      <div>
+    <div>
+      <div class="logo-section">
+        <div class="logo">🛡️</div>
+        <div class="company-name">GermanFence</div>
+      </div>
+      <div class="company-details">
         Erwin Meindl<br>
         Oberensingerstraße 70<br>
-        72622 Nürtingen<br>
-        Deutschland
-      </div>
-      <div style="margin-top: 10px; font-size: 15px;">
-        <strong>USt-IdNr.:</strong> DE323799140<br>
-        <strong>Steuernr.:</strong> 74307/17133
+        72622 Nürtingen, Deutschland<br>
+        <br>
+        USt-IdNr.: DE323799140<br>
+        Steuernr.: 74307/17133
       </div>
     </div>
-    <div class="invoice-info">
-      <div class="invoice-number">RECHNUNG</div>
-      <div style="font-size: 18px; margin-top: 10px;">#${invoice.invoiceNumber}</div>
-      <div style="margin-top: 20px; font-size: 15px;">
-        <strong>Datum:</strong> ${new Date(invoice.issuedAt).toLocaleDateString('de-DE')}<br>
-        ${invoice.paidAt ? `<strong>Bezahlt am:</strong> ${new Date(invoice.paidAt).toLocaleDateString('de-DE')}<br>` : ''}
+    <div class="invoice-header">
+      <div class="invoice-title">RECHNUNG</div>
+      <div class="invoice-number">${invoice.invoiceNumber}</div>
+      <div class="invoice-date">
+        Datum: ${new Date(invoice.issuedAt).toLocaleDateString('de-DE')}<br>
+        ${invoice.paidAt ? `Bezahlt: ${new Date(invoice.paidAt).toLocaleDateString('de-DE')}` : ''}
       </div>
     </div>
   </div>
 
-  <div class="customer-address">
-    <strong>Rechnungsempfänger:</strong><br>
-    ${invoice.isBusiness && invoice.companyName ? `<strong>${invoice.companyName}</strong><br>` : ''}
-    ${invoice.user.name || invoice.user.email}<br>
-    ${invoice.isBusiness && invoice.street ? `${invoice.street}<br>${invoice.zipCode} ${invoice.city}<br>${invoice.country}<br>` : ''}
-    ${invoice.isBusiness && invoice.vatId ? `<strong>USt-IdNr.:</strong> ${invoice.vatId}` : ''}
+  <div class="addresses">
+    <div class="address-box">
+      <div class="address-label">Rechnungsadresse</div>
+      <div class="address-content">
+        ${invoice.isBusiness && invoice.companyName ? `<strong>${invoice.companyName}</strong><br>` : ''}
+        ${invoice.user.name || invoice.user.email}<br>
+        ${invoice.isBusiness && invoice.street ? `${invoice.street}<br>${invoice.zipCode} ${invoice.city}<br>${invoice.country}` : invoice.user.email}
+        ${invoice.isBusiness && invoice.vatId ? `<br><br>USt-IdNr.: ${invoice.vatId}` : ''}
+      </div>
+    </div>
   </div>
 
-  <h2>Leistungsbeschreibung</h2>
-  <table>
+  <table class="items-table">
     <thead>
       <tr>
-        <th>Bezeichnung</th>
-        <th style="text-align: right;">Anzahl</th>
-        <th style="text-align: right;">Einzelpreis</th>
-        <th style="text-align: right;">Gesamt</th>
+        <th style="width: 50%;">Beschreibung</th>
+        <th style="width: 15%;">Menge</th>
+        <th style="width: 17%;">Einzelpreis</th>
+        <th style="width: 18%;">Betrag</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>${invoice.description || 'GermanFence License'}</td>
-        <td style="text-align: right;">1</td>
-        <td style="text-align: right;">${invoice.netAmount.toFixed(2)}€</td>
-        <td style="text-align: right;">${invoice.netAmount.toFixed(2)}€</td>
+        <td>
+          <strong>${invoice.description || 'GermanFence License'}</strong><br>
+          <span style="color: #6b7280; font-size: 12px;">Jahreslizenz für WordPress Anti-Spam Plugin</span>
+        </td>
+        <td>1</td>
+        <td>${invoice.netAmount.toFixed(2)} €</td>
+        <td>${invoice.netAmount.toFixed(2)} €</td>
       </tr>
     </tbody>
   </table>
 
-  <div class="totals">
-    <table>
+  <div class="totals-section">
+    <table class="totals-table">
       <tr>
-        <td><strong>Nettobetrag:</strong></td>
-        <td style="text-align: right;">${invoice.netAmount.toFixed(2)}€</td>
+        <td>Zwischensumme (Netto)</td>
+        <td>${invoice.netAmount.toFixed(2)} €</td>
       </tr>
       ${invoice.taxAmount > 0 ? `
       <tr>
-        <td>${invoice.taxLabel || 'MwSt.'} (${invoice.taxRate}%):</td>
-        <td style="text-align: right;">${invoice.taxAmount.toFixed(2)}€</td>
+        <td>${invoice.taxLabel || 'MwSt.'} (${invoice.taxRate}%)</td>
+        <td>${invoice.taxAmount.toFixed(2)} €</td>
       </tr>
       ` : ''}
       <tr class="grand-total">
-        <td><strong>Gesamtbetrag:</strong></td>
-        <td style="text-align: right;"><strong>${invoice.grossAmount.toFixed(2)}€</strong></td>
+        <td>Gesamtbetrag</td>
+        <td>${invoice.grossAmount.toFixed(2)} €</td>
       </tr>
     </table>
-    ${taxExemptText}
   </div>
+  ${taxExemptText}
 
-  <div class="payment-info">
-    <strong>Zahlungsinformationen</strong><br>
-    Status: <strong style="color: #059669;">Bezahlt</strong><br>
-    Zahlungsmethode: Mollie (Kreditkarte/Lastschrift)<br>
-    ${invoice.molliePaymentId ? `Transaktions-ID: ${invoice.molliePaymentId}<br>` : ''}
-  </div>
-
-  <div style="margin-top: 40px; font-size: 15px; color: #6b7280;">
-    <p><strong>Hinweis:</strong> Dies ist eine rechtsgültige Rechnung für digitale Dienstleistungen. 
-    Bitte bewahren Sie diese Rechnung für Ihre Unterlagen auf.</p>
-  </div>
-
-  <div class="footer">
+  <div class="payment-box">
+    <h4>💳 Zahlungsinformation</h4>
     <p>
-      <strong>GermanFence by GermanCore</strong><br>
-      Erwin Meindl · Oberensingerstraße 70 · 72622 Nürtingen<br>
-      E-Mail: support@germanfence.de · Web: https://germanfence.de<br>
-      USt-IdNr.: DE323799140 · Steuernr.: 74307/17133
+      Status: <span class="status-paid">✓ Bezahlt</span><br>
+      Zahlungsmethode: Online-Zahlung (Mollie)<br>
+      ${invoice.molliePaymentId ? `Transaktions-ID: ${invoice.molliePaymentId}` : ''}
     </p>
   </div>
 
-  <div class="no-print" style="position: fixed; top: 20px; right: 20px;">
-    <button onclick="window.print()" style="background: #22D6DD; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">
-      📄 Als PDF drucken
-    </button>
+  <div class="bank-info">
+    <h4>🏦 Bankverbindung</h4>
+    <p>
+      Kontoinhaber: Erwin Meindl<br>
+      IBAN: DE89 6115 0020 0106 5028 41<br>
+      BIC: ESSLDE66XXX<br>
+      Bank: Kreissparkasse Esslingen-Nürtingen
+    </p>
   </div>
+
+  <div class="legal-note">
+    <strong>Hinweis:</strong> Dies ist eine rechtsgültige Rechnung für digitale Dienstleistungen. 
+    Leistungszeitraum: 12 Monate ab Kaufdatum. Bitte bewahren Sie diese Rechnung für Ihre Unterlagen auf.
+  </div>
+
+  <div class="footer">
+    <p><strong>GermanFence by GermanCore</strong></p>
+    <p>Erwin Meindl · Oberensingerstraße 70 · 72622 Nürtingen · Deutschland</p>
+    <p>E-Mail: support@germanfence.de · Web: https://germanfence.de</p>
+    <p>USt-IdNr.: DE323799140 · Steuernr.: 74307/17133</p>
+  </div>
+
+  <button class="print-button no-print" onclick="window.print()">
+    📄 Als PDF speichern
+  </button>
 </body>
 </html>
   `

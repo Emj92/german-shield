@@ -508,21 +508,14 @@ export default async function InvoicesPage() {
                         </div>
                       )}
 
-                      {/* Download Button */}
+                      {/* Download Button - Link zur PDF-Route */}
                       <div className="pt-3">
-                        {invoice.pdfUrl ? (
-                          <Button variant="outline" size="sm" asChild className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
-                            <a href={invoice.pdfUrl} download>
-                              <Download className="mr-2 h-4 w-4" />
-                              PDF herunterladen
-                            </a>
-                          </Button>
-                        ) : (
-                          <Button variant="outline" size="sm" disabled className="w-full">
-                            <FileText className="mr-2 h-4 w-4" />
-                            PDF wird erstellt...
-                          </Button>
-                        )}
+                        <Button variant="outline" size="sm" asChild className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
+                          <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" rel="noopener noreferrer">
+                            <Download className="mr-2 h-4 w-4" />
+                            Rechnung anzeigen
+                          </a>
+                        </Button>
                       </div>
                     </div>
                   </CardContent>

@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
 
     const taxExempt = isBusiness && vatId && taxAmount === 0 && country !== 'DE'
 
-    await prisma.invoice.create({
+    const invoice = await prisma.invoice.create({
       data: {
         userId: user.id,
         invoiceNumber,
@@ -164,6 +164,12 @@ export async function POST(request: NextRequest) {
         subscriptionId: subscription?.id,
         paidAt: new Date()
       }
+    })
+
+    // PDF-URL setzen (zeigt auf die PDF-Route)
+    await prisma.invoice.update({
+      where: { id: invoice.id },
+      data: { pdfUrl: `/api/invoices/${invoice.id}/pdf` }
     })
 
     console.log('✅ Invoice created:', invoiceNumber)

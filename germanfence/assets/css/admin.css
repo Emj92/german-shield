@@ -1224,11 +1224,18 @@ body.germanfence-dark-mode textarea[name="blocked_phrases_text"]:focus {
     border: 1px solid #d9dde1 !important;
     border-radius: 9px;
     font-size: 15px;
-    background: #ffffff;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     outline: none !important;
     box-shadow: none !important;
     line-height: 1.1;
     min-height: 44px!important;
+}
+
+/* Input innerhalb der aktivierten Lizenz-Sektion */
+.germanfence-input[readonly] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
 .germanfence-input::placeholder {
