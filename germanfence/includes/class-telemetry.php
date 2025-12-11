@@ -54,10 +54,12 @@ class GermanFence_Telemetry {
                 'site_url_hash' => hash('sha256', get_site_url()), // Anonymisiert
             );
             
-            // Sende async (non-blocking)
-            wp_remote_post($this->portal_url . '/api/telemetry', array(
-                'timeout' => 5,
-                'blocking' => false, // WICHTIG: Non-blocking
+            GermanFence_Logger::log('[TELEMETRY] Sende Event: ' . $type . ' an ' . $this->portal_url . '/api/telemetry');
+            
+            // Sende Request (blocking für bessere Diagnose)
+            $response = wp_remote_post($this->portal_url . '/api/telemetry', array(
+                'timeout' => 10,
+                'blocking' => true, // Blocking für besseres Debugging
                 'headers' => array(
                     'Content-Type' => 'application/json',
                     'X-Plugin-Version' => GERMANFENCE_VERSION,
@@ -65,8 +67,18 @@ class GermanFence_Telemetry {
                 'body' => json_encode($telemetry_data),
             ));
             
+            // Logging für Diagnose
+            if (is_wp_error($response)) {
+                GermanFence_Logger::log('[TELEMETRY] ❌ WP Error: ' . $response->get_error_message());
+            } else {
+                $status_code = wp_remote_retrieve_response_code($response);
+                $body = wp_remote_retrieve_body($response);
+                GermanFence_Logger::log('[TELEMETRY] ' . ($status_code === 200 ? '✅' : '❌') . ' Response: ' . $status_code . ' - ' . $body);
+            }
+            
         } catch (Exception $e) {
             // Silent fail - Telemetrie darf Plugin nicht beeinträchtigen
+            GermanFence_Logger::log('[TELEMETRY] ❌ Exception: ' . $e->getMessage());
             error_log('[GermanFence Telemetry] Fehler: ' . $e->getMessage());
         }
     }

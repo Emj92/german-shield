@@ -264,7 +264,9 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'FREE' ? (
-                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] hover:bg-[#22D6DD]/10 cursor-default">
+                    Dein aktuelles Paket
+                  </Button>
                 ) : (
                   <Button asChild variant="outline" className="w-full border-slate-300 text-slate-700">
                     <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
@@ -305,7 +307,9 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'SINGLE' ? (
-                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] hover:bg-[#22D6DD]/10 cursor-default">
+                    Dein aktuelles Paket
+                  </Button>
                 ) : (
                   <Button asChild variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
                     <Link href="https://germanfence.de#pricing">
@@ -352,7 +356,9 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'FREELANCER' ? (
-                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] hover:bg-[#22D6DD]/10 cursor-default">
+                    Dein aktuelles Paket
+                  </Button>
                 ) : (
                   <Button asChild className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD]/90">
                     <Link href="https://germanfence.de#pricing">
@@ -392,7 +398,9 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'AGENCY' ? (
-                  <Badge className="w-full py-2 bg-[#F06292]/10 text-[#F06292] justify-center">Dein aktuelles Paket</Badge>
+                  <Button disabled className="w-full bg-[#F06292]/10 text-[#F06292] border-[#F06292] hover:bg-[#F06292]/10 cursor-default">
+                    Dein aktuelles Paket
+                  </Button>
                 ) : (
                   <Button asChild variant="outline" className="w-full border-[#F06292] text-[#F06292] hover:bg-[#F06292]/10">
                     <Link href="https://germanfence.de#pricing">
