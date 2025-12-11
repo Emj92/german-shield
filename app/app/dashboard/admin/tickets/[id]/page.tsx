@@ -292,10 +292,10 @@ export default function TicketDetailPage() {
                 ticket.responses.map((response) => (
                   <div
                     key={response.id}
-                    className={`p-4 rounded-lg ${
+                    className={`p-4 rounded-[9px] ${
                       response.isAdmin
-                        ? 'bg-[#22D6DD]/10 border-l-4 border-[#22D6DD]'
-                        : 'bg-[#F2F5F8] border-l-4 border-slate-300'
+                        ? 'bg-white border border-[#22D6DD]'
+                        : 'bg-white border border-[#d9dde1]'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
