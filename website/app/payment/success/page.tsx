@@ -101,12 +101,13 @@ function PaymentSuccessContent() {
               </>
             ) : (
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#22D6DD]/10 rounded-lg">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#22D6DD] border-t-transparent"></div>
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Lizenzschlüssel wird generiert...</span>
+                <div className="inline-flex items-center gap-2 px-4 py-3 bg-[#22D6DD]/10 rounded-lg">
+                  <Mail className="w-5 h-5 text-[#22D6DD]" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Per E-Mail zugestellt!</span>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Dein Schlüssel wird in wenigen Sekunden per E-Mail zugestellt.
+                  Dein Lizenzschlüssel wurde an deine E-Mail gesendet.<br />
+                  Prüfe auch deinen Spam-Ordner.
                 </p>
               </div>
             )}

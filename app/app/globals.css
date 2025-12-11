@@ -65,33 +65,33 @@ textarea:not(:placeholder-shown) {
   }
   .dark {
     /* Plugin-Farben Dark Mode */
-    --background: 210 15% 14%;        /* #1D2327 */
+    --background: 210 15% 12%;        /* #1a1f23 - dunkler Hintergrund */
     --foreground: 240 9% 94%;         /* #f0f0f1 */
-    --card: 210 13% 19%;              /* #2c3338 */
+    --card: 210 13% 16%;              /* #242a2e - dunkle Kacheln */
     --card-foreground: 240 9% 94%;
-    --popover: 210 13% 19%;
+    --popover: 210 13% 16%;
     --popover-foreground: 240 9% 94%;
     --primary: 186 73% 50%;           /* #22D6DD - gleich in beiden Modi */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 13% 19%;         /* #2c3338 */
+    --secondary: 210 13% 20%;         /* #2c3338 */
     --secondary-foreground: 240 9% 94%;
-    --muted: 210 13% 19%;
+    --muted: 210 13% 20%;
     --muted-foreground: 210 7% 68%;   /* #a7aaad */
     --accent: 186 73% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 358 75% 59%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 14% 26%;            /* #3c434a */
-    --input: 210 14% 26%;
+    --border: 210 14% 24%;            /* #3a4147 */
+    --input: 210 14% 24%;
     --ring: 186 73% 50%;
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 210 15% 10%;  /* #181c1f - dunkle Sidebar */
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 186 73% 50%;     /* Türkis wie Accent */
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent: 210 14% 18%;      /* Hover-Akzent */
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-border: 210 14% 20%;
+    --sidebar-ring: 186 73% 50%;
   }
 }
 
@@ -182,9 +182,19 @@ textarea:not(:placeholder-shown) {
 
 .dark .animated-background {
   background: 
-    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(34, 214, 221, 0.08), transparent),
-    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(240, 98, 146, 0.04), transparent),
-    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(34, 214, 221, 0.04), transparent);
-  background-color: #1D2327;
+    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(34, 214, 221, 0.06), transparent),
+    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(240, 98, 146, 0.03), transparent),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(34, 214, 221, 0.03), transparent);
+  background-color: #151a1d;
+}
+
+/* Dark Mode - Kacheln in dunkler Farbe statt weiß */
+.dark .bg-white {
+  background-color: hsl(210 13% 16%) !important;
+}
+
+/* Dark Mode Top Bar */
+.dark .bg-white\/80 {
+  background-color: rgba(26, 31, 35, 0.9) !important;
 }
 

@@ -68,7 +68,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b border-[#d9dde1]" style={{ height: '4.3rem' }}>
+      <SidebarHeader className="border-b border-[#d9dde1] dark:border-slate-700" style={{ height: '4.3rem' }}>
         <div className="flex items-center justify-center px-4 h-full">
           <Image 
             src="/germanfence_icon.png" 
@@ -128,7 +128,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-[#d9dde1]">
+      <SidebarFooter className="border-t border-[#d9dde1] dark:border-slate-700">
         <div className="flex flex-col gap-2 p-4">
           <div className="flex items-center justify-between">
             <div className="flex flex-col">

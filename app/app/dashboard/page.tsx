@@ -250,7 +250,7 @@ export default async function DashboardPage() {
                   <div className="space-y-3">
                     {'blockMethods' in data && data.blockMethods.length > 0 ? (
                       data.blockMethods.map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                        <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                           <span className="font-medium">{getBlockMethodName(item.method)}</span>
                           <Badge variant="secondary" className="bg-[#EC4899]/10 text-[#EC4899]">
                             {item.count.toLocaleString()}
@@ -279,7 +279,7 @@ export default async function DashboardPage() {
                   <div className="space-y-3">
                     {'topCountries' in data && data.topCountries.length > 0 ? (
                       data.topCountries.map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                        <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                           <span className="font-medium">{getCountryName(item.country)}</span>
                           <Badge variant="secondary" className="bg-[#22D6DD]/10 text-[#22D6DD]">
                             {item.count.toLocaleString()}
@@ -309,15 +309,15 @@ export default async function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                       <p className="text-sm text-muted-foreground mb-1">Heute</p>
                       <div className="text-3xl font-bold text-[#22D6DD]">
                         {'todayBlocks' in data ? data.todayBlocks.toLocaleString() : 0}
                       </div>
                     </div>
-                    <div className="text-center p-4 bg-white border border-[#d9dde1] rounded-[9px]">
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                       <p className="text-sm text-muted-foreground mb-1">Gestern</p>
-                      <div className="text-3xl font-bold text-slate-500">
+                      <div className="text-3xl font-bold text-slate-500 dark:text-slate-400">
                         {'yesterdayBlocks' in data ? data.yesterdayBlocks.toLocaleString() : 0}
                       </div>
                     </div>
@@ -338,19 +338,19 @@ export default async function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
-                      <Badge className="bg-slate-100 text-slate-700 mb-1 text-xs">FREE</Badge>
+                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
+                      <Badge className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 mb-1 text-xs">FREE</Badge>
                       <div className="text-xl font-bold">{'packageStats' in data ? data.packageStats.FREE : 0}</div>
                     </div>
-                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                       <Badge className="bg-[#22D6DD]/10 text-[#22D6DD] mb-1 text-xs">SINGLE</Badge>
                       <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.SINGLE : 0}</div>
                     </div>
-                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                       <Badge className="bg-[#22D6DD]/20 text-[#22D6DD] mb-1 text-xs">FREELANCER</Badge>
                       <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.FREELANCER : 0}</div>
                     </div>
-                    <div className="text-center p-3 bg-white border border-[#d9dde1] rounded-[9px]">
+                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
                       <Badge className="bg-[#EC4899]/10 text-[#EC4899] mb-1 text-xs">AGENCY</Badge>
                       <div className="text-xl font-bold text-[#EC4899]">{'packageStats' in data ? data.packageStats.AGENCY : 0}</div>
                     </div>

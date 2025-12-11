@@ -4,8 +4,9 @@ import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, TrendingUp, X } from 'lucide-react'
+import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, TrendingUp, X, Sparkles } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import Link from 'next/link'
 
 async function getInvoices(userId: string) {
   return await prisma.invoice.findMany({
@@ -19,6 +20,23 @@ async function getSubscriptions(userId: string) {
     where: { userId },
     orderBy: { createdAt: 'desc' },
   })
+}
+
+async function getCurrentLicense(userId: string) {
+  return await prisma.license.findFirst({
+    where: { userId, status: 'ACTIVE' },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+const PACKAGE_ORDER = ['FREE', 'SINGLE', 'FREELANCER', 'AGENCY'] as const
+type PackageType = typeof PACKAGE_ORDER[number]
+
+function isUpgrade(currentPackage: PackageType | null, targetPackage: PackageType): boolean {
+  if (!currentPackage) return false
+  const currentIndex = PACKAGE_ORDER.indexOf(currentPackage)
+  const targetIndex = PACKAGE_ORDER.indexOf(targetPackage)
+  return targetIndex > currentIndex
 }
 
 const PACKAGE_NAMES = {
@@ -51,12 +69,14 @@ export default async function InvoicesPage() {
     redirect('/login')
   }
 
-  const [invoices, subscriptions] = await Promise.all([
+  const [invoices, subscriptions, currentLicense] = await Promise.all([
     getInvoices(user.userId),
-    getSubscriptions(user.userId)
+    getSubscriptions(user.userId),
+    getCurrentLicense(user.userId)
   ])
 
   const activeSubscription = subscriptions.find(s => s.status === 'ACTIVE')
+  const currentPackage = currentLicense?.packageType as PackageType | null
 
   return (
     <DashboardLayout user={{ email: user.email, role: user.role }}>
@@ -207,6 +227,186 @@ export default async function InvoicesPage() {
             </div>
           </div>
         )}
+
+        {/* Unsere Pakete - Preistabellen */}
+        <div className="space-y-4 pt-4">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-[#22D6DD]" />
+            Unsere Pakete
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* FREE */}
+            <Card className={`border-2 flex flex-col h-full ${currentPackage === 'FREE' ? 'border-[#22D6DD] bg-[#22D6DD]/5' : ''}`}>
+              <CardHeader className="text-center pb-2">
+                <Badge className="w-fit mb-2 bg-slate-100 text-slate-700 mx-auto">Freemium</Badge>
+                <CardTitle className="text-2xl">0€</CardTitle>
+                <CardDescription className="text-sm">
+                  Kostenlos · 1 Website
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-2 mb-4 flex-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                    <span>Basis Honeypot</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                    <span>Zeitstempel-Check</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                    <span>JavaScript Bot-Scan</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                    <span>Community Support</span>
+                  </li>
+                </ul>
+                {currentPackage === 'FREE' ? (
+                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                ) : (
+                  <Button asChild variant="outline" className="w-full border-slate-300 text-slate-700">
+                    <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
+                      <Download className="mr-2 h-4 w-4" />
+                      Kostenlos
+                    </a>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* SINGLE */}
+            <Card className={`border-2 flex flex-col h-full ${currentPackage === 'SINGLE' ? 'border-[#22D6DD] bg-[#22D6DD]/5' : ''}`}>
+              <CardHeader className="text-center pb-2">
+                <Badge className="w-fit mb-2 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">Single</Badge>
+                <CardTitle className="text-2xl">29€</CardTitle>
+                <CardDescription className="text-sm">
+                  <span className="text-[#22D6DD]">Jährlich</span> · 1 Website
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-2 mb-4 flex-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span className="font-medium">Alles aus Free</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>White Label</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>GEO-Blocking</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>Priority Support</span>
+                  </li>
+                </ul>
+                {currentPackage === 'SINGLE' ? (
+                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                ) : (
+                  <Button asChild variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
+                    <Link href="https://germanfence.de#pricing">
+                      {isUpgrade(currentPackage, 'SINGLE') ? 'Jetzt upgraden' : 'Jetzt kaufen'}
+                    </Link>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* FREELANCER - Popular */}
+            <Card className={`border-2 flex flex-col h-full relative ${currentPackage === 'FREELANCER' ? 'border-[#22D6DD] bg-[#22D6DD]/5' : 'border-[#22D6DD]'}`}>
+              {currentPackage !== 'FREELANCER' && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-[#22D6DD] text-white px-3 py-0.5 text-xs">
+                    ⭐ Beliebt
+                  </Badge>
+                </div>
+              )}
+              <CardHeader className="text-center pb-2">
+                <Badge className="w-fit mb-2 bg-[#22D6DD]/20 text-[#22D6DD] mx-auto">Freelancer</Badge>
+                <CardTitle className="text-2xl">99€</CardTitle>
+                <CardDescription className="text-sm">
+                  <span className="text-[#22D6DD]">Jährlich</span> · 5 Websites
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-2 mb-4 flex-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span className="font-medium">Alles aus Single</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>Bis zu 5 Websites</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>Client-Projekte erlaubt</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                    <span>Priority Support</span>
+                  </li>
+                </ul>
+                {currentPackage === 'FREELANCER' ? (
+                  <Badge className="w-full py-2 bg-[#22D6DD]/10 text-[#22D6DD] justify-center">Dein aktuelles Paket</Badge>
+                ) : (
+                  <Button asChild className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD]/90">
+                    <Link href="https://germanfence.de#pricing">
+                      {isUpgrade(currentPackage, 'FREELANCER') ? 'Jetzt upgraden' : 'Jetzt kaufen'}
+                    </Link>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* AGENCY */}
+            <Card className={`border-2 flex flex-col h-full ${currentPackage === 'AGENCY' ? 'border-[#F06292] bg-[#F06292]/5' : 'border-[#F06292]'}`}>
+              <CardHeader className="text-center pb-2">
+                <Badge className="w-fit mb-2 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency</Badge>
+                <CardTitle className="text-2xl">199€</CardTitle>
+                <CardDescription className="text-sm">
+                  <span className="text-[#F06292]">Jährlich</span> · 25 Websites
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-2 mb-4 flex-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#F06292] flex-shrink-0" />
+                    <span className="font-medium">Alles aus Freelancer</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#F06292] flex-shrink-0" />
+                    <span>Bis zu 25 Websites</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#F06292] flex-shrink-0" />
+                    <span>White-Label Option</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-[#F06292] flex-shrink-0" />
+                    <span>Dedicated Support</span>
+                  </li>
+                </ul>
+                {currentPackage === 'AGENCY' ? (
+                  <Badge className="w-full py-2 bg-[#F06292]/10 text-[#F06292] justify-center">Dein aktuelles Paket</Badge>
+                ) : (
+                  <Button asChild variant="outline" className="w-full border-[#F06292] text-[#F06292] hover:bg-[#F06292]/10">
+                    <Link href="https://germanfence.de#pricing">
+                      {isUpgrade(currentPackage, 'AGENCY') ? 'Jetzt upgraden' : 'Jetzt kaufen'}
+                    </Link>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+          <p className="text-xs text-muted-foreground text-center">
+            * Alle Preise verstehen sich zzgl. MwSt. Die Abrechnung erfolgt jährlich.
+          </p>
+        </div>
 
         {/* Rechnungen */}
         <div className="space-y-4">

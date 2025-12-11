@@ -27,7 +27,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           <InfoBanner target="portal" />
           
           {/* Top Bar mit Download + Sprachumschalter - Höhe 4.3rem wie Sidebar */}
-          <div className="flex justify-end items-center gap-3 px-6 border-b border-[#d9dde1] bg-white/80 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
+          <div className="flex justify-end items-center gap-3 px-6 border-b border-[#d9dde1] dark:border-slate-700 bg-white/80 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button size="sm" className="bg-[#22D6DD] hover:bg-[#22D6DD] text-white">
                 <Download className="mr-2 h-4 w-4" />
@@ -38,7 +38,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           </div>
           
           <div className="p-8">
-            <div className="bg-white rounded-[9px] border border-[#d9dde1] min-h-[calc(100vh-8rem)]">
+            <div className="bg-white dark:bg-slate-900 rounded-[9px] border border-[#d9dde1] dark:border-slate-700 min-h-[calc(100vh-8rem)]">
               {children}
             </div>
           </div>

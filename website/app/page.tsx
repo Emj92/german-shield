@@ -380,7 +380,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span className="font-semibold">🏷️ White Label</span>
+                    <span className="font-semibold">White Label</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
@@ -412,15 +412,15 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span>📧 E-Mail-Schutz (Obfuscation)</span>
+                    <span>E-Mail-Schutz (Obfuscation)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span>🔐 WordPress-Firewall</span>
+                    <span>WordPress-Firewall</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
-                    <span>🛡️ Brute-Force-Schutz</span>
+                    <span>Brute-Force-Schutz</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#22D6DD] flex-shrink-0" />
