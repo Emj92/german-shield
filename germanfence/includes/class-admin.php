@@ -634,13 +634,13 @@ class GermanFence_Admin {
                             
                             <!-- Filter Buttons -->
                             <div class="stats-filter-buttons" style="display: flex; gap: 10px;">
-                                <button type="button" class="stats-filter-btn active" data-filter="all" style="padding: 8px 16px; border: 2px solid #22D6DD; background: #22D6DD; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                <button type="button" class="stats-filter-btn active" data-filter="all" style="padding: 8px 16px; border: 2px solid #22D6DD; background: #22D6DD; color: #fff; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     📊 Alle
                                 </button>
-                                <button type="button" class="stats-filter-btn" data-filter="blocked" style="padding: 8px 16px; border: 2px solid #F06292; background: transparent; color: #F06292; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                <button type="button" class="stats-filter-btn" data-filter="blocked" style="padding: 8px 16px; border: 2px solid #F06292; background: transparent; color: #F06292; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     🚫 Geblockt
                                 </button>
-                                <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                                     ✅ Legitim
                                 </button>
                                 <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
@@ -650,7 +650,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                         
-                        <div style="max-height: 500px; overflow-y: auto; border: 1px solid #dcdcde; border-radius: 6px;">
+                        <div style="max-height: 500px; overflow-y: auto; border: 1px solid #dcdcde; border-radius: 9px;">
                         <table class="germanfence-table">
                                 <thead style="position: sticky; top: 0; background: #F2F5F8; z-index: 1;">
                                 <tr>
@@ -869,7 +869,7 @@ class GermanFence_Admin {
                                         min="1" 
                                         max="60" 
                                         value="<?php echo esc_attr($settings['timestamp_min'] ?? 3); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 15px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 9px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Sekunden</span>
                                 </div>
@@ -887,7 +887,7 @@ class GermanFence_Admin {
                                         min="60" 
                                         max="86400" 
                                         value="<?php echo esc_attr($settings['timestamp_max'] ?? 3600); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 6px; font-size: 15px;"
+                                        style="width: 100px; padding: 10px; border: 1px solid #c3cbd5; border-radius: 9px; font-size: 15px;"
                                     >
                                     <span style="color: #646970;">Sekunden (<?php echo esc_html(round(($settings['timestamp_max'] ?? 3600) / 60)); ?> Min)</span>
                                 </div>
@@ -1577,7 +1577,7 @@ class GermanFence_Admin {
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
                         <!-- FREE VERSION BOX -->
-                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
+                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
                             <?php if ($is_free_active): ?>
                                 <?php $current_key = $free_manager->get_license_key(); ?>
                                 <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">✅ Kostenlose Version aktiviert</h3>
@@ -1699,7 +1699,7 @@ class GermanFence_Admin {
                         </div>
                         
                         <!-- PRO LIZENZ KAUFEN BOX -->
-                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column;">
+                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
                             <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
                             <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
                                 Upgrade jetzt auf PRO und schalte leistungsstarke Anti-Spam Features frei! Perfekt für professionelle Websites, die maximalen Schutz benötigen.
