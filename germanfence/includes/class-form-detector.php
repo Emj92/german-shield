@@ -177,11 +177,12 @@ class GermanFence_FormDetector {
         if (!$validation['valid']) {
             GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['message']);
             
-            // Fehlermeldung unter dem Formular anzeigen (nicht bei einzelnen Feldern)
+            // KRITISCH: Exception werfen um E-Mail-Versand zu STOPPEN
+            // set_success(false) allein reicht bei Elementor NICHT aus!
             $ajax_handler->add_error_message($validation['message']);
             
-            // Formular als fehlgeschlagen markieren (stoppt E-Mail-Versand)
-            $ajax_handler->set_success(false);
+            // Exception werfen - das ist der EINZIGE Weg, Elementor wirklich zu stoppen
+            throw new \Exception($validation['message']);
         }
     }
     

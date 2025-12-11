@@ -36,7 +36,7 @@ class GermanFence_Telemetry {
             return;
         }
         
-        GermanFence_Logger::log('[TELEMETRY] Sende Event: ' . $type . ' für IP-Hash');
+        GermanFence_Logger::log('[TELEMETRY] Sende Event: ' . $type);
         
         try {
             // Anonymisiere Daten
@@ -52,23 +52,8 @@ class GermanFence_Telemetry {
                 'site_url_hash' => hash('sha256', get_site_url()),
             );
             
-            // Queue für Hintergrund-Versand um Validierung nicht zu verzögern
-            $queue = get_option('germanfence_telemetry_queue', array());
-            $queue[] = $telemetry_data;
-            
-            // Limitiere Queue auf 50 Einträge
-            if (count($queue) > 50) {
-                $queue = array_slice($queue, -50);
-            }
-            
-            update_option('germanfence_telemetry_queue', $queue, false);
-            
-            // Sofortiger Versand via wp_schedule_single_event (wenn nicht bereits geplant)
-            if (!wp_next_scheduled('germanfence_send_telemetry')) {
-                wp_schedule_single_event(time() + 5, 'germanfence_send_telemetry');
-            }
-            
-            GermanFence_Logger::log('[TELEMETRY] Event zur Queue hinzugefügt (' . count($queue) . ' in Queue)');
+            // SOFORT senden (non-blocking) - wp_cron ist unzuverlässig
+            $this->send_immediately($telemetry_data);
             
         } catch (Exception $e) {
             GermanFence_Logger::log('[TELEMETRY] Fehler: ' . $e->getMessage());
@@ -76,7 +61,25 @@ class GermanFence_Telemetry {
     }
     
     /**
-     * Sendet alle Events aus der Queue (wird via wp_cron aufgerufen)
+     * Sendet Telemetrie-Daten SOFORT (non-blocking)
+     */
+    private function send_immediately($telemetry_data) {
+        // Non-blocking HTTP POST
+        $response = wp_remote_post($this->portal_url . '/api/telemetry', array(
+            'timeout' => 0.5, // Kurzes Timeout für non-blocking
+            'blocking' => false, // Non-blocking!
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'X-Plugin-Version' => GERMANFENCE_VERSION,
+            ),
+            'body' => json_encode($telemetry_data),
+        ));
+        
+        GermanFence_Logger::log('[TELEMETRY] ✅ Event gesendet (non-blocking)');
+    }
+    
+    /**
+     * Sendet alle Events aus der Queue (Legacy - wird via wp_cron aufgerufen)
      */
     public function process_queue() {
         $queue = get_option('germanfence_telemetry_queue', array());
@@ -241,4 +244,3 @@ class GermanFence_Telemetry {
         return $this->enabled;
     }
 }
-
