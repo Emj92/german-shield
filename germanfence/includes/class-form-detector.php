@@ -20,9 +20,11 @@ class GermanFence_FormDetector {
      * Detect and protect all forms
      */
     public function detect_and_protect_forms() {
-        // Contact Form 7
+        // Contact Form 7 - KRITISCH: Mehrere Hooks für maximalen Schutz!
         add_filter('wpcf7_form_elements', array($this, 'protect_cf7_form'));
         add_filter('wpcf7_spam', array($this, 'validate_cf7_spam'), 10, 2);
+        add_action('wpcf7_before_send_mail', array($this, 'block_cf7_mail'), 1, 3);
+        add_filter('wpcf7_skip_mail', array($this, 'skip_cf7_mail'), 10, 2);
         
         // Elementor Pro Forms
         add_action('elementor_pro/forms/validation', array($this, 'validate_elementor_form'), 10, 2);
@@ -75,7 +77,42 @@ class GermanFence_FormDetector {
         $data = $submission->get_posted_data();
         $validation = $this->perform_validation($data);
         
+        if (!$validation['valid']) {
+            GermanFence_Logger::log('[CF7] 🚫 SPAM erkannt via wpcf7_spam Hook: ' . $validation['reason']);
+        }
+        
         return !$validation['valid'];
+    }
+    
+    /**
+     * Block CF7 mail BEFORE it's sent - CRITICAL for stopping spam!
+     */
+    public function block_cf7_mail($contact_form, &$abort, $submission) {
+        $data = $submission->get_posted_data();
+        $validation = $this->perform_validation($data);
+        
+        if (!$validation['valid']) {
+            GermanFence_Logger::log('[CF7] 🛑 MAIL GESTOPPT via wpcf7_before_send_mail: ' . $validation['reason']);
+            $abort = true; // KRITISCH: Stoppt den E-Mail-Versand!
+            
+            // Set response message
+            $submission->set_response($contact_form->filter_message($validation['message']));
+            $submission->set_status('spam');
+        }
+    }
+    
+    /**
+     * Alternative: Skip mail sending if spam detected
+     */
+    public function skip_cf7_mail($skip_mail, $contact_form) {
+        $validation = $this->perform_validation($_POST);
+        
+        if (!$validation['valid']) {
+            GermanFence_Logger::log('[CF7] ⛔ MAIL ÜBERSPRUNGEN via wpcf7_skip_mail: ' . $validation['reason']);
+            return true; // Skip the mail
+        }
+        
+        return $skip_mail;
     }
     
     /**
@@ -109,8 +146,16 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($form_data);
         
         if (!$validation['valid']) {
-            // Nur add_error_message verwenden, nicht add_error (sonst doppelt)
+            GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['reason']);
+            
+            // KRITISCH: Fehler setzen UND Verarbeitung abbrechen
             $ajax_handler->add_error_message($validation['message']);
+            
+            // Verhindern, dass E-Mail gesendet wird
+            $ajax_handler->set_success(false);
+            
+            // Alle Actions stoppen
+            throw new \Exception($validation['message']);
         }
     }
     
@@ -130,6 +175,8 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
+            GermanFence_Logger::log('[Divi] 🚫 SPAM erkannt: ' . $validation['reason']);
+            // KRITISCH: Error zurückgeben stoppt den Versand
             return array('error' => $validation['message']);
         }
         
@@ -154,6 +201,9 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
+            GermanFence_Logger::log('[GravityForms] 🚫 SPAM erkannt: ' . $validation['reason']);
+            
+            // KRITISCH: Form als ungültig markieren
             $validation_result['is_valid'] = false;
             
             // Add error to first field
@@ -184,8 +234,17 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
+            GermanFence_Logger::log('[WPForms] 🚫 SPAM erkannt: ' . $validation['reason']);
             wpforms()->process->errors[$form_data['id']]['header'] = $validation['message'];
+            
+            // KRITISCH: Felder als ungültig markieren um Versand zu stoppen
+            foreach ($fields as $field_id => $field) {
+                $fields[$field_id]['error'] = $validation['message'];
+                break; // Nur erstes Feld
+            }
         }
+        
+        return $fields;
     }
     
     /**
@@ -221,7 +280,9 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
-            $form_data['errors']['form'] = $validation['message'];
+            GermanFence_Logger::log('[NinjaForms] 🚫 SPAM erkannt: ' . $validation['reason']);
+            $form_data['errors']['form']['germanfence'] = $validation['message'];
+            $form_data['errors']['fields']['germanfence'] = $validation['message'];
         }
         
         return $form_data;
@@ -250,7 +311,8 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
-            $errors['germanfence'] = $validation['message'];
+            GermanFence_Logger::log('[Formidable] 🚫 SPAM erkannt: ' . $validation['reason']);
+            $errors['form'] = $validation['message'];
         }
         
         return $errors;
@@ -279,10 +341,17 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
+            GermanFence_Logger::log('[FluentForms] 🚫 SPAM erkannt: ' . $validation['reason']);
+            
+            // KRITISCH: JSON-Fehler senden und Ausführung stoppen
             wp_send_json_error(array(
-                'message' => $validation['message']
+                'message' => $validation['message'],
+                'errors' => array('germanfence' => $validation['message'])
             ), 422);
+            exit; // Sicherheitshalber
         }
+        
+        return $insertData;
     }
     
     /**

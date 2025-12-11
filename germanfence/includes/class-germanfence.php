@@ -116,6 +116,7 @@ class GermanFence {
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
+            GermanFence_Logger::log('[CF7] 🚫 Validierung fehlgeschlagen: ' . $validation['reason']);
             $result->invalidate($tag, $validation['message']);
         }
         
