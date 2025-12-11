@@ -26,6 +26,9 @@ class GermanFence_FormDetector {
         add_action('wpcf7_before_send_mail', array($this, 'block_cf7_mail'), 1, 3);
         add_filter('wpcf7_skip_mail', array($this, 'skip_cf7_mail'), 10, 2);
         
+        // CF7 Fehlermeldung anpassen
+        add_filter('wpcf7_display_message', array($this, 'cf7_custom_message'), 10, 2);
+        
         // Elementor Pro Forms
         add_action('elementor_pro/forms/validation', array($this, 'validate_elementor_form'), 10, 2);
         add_filter('elementor_pro/forms/render/item', array($this, 'protect_elementor_form'), 10, 3);
@@ -69,6 +72,22 @@ class GermanFence_FormDetector {
         return $form . $protection_fields;
     }
     
+    /**
+     * CF7 Block-Nachricht für die aktuelle Anfrage speichern
+     */
+    private $cf7_block_message = '';
+    
+    /**
+     * CF7 Custom Message - Zeigt unsere Fehlermeldung statt "Error"
+     */
+    public function cf7_custom_message($message, $status) {
+        // Wenn wir eine Block-Nachricht haben und Status spam/aborted ist
+        if (!empty($this->cf7_block_message) && in_array($status, array('spam', 'aborted', 'mail_failed'))) {
+            return $this->cf7_block_message;
+        }
+        return $message;
+    }
+    
     public function validate_cf7_spam($spam, $submission) {
         if ($spam) {
             return $spam;
@@ -78,7 +97,8 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($data);
         
         if (!$validation['valid']) {
-            GermanFence_Logger::log('[CF7] 🚫 SPAM erkannt via wpcf7_spam Hook: ' . $validation['reason']);
+            GermanFence_Logger::log('[CF7] 🚫 SPAM erkannt: ' . $validation['message']);
+            $this->cf7_block_message = $validation['message'];
         }
         
         return !$validation['valid'];
@@ -88,16 +108,19 @@ class GermanFence_FormDetector {
      * Block CF7 mail BEFORE it's sent - CRITICAL for stopping spam!
      */
     public function block_cf7_mail($contact_form, &$abort, $submission) {
+        // Nur prüfen wenn noch nicht als Spam markiert
+        if ($submission->get_status() === 'spam') {
+            $abort = true;
+            return;
+        }
+        
         $data = $submission->get_posted_data();
         $validation = $this->perform_validation($data);
         
         if (!$validation['valid']) {
-            GermanFence_Logger::log('[CF7] 🛑 MAIL GESTOPPT via wpcf7_before_send_mail: ' . $validation['reason']);
-            $abort = true; // KRITISCH: Stoppt den E-Mail-Versand!
-            
-            // Set response message
-            $submission->set_response($contact_form->filter_message($validation['message']));
-            $submission->set_status('spam');
+            GermanFence_Logger::log('[CF7] 🛑 MAIL GESTOPPT: ' . $validation['message']);
+            $abort = true;
+            $this->cf7_block_message = $validation['message'];
         }
     }
     
@@ -105,11 +128,17 @@ class GermanFence_FormDetector {
      * Alternative: Skip mail sending if spam detected
      */
     public function skip_cf7_mail($skip_mail, $contact_form) {
+        // Wenn bereits blockiert, überspringen
+        if (!empty($this->cf7_block_message)) {
+            return true;
+        }
+        
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
-            GermanFence_Logger::log('[CF7] ⛔ MAIL ÜBERSPRUNGEN via wpcf7_skip_mail: ' . $validation['reason']);
-            return true; // Skip the mail
+            GermanFence_Logger::log('[CF7] ⛔ MAIL ÜBERSPRUNGEN: ' . $validation['message']);
+            $this->cf7_block_message = $validation['message'];
+            return true;
         }
         
         return $skip_mail;
@@ -146,16 +175,17 @@ class GermanFence_FormDetector {
         $validation = $this->perform_validation($form_data);
         
         if (!$validation['valid']) {
-            GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['reason']);
+            GermanFence_Logger::log('[Elementor] 🚫 SPAM erkannt: ' . $validation['message']);
             
-            // KRITISCH: Fehler setzen UND Verarbeitung abbrechen
+            // Fehlermeldung setzen
             $ajax_handler->add_error_message($validation['message']);
             
-            // Verhindern, dass E-Mail gesendet wird
-            $ajax_handler->set_success(false);
-            
-            // Alle Actions stoppen
-            throw new \Exception($validation['message']);
+            // Alle Felder als fehlerhaft markieren (stoppt E-Mail-Versand)
+            $fields = $record->get('fields');
+            foreach ($fields as $field_id => $field) {
+                $ajax_handler->add_error($field_id, $validation['message']);
+                break; // Nur erstes Feld
+            }
         }
     }
     
