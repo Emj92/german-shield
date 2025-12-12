@@ -266,23 +266,49 @@ textarea:not(:placeholder-shown) {
   background: transparent;
 }
 
-/* Badge ohne Hover-Farbwechsel */
+/* Badge ohne Hover-Farbwechsel - ALLE Badges und Status-Elemente */
 [class*="Badge"],
 .badge,
 span[class*="bg-"][class*="/10"],
 span[class*="bg-"][class*="/20"],
-span[class*="bg-green-100"],
-span[class*="bg-red-100"],
-span[class*="bg-slate-100"],
-span[class*="bg-gray-100"] {
+span[class*="bg-green"],
+span[class*="bg-red"],
+span[class*="bg-slate"],
+span[class*="bg-gray"],
+span[class*="bg-yellow"],
+span[class*="bg-amber"],
+span[class*="bg-emerald"],
+span[class*="bg-rose"],
+span[class*="px-2"][class*="py-1"],
+span[class*="rounded"][class*="text-xs"],
+span[class*="rounded"][class*="text-sm"],
+.inline-flex[class*="rounded"],
+div[class*="inline-flex"][class*="rounded"] {
   transition: none !important;
+  pointer-events: auto !important;
 }
 
 [class*="Badge"]:hover,
-.badge:hover {
+.badge:hover,
+span[class*="bg-"]:hover,
+span[class*="px-2"][class*="py-1"]:hover,
+span[class*="rounded"][class*="text-xs"]:hover,
+span[class*="rounded"][class*="text-sm"]:hover {
   filter: none !important;
   transform: none !important;
+  opacity: 1 !important;
   background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* Copy Icon ohne Hover-Effekt - NUR wenn in Tabellen/Listen */
+button[title*="Kopieren"]:hover svg,
+button[title*="kopieren"]:hover svg,
+button[title*="Copy"]:hover svg,
+button.copy-btn:hover svg,
+.copy-icon:hover {
+  opacity: 1 !important;
+  color: inherit !important;
 }
 
 /* Radiobuttons ohne schwarzen Rand */

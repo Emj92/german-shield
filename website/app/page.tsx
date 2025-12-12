@@ -447,7 +447,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={29} 
+                  price={0.50} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
@@ -593,7 +593,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={0.50}
+                  price={299}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
@@ -771,7 +771,7 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-lg mb-6 text-white">Lizenzen</h3>
               <ul className="space-y-3 text-slate-400">
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (29€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€/Jahr zzgl. MwSt.)</a></li>
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (199€/Jahr zzgl. MwSt.)</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
