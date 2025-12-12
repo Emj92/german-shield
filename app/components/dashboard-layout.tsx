@@ -4,6 +4,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/app-sidebar'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { NotificationBell } from '@/components/NotificationBell'
 import { Button } from '@/components/ui/button'
 import { Download, ExternalLink } from 'lucide-react'
 import { InfoBanner } from '@/components/info-banner'
@@ -40,6 +41,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
                 Plugin Download
               </Button>
             </a>
+            <NotificationBell />
             <LanguageSwitcher />
           </div>
           

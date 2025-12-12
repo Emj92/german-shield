@@ -77,6 +77,11 @@ interface InvoiceData {
   }
 }
 
+// Hilfsfunktion für deutsche Zahlenformatierung
+function formatGermanNumber(num: number): string {
+  return num.toFixed(2).replace('.', ',')
+}
+
 function generateInvoiceHTML(invoice: InvoiceData): string {
   const taxExemptText = invoice.taxExempt 
     ? '<div style="color: #22D6DD; font-size: 13px; margin-top: 10px;">✓ Reverse Charge - Steuerbefreit nach §13b UStG</div>'
@@ -127,8 +132,8 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
       gap: 12px;
     }
     .logo {
-      width: 40px;
-      height: 40px;
+      height: 45px;
+      width: auto;
     }
     .company-name {
       font-size: 24px;
@@ -326,8 +331,7 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
     <div class="header">
       <div>
         <div class="logo-section">
-          <img src="https://germanfence.de/icon.png" alt="GermanFence" class="logo" onerror="this.outerHTML='<span style=\\'font-size:32px;\\'>🛡️</span>'">
-          <div class="company-name">GermanFence</div>
+          <img src="https://germanfence.de/germanfence_logo.png" alt="GermanFence" class="logo" onerror="this.style.display='none'">
         </div>
         <div class="company-details">
           Erwin Maximilian John Meindl<br>
@@ -376,8 +380,8 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
             <span style="color: #6b7280; font-size: 12px;">Jahreslizenz für WordPress Anti-Spam Plugin</span>
           </td>
           <td>1</td>
-          <td>${invoice.netAmount.toFixed(2)} €</td>
-          <td>${invoice.netAmount.toFixed(2)} €</td>
+          <td>${formatGermanNumber(invoice.netAmount)} €</td>
+          <td>${formatGermanNumber(invoice.netAmount)} €</td>
         </tr>
       </tbody>
     </table>
@@ -386,17 +390,17 @@ function generateInvoiceHTML(invoice: InvoiceData): string {
       <table class="totals-table">
         <tr>
           <td>Zwischensumme (Netto)</td>
-          <td>${invoice.netAmount.toFixed(2)} €</td>
+          <td>${formatGermanNumber(invoice.netAmount)} €</td>
         </tr>
         ${invoice.taxAmount > 0 ? `
         <tr>
-          <td>${invoice.taxLabel || 'MwSt.'} (${invoice.taxRate}%)</td>
-          <td>${invoice.taxAmount.toFixed(2)} €</td>
+          <td>${invoice.taxLabel || 'MwSt.'} (${invoice.taxRate.toString().replace('.', ',')}%)</td>
+          <td>${formatGermanNumber(invoice.taxAmount)} €</td>
         </tr>
         ` : ''}
         <tr class="grand-total">
           <td>Gesamtbetrag</td>
-          <td>${invoice.grossAmount.toFixed(2)} €</td>
+          <td>${formatGermanNumber(invoice.grossAmount)} €</td>
         </tr>
       </table>
     </div>

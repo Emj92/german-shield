@@ -44,12 +44,27 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Status prüfen
+    // Status prüfen - SUSPENDED, EXPIRED, CANCELLED blockieren
     if (license.status !== 'ACTIVE') {
+      let errorMessage = 'Lizenz ist nicht aktiv'
+      
+      switch (license.status) {
+        case 'SUSPENDED':
+          errorMessage = 'Diese Lizenz wurde gesperrt. Bitte kontaktiere den Support.'
+          break
+        case 'EXPIRED':
+          errorMessage = 'Diese Lizenz ist abgelaufen. Bitte verlängere sie im Portal.'
+          break
+        case 'CANCELLED':
+          errorMessage = 'Diese Lizenz wurde gekündigt.'
+          break
+      }
+      
       return NextResponse.json({
         valid: false,
-        error: `License is ${license.status.toLowerCase()}`,
+        error: errorMessage,
         status: license.status,
+        supportUrl: 'https://portal.germanfence.de/dashboard/support',
       })
     }
 
