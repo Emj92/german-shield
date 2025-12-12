@@ -11,8 +11,9 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { InfoBanner } from "@/components/info-banner";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { CookieBanner } from "@/components/CookieBanner";
-import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn } from "lucide-react";
+import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCircle2, Zap, Lock, LogIn, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { StarRating } from "@/components/StarRating";
 
 export default function Home() {
   const { t } = useLanguage()
@@ -311,6 +312,11 @@ export default function Home() {
             <p className="text-lg text-slate-600 dark:text-slate-400">
               {t.pricing.subtitle}
             </p>
+            {/* 14 Tage Geld-zurück-Garantie */}
+            <div className="mt-6 inline-flex items-center gap-2 bg-[#22D6DD]/10 border-2 border-[#22D6DD] text-[#22D6DD] px-6 py-3 rounded-full font-semibold">
+              <ShieldCheck className="h-5 w-5" />
+              <span>14 Tage 100% Geld-zurück-Garantie</span>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
@@ -367,9 +373,9 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.single}</Badge>
-                <CardTitle className="text-4xl">29€/Jahr</CardTitle>
+                <CardTitle className="text-4xl">0,50€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  1 {t.pricing.website}
+                  1 {t.pricing.website} <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded ml-1">TEST</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -593,9 +599,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section mit Bewertung */}
       <section className="py-20 px-6 bg-[#22D6DD]">
         <div className="container mx-auto text-center max-w-3xl">
+          {/* Sterne-Bewertung */}
+          <div className="mb-10">
+            <StarRating />
+          </div>
+          
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             {t.cta.title}
           </h2>

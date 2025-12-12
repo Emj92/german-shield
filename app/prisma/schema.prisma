@@ -343,6 +343,23 @@ enum NotificationType {
   WARNING   // Warnung (pink)
 }
 
+// Rating Model (Sterne-Bewertungen für Website)
+model Rating {
+  id        String   @id @default(cuid())
+  stars     Int      // 1-5 Sterne
+  comment   String?  @db.Text
+  name      String?  // Optional: Name des Bewerters
+  email     String?  // Optional: E-Mail (für Verifizierung)
+  ipHash    String   // Gehashte IP zur Spam-Vermeidung
+  verified  Boolean  @default(false)
+  approved  Boolean  @default(true) // Admin kann Bewertungen moderieren
+  createdAt DateTime @default(now())
+  
+  @@index([approved])
+  @@index([createdAt])
+  @@map("ratings")
+}
+
 // Plugin Release Model (für Downloads)
 model PluginRelease {
   id          String   @id @default(cuid())
