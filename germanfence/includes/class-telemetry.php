@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 
 class GermanFence_Telemetry {
     
-    private $portal_url = 'https://app.germanfence.de';
+    private $portal_url = 'https://portal.germanfence.de';
     private $enabled = false;
     
     public function __construct() {

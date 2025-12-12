@@ -1871,11 +1871,11 @@ class GermanFence_Admin {
                         <div class="germanfence-subsetting" id="badge-settings" style="<?php echo (!isset($settings['badge_enabled']) || $settings['badge_enabled'] !== '1') ? 'display:none;' : ''; ?>">
                             <h3>Badge-Einstellungen</h3>
                             
-                            <!-- 2-Spalten Layout für Badge Einstellungen -->
+                            <!-- Anzeige-Bereich & Position nebeneinander -->
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Anzeige-Bereich:</strong></label>
-                                    <select name="badge_display_type" style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
+                                    <select name="badge_display_type" style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
                                         <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
                                         <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
                                     </select>
@@ -1883,7 +1883,7 @@ class GermanFence_Admin {
                                 
                                 <div class="setting-row">
                                     <label><strong>Position:</strong></label>
-                                    <select name="badge_position" style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
+                                    <select name="badge_position" style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
                                         <option value="bottom-right" <?php selected($settings['badge_position'] ?? 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
                                         <option value="bottom-left" <?php selected($settings['badge_position'] ?? '', 'bottom-left'); ?>>Unten Links</option>
                                         <option value="top-right" <?php selected($settings['badge_position'] ?? '', 'top-right'); ?>>Oben Rechts</option>
@@ -1892,22 +1892,19 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                             
-                            <!-- Badge-Text (80% Breite) -->
-                            <div style="margin-bottom: 20px; width: 80%;">
+                            <!-- Badge-Text & Eigenes Icon nebeneinander -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
                                     <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
+                                        style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="Geschützt durch GermanFence">
                                 </div>
-                            </div>
-                            
-                            <!-- Eigenes Icon/Logo -->
-                            <div style="margin-bottom: 20px; width: 80%;">
+                                
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
                                     <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
+                                        style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="https://example.com/logo.png">
                                     <p class="description" style="margin-top: 5px; color: #646970; font-size: 13px;">Leer = Standard-Icon 🛡️</p>
                                 </div>
