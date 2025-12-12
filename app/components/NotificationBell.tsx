@@ -15,10 +15,18 @@ interface Notification {
   backgroundColor?: string
 }
 
+interface ConfirmDialog {
+  show: boolean
+  title: string
+  message: string
+  onConfirm: () => void
+}
+
 export function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null)
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialog>({ show: false, title: '', message: '', onConfirm: () => {} })
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const unreadCount = notifications.filter(n => !n.read).length
@@ -84,17 +92,23 @@ export function NotificationBell() {
     }
   }
 
-  async function clearAllNotifications() {
-    if (!confirm('Alle Benachrichtigungen löschen?')) return
-    
-    try {
-      await fetch('/api/notifications/clear', {
-        method: 'DELETE'
-      })
-      setNotifications([])
-    } catch (error) {
-      console.error('Failed to clear notifications:', error)
-    }
+  function showClearConfirm() {
+    setConfirmDialog({
+      show: true,
+      title: 'Alle löschen?',
+      message: 'Möchtest du alle Benachrichtigungen unwiderruflich löschen?',
+      onConfirm: async () => {
+        try {
+          await fetch('/api/notifications/clear', {
+            method: 'DELETE'
+          })
+          setNotifications([])
+        } catch (error) {
+          console.error('Failed to clear notifications:', error)
+        }
+        setConfirmDialog({ show: false, title: '', message: '', onConfirm: () => {} })
+      }
+    })
   }
 
   // Bestimme Hintergrundfarbe basierend auf Typ
@@ -163,7 +177,7 @@ export function NotificationBell() {
             <div className="flex items-center gap-2">
               {notifications.length > 0 && (
                 <button
-                  onClick={clearAllNotifications}
+                  onClick={showClearConfirm}
                   className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
                   title="Alle löschen"
                 >
@@ -284,6 +298,36 @@ export function NotificationBell() {
                   Öffnen
                 </Button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Eigener Confirm-Dialog statt Browser-Confirm */}
+      {confirmDialog.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200]">
+          <div className="bg-white dark:bg-[#1A1F23] rounded-[9px] w-full max-w-sm mx-4 shadow-2xl border border-[#d9dde1] dark:border-slate-700 overflow-hidden">
+            <div className="px-5 py-4 border-b border-[#d9dde1] dark:border-slate-700">
+              <h3 className="font-semibold text-gray-900 dark:text-white">{confirmDialog.title}</h3>
+            </div>
+            <div className="px-5 py-4">
+              <p className="text-gray-600 dark:text-gray-300">{confirmDialog.message}</p>
+            </div>
+            <div className="px-5 py-3 bg-[#F2F5F8] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setConfirmDialog({ show: false, title: '', message: '', onConfirm: () => {} })}
+              >
+                Nein
+              </Button>
+              <Button
+                size="sm"
+                onClick={confirmDialog.onConfirm}
+                className="bg-[#EC4899] hover:bg-[#EC4899]/90"
+              >
+                Ja
+              </Button>
             </div>
           </div>
         </div>
