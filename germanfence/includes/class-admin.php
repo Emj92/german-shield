@@ -629,19 +629,32 @@ class GermanFence_Admin {
                     </div>
                     
                     <div class="germanfence-recent-blocks">
+                        <?php 
+                        // Zähle Anfragen für Filter-Buttons
+                        $total_requests = count($stats['recent_all']);
+                        $blocked_count = 0;
+                        $legitimate_count = 0;
+                        foreach ($stats['recent_all'] as $entry) {
+                            if ($entry->type === 'blocked') {
+                                $blocked_count++;
+                            } else {
+                                $legitimate_count++;
+                            }
+                        }
+                        ?>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h2 style="margin: 0;">Letzte Anfragen</h2>
+                            <h2 style="margin: 0;">Letzte Anfragen <span style="color: #646970; font-size: 16px; font-weight: 500;">(<?php echo $total_requests; ?> Einträge)</span></h2>
                             
                             <!-- Filter Buttons -->
                             <div class="stats-filter-buttons" style="display: flex; gap: 10px;">
                                 <button type="button" class="stats-filter-btn active" data-filter="all" style="padding: 8px 16px; border: 2px solid #22D6DD; background: #22D6DD; color: #fff; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    📊 Alle
+                                    📊 Alle (<?php echo $total_requests; ?>)
                                 </button>
                                 <button type="button" class="stats-filter-btn" data-filter="blocked" style="padding: 8px 16px; border: 2px solid #F06292; background: transparent; color: #F06292; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    🚫 Geblockt
+                                    🚫 Geblockt (<?php echo $blocked_count; ?>)
                                 </button>
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    ✅ Legitim
+                                    ✅ Legitim (<?php echo $legitimate_count; ?>)
                                 </button>
                                 <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
                                     <span class="dashicons dashicons-trash" style="font-size: 15px;"></span>
@@ -2178,6 +2191,7 @@ class GermanFence_Admin {
             'defer_scripts' => isset($_POST['defer_scripts']) ? '1' : '0',
             'block_comment_bots' => isset($_POST['block_comment_bots']) ? '1' : '0',
             'block_wp_update_emails' => isset($_POST['block_wp_update_emails']) ? '1' : '0',
+            'telemetry_enabled' => isset($_POST['telemetry_enabled']) ? '1' : '0',
         );
         
         // FREE Version: Badge MUSS aktiviert sein (Zwingend)
