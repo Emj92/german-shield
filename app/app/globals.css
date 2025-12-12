@@ -266,3 +266,60 @@ textarea:not(:placeholder-shown) {
   background: transparent;
 }
 
+/* Badge ohne Hover-Farbwechsel */
+[class*="Badge"],
+.badge,
+span[class*="bg-"][class*="/10"],
+span[class*="bg-"][class*="/20"],
+span[class*="bg-green-100"],
+span[class*="bg-red-100"],
+span[class*="bg-slate-100"],
+span[class*="bg-gray-100"] {
+  transition: none !important;
+}
+
+[class*="Badge"]:hover,
+.badge:hover {
+  filter: none !important;
+  transform: none !important;
+  background-color: inherit !important;
+}
+
+/* Radiobuttons ohne schwarzen Rand */
+input[type="radio"] {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input[type="radio"]:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  ring: none !important;
+}
+
+/* Custom Radio Styling */
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #d9dde1 !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="radio"]:checked {
+  background-color: #22D6DD;
+  border-color: #22D6DD !important;
+  box-shadow: inset 0 0 0 3px white;
+}
+
+input[type="radio"]:hover {
+  border-color: #22D6DD !important;
+}
+

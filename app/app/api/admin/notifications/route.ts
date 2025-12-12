@@ -61,20 +61,11 @@ export async function POST(request: NextRequest) {
         }))
       })
 
-      // Zusätzlich eine Referenz-Benachrichtigung ohne userId speichern
-      const notification = await prisma.notification.create({
-        data: {
-          userId: null,
-          message,
-          type: type || 'MESSAGE',
-          backgroundColor: backgroundColor || '#22D6DD',
-          link: link || null,
-        }
-      })
+      // KEINE zusätzliche Referenz-Benachrichtigung mehr erstellen
+      // Das verursachte Duplikate im Verlauf
 
       return NextResponse.json({ 
         success: true, 
-        notification,
         sentTo: allUsers.length 
       })
 

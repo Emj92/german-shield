@@ -303,7 +303,8 @@ export default function InfoBannerPage() {
                           name="recipient"
                           checked={notifUserId === 'all'}
                           onChange={() => setNotifUserId('all')}
-                          className="w-4 h-4 accent-[#22D6DD]"
+                          className="w-4 h-4 accent-[#22D6DD] border-0 outline-none focus:ring-0"
+                          style={{ accentColor: '#22D6DD' }}
                         />
                         <Users className="h-4 w-4" />
                         Alle Benutzer
@@ -314,7 +315,8 @@ export default function InfoBannerPage() {
                           name="recipient"
                           checked={notifUserId !== 'all'}
                           onChange={() => setNotifUserId('')}
-                          className="w-4 h-4 accent-[#22D6DD]"
+                          className="w-4 h-4 accent-[#22D6DD] border-0 outline-none focus:ring-0"
+                          style={{ accentColor: '#22D6DD' }}
                         />
                         Einzelner Benutzer
                       </label>

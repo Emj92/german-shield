@@ -1,22 +1,24 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Bell } from 'lucide-react'
+import { Bell, Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface Notification {
   id: string
-  type: 'ticket_response' | 'license_expiry' | 'system'
+  type: 'ticket_response' | 'license_expiry' | 'system' | 'MESSAGE' | 'UPDATE' | 'NEWS' | 'WARNING'
   title: string
   message: string
   link?: string
   read: boolean
   createdAt: string
+  backgroundColor?: string
 }
 
 export function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const unreadCount = notifications.filter(n => !n.read).length
@@ -34,6 +36,7 @@ export function NotificationBell() {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false)
+        setSelectedNotification(null)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -67,28 +70,58 @@ export function NotificationBell() {
     }
   }
 
-  async function markAllAsRead() {
+  async function deleteNotification(id: string) {
     try {
-      await fetch('/api/notifications/read-all', {
-        method: 'POST'
+      await fetch('/api/notifications/read', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
       })
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+      setNotifications(prev => prev.filter(n => n.id !== id))
+      setSelectedNotification(null)
     } catch (error) {
-      console.error('Failed to mark all as read:', error)
+      console.error('Failed to delete notification:', error)
     }
   }
 
-  function getNotificationIcon(type: string) {
-    switch (type) {
-      case 'ticket_response':
-        return '💬'
-      case 'license_expiry':
-        return '⚠️'
-      case 'system':
-        return '🔔'
-      default:
-        return '📌'
+  async function clearAllNotifications() {
+    if (!confirm('Alle Benachrichtigungen löschen?')) return
+    
+    try {
+      await fetch('/api/notifications/clear', {
+        method: 'DELETE'
+      })
+      setNotifications([])
+    } catch (error) {
+      console.error('Failed to clear notifications:', error)
     }
+  }
+
+  // Bestimme Hintergrundfarbe basierend auf Typ
+  function getNotificationBgColor(notification: Notification): string {
+    if (notification.backgroundColor) {
+      // Warning = rosa, andere = türkis
+      if (notification.type === 'WARNING' || notification.backgroundColor === '#EC4899') {
+        return 'bg-[#EC4899]/10 border-l-4 border-l-[#EC4899]'
+      }
+      return 'bg-[#22D6DD]/10 border-l-4 border-l-[#22D6DD]'
+    }
+    
+    switch (notification.type) {
+      case 'WARNING':
+      case 'license_expiry':
+        return 'bg-[#EC4899]/10 border-l-4 border-l-[#EC4899]'
+      default:
+        return 'bg-[#22D6DD]/10 border-l-4 border-l-[#22D6DD]'
+    }
+  }
+
+  // Punkt-Farbe für ungelesene
+  function getDotColor(notification: Notification): string {
+    if (notification.type === 'WARNING' || notification.backgroundColor === '#EC4899') {
+      return 'bg-[#EC4899]'
+    }
+    return 'bg-[#22D6DD]'
   }
 
   function formatTime(dateString: string) {
@@ -127,14 +160,17 @@ export function NotificationBell() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#d9dde1] dark:border-slate-700 bg-[#FAFAFA] dark:bg-slate-800">
             <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Benachrichtigungen</h3>
-            {unreadCount > 0 && (
-              <button
-                onClick={markAllAsRead}
-                className="text-xs text-[#22D6DD] hover:underline"
-              >
-                Alle gelesen
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {notifications.length > 0 && (
+                <button
+                  onClick={clearAllNotifications}
+                  className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+                  title="Alle löschen"
+                >
+                  <Trash2 className="h-4 w-4 text-slate-500 hover:text-[#EC4899]" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Notifications List */}
@@ -150,14 +186,14 @@ export function NotificationBell() {
                   key={notification.id}
                   onClick={() => {
                     if (!notification.read) markAsRead(notification.id)
-                    if (notification.link) window.location.href = notification.link
+                    setSelectedNotification(notification)
                   }}
                   className={`px-4 py-3 border-b border-[#d9dde1] dark:border-slate-700 cursor-pointer hover:bg-[#F2F5F8] dark:hover:bg-slate-800 transition-colors ${
-                    !notification.read ? 'bg-[#E9FBFC] dark:bg-slate-800/50' : ''
+                    !notification.read ? getNotificationBgColor(notification) : ''
                   }`}
                 >
                   <div className="flex gap-3">
-                    <span className="text-lg">{getNotificationIcon(notification.type)}</span>
+                    <Bell className="h-5 w-5 text-[#22D6DD] flex-shrink-0 mt-0.5" />
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm font-medium truncate ${
                         !notification.read ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'
@@ -172,28 +208,86 @@ export function NotificationBell() {
                       </p>
                     </div>
                     {!notification.read && (
-                      <span className="h-2 w-2 rounded-full bg-[#22D6DD] flex-shrink-0 mt-1.5" />
+                      <span className={`h-2 w-2 rounded-full ${getDotColor(notification)} flex-shrink-0 mt-1.5`} />
                     )}
                   </div>
                 </div>
               ))
             )}
           </div>
+        </div>
+      )}
 
-          {/* Footer */}
-          {notifications.length > 0 && (
-            <div className="px-4 py-2 border-t border-[#d9dde1] dark:border-slate-700 bg-[#F2F5F8] dark:bg-slate-800">
-              <a
-                href="/dashboard/notifications"
-                className="text-xs text-[#22D6DD] hover:underline block text-center"
-              >
-                Alle Benachrichtigungen anzeigen
-              </a>
+      {/* Popup für ausgewählte Benachrichtigung */}
+      {selectedNotification && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]" onClick={() => setSelectedNotification(null)}>
+          <div 
+            className="bg-white dark:bg-[#1A1F23] rounded-[9px] w-full max-w-md mx-4 shadow-2xl border border-[#d9dde1] dark:border-slate-700 overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Popup Header */}
+            <div className={`px-5 py-4 ${
+              selectedNotification.type === 'WARNING' || selectedNotification.backgroundColor === '#EC4899'
+                ? 'bg-[#EC4899]/10'
+                : 'bg-[#22D6DD]/10'
+            }`}>
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <Bell className={`h-6 w-6 ${
+                    selectedNotification.type === 'WARNING' || selectedNotification.backgroundColor === '#EC4899'
+                      ? 'text-[#EC4899]'
+                      : 'text-[#22D6DD]'
+                  }`} />
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    {selectedNotification.title}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setSelectedNotification(null)}
+                  className="p-1 hover:bg-white/50 dark:hover:bg-slate-700 rounded transition-colors"
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
             </div>
-          )}
+
+            {/* Popup Body */}
+            <div className="px-5 py-4">
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                {selectedNotification.message}
+              </p>
+              <p className="text-xs text-gray-400 mt-4">
+                {formatTime(selectedNotification.createdAt)}
+              </p>
+            </div>
+
+            {/* Popup Footer */}
+            <div className="px-5 py-3 bg-[#F2F5F8] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => deleteNotification(selectedNotification.id)}
+                className="text-[#EC4899] border-[#EC4899] hover:bg-[#EC4899]/10"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Löschen
+              </Button>
+              {selectedNotification.link && (
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    window.location.href = selectedNotification.link!
+                    setSelectedNotification(null)
+                  }}
+                  className="bg-[#22D6DD] hover:bg-[#22D6DD]/90"
+                >
+                  Öffnen
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
   )
 }
-
