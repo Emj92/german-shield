@@ -602,18 +602,13 @@ export default function Home() {
       {/* CTA Section mit Bewertung */}
       <section className="py-20 px-6 bg-[#22D6DD]">
         <div className="container mx-auto text-center max-w-3xl">
-          {/* Sterne-Bewertung */}
-          <div className="mb-10">
-            <StarRating />
-          </div>
-          
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             {t.cta.title}
           </h2>
           <p className="text-xl text-white/90 mb-8">
             {t.cta.subtitle}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button size="lg" className="bg-white text-[#22D6DD] hover:bg-white hover:text-[#22D6DD] px-8 py-6 text-lg font-semibold transition-transform hover:-translate-y-1">
                 <Download className="mr-2 h-5 w-5" />
@@ -626,6 +621,11 @@ export default function Home() {
                 {t.cta.toPortal}
               </Button>
             </a>
+          </div>
+          
+          {/* Sterne-Bewertung unter den Buttons */}
+          <div className="pt-8 border-t border-white/20">
+            <StarRating />
           </div>
         </div>
       </section>

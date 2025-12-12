@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     // Validierung
     if (!firstName || !lastName || !subject || !email || !message) {
-      return NextResponse.redirect(new URL('/?error=missing-fields', request.url))
+      return NextResponse.redirect(new URL('https://germanfence.de/?error=missing-fields'))
     }
 
     // E-Mail über Resend senden
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (!RESEND_API_KEY) {
       console.error('RESEND_API_KEY nicht konfiguriert')
-      return NextResponse.redirect(new URL('/?error=config', request.url))
+      return NextResponse.redirect(new URL('https://germanfence.de/?error=config'))
     }
 
     const subjectText = {
@@ -84,15 +84,15 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       console.error('Resend Fehler:', await response.text())
-      return NextResponse.redirect(new URL('/?error=send-failed', request.url))
+      return NextResponse.redirect(new URL('https://germanfence.de/?error=send-failed'))
     }
 
     // Erfolg - Weiterleitung zur Startseite mit Erfolgsmeldung
-    return NextResponse.redirect(new URL('/?success=message-sent', request.url))
+    return NextResponse.redirect(new URL('https://germanfence.de/?success=message-sent'))
 
   } catch (error) {
     console.error('Kontaktformular Fehler:', error)
-    return NextResponse.redirect(new URL('/?error=server', request.url))
+    return NextResponse.redirect(new URL('https://germanfence.de/?error=server'))
   }
 }
 

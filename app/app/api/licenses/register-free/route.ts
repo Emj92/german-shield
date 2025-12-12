@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
             
             <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin: 20px 0;">
               <strong>Dein License-Key:</strong><br/>
-              <code style="font-size: 16px; background: white; padding: 8px; border-radius: 4px; display: inline-block; margin-top: 10px;">${licenseKey}</code>
+              <code style="font-size: 16px; background: white; padding: 8px; border-radius: 9px; display: inline-block; margin-top: 10px;">${licenseKey}</code>
             </div>
 
             <p><strong>Portal-Zugang:</strong><br/>

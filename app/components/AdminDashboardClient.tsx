@@ -322,75 +322,80 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
         </Card>
       </div>
 
-      {/* Spam nach Uhrzeit & Wochentag */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-[#22D6DD]" />
-            Spam-Aktivität nach Zeit
-          </CardTitle>
-          <CardDescription>Wann wird am meisten Spam blockiert?</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Stundenverteilung */}
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-muted-foreground">Nach Uhrzeit</h4>
-              <div className="flex items-end gap-1 h-32">
-                {Array.from({ length: 24 }, (_, i) => {
-                  const stat = hourlyStats.find(h => h.hour === i)
-                  const count = stat?.count || 0
-                  const height = maxHourly > 0 ? (count / maxHourly) * 100 : 0
-                  return (
-                    <div key={i} className="flex-1 flex flex-col items-center group relative">
-                      <div 
-                        className="w-full bg-[#22D6DD]/80 hover:bg-[#22D6DD] rounded-t transition-all cursor-pointer"
-                        style={{ height: `${Math.max(height, 2)}%` }}
-                      />
-                      {/* Tooltip */}
-                      <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 dark:bg-slate-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                        {i}:00 - {count.toLocaleString()}
-                      </div>
+      {/* Spam nach Uhrzeit & Wochentag - Zwei separate Cards */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Stundenverteilung */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Clock className="h-5 w-5 text-[#22D6DD]" />
+              Spam nach Uhrzeit
+            </CardTitle>
+            <CardDescription>Wann wird am meisten Spam blockiert?</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end gap-1 h-32">
+              {Array.from({ length: 24 }, (_, i) => {
+                const stat = hourlyStats.find(h => h.hour === i)
+                const count = stat?.count || 0
+                const height = maxHourly > 0 ? (count / maxHourly) * 100 : 0
+                return (
+                  <div key={i} className="flex-1 flex flex-col items-center group relative">
+                    <div 
+                      className="w-full bg-[#22D6DD]/80 hover:bg-[#22D6DD] rounded-t transition-all cursor-pointer"
+                      style={{ height: `${Math.max(height, 2)}%` }}
+                    />
+                    {/* Tooltip */}
+                    <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 dark:bg-slate-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                      {i}:00 - {count.toLocaleString()}
                     </div>
-                  )
-                })}
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                <span>0h</span>
-                <span>6h</span>
-                <span>12h</span>
-                <span>18h</span>
-                <span>23h</span>
-              </div>
+                  </div>
+                )
+              })}
             </div>
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>0h</span>
+              <span>6h</span>
+              <span>12h</span>
+              <span>18h</span>
+              <span>23h</span>
+            </div>
+          </CardContent>
+        </Card>
 
-            {/* Wochentagsverteilung */}
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-muted-foreground">Nach Wochentag</h4>
-              <div className="flex items-end gap-2 h-32">
-                {weekdayNames.map((name, i) => {
-                  const stat = weekdayStats.find(w => w.weekday === i)
-                  const count = stat?.count || 0
-                  const height = maxWeekday > 0 ? (count / maxWeekday) * 100 : 0
-                  return (
-                    <div key={i} className="flex-1 flex flex-col items-center group relative">
-                      <div 
-                        className="w-full bg-[#EC4899]/80 hover:bg-[#EC4899] rounded-t transition-all cursor-pointer"
-                        style={{ height: `${Math.max(height, 2)}%` }}
-                      />
-                      {/* Tooltip */}
-                      <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 dark:bg-slate-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                        {name} - {count.toLocaleString()}
-                      </div>
-                      <span className="text-xs text-muted-foreground mt-1">{name}</span>
+        {/* Wochentagsverteilung */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Calendar className="h-5 w-5 text-[#EC4899]" />
+              Spam nach Wochentag
+            </CardTitle>
+            <CardDescription>An welchen Tagen ist Spam am höchsten?</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end gap-2 h-32">
+              {weekdayNames.map((name, i) => {
+                const stat = weekdayStats.find(w => w.weekday === i)
+                const count = stat?.count || 0
+                const height = maxWeekday > 0 ? (count / maxWeekday) * 100 : 0
+                return (
+                  <div key={i} className="flex-1 flex flex-col items-center group relative">
+                    <div 
+                      className="w-full bg-[#EC4899]/80 hover:bg-[#EC4899] rounded-t transition-all cursor-pointer"
+                      style={{ height: `${Math.max(height, 2)}%` }}
+                    />
+                    {/* Tooltip */}
+                    <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 dark:bg-slate-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                      {name} - {count.toLocaleString()}
                     </div>
-                  )
-                })}
-              </div>
+                    <span className="text-xs text-muted-foreground mt-1">{name}</span>
+                  </div>
+                )
+              })}
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Trend & Lizenz-Statistiken */}
       <div className="grid gap-4 md:grid-cols-2">
@@ -501,9 +506,9 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
             <CardDescription>Konversionsrate</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-center gap-8 py-4">
-              {/* Donut-Chart Visualisierung */}
-              <div className="relative w-32 h-32">
+            <div className="flex items-center justify-center gap-6">
+              {/* Donut-Chart Visualisierung - größer */}
+              <div className="relative w-44 h-44">
                 <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                   {/* Hintergrund */}
                   <circle
@@ -512,7 +517,7 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
                     r="40"
                     fill="none"
                     stroke="#e2e8f0"
-                    strokeWidth="12"
+                    strokeWidth="10"
                     className="dark:stroke-slate-700"
                   />
                   {/* Registrierungen (Gesamt) */}
@@ -522,7 +527,7 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
                     r="40"
                     fill="none"
                     stroke="#22D6DD"
-                    strokeWidth="12"
+                    strokeWidth="10"
                     strokeDasharray={`${251.2} 251.2`}
                     strokeLinecap="round"
                   />
@@ -533,30 +538,36 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
                     r="40"
                     fill="none"
                     stroke="#EC4899"
-                    strokeWidth="12"
+                    strokeWidth="10"
                     strokeDasharray={`${(purchaseStats.purchases / Math.max(purchaseStats.registrations, 1)) * 251.2} 251.2`}
                     strokeLinecap="round"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
-                  <span className="text-2xl font-bold">
+                  <span className="text-3xl font-bold">
                     {purchaseStats.registrations > 0 
                       ? Math.round((purchaseStats.purchases / purchaseStats.registrations) * 100)
                       : 0}%
                   </span>
-                  <span className="text-xs text-muted-foreground">Konversion</span>
+                  <span className="text-sm text-muted-foreground">Konversion</span>
                 </div>
               </div>
               
               {/* Legende */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#22D6DD]" />
-                  <span className="text-sm">Registrierungen: <strong>{purchaseStats.registrations}</strong></span>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full bg-[#22D6DD]" />
+                  <div>
+                    <span className="text-sm text-muted-foreground">Registrierungen</span>
+                    <p className="text-xl font-bold">{purchaseStats.registrations}</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#EC4899]" />
-                  <span className="text-sm">Käufe: <strong>{purchaseStats.purchases}</strong></span>
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full bg-[#EC4899]" />
+                  <div>
+                    <span className="text-sm text-muted-foreground">Käufe</span>
+                    <p className="text-xl font-bold">{purchaseStats.purchases}</p>
+                  </div>
                 </div>
               </div>
             </div>
