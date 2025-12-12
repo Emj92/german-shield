@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         from: 'GermanFence Website <noreply@germanfence.de>',
-        to: ['kontakt@germanfence.de'],
+        to: ['support@germanfence.de'],
         reply_to: email,
         subject: `[Kontakt] ${subjectText} - ${firstName} ${lastName}`,
         html: `

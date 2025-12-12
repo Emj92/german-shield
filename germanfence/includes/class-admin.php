@@ -1613,7 +1613,7 @@ class GermanFence_Admin {
                                     </p>
                                     <div style="display: flex; gap: 10px; align-items: center;">
                                         <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
-                                            class="germanfence-input" style="flex: 1; font-family: monospace;">
+                                            class="germanfence-input" style="flex: 1; font-family: monospace; border-radius: 9px !important;">
                                         <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                             style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
                                             📋 Kopieren
@@ -1661,7 +1661,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">E-Mail-Adresse:</label>
-                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input">
+                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input" style="border-radius: 9px !important;">
                                         </div>
                                         
                                     <div style="margin-bottom: 20px;">
@@ -1693,7 +1693,7 @@ class GermanFence_Admin {
                                         
                                         <div style="margin-bottom: 20px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase;">
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
@@ -1790,7 +1790,7 @@ class GermanFence_Admin {
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
-                                        class="germanfence-input" style="flex: 1; font-family: monospace;">
+                                        class="germanfence-input" style="flex: 1; font-family: monospace; border-radius: 9px !important;">
                                     <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
                                         style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
                                         📋 Kopieren

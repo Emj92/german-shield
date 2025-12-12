@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Bell, Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -27,9 +28,15 @@ export function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null)
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialog>({ show: false, title: '', message: '', onConfirm: () => {} })
+  const [mounted, setMounted] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const unreadCount = notifications.filter(n => !n.read).length
+
+  // Client-side mounting für Portal
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Load notifications
   useEffect(() => {
@@ -232,9 +239,9 @@ export function NotificationBell() {
         </div>
       )}
 
-      {/* Popup für ausgewählte Benachrichtigung */}
-      {selectedNotification && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]" onClick={() => setSelectedNotification(null)}>
+      {/* Popup für ausgewählte Benachrichtigung - via Portal für korrekte Zentrierung */}
+      {mounted && selectedNotification && createPortal(
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={() => setSelectedNotification(null)}>
           <div 
             className="bg-white dark:bg-[#1A1F23] rounded-[9px] w-full max-w-md mx-4 shadow-2xl border border-[#d9dde1] dark:border-slate-700 overflow-hidden"
             onClick={e => e.stopPropagation()}
@@ -300,12 +307,13 @@ export function NotificationBell() {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* Eigener Confirm-Dialog statt Browser-Confirm */}
-      {confirmDialog.show && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200]">
+      {/* Eigener Confirm-Dialog statt Browser-Confirm - via Portal */}
+      {mounted && confirmDialog.show && createPortal(
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
           <div className="bg-white dark:bg-[#1A1F23] rounded-[9px] w-full max-w-sm mx-4 shadow-2xl border border-[#d9dde1] dark:border-slate-700 overflow-hidden">
             <div className="px-5 py-4 border-b border-[#d9dde1] dark:border-slate-700">
               <h3 className="font-semibold text-gray-900 dark:text-white">{confirmDialog.title}</h3>
@@ -330,7 +338,8 @@ export function NotificationBell() {
               </Button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

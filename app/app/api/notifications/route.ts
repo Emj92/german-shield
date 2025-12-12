@@ -80,14 +80,13 @@ export async function GET() {
       })
     }
 
-    // 3. Admin-Benachrichtigungen (aus Notification-Tabelle)
+    // 3. Admin-Benachrichtigungen (aus Notification-Tabelle) - ALLE laden, auch gelesene
     const adminNotifications = await prisma.notification.findMany({
       where: {
         userId: user.userId,
-        read: false,
       },
       orderBy: { createdAt: 'desc' },
-      take: 10
+      take: 20
     })
 
     for (const notif of adminNotifications) {
