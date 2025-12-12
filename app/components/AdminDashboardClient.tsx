@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Ban, MapPin, Clock, Calendar, Trash2, Archive, TrendingUp, Key, UserPlus, ShoppingCart } from 'lucide-react'
+import { Ban, MapPin, Clock, Calendar, Trash2, Archive, TrendingUp, Key, UserPlus, ShoppingCart, Users, Globe, AlertTriangle, CheckCircle } from 'lucide-react'
 
 type BlockMethodStats = {
   method: string
@@ -41,6 +41,9 @@ type TelemetryPeriod = 'today' | '3days' | 'week' | 'month' | 'quarter' | 'year'
 
 interface AdminDashboardClientProps {
   initialData: {
+    totalUsers: number
+    totalDomains: number
+    recentTickets: number
     totalBlocks: number
     todayBlocks: number
     yesterdayBlocks: number
@@ -161,7 +164,7 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
 
   return (
     <div className="space-y-6">
-      {/* Zeitraum-Filter & Reset */}
+      {/* Zeitraum-Filter & Reset - OBEN */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Select value={period} onValueChange={(v) => setPeriod(v as TelemetryPeriod)}>
@@ -212,6 +215,55 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
           </CardContent>
         </Card>
       )}
+
+      {/* Übersichts-Karten */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Benutzer</CardTitle>
+            <Users className="h-4 w-4 text-[#22D6DD]" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-[#22D6DD]">{data.totalUsers}</div>
+            <p className="text-xs text-muted-foreground">Registrierte Benutzer</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Aktive Domains</CardTitle>
+            <Globe className="h-4 w-4 text-[#22D6DD]" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-[#22D6DD]">{data.totalDomains}</div>
+            <p className="text-xs text-muted-foreground">Aktivierte Installationen</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Support-Tickets</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-500">{data.recentTickets}</div>
+            <p className="text-xs text-muted-foreground">Offene Tickets</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Spam blockiert</CardTitle>
+            <CheckCircle className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-500">
+              {data.totalBlocks.toLocaleString()}
+            </div>
+            <p className="text-xs text-muted-foreground">Gesamt blockiert</p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Top Blockgründe & Ursprungsländer */}
       <div className="grid gap-4 md:grid-cols-2">
@@ -514,4 +566,3 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
     </div>
   )
 }
-

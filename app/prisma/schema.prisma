@@ -36,6 +36,7 @@ model User {
   supportTickets SupportTicket[]
   licenses       License[]
   subscriptions  Subscription[]
+  notifications  Notification[]
   
   @@map("users")
 }
@@ -314,6 +315,32 @@ model InfoBanner {
   @@index([isActive])
   @@index([expiresAt])
   @@map("info_banners")
+}
+
+// Notification Model (Benachrichtigungen für Benutzer - Glocke)
+model Notification {
+  id              String            @id @default(cuid())
+  userId          String?           // null = für alle Benutzer
+  message         String
+  type            NotificationType  @default(MESSAGE)
+  backgroundColor String            @default("#22D6DD") // Türkis für Nachrichten/Neuigkeiten, Pink für Warnungen
+  link            String?           // Optional: Link zum Klicken
+  read            Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  
+  user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  MESSAGE   // Kleine Nachricht (türkis)
+  UPDATE    // Update-Nachricht (türkis)
+  NEWS      // Neuigkeit (türkis)
+  WARNING   // Warnung (pink)
 }
 
 // Plugin Release Model (für Downloads)

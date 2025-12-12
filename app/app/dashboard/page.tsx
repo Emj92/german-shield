@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, AlertTriangle, CheckCircle, Activity, Users, Globe } from 'lucide-react'
+import { Shield, AlertTriangle, Activity } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import { AdminDashboardClient } from '@/components/AdminDashboardClient'
 
@@ -137,70 +137,21 @@ export default async function DashboardPage() {
         </div>
 
         {isAdmin ? (
-          // Admin Dashboard
-          <>
-            {/* Übersichts-Karten */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Benutzer</CardTitle>
-                  <Users className="h-4 w-4 text-[#22D6DD]" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-[#22D6DD]">{'totalUsers' in data ? data.totalUsers : 0}</div>
-                  <p className="text-xs text-muted-foreground">Registrierte Benutzer</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Aktive Domains</CardTitle>
-                  <Globe className="h-4 w-4 text-[#22D6DD]" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-[#22D6DD]">{'totalDomains' in data ? data.totalDomains : 0}</div>
-                  <p className="text-xs text-muted-foreground">Aktivierte Installationen</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Support-Tickets</CardTitle>
-                  <AlertTriangle className="h-4 w-4 text-orange-500" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-orange-500">{'recentTickets' in data ? data.recentTickets : 0}</div>
-                  <p className="text-xs text-muted-foreground">Offene Tickets</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Spam blockiert</CardTitle>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-green-500">
-                    {('totalBlocks' in data ? data.totalBlocks : 0).toLocaleString()}
-                  </div>
-                  <p className="text-xs text-muted-foreground">Gesamt blockiert</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Interaktive Telemetrie-Komponente */}
-            <AdminDashboardClient 
-              initialData={{
-                totalBlocks: 'totalBlocks' in data ? data.totalBlocks : 0,
-                todayBlocks: 'todayBlocks' in data ? data.todayBlocks : 0,
-                yesterdayBlocks: 'yesterdayBlocks' in data ? data.yesterdayBlocks : 0,
-                blockMethods: 'blockMethods' in data ? data.blockMethods : [],
-                topCountries: 'topCountries' in data ? data.topCountries : [],
-                packageStats: 'packageStats' in data ? data.packageStats : { FREE: 0, SINGLE: 0, FREELANCER: 0, AGENCY: 0 },
-                totalLicenses: 'totalLicenses' in data ? data.totalLicenses : 0,
-              }}
-            />
-          </>
+          // Admin Dashboard - Filter und Kacheln werden von Client-Komponente gerendert
+          <AdminDashboardClient 
+            initialData={{
+              totalUsers: 'totalUsers' in data ? data.totalUsers : 0,
+              totalDomains: 'totalDomains' in data ? data.totalDomains : 0,
+              recentTickets: 'recentTickets' in data ? data.recentTickets : 0,
+              totalBlocks: 'totalBlocks' in data ? data.totalBlocks : 0,
+              todayBlocks: 'todayBlocks' in data ? data.todayBlocks : 0,
+              yesterdayBlocks: 'yesterdayBlocks' in data ? data.yesterdayBlocks : 0,
+              blockMethods: 'blockMethods' in data ? data.blockMethods : [],
+              topCountries: 'topCountries' in data ? data.topCountries : [],
+              packageStats: 'packageStats' in data ? data.packageStats : { FREE: 0, SINGLE: 0, FREELANCER: 0, AGENCY: 0 },
+              totalLicenses: 'totalLicenses' in data ? data.totalLicenses : 0,
+            }}
+          />
         ) : (
           // User Dashboard
           <div className="grid gap-4 md:grid-cols-3">

@@ -80,6 +80,30 @@ export async function GET() {
       })
     }
 
+    // 3. Admin-Benachrichtigungen (aus Notification-Tabelle)
+    const adminNotifications = await prisma.notification.findMany({
+      where: {
+        userId: user.userId,
+        read: false,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    for (const notif of adminNotifications) {
+      notifications.push({
+        id: notif.id,
+        type: 'system',
+        title: notif.type === 'WARNING' ? '⚠️ Warnung' : 
+               notif.type === 'UPDATE' ? '🔄 Update' :
+               notif.type === 'NEWS' ? '📰 Neuigkeit' : '💬 Nachricht',
+        message: notif.message,
+        link: notif.link || undefined,
+        read: notif.read,
+        createdAt: notif.createdAt.toISOString()
+      })
+    }
+
     // Sortiere nach Datum (neueste zuerst)
     notifications.sort((a, b) => 
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
