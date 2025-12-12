@@ -68,6 +68,14 @@ export default function InfoBannerPage() {
   const [userSearch, setUserSearch] = useState('')
   const [savingNotification, setSavingNotification] = useState(false)
 
+  // Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    show: boolean
+    title: string
+    message: string
+    onConfirm: () => void
+  }>({ show: false, title: '', message: '', onConfirm: () => {} })
+
   // Notification Typ-Farben
   const typeColors = {
     MESSAGE: '#22D6DD',   // Türkis
@@ -211,26 +219,38 @@ export default function InfoBannerPage() {
     }
   }
 
-  const deleteBanner = async (id: string) => {
-    if (!confirm('Infoleiste wirklich löschen?')) return
-    
-    try {
-      await fetch(`/api/admin/infobanner/${id}`, { method: 'DELETE' })
-      fetchBanners()
-    } catch (error) {
-      console.error('Error deleting banner:', error)
-    }
+  const showDeleteBannerConfirm = (id: string) => {
+    setConfirmDialog({
+      show: true,
+      title: 'Infoleiste löschen?',
+      message: 'Möchtest du diese Infoleiste wirklich löschen?',
+      onConfirm: async () => {
+        try {
+          await fetch(`/api/admin/infobanner/${id}`, { method: 'DELETE' })
+          fetchBanners()
+        } catch (error) {
+          console.error('Error deleting banner:', error)
+        }
+        setConfirmDialog({ show: false, title: '', message: '', onConfirm: () => {} })
+      }
+    })
   }
 
-  const deleteNotification = async (id: string) => {
-    if (!confirm('Benachrichtigung wirklich löschen?')) return
-    
-    try {
-      await fetch(`/api/admin/notifications/${id}`, { method: 'DELETE' })
-      fetchNotifications()
-    } catch (error) {
-      console.error('Error deleting notification:', error)
-    }
+  const showDeleteNotificationConfirm = (id: string) => {
+    setConfirmDialog({
+      show: true,
+      title: 'Benachrichtigung löschen?',
+      message: 'Möchtest du diese Benachrichtigung wirklich löschen?',
+      onConfirm: async () => {
+        try {
+          await fetch(`/api/admin/notifications/${id}`, { method: 'DELETE' })
+          fetchNotifications()
+        } catch (error) {
+          console.error('Error deleting notification:', error)
+        }
+        setConfirmDialog({ show: false, title: '', message: '', onConfirm: () => {} })
+      }
+    })
   }
 
   // Gefilterte Benutzer für Suche
@@ -653,7 +673,7 @@ export default function InfoBannerPage() {
                       </p>
                     </div>
                     <button
-                      onClick={() => deleteNotification(notif.id)}
+                      onClick={() => showDeleteNotificationConfirm(notif.id)}
                       className="p-2 text-slate-500 hover:text-[#EC4899]"
                       title="Löschen"
                     >
@@ -741,7 +761,7 @@ export default function InfoBannerPage() {
                           )}
                         </button>
                         <button
-                          onClick={() => deleteBanner(banner.id)}
+                          onClick={() => showDeleteBannerConfirm(banner.id)}
                           className="p-2 text-slate-500"
                           title="Löschen"
                         >
@@ -756,6 +776,36 @@ export default function InfoBannerPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Eigener Confirm-Dialog */}
+      {confirmDialog.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
+          <div className="bg-white dark:bg-[#1A1F23] rounded-[9px] w-full max-w-sm mx-4 shadow-2xl border border-[#d9dde1] dark:border-slate-700 overflow-hidden">
+            <div className="px-5 py-4 border-b border-[#d9dde1] dark:border-slate-700">
+              <h3 className="font-semibold text-gray-900 dark:text-white">{confirmDialog.title}</h3>
+            </div>
+            <div className="px-5 py-4">
+              <p className="text-gray-600 dark:text-gray-300">{confirmDialog.message}</p>
+            </div>
+            <div className="px-5 py-3 bg-[#FAFAFA] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setConfirmDialog({ show: false, title: '', message: '', onConfirm: () => {} })}
+              >
+                Nein
+              </Button>
+              <Button
+                size="sm"
+                onClick={confirmDialog.onConfirm}
+                className="bg-[#EC4899] hover:bg-[#EC4899]/90"
+              >
+                Ja
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   )
 }

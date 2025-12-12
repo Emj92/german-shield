@@ -388,10 +388,19 @@ export function AdminDashboardClient({ initialData }: AdminDashboardClientProps)
                     <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 dark:bg-slate-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
                       {name} - {count.toLocaleString()}
                     </div>
-                    <span className="text-xs text-muted-foreground mt-1">{name}</span>
                   </div>
                 )
               })}
+            </div>
+            {/* Labels wie bei Uhrzeit */}
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>So</span>
+              <span>Mo</span>
+              <span>Di</span>
+              <span>Mi</span>
+              <span>Do</span>
+              <span>Fr</span>
+              <span>Sa</span>
             </div>
           </CardContent>
         </Card>

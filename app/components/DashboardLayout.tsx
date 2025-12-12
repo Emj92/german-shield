@@ -5,8 +5,10 @@ import { AppSidebar } from '@/components/app-sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { NotificationBell } from '@/components/NotificationBell'
+import { InfoBanner } from '@/components/info-banner'
 import { Button } from '@/components/ui/button'
-import { Download } from 'lucide-react'
+import { Download, ExternalLink } from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -22,23 +24,33 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children, user }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full relative overflow-hidden bg-[#FAFAFA]">
+      <div className="flex min-h-screen w-full relative overflow-hidden bg-background">
         <AnimatedBackground />
         <AppSidebar user={user} />
         <main className="flex-1 overflow-auto relative z-10">
+          {/* Info Banner */}
+          <InfoBanner target="portal" />
+          
           {/* Top Bar mit Download + Sprachumschalter - Höhe 4.3rem wie Sidebar */}
-          <div className="flex justify-end items-center gap-3 px-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
+          <div className="flex justify-end items-center gap-3 px-6 border-b border-[#d9dde1] dark:border-slate-700 bg-white/80 dark:bg-slate-900/90 backdrop-blur-sm sticky top-0 z-20" style={{ height: '4.3rem' }}>
+            <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer">
+              <Button size="sm" className="bg-[#D81B60] hover:bg-[#D81B60] text-white transition-transform hover:-translate-y-0.5">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                zur Website
+              </Button>
+            </a>
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
-              <Button size="sm" className="bg-[#22D6DD] hover:bg-[#22D6DD] text-white">
+              <Button size="sm" className="bg-[#22D6DD] hover:bg-[#22D6DD] text-white transition-transform hover:-translate-y-0.5">
                 <Download className="mr-2 h-4 w-4" />
                 Plugin Download
               </Button>
             </a>
+            <NotificationBell />
             <LanguageSwitcher />
           </div>
           
           <div className="p-8">
-            <div className="bg-white rounded-lg border border-gray-200 min-h-[calc(100vh-8rem)]">
+            <div className="bg-white dark:bg-slate-900 rounded-[9px] border border-[#d9dde1] dark:border-slate-700 min-h-[calc(100vh-8rem)]">
               {children}
             </div>
           </div>

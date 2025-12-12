@@ -283,7 +283,7 @@ export function NotificationBell() {
             </div>
 
             {/* Popup Footer */}
-            <div className="px-5 py-3 bg-[#F2F5F8] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-between">
+            <div className="px-5 py-3 bg-[#FAFAFA] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-between">
               <Button
                 variant="outline"
                 size="sm"

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getUser } from '@/lib/auth'
 
-// GET - Alle Benachrichtigungen abrufen (Admin)
+// GET - Alle Benachrichtigungen abrufen (Admin) - Dedupliziert
 export async function GET() {
   try {
     const user = await getUser()
@@ -10,9 +10,9 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const notifications = await prisma.notification.findMany({
+    const allNotifications = await prisma.notification.findMany({
       orderBy: { createdAt: 'desc' },
-      take: 50,
+      take: 200,
       include: {
         user: {
           select: { email: true }
@@ -20,7 +20,34 @@ export async function GET() {
       }
     })
 
-    return NextResponse.json({ notifications })
+    // Dedupliziere nach message + type + createdAt (gruppiere Massenversand)
+    const seen = new Map<string, typeof allNotifications[0]>()
+    const uniqueNotifications = []
+    
+    for (const notif of allNotifications) {
+      // Key basierend auf message und ungefährem Zeitstempel (auf Sekunde gerundet)
+      const timeKey = new Date(notif.createdAt).toISOString().slice(0, 19)
+      const key = `${notif.message}-${notif.type}-${timeKey}`
+      
+      if (!seen.has(key)) {
+        seen.set(key, notif)
+        // Zähle wie viele User diese Nachricht erhalten haben
+        const count = allNotifications.filter(n => 
+          n.message === notif.message && 
+          n.type === notif.type && 
+          new Date(n.createdAt).toISOString().slice(0, 19) === timeKey
+        ).length
+        
+        uniqueNotifications.push({
+          ...notif,
+          recipientCount: count,
+          // Wenn mehr als 1 Empfänger, zeige "Alle Benutzer"
+          user: count > 1 ? null : notif.user
+        })
+      }
+    }
+
+    return NextResponse.json({ notifications: uniqueNotifications.slice(0, 50) })
 
   } catch (error) {
     console.error('Error fetching notifications:', error)

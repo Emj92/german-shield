@@ -308,19 +308,24 @@ input[type="radio"] {
   height: 18px;
   border-radius: 50%;
   background-color: white;
-  border: 2px solid #d9dde1 !important;
+  border: none !important;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 input[type="radio"]:checked {
   background-color: #22D6DD;
-  border-color: #22D6DD !important;
+  border: 1px solid #22D6DD !important;
   box-shadow: inset 0 0 0 3px white;
 }
 
+input[type="radio"]:not(:checked) {
+  border: none !important;
+  background-color: #e5e7eb;
+}
+
 input[type="radio"]:hover {
-  border-color: #22D6DD !important;
+  border: 1px solid #22D6DD !important;
 }
 
 /* Dark Mode - Überschriften MÜSSEN weiß sein */
