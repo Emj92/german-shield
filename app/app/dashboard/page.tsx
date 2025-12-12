@@ -1,26 +1,16 @@
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Shield, AlertTriangle, CheckCircle, Activity, Key, Users, Globe, MapPin, Ban, TrendingUp } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Shield, AlertTriangle, CheckCircle, Activity, Users, Globe } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import { AdminDashboardClient } from '@/components/AdminDashboardClient'
 
 type PackageStats = {
   FREE: number
   SINGLE: number
   FREELANCER: number
   AGENCY: number
-}
-
-type BlockMethodStats = {
-  method: string
-  count: number
-}
-
-type CountryStats = {
-  country: string
-  count: number
 }
 
 type AdminDashboardData = {
@@ -33,8 +23,8 @@ type AdminDashboardData = {
   yesterdayBlocks: number
   packageStats: PackageStats
   totalLicenses: number
-  blockMethods: BlockMethodStats[]
-  topCountries: CountryStats[]
+  blockMethods: { method: string; count: number }[]
+  topCountries: { country: string; count: number }[]
 }
 
 type UserDashboardData = {
@@ -85,12 +75,12 @@ async function getDashboardData(userId: string, isAdmin: boolean): Promise<Admin
       AGENCY: licenses.filter(l => l.packageType === 'AGENCY').length,
     }
 
-    const blockMethods: BlockMethodStats[] = blockMethodsRaw.map(b => ({
+    const blockMethods = blockMethodsRaw.map(b => ({
       method: b.blockMethod,
       count: b._count.blockMethod,
     }))
 
-    const topCountries: CountryStats[] = countriesRaw.map(c => ({
+    const topCountries = countriesRaw.map(c => ({
       country: c.countryCode || 'Unbekannt',
       count: c._count.countryCode,
     }))
@@ -125,42 +115,6 @@ async function getDashboardData(userId: string, isAdmin: boolean): Promise<Admin
   }
 }
 
-// Hilfsfunktion für Ländernamen
-function getCountryName(code: string): string {
-  const countries: Record<string, string> = {
-    'DE': '🇩🇪 Deutschland',
-    'US': '🇺🇸 USA',
-    'CN': '🇨🇳 China',
-    'RU': '🇷🇺 Russland',
-    'IN': '🇮🇳 Indien',
-    'BR': '🇧🇷 Brasilien',
-    'FR': '🇫🇷 Frankreich',
-    'GB': '🇬🇧 UK',
-    'NL': '🇳🇱 Niederlande',
-    'PL': '🇵🇱 Polen',
-    'UA': '🇺🇦 Ukraine',
-    'VN': '🇻🇳 Vietnam',
-    'ID': '🇮🇩 Indonesien',
-    'TR': '🇹🇷 Türkei',
-    'PK': '🇵🇰 Pakistan',
-  }
-  return countries[code] || `🌍 ${code}`
-}
-
-// Hilfsfunktion für Blockgrund-Namen
-function getBlockMethodName(method: string): string {
-  const methods: Record<string, string> = {
-    'honeypot': '🍯 Honeypot',
-    'timestamp': '⏱️ Zeitstempel',
-    'geo': '🌍 GEO-Blocking',
-    'phrase': '🔤 Phrasen',
-    'user_agent': '🤖 User-Agent',
-    'url': '🔗 URL-Filter',
-    'javascript': '📜 JavaScript',
-    'rate_limit': '⚡ Rate-Limit',
-  }
-  return methods[method] || method
-}
 
 export default async function DashboardPage() {
   const user = await getUser()
@@ -185,6 +139,7 @@ export default async function DashboardPage() {
         {isAdmin ? (
           // Admin Dashboard
           <>
+            {/* Übersichts-Karten */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -233,131 +188,18 @@ export default async function DashboardPage() {
               </Card>
             </div>
 
-            {/* Telemetrie-Analyse */}
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* Top Blockgründe */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Ban className="h-5 w-5 text-[#EC4899]" />
-                    Top Blockgründe
-                  </CardTitle>
-                  <CardDescription>
-                    Häufigste Spam-Erkennungsmethoden
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {'blockMethods' in data && data.blockMethods.length > 0 ? (
-                      data.blockMethods.map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                          <span className="font-medium">{getBlockMethodName(item.method)}</span>
-                          <Badge variant="secondary" className="bg-[#EC4899]/10 text-[#EC4899]">
-                            {item.count.toLocaleString()}
-                          </Badge>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-muted-foreground text-center py-4">Noch keine Daten</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Top Ursprungsländer */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-[#22D6DD]" />
-                    Top Ursprungsländer
-                  </CardTitle>
-                  <CardDescription>
-                    Spam-Herkunft nach Land
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {'topCountries' in data && data.topCountries.length > 0 ? (
-                      data.topCountries.map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                          <span className="font-medium">{getCountryName(item.country)}</span>
-                          <Badge variant="secondary" className="bg-[#22D6DD]/10 text-[#22D6DD]">
-                            {item.count.toLocaleString()}
-                          </Badge>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-muted-foreground text-center py-4">Noch keine Daten</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Trend & Lizenz-Statistiken */}
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* Heute vs. Gestern */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-500" />
-                    Trend
-                  </CardTitle>
-                  <CardDescription>
-                    Spam-Aktivität im Vergleich
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <p className="text-sm text-muted-foreground mb-1">Heute</p>
-                      <div className="text-3xl font-bold text-[#22D6DD]">
-                        {'todayBlocks' in data ? data.todayBlocks.toLocaleString() : 0}
-                      </div>
-                    </div>
-                    <div className="text-center p-4 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <p className="text-sm text-muted-foreground mb-1">Gestern</p>
-                      <div className="text-3xl font-bold text-slate-500 dark:text-slate-400">
-                        {'yesterdayBlocks' in data ? data.yesterdayBlocks.toLocaleString() : 0}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Lizenz-Übersicht */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Key className="h-5 w-5 text-[#22D6DD]" />
-                    Lizenz-Übersicht
-                  </CardTitle>
-                  <CardDescription>
-                    {'totalLicenses' in data ? data.totalLicenses : 0} Lizenzen insgesamt
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <Badge className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 mb-1 text-xs">FREE</Badge>
-                      <div className="text-xl font-bold">{'packageStats' in data ? data.packageStats.FREE : 0}</div>
-                    </div>
-                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <Badge className="bg-[#22D6DD]/10 text-[#22D6DD] mb-1 text-xs">SINGLE</Badge>
-                      <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.SINGLE : 0}</div>
-                    </div>
-                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <Badge className="bg-[#22D6DD]/20 text-[#22D6DD] mb-1 text-xs">FREELANCER</Badge>
-                      <div className="text-xl font-bold text-[#22D6DD]">{'packageStats' in data ? data.packageStats.FREELANCER : 0}</div>
-                    </div>
-                    <div className="text-center p-3 bg-white dark:bg-slate-800 border border-[#d9dde1] dark:border-slate-700 rounded-[9px]">
-                      <Badge className="bg-[#EC4899]/10 text-[#EC4899] mb-1 text-xs">AGENCY</Badge>
-                      <div className="text-xl font-bold text-[#EC4899]">{'packageStats' in data ? data.packageStats.AGENCY : 0}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Interaktive Telemetrie-Komponente */}
+            <AdminDashboardClient 
+              initialData={{
+                totalBlocks: 'totalBlocks' in data ? data.totalBlocks : 0,
+                todayBlocks: 'todayBlocks' in data ? data.todayBlocks : 0,
+                yesterdayBlocks: 'yesterdayBlocks' in data ? data.yesterdayBlocks : 0,
+                blockMethods: 'blockMethods' in data ? data.blockMethods : [],
+                topCountries: 'topCountries' in data ? data.topCountries : [],
+                packageStats: 'packageStats' in data ? data.packageStats : { FREE: 0, SINGLE: 0, FREELANCER: 0, AGENCY: 0 },
+                totalLicenses: 'totalLicenses' in data ? data.totalLicenses : 0,
+              }}
+            />
           </>
         ) : (
           // User Dashboard

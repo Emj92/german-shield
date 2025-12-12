@@ -231,3 +231,38 @@ textarea:not(:placeholder-shown) {
   background-color: #1A1F23 !important;
 }
 
+/* Custom Scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(34, 214, 221, 0.3);
+  border-radius: 9px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(34, 214, 221, 0.6);
+}
+
+.scrollbar-thumb-\[\#22D6DD\]\/50::-webkit-scrollbar-thumb {
+  background-color: rgba(34, 214, 221, 0.5);
+}
+
+.hover\:scrollbar-thumb-\[\#22D6DD\]:hover::-webkit-scrollbar-thumb {
+  background-color: #22D6DD;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
