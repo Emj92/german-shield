@@ -318,7 +318,7 @@ export default function Home() {
             <Card className="border-2 border-slate-200 flex flex-col h-full">
               <CardHeader>
                 <Badge className="w-fit mb-4 bg-slate-100 text-slate-700">FREE</Badge>
-                <CardTitle className="text-4xl">0€</CardTitle>
+                <CardTitle className="text-4xl">0€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   <span className="font-semibold text-slate-600">{t.pricing.freemium}</span> · 1 {t.pricing.website}
                 </CardDescription>
@@ -367,9 +367,9 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.single}</Badge>
-                <CardTitle className="text-4xl">29€</CardTitle>
+                <CardTitle className="text-4xl">29€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">{t.pricing.singleDesc}</span> · 1 {t.pricing.website}
+                  1 {t.pricing.website}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -453,9 +453,9 @@ export default function Home() {
               </div>
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.freelancer}</Badge>
-                <CardTitle className="text-4xl">99€</CardTitle>
+                <CardTitle className="text-4xl">99€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#22D6DD]">{t.pricing.freelancerDesc}</span> · 5 {t.pricing.websites}
+                  5 {t.pricing.websites}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -521,9 +521,9 @@ export default function Home() {
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">{t.pricing.agency}</Badge>
-                <CardTitle className="text-4xl">0.50€</CardTitle>
+                <CardTitle className="text-4xl">199€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  <span className="font-semibold text-[#F06292]">{t.pricing.agencyDesc}</span> · 25 {t.pricing.websites} <span className="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">TEST</span>
+                  25 {t.pricing.websites}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -756,9 +756,9 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-lg mb-6 text-white">Lizenzen</h3>
               <ul className="space-y-3 text-slate-400">
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (29€ zzgl. Steuer)</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€ zzgl. Steuer)</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (299€ zzgl. Steuer)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (29€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (199€/Jahr zzgl. MwSt.)</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">WordPress.org</a></li>
                 <li><Link href="/login" className="hover:text-[#22D6DD] transition">Dashboard</Link></li>

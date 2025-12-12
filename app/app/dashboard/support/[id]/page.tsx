@@ -278,6 +278,7 @@ export default function TicketDetailPage() {
                           </a>
                           {/* Bild-Vorschau */}
                           {response.attachmentUrl.match(/\.(png|jpg|jpeg|webp|gif)$/i) && (
+                            // eslint-disable-next-line @next/next/no-img-element
                             <img 
                               src={response.attachmentUrl} 
                               alt={response.attachmentName || 'Anhang'}

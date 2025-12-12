@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { getUser } from '@/lib/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -67,10 +68,10 @@ export default async function SupportPage() {
             </p>
           </div>
           <Button asChild className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
-            <a href="/dashboard/support/new">
+            <Link href="/dashboard/support/new">
               <Plus className="mr-2 h-4 w-4" />
               Neues Ticket
-            </a>
+            </Link>
           </Button>
         </div>
 
@@ -83,10 +84,10 @@ export default async function SupportPage() {
                 Erstellen Sie ein Ticket, wenn Sie Hilfe benötigen
               </p>
               <Button asChild className="bg-[#22D6DD] hover:bg-[#22D6DD]/90 text-white">
-                <a href="/dashboard/support/new">
+                <Link href="/dashboard/support/new">
                   <Plus className="mr-2 h-4 w-4" />
                   Ticket erstellen
-                </a>
+                </Link>
               </Button>
             </CardContent>
           </Card>
