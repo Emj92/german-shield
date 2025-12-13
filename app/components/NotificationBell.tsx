@@ -29,13 +29,25 @@ export function NotificationBell() {
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null)
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialog>({ show: false, title: '', message: '', onConfirm: () => {} })
   const [mounted, setMounted] = useState(false)
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const unreadCount = notifications.filter(n => !n.read).length
+  // Gefilterte Notifications (ohne dismissed)
+  const filteredNotifications = notifications.filter(n => !dismissedIds.has(n.id))
+  const unreadCount = filteredNotifications.filter(n => !n.read).length
 
-  // Client-side mounting für Portal
+  // Client-side mounting für Portal + Load dismissed IDs
   useEffect(() => {
     setMounted(true)
+    // Lade dismissed Notification IDs aus localStorage
+    const stored = localStorage.getItem('gf_dismissed_notifications')
+    if (stored) {
+      try {
+        setDismissedIds(new Set(JSON.parse(stored)))
+      } catch (e) {
+        console.error('Failed to parse dismissed notifications:', e)
+      }
+    }
   }, [])
 
   // Load notifications
@@ -87,12 +99,21 @@ export function NotificationBell() {
 
   async function deleteNotification(id: string) {
     try {
-      await fetch('/api/notifications/read', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      })
-      setNotifications(prev => prev.filter(n => n.id !== id))
+      // Für dynamisch generierte IDs (ticket-xxx, license-xxx) nur lokal merken
+      if (id.startsWith('ticket-') || id.startsWith('license-')) {
+        const newDismissed = new Set(dismissedIds)
+        newDismissed.add(id)
+        setDismissedIds(newDismissed)
+        localStorage.setItem('gf_dismissed_notifications', JSON.stringify([...newDismissed]))
+      } else {
+        // Für echte Notifications aus der DB löschen
+        await fetch('/api/notifications/read', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        })
+        setNotifications(prev => prev.filter(n => n.id !== id))
+      }
       setSelectedNotification(null)
     } catch (error) {
       console.error('Failed to delete notification:', error)
@@ -109,6 +130,11 @@ export function NotificationBell() {
           await fetch('/api/notifications/clear', {
             method: 'DELETE'
           })
+          // Auch alle dynamischen IDs als dismissed merken
+          const allIds = notifications.map(n => n.id)
+          const newDismissed = new Set([...dismissedIds, ...allIds])
+          setDismissedIds(newDismissed)
+          localStorage.setItem('gf_dismissed_notifications', JSON.stringify([...newDismissed]))
           setNotifications([])
         } catch (error) {
           console.error('Failed to clear notifications:', error)
@@ -182,7 +208,7 @@ export function NotificationBell() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#d9dde1] dark:border-slate-700 bg-[#FAFAFA] dark:bg-slate-800">
             <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Benachrichtigungen</h3>
             <div className="flex items-center gap-2">
-              {notifications.length > 0 && (
+              {filteredNotifications.length > 0 && (
                 <button
                   onClick={showClearConfirm}
                   className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
@@ -196,13 +222,13 @@ export function NotificationBell() {
 
           {/* Notifications List */}
           <div className="max-h-80 overflow-y-auto">
-            {notifications.length === 0 ? (
+            {filteredNotifications.length === 0 ? (
               <div className="p-6 text-center text-gray-500 dark:text-gray-400">
                 <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
                 <p className="text-sm">Keine Benachrichtigungen</p>
               </div>
             ) : (
-              notifications.map(notification => (
+              filteredNotifications.map(notification => (
                 <div
                   key={notification.id}
                   onClick={() => {
@@ -214,7 +240,11 @@ export function NotificationBell() {
                   }`}
                 >
                   <div className="flex gap-3">
-                    <Bell className="h-5 w-5 text-[#22D6DD] flex-shrink-0 mt-0.5" />
+                    <Bell className={`h-5 w-5 flex-shrink-0 mt-0.5 ${
+                      notification.type === 'WARNING' || notification.backgroundColor === '#EC4899'
+                        ? 'text-[#EC4899]'
+                        : 'text-[#22D6DD]'
+                    }`} />
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm font-medium truncate ${
                         !notification.read ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'

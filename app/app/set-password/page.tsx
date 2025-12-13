@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Label } from '@/components/ui/label'
 import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import { AnimatedBackground } from '@/components/AnimatedBackground'
 
 function SetPasswordContent() {
   const router = useRouter()
@@ -107,8 +108,9 @@ function SetPasswordContent() {
   // Loading State
   if (validating) {
     return (
-      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6">
-        <Card className="w-full max-w-md border-[#d9dde1] dark:border-slate-700 bg-white dark:bg-[#1F2428]">
+      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6 relative overflow-hidden">
+        <AnimatedBackground />
+        <Card className="w-full max-w-md border-[#d9dde1] dark:border-slate-700 bg-white dark:bg-[#1F2428] relative z-10">
           <CardContent className="pt-10 pb-8 text-center">
             <Loader2 className="w-12 h-12 mx-auto mb-4 text-[#22D6DD] animate-spin" />
             <p className="text-slate-600 dark:text-slate-400">Link wird überprüft...</p>
@@ -121,8 +123,9 @@ function SetPasswordContent() {
   // Erfolg
   if (success) {
     return (
-      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6">
-        <Card className="w-full max-w-md border-[#22D6DD] bg-white dark:bg-[#1F2428]">
+      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6 relative overflow-hidden">
+        <AnimatedBackground />
+        <Card className="w-full max-w-md border-[#22D6DD] bg-white dark:bg-[#1F2428] relative z-10">
           <CardContent className="pt-10 pb-8 text-center">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500/10 flex items-center justify-center">
               <CheckCircle2 className="w-10 h-10 text-green-500" />
@@ -138,8 +141,9 @@ function SetPasswordContent() {
   // Ungültiger Link
   if (!token || !tokenValid) {
     return (
-      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6">
-        <Card className="w-full max-w-md border-[#d9dde1] dark:border-slate-700 bg-white dark:bg-[#1F2428]">
+      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6 relative overflow-hidden">
+        <AnimatedBackground />
+        <Card className="w-full max-w-md border-[#d9dde1] dark:border-slate-700 bg-white dark:bg-[#1F2428] relative z-10">
           <CardContent className="pt-10 pb-8 text-center">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#EC4899]/10 flex items-center justify-center">
               <AlertCircle className="w-10 h-10 text-[#EC4899]" />
@@ -159,12 +163,8 @@ function SetPasswordContent() {
 
   // Passwort-Formular
   return (
-    <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#22D6DD]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#EC4899]/5 rounded-full blur-3xl"></div>
-      </div>
+    <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center p-6 relative overflow-hidden">
+      <AnimatedBackground />
 
       <Card className="w-full max-w-md relative z-10 border-[#d9dde1] dark:border-slate-700 bg-white dark:bg-[#1F2428]">
         <CardHeader className="text-center">
@@ -250,8 +250,9 @@ function SetPasswordContent() {
 export default function SetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center">
-        <Loader2 className="h-12 w-12 text-[#22D6DD] animate-spin" />
+      <div className="min-h-screen bg-[#F2F5F8] dark:bg-[#1A1F23] flex items-center justify-center relative overflow-hidden">
+        <AnimatedBackground />
+        <Loader2 className="h-12 w-12 text-[#22D6DD] animate-spin relative z-10" />
       </div>
     }>
       <SetPasswordContent />
