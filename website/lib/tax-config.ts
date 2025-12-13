@@ -33,14 +33,21 @@ export function calculateTax(netAmount: number, countryCode: string, hasValidVat
   grossAmount: number
   taxLabel: string
   taxExempt: boolean
+  isGermanBusiness: boolean
 } {
   const taxConfig = TAX_RATES[countryCode] || { rate: 0, label: 'Tax' }
   
-  // Reverse Charge: EU-Firmen mit gültiger USt-IdNr. zahlen keine Steuer
+  // Reverse Charge: EU-Firmen mit gültiger USt-IdNr. zahlen keine Steuer (außer DE)
   const isEU = EU_COUNTRIES.includes(countryCode)
-  const taxExempt = hasValidVatId && isEU && countryCode !== 'DE'
+  const isReverseCharge = hasValidVatId && isEU && countryCode !== 'DE'
   
-  const taxRate = taxExempt ? 0 : taxConfig.rate
+  // Deutsche Firmen mit USt-IdNr.: Zahlen MwSt., können aber Vorsteuer abziehen
+  // Zeigen trotzdem Netto-Preis an (effektiver Preis für die Firma)
+  const isGermanBusiness = hasValidVatId && countryCode === 'DE'
+  const taxExempt = isReverseCharge || isGermanBusiness
+  
+  // Berechnung: Bei Reverse Charge = 0% MwSt., bei DE-Firma trotzdem MwSt. berechnen aber Netto anzeigen
+  const taxRate = isReverseCharge ? 0 : taxConfig.rate
   const taxAmount = netAmount * (taxRate / 100)
   const grossAmount = netAmount + taxAmount
   
@@ -50,7 +57,8 @@ export function calculateTax(netAmount: number, countryCode: string, hasValidVat
     taxRate,
     grossAmount,
     taxLabel: taxConfig.label,
-    taxExempt
+    taxExempt,
+    isGermanBusiness
   }
 }
 

@@ -319,7 +319,7 @@ export default function Home() {
             {/* 14 Tage Geld-zurück-Garantie */}
             <div className="mt-6 inline-flex items-center gap-2 bg-[#22D6DD]/10 border-2 border-[#22D6DD] text-[#22D6DD] px-6 py-3 rounded-full font-semibold">
               <ShieldCheck className="h-5 w-5" />
-              <span>14 Tage 100% Geld-zurück-Garantie</span>
+              <span>{t.pricing.moneyBackGuarantee}</span>
             </div>
           </div>
 

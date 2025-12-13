@@ -185,30 +185,48 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                 
                 {/* Preis-Anzeige */}
                 <div className="mt-4 space-y-1">
+                  {/* Netto-Preis bei Privatpersonen */}
                   {!taxCalc.taxExempt && (
                     <div className="text-sm text-slate-600 dark:text-slate-400">
                       {t.modal.net}: {taxCalc.netAmount.toFixed(2)}€
                     </div>
                   )}
-                  {taxCalc.taxAmount > 0 && (
+                  {/* MwSt. bei Privatpersonen */}
+                  {taxCalc.taxAmount > 0 && !taxCalc.taxExempt && (
                     <div className="text-sm text-slate-600 dark:text-slate-400">
                       {t.modal.plus} {taxCalc.taxLabel} ({taxCalc.taxRate}%): {taxCalc.taxAmount.toFixed(2)}€
                     </div>
                   )}
-                  {taxCalc.taxExempt && (
+                  {/* Reverse Charge für EU-Firmen (nicht DE) */}
+                  {taxCalc.taxExempt && !taxCalc.isGermanBusiness && (
                     <div className="flex items-center justify-center gap-2 text-sm text-green-600 mb-2">
                       <CheckCircle2 className="h-4 w-4" />
                       {t.modal.reverseCharge}
                     </div>
                   )}
+                  {/* Deutsche Firma mit USt-IdNr. */}
+                  {taxCalc.isGermanBusiness && (
+                    <div className="flex items-center justify-center gap-2 text-sm text-green-600 mb-2">
+                      <CheckCircle2 className="h-4 w-4" />
+                      ✓ Vorsteuerabzug möglich
+                    </div>
+                  )}
+                  {/* Hauptpreis */}
                   <div className="text-2xl font-bold text-[#22D6DD]">
-                    {taxCalc.taxExempt ? taxCalc.netAmount.toFixed(2) : taxCalc.grossAmount.toFixed(2)}€ {t.modal.perYear}
+                    {taxCalc.netAmount.toFixed(2)}€ {t.modal.perYear}
                   </div>
-                  {taxCalc.taxExempt && (
+                  {/* Hinweis für Firmen */}
+                  {taxCalc.taxExempt && !taxCalc.isGermanBusiness && (
                     <div className="text-xs text-slate-500">
                       ({t.modal.netNotice})
                     </div>
                   )}
+                  {taxCalc.isGermanBusiness && (
+                    <div className="text-xs text-slate-500">
+                      (zzgl. {taxCalc.taxAmount.toFixed(2)}€ MwSt. – als Vorsteuer absetzbar)
+                    </div>
+                  )}
+                  {/* Steuerfrei in bestimmten Ländern */}
                   {taxCalc.taxAmount === 0 && !taxCalc.taxExempt && (
                     <div className="text-xs text-slate-500">
                       ({t.modal.taxFree} {TAX_RATES[country]?.country || 'diesem Land'})
