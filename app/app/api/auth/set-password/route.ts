@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`Password set for user ${normalizedEmail}`)
+    console.log(`Password set for user ${user.email}`)
 
     return NextResponse.json({
       success: true,
