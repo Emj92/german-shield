@@ -297,11 +297,11 @@ class GermanFence_Free_License {
                 GermanFence_Logger::log('[FREE-LICENSE] Verifizierung erfolgreich, Cache geleert, Redirect zu License-Tab');
                 
                 // Redirect nach Verifizierung um Token aus URL zu entfernen - Toast-Meldung über JS
-                wp_redirect(admin_url('admin.php?page=germanfence&tab=license&verified=1'));
+                wp_safe_redirect(admin_url('admin.php?page=germanfence&tab=license&verified=1'));
                 exit;
             } else {
                 // Fehler über URL-Parameter für Toast-Meldung
-                wp_redirect(admin_url('admin.php?page=germanfence&tab=license&verify_error=' . urlencode($result['message'])));
+                wp_safe_redirect(admin_url('admin.php?page=germanfence&tab=license&verify_error=' . rawurlencode($result['message'])));
                 exit;
             }
         }

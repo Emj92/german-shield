@@ -481,7 +481,7 @@ class GermanFence_Admin {
                         
                         <!-- Language Switcher -->
                         <button id="germanfence-language-toggle" class="header-control-btn" title="Sprache wechseln">
-                            <span class="language-flag"><img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;"></span>
+                            <span class="language-flag" style="font-size: 16px;">🇩🇪</span>
                             <span class="language-code" style="font-size: 15px; font-weight: 700; margin-left: 3px;">DE</span>
                         </button>
                     </div>
@@ -512,7 +512,7 @@ class GermanFence_Admin {
                     );
                     
                     // Täglicher Index basierend auf Datum
-                    $day_of_year = date('z');
+                    $day_of_year = gmdate('z');
                     $quote_index = $day_of_year % count($daily_quotes);
                     $todays_quote = $daily_quotes[$quote_index];
                     ?>
@@ -542,12 +542,12 @@ class GermanFence_Admin {
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    💬 WordPress-Schutz
+                    💬 WP-Optimierung
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo !$is_license_valid ? 'disabled' : ''; ?>" data-tab="security" <?php echo !$is_license_valid ? 'disabled' : ''; ?>>
                     🔐 Sicherheit & Firewall
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒 PRO</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     ⚙️ Einstellungen
@@ -678,7 +678,7 @@ class GermanFence_Admin {
                                 <tbody id="stats-table-body">
                                     <?php foreach ($stats['recent_all'] as $entry): ?>
                                     <tr class="stats-row" data-type="<?php echo esc_attr($entry->type); ?>" data-id="<?php echo esc_attr($entry->id); ?>" data-reason="<?php echo esc_attr($entry->reason ?? '-'); ?>" data-form-data="<?php echo esc_attr($entry->form_data ?? ''); ?>">
-                                        <td><?php echo esc_html(date('d.m.Y H:i', strtotime($entry->created_at))); ?></td>
+                                        <td><?php echo esc_html( gmdate('d.m.Y H:i', strtotime($entry->created_at)) ); ?></td>
                                         <td>
                                             <?php if ($entry->type === 'blocked'): ?>
                                                 <span class="block-type-badge blocked" style="background: rgba(240, 98, 146, 0.1); color: #F06292; padding: 4px 12px; border-radius: 4px; font-weight: 600; font-size: 15px;">🚫 GEBLOCKT</span>
@@ -689,7 +689,7 @@ class GermanFence_Admin {
                                         <td><?php echo esc_html($entry->ip_address); ?></td>
                                         <td>
                                             <?php if ($entry->country): ?>
-                                                <span style="font-size: 18px; margin-right: 5px;"><?php echo $this->get_flag_emoji($entry->country); ?></span>
+                                                <span style="font-size: 18px; margin-right: 5px;"><?php echo esc_html( $this->get_flag_emoji($entry->country) ); ?></span>
                                                 <span><?php echo esc_html($entry->country); ?></span>
                                             <?php else: ?>
                                                 <span style="color: #999;">-</span>
@@ -1175,7 +1175,7 @@ class GermanFence_Admin {
                             <table class="germanfence-table">
                                 <tr>
                                     <td><strong>WordPress Version:</strong></td>
-                                    <td><?php echo get_bloginfo('version'); ?></td>
+                                    <td><?php echo esc_html( get_bloginfo('version') ); ?></td>
                                         </tr>
                                         <tr>
                                     <td><strong>PHP Version:</strong></td>
@@ -1183,11 +1183,11 @@ class GermanFence_Admin {
                                         </tr>
                                         <tr>
                                     <td><strong>Plugin Version:</strong></td>
-                                    <td><?php echo GERMANFENCE_VERSION; ?></td>
+                                    <td><?php echo esc_html( GERMANFENCE_VERSION ); ?></td>
                                         </tr>
                                         <tr>
                                     <td><strong>Admin URL:</strong></td>
-                                    <td><?php echo admin_url('admin.php?page=germanfence'); ?></td>
+                                    <td><?php echo esc_url( admin_url('admin.php?page=germanfence') ); ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Form Action:</strong></td>
@@ -1203,7 +1203,7 @@ class GermanFence_Admin {
                         <?php if ($saved): ?>
                         <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-top: 20px; border-left: 4px solid #22D6DD;">
                             <h3 style="margin-top: 0; color: #22D6DD;">✅ Letztes Speichern erfolgreich!</h3>
-                            <p style="margin: 0; color: #50575e;">Zeitpunkt: <?php echo current_time('d.m.Y H:i:s'); ?></p>
+                            <p style="margin: 0; color: #50575e;">Zeitpunkt: <?php echo esc_html( current_time('d.m.Y H:i:s') ); ?></p>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -1211,6 +1211,20 @@ class GermanFence_Admin {
                 
                 <!-- Sicherheit Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
+                    
+                    <?php if (!$is_license_valid): ?>
+                        <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px 0;">
+                            <span style="font-size: 64px;">🔐</span>
+                            <h2 style="margin: 20px 0 10px 0; color: #D81B60;">PRO-Feature</h2>
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
+                                Sicherheit & Firewall ist nur in der <strong>PRO Version</strong> verfügbar.<br>
+                                Mit einem PRO API-Key erhältst du Zugriff auf erweiterte Sicherheitsfeatures.
+                            </p>
+                            <a href="https://germanfence.de/#pricing" target="_blank" class="germanfence-btn-primary" style="display: inline-block; padding: 12px 30px; text-decoration: none; font-size: 15px; font-weight: 600;">
+                                🚀 Jetzt auf PRO upgraden
+                            </a>
+                        </div>
+                    <?php else: ?>
                     
                     <!-- WORDPRESS FIREWALL Section -->
                     <div class="germanfence-section">
@@ -1530,6 +1544,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Einstellungen Tab -->
@@ -2217,19 +2232,23 @@ class GermanFence_Admin {
     }
     
     private function get_flag_emoji($code) {
-        // Konvertiere Ländercode zu Flaggen-Bild (funktioniert auf allen Systemen)
+        // Konvertiere Ländercode zu Unicode Flaggen-Emoji (keine externen Requests)
         $code = strtoupper($code);
         if ($code === 'LOCAL') {
-            return '<span style="font-size: 15px;">🏠</span>';
+            return '🏠';
         }
         
-        // Verwende Flagpedia CDN für zuverlässige Flaggen-Anzeige
-        $code_lower = strtolower($code);
-        return '<img src="https://flagcdn.com/w20/' . esc_attr($code_lower) . '.png" 
-                     srcset="https://flagcdn.com/w40/' . esc_attr($code_lower) . '.png 2x" 
-                     width="20" height="15" 
-                     alt="' . esc_attr($code) . '" 
-                     style="vertical-align: middle; border-radius: 2px; display: inline-block;">';
+        // Konvertiere Ländercode zu Unicode Regional Indicator Symbols
+        // Jeder Buchstabe wird zu seinem Regional Indicator Symbol Letter konvertiert
+        // A = U+1F1E6, B = U+1F1E7, etc.
+        if (strlen($code) !== 2) {
+            return '🌍';
+        }
+        
+        $first = mb_chr(0x1F1E6 + (ord($code[0]) - ord('A')));
+        $second = mb_chr(0x1F1E6 + (ord($code[1]) - ord('A')));
+        
+        return $first . $second;
     }
     
     private function get_country_list() {

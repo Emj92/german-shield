@@ -167,7 +167,7 @@ class GermanFence_Translations {
             // Tab Navigation (Dashboard)
             'Formular-Schutz' => 'Form Protection',
             'Geo & Content-Filter' => 'Geo & Content Filter',
-            'WordPress-Schutz' => 'WordPress Protection',
+            'WP-Optimierung' => 'WP Optimization',
             'Sicherheit & Firewall' => 'Security & Firewall',
             
             // Dashboard Stats & Labels

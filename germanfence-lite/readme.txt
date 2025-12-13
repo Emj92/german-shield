@@ -1,11 +1,11 @@
-=== GermanFence Light - Anti-Spam & Security ===
+=== GermanFence Light ===
 Contributors: germanproweb
 Donate link: https://germanfence.de/donate
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.24.4-light
+Stable tag: 1.24.5-light
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

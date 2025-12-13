@@ -481,7 +481,7 @@ class GermanFence_Admin {
                         
                         <!-- Language Switcher -->
                         <button id="germanfence-language-toggle" class="header-control-btn" title="Sprache wechseln">
-                            <span class="language-flag"><img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;"></span>
+                            <span class="language-flag" style="font-size: 16px;">🇩🇪</span>
                             <span class="language-code" style="font-size: 15px; font-weight: 700; margin-left: 3px;">DE</span>
                         </button>
                     </div>
@@ -512,7 +512,7 @@ class GermanFence_Admin {
                     );
                     
                     // Täglicher Index basierend auf Datum
-                    $day_of_year = date('z');
+                    $day_of_year = gmdate('z');
                     $quote_index = $day_of_year % count($daily_quotes);
                     $todays_quote = $daily_quotes[$quote_index];
                     ?>
@@ -542,7 +542,7 @@ class GermanFence_Admin {
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    💬 WordPress-Schutz
+                    💬 WP-Optimierung
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
@@ -2217,19 +2217,21 @@ class GermanFence_Admin {
     }
     
     private function get_flag_emoji($code) {
-        // Konvertiere Ländercode zu Flaggen-Bild (funktioniert auf allen Systemen)
+        // Konvertiere Ländercode zu Unicode Flaggen-Emoji (keine externen Requests)
         $code = strtoupper($code);
         if ($code === 'LOCAL') {
-            return '<span style="font-size: 15px;">🏠</span>';
+            return '🏠';
         }
         
-        // Verwende Flagpedia CDN für zuverlässige Flaggen-Anzeige
-        $code_lower = strtolower($code);
-        return '<img src="https://flagcdn.com/w20/' . esc_attr($code_lower) . '.png" 
-                     srcset="https://flagcdn.com/w40/' . esc_attr($code_lower) . '.png 2x" 
-                     width="20" height="15" 
-                     alt="' . esc_attr($code) . '" 
-                     style="vertical-align: middle; border-radius: 2px; display: inline-block;">';
+        // Konvertiere Ländercode zu Unicode Regional Indicator Symbols
+        if (strlen($code) !== 2) {
+            return '🌍';
+        }
+        
+        $first = mb_chr(0x1F1E6 + (ord($code[0]) - ord('A')));
+        $second = mb_chr(0x1F1E6 + (ord($code[1]) - ord('A')));
+        
+        return $first . $second;
     }
     
     private function get_country_list() {

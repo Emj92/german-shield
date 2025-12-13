@@ -167,7 +167,7 @@ class GermanFence_Translations {
             // Tab Navigation (Dashboard)
             'Formular-Schutz' => 'Form Protection',
             'Geo & Content-Filter' => 'Geo & Content Filter',
-            'WordPress-Schutz' => 'WordPress Protection',
+            'WP-Optimierung' => 'WP Optimization',
             'Sicherheit & Firewall' => 'Security & Firewall',
             
             // Dashboard Stats & Labels
@@ -238,13 +238,7 @@ class GermanFence_Translations {
 /**
  * Helper function
  */
-/**
- * Helper function for translations.
- *
- * @param string $text Text to translate.
- * @return string Translated text.
- */
-function germanfence__( $text ) {
-    return GermanFence_Translations::get( $text );
+function gf__($text) {
+    return GermanFence_Translations::get($text);
 }
 
