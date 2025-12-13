@@ -6,10 +6,10 @@ export async function POST(request: NextRequest) {
   try {
     const { token, email, password } = await request.json()
 
-    if (!token || !email || !password) {
+    if (!token || !password) {
       return NextResponse.json({ 
         success: false, 
-        error: 'Token, E-Mail und Passwort erforderlich' 
+        error: 'Token und Passwort erforderlich' 
       }, { status: 400 })
     }
 
@@ -20,17 +20,21 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const normalizedEmail = email.toLowerCase().trim()
-
-    // User mit Token finden
-    const user = await prisma.user.findFirst({
-      where: {
-        email: normalizedEmail,
-        verificationToken: token,
-        verificationTokenExpiry: {
-          gte: new Date() // Token noch gültig
-        }
+    // User mit Token finden (Email optional - wird aus Token abgeleitet)
+    const whereClause: { verificationToken: string; verificationTokenExpiry: { gte: Date }; email?: string } = {
+      verificationToken: token,
+      verificationTokenExpiry: {
+        gte: new Date() // Token noch gültig
       }
+    }
+
+    // Falls Email mitgegeben wurde, auch danach filtern
+    if (email) {
+      whereClause.email = email.toLowerCase().trim()
+    }
+
+    const user = await prisma.user.findFirst({
+      where: whereClause
     })
 
     if (!user) {
