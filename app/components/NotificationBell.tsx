@@ -285,12 +285,11 @@ export function NotificationBell() {
             {/* Popup Footer */}
             <div className="px-5 py-3 bg-[#FAFAFA] dark:bg-slate-800 border-t border-[#d9dde1] dark:border-slate-700 flex justify-between">
               <Button
-                variant="outline"
                 size="sm"
                 onClick={() => deleteNotification(selectedNotification.id)}
-                className="text-[#EC4899] border-[#EC4899] hover:bg-[#EC4899]/10"
+                className="bg-[#EC4899] text-white border-none hover:bg-[#EC4899] hover:opacity-100"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 w-4 mr-2 text-white" />
                 Löschen
               </Button>
               {selectedNotification.link && (

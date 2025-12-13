@@ -12,12 +12,13 @@ export async function GET() {
     // Hole Benachrichtigungen aus verschiedenen Quellen
     const notifications: Array<{
       id: string
-      type: 'ticket_response' | 'license_expiry' | 'system'
+      type: 'ticket_response' | 'license_expiry' | 'system' | 'MESSAGE' | 'UPDATE' | 'NEWS' | 'WARNING'
       title: string
       message: string
       link?: string
       read: boolean
       createdAt: string
+      backgroundColor?: string
     }> = []
 
     // 1. Support-Ticket Antworten (ungelesene Admin-Antworten)
@@ -92,14 +93,15 @@ export async function GET() {
     for (const notif of adminNotifications) {
       notifications.push({
         id: notif.id,
-        type: 'system',
+        type: notif.type as 'MESSAGE' | 'UPDATE' | 'NEWS' | 'WARNING',
         title: notif.type === 'WARNING' ? '⚠️ Warnung' : 
                notif.type === 'UPDATE' ? '🔄 Update' :
                notif.type === 'NEWS' ? '📰 Neuigkeit' : '💬 Nachricht',
         message: notif.message,
         link: notif.link || undefined,
         read: notif.read,
-        createdAt: notif.createdAt.toISOString()
+        createdAt: notif.createdAt.toISOString(),
+        backgroundColor: notif.backgroundColor
       })
     }
 
