@@ -1,0 +1,157 @@
+GERMAN SHIELD WORDPRESS PLUGIN
+Split License Agreement
+
+================================================================================
+PART 1: GNU GENERAL PUBLIC LICENSE (GPL)
+================================================================================
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+The full text of the GPL v2 license is available at:
+https://www.gnu.org/licenses/gpl-2.0.html
+
+================================================================================
+PART 2: PROPRIETARY COMMERCIAL LICENSE & RESTRICTIONS
+================================================================================
+
+Copyright (c) 2024-2025 German Shield - All Rights Reserved
+
+OWNERSHIP & INTELLECTUAL PROPERTY:
+-----------------------------------
+The "German Shield" name, logo, branding, design elements, and associated
+intellectual property are the exclusive property of the copyright holder
+and are NOT covered by the GPL license.
+
+COMMERCIAL RESTRICTIONS:
+------------------------
+While the source code is licensed under GPL v2+, the following additional
+restrictions apply to COMMERCIAL USE:
+
+1. PERMITTED USES (GPL Rights):
+   - Use on unlimited personal and client websites
+   - Modification of code for your own use
+   - Distribution of modified versions under GPL
+   - Integration into GPL-compatible projects
+
+2. RESTRICTED COMMERCIAL USES:
+   The following require explicit written permission:
+   
+   a) RESALE & REDISTRIBUTION:
+      - Selling this plugin or derivatives as a standalone product
+      - Bundling with premium themes/plugins for resale
+      - Distribution via commercial marketplaces (CodeCanyon, ThemeForest, etc.)
+      - White-labeling or rebranding for commercial purposes
+   
+   b) SAAS & CLOUD SERVICES:
+      - Operating as a service (SaaS) using this plugin
+      - Multi-tenant hosting platforms offering this as a feature
+      - Reselling access to plugin functionality via subscriptions
+   
+   c) BRANDING & TRADEMARK:
+      - Using "German Shield" name or logo in derivative products
+      - Implying endorsement or official affiliation
+      - Registering similar trademarks or domain names
+
+3. REQUIRED ATTRIBUTION:
+   All derivative works MUST include visible attribution:
+   "Powered by German Shield (https://german-shield.com)"
+   
+   Removal of attribution requires a Commercial License.
+
+4. API & EXTERNAL SERVICES:
+   Connection to German Shield API services, licensing system, and premium
+   features requires valid license key. API access is NOT covered by GPL.
+
+5. SUPPORT & UPDATES:
+   Technical support and automatic updates are provided only to licensed
+   users. GPL license does NOT include support or update services.
+
+THEMEFOREST/CODECANYON COMPATIBILITY:
+-------------------------------------
+This split license structure is compatible with Envato marketplaces:
+- Core plugin code: GPL v2+ (meets WordPress requirements)
+- Premium features & services: Proprietary (meets Envato requirements)
+- Branding & design: Proprietary (protects your IP)
+
+COMMERCIAL LICENSING:
+---------------------
+For commercial use cases requiring exceptions to these restrictions,
+contact us for a Commercial License:
+
+Email: license@german-shield.com
+Website: https://german-shield.com/licensing
+
+VIOLATION & ENFORCEMENT:
+------------------------
+Violation of these restrictions may result in:
+- License key revocation
+- API access termination
+- Legal action for trademark infringement
+- DMCA takedown notices
+
+FREE LICENSE:
+-------------
+Free license holders receive:
+✓ Full plugin functionality (GPL code)
+✓ Community support
+✓ Basic updates
+✗ Premium features
+✗ Priority support
+✗ Commercial use rights
+✗ White-label rights
+
+PREMIUM LICENSE:
+----------------
+Premium license holders receive:
+✓ Everything in Free
+✓ Premium features & API access
+✓ Priority email support
+✓ Commercial use rights (with attribution)
+✓ Automatic updates
+✗ White-label rights (requires Enterprise)
+
+ENTERPRISE LICENSE:
+-------------------
+Enterprise license holders receive:
+✓ Everything in Premium
+✓ White-label rights
+✓ No attribution required
+✓ Multi-site unlimited
+✓ Dedicated support
+✓ Custom development options
+
+================================================================================
+JURISDICTION & DISPUTES
+================================================================================
+
+This license is governed by German law. Any disputes arising from this
+license shall be resolved in German courts.
+
+For questions about this license, contact: legal@german-shield.com
+
+================================================================================
+ACCEPTANCE
+================================================================================
+
+By installing, copying, or using German Shield, you agree to be bound by
+the terms of both the GNU GPL v2+ AND these additional restrictions.
+
+If you do not agree to these terms, you may not use this software.
+
+Last Updated: December 2024
+Version: 1.0.0
+
+================================================================================
+

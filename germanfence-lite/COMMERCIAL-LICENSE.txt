@@ -1,0 +1,245 @@
+GERMAN SHIELD - COMMERCIAL LICENSE AGREEMENT
+Version 1.0 - December 2024
+
+This Commercial License grants you additional rights beyond the GPL v2 license
+for the German Shield WordPress Plugin.
+
+================================================================================
+COMMERCIAL LICENSE BENEFITS
+================================================================================
+
+This Commercial License grants you the following additional rights:
+
+✓ RESALE RIGHTS:
+  - Bundle German Shield with your premium themes/plugins
+  - Sell on marketplaces (ThemeForest, CodeCanyon, etc.)
+  - Include in commercial WordPress products
+
+✓ WHITE-LABEL RIGHTS (Enterprise only):
+  - Rebrand the plugin with your own name/logo
+  - Remove "German Shield" attribution
+  - Custom plugin naming
+
+✓ SAAS RIGHTS:
+  - Use in multi-tenant hosting platforms
+  - Offer as a service to your customers
+  - Include in managed WordPress services
+
+✓ API ACCESS:
+  - Unlimited API calls to German Shield services
+  - Premium GEO-IP database access
+  - Advanced threat intelligence feeds
+
+✓ PRIORITY SUPPORT:
+  - Email support with 24h response time
+  - Phone/video support (Enterprise only)
+  - Custom feature development available
+
+✓ LIFETIME UPDATES:
+  - Automatic plugin updates
+  - Early access to new features
+  - Beta testing opportunities
+
+================================================================================
+LICENSE TIERS
+================================================================================
+
+STANDARD COMMERCIAL LICENSE ($199/year):
+----------------------------------------
+- Resale/bundling rights
+- Up to 25 installations
+- API access included
+- Email support
+- Attribution required
+- No white-labeling
+
+PROFESSIONAL LICENSE ($499/year):
+---------------------------------
+- Everything in Standard
+- Up to 100 installations
+- Priority support
+- Custom branding allowed
+- Reduced attribution (footer only)
+- Quarterly business reviews
+
+ENTERPRISE LICENSE ($1,499/year or $4,999 lifetime):
+----------------------------------------------------
+- Everything in Professional
+- UNLIMITED installations
+- Full white-label rights
+- No attribution required
+- Dedicated account manager
+- Custom development included (up to 20h/year)
+- Phone/video support
+- SLA guarantee (99.9% uptime)
+- Early access to new features
+
+DEVELOPER LICENSE ($2,999/year):
+--------------------------------
+- Build unlimited client sites
+- Resell to unlimited clients
+- Include in your products
+- White-label rights
+- Priority support
+- Revenue sharing available
+
+================================================================================
+OBTAINING A COMMERCIAL LICENSE
+================================================================================
+
+Purchase Options:
+
+1. DIRECT PURCHASE:
+   Website: https://german-shield.com/pricing
+   Email: sales@german-shield.com
+
+2. ENVATO MARKETPLACES:
+   ThemeForest: [URL]
+   CodeCanyon: [URL]
+
+3. ENTERPRISE INQUIRIES:
+   Email: enterprise@german-shield.com
+   Phone: +49 (0) XXX XXXXXXX
+
+4. RESELLER PROGRAM:
+   Email: partners@german-shield.com
+   (Special pricing for agencies and resellers)
+
+================================================================================
+TERMS & CONDITIONS
+================================================================================
+
+1. LICENSE KEY:
+   - Each license includes a unique license key
+   - License key must be activated on your domains
+   - Deactivation required before transferring
+
+2. INSTALLATION LIMITS:
+   - Based on license tier
+   - One domain = one installation
+   - Subdomains count as separate installations
+   - Localhost/staging environments are FREE
+
+3. SUPPORT PERIOD:
+   - Included with active license
+   - Renewals available at 30% discount
+   - Lifetime licenses include lifetime support
+
+4. UPDATES:
+   - Automatic updates during license period
+   - Security updates provided for 1 year after expiration
+   - Lifetime licenses receive lifetime updates
+
+5. REFUND POLICY:
+   - 30-day money-back guarantee
+   - No questions asked
+   - Lifetime licenses: 60-day guarantee
+
+6. TRANSFER RIGHTS:
+   - Standard/Pro: Non-transferable
+   - Enterprise/Developer: Transferable with approval
+   - Transfer fee: $99
+
+7. TERMINATION:
+   - License can be terminated for abuse
+   - Refund provided for remaining period
+   - Grace period: 30 days to comply
+
+8. LIABILITY:
+   - Software provided "AS IS"
+   - No warranty for fitness of purpose
+   - Liability limited to license fee paid
+   - Indemnification for commercial use
+
+9. COMPLIANCE:
+   - Must comply with WordPress.org guidelines
+   - GPL source code requirements
+   - Proper attribution (unless Enterprise)
+   - No illegal/harmful use
+
+10. JURISDICTION:
+    - Governed by German law
+    - Disputes resolved in German courts
+    - English version prevails
+
+================================================================================
+FREQUENTLY ASKED QUESTIONS
+================================================================================
+
+Q: Can I use this on client websites?
+A: Yes! Standard license allows up to 25 client sites. Professional allows 100.
+   For unlimited, choose Enterprise or Developer license.
+
+Q: Do my clients need their own license?
+A: No! Your license covers sites you build/manage for clients.
+
+Q: Can I include this in my premium theme?
+A: Yes, with Standard license or higher. White-label requires Enterprise.
+
+Q: What happens when my license expires?
+A: Plugin continues to work, but no updates/support. API access disabled.
+   Renew at 30% discount anytime.
+
+Q: Can I upgrade my license tier?
+A: Yes! Pay the difference, pro-rated for remaining period.
+
+Q: Is VAT included?
+A: No. EU customers: add VAT based on your country.
+   Non-EU: no additional tax.
+
+Q: Do you offer volume discounts?
+A: Yes! Contact enterprise@german-shield.com for 10+ licenses.
+
+Q: What payment methods?
+A: Credit card, PayPal, wire transfer (Enterprise only), crypto (on request).
+
+Q: Can I get a trial?
+A: Yes! 14-day trial available. Contact sales@german-shield.com
+
+Q: Do you offer agency/reseller discounts?
+A: Yes! Partners program available. Contact partners@german-shield.com
+
+================================================================================
+CONTACT INFORMATION
+================================================================================
+
+General Inquiries:  info@german-shield.com
+Sales:              sales@german-shield.com
+Support:            support@german-shield.com
+Licensing:          license@german-shield.com
+Enterprise:         enterprise@german-shield.com
+Partners/Resellers: partners@german-shield.com
+
+Website:            https://german-shield.com
+Documentation:      https://german-shield.com/docs
+Status Page:        https://status.german-shield.com
+
+Mailing Address:
+German Shield
+[Your Company Name]
+[Street Address]
+[ZIP City]
+Germany
+
+VAT-ID: DE[XXX XXX XXX]
+Commercial Register: [HRB XXXXX]
+
+================================================================================
+ACCEPTANCE
+================================================================================
+
+By purchasing and using a Commercial License, you agree to these terms.
+
+If you do not agree, do not activate your license key and request a refund
+within 30 days.
+
+This agreement is effective from the date of purchase and remains valid
+for the duration of your license period.
+
+Thank you for choosing German Shield!
+
+================================================================================
+
+Last Updated: December 2024
+Version: 1.0.0
+

@@ -1,0 +1,33 @@
+/**
+ * German Shield Frontend Styles
+ */
+
+/* Hide honeypot field */
+.gs-honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+/* Ensure honeypot is truly hidden */
+input.gs-honeypot,
+input[name*="gs_"] {
+    display: none !important;
+}
+
+/* Show honeypot only for screen readers (accessibility) */
+.gs-honeypot:focus {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
