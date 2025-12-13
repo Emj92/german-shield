@@ -26,13 +26,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const subjectText = {
+    const subjectMap: Record<string, string> = {
       support: 'Technischer Support',
       sales: 'Kaufanfrage',
       partnership: 'Partnerschaft',
       feedback: 'Feedback',
       other: 'Sonstiges'
-    }[subject] || subject
+    }
+    const subjectText = subjectMap[subject as string] || subject
 
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
