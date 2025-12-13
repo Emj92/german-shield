@@ -146,6 +146,21 @@ export const translations = {
       inGermany: 'in Germany',
       by: 'by',
       priceNotice: '💶 Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer',
+      product: 'Produkt',
+      licenses: 'Lizenzen',
+      supportLegal: 'Support & Legal',
+    },
+    rating: {
+      question: 'Wie gefällt dir GermanFence?',
+      thankYou: 'Danke für die Bewertung!',
+      sending: 'Wird gesendet...',
+      review: 'Bewertung',
+      reviews: 'Bewertungen',
+    },
+    captcha: {
+      label: 'Sicherheitsfrage',
+      question: 'Was ist',
+      placeholder: 'Deine Antwort',
     },
   },
   en: {
@@ -291,6 +306,21 @@ export const translations = {
       inGermany: 'in Germany',
       by: 'by',
       priceNotice: '💶 All prices are exclusive of VAT',
+      product: 'Product',
+      licenses: 'Licenses',
+      supportLegal: 'Support & Legal',
+    },
+    rating: {
+      question: 'How do you like GermanFence?',
+      thankYou: 'Thanks for your rating!',
+      sending: 'Sending...',
+      review: 'Review',
+      reviews: 'Reviews',
+    },
+    captcha: {
+      label: 'Security Question',
+      question: 'What is',
+      placeholder: 'Your answer',
     },
   },
 }

@@ -15,6 +15,7 @@ import { Download, Shield, Globe, Filter, Badge as BadgeIcon, Settings, CheckCir
 import { useLanguage } from "@/lib/language-context";
 import { StarRating } from "@/components/StarRating";
 import { ContactToast } from "@/components/ContactToast";
+import { ContactForm } from "@/components/ContactForm";
 
 export default function Home() {
   const { t } = useLanguage()
@@ -646,91 +647,7 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="space-y-6" action="/api/contact" method="POST">
-            {/* Name + Nachname */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.firstName}</label>
-                <input 
-                  type="text" 
-                  name="firstName" 
-                  required
-                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                  placeholder="Max"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.lastName}</label>
-                <input 
-                  type="text" 
-                  name="lastName" 
-                  required
-                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                  placeholder="Mustermann"
-                />
-              </div>
-            </div>
-
-            {/* Firma + Anliegen */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.company}</label>
-                <input 
-                  type="text" 
-                  name="company"
-                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                  placeholder="My Company GmbH"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.subject}</label>
-                <select 
-                  name="subject" 
-                  required
-                  className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                >
-                  <option value="">{t.contact.selectPlaceholder}</option>
-                  <option value="support">{t.contact.support}</option>
-                  <option value="sales">{t.contact.sales}</option>
-                  <option value="partnership">{t.contact.partnership}</option>
-                  <option value="feedback">{t.contact.feedback}</option>
-                  <option value="other">{t.contact.other}</option>
-                </select>
-              </div>
-            </div>
-
-            {/* E-Mail */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.email}</label>
-              <input 
-                type="email" 
-                name="email" 
-                required
-                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                placeholder="max@example.com"
-              />
-            </div>
-
-            {/* Nachricht */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{t.contact.message}</label>
-              <textarea 
-                name="message" 
-                required
-                rows={6}
-                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
-                placeholder={t.contact.messagePlaceholder}
-              />
-            </div>
-
-            {/* Submit Button */}
-            <Button 
-              type="submit" 
-              className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] py-6 text-lg font-semibold transition-transform hover:-translate-y-1"
-            >
-              📧 {t.contact.send}
-            </Button>
-          </form>
+          <ContactForm />
         </div>
       </section>
 
@@ -758,18 +675,18 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-6 text-white">Produkt</h3>
+              <h3 className="font-bold text-lg mb-6 text-white">{t.footer.product}</h3>
               <ul className="space-y-3 text-slate-400">
-                <li><a href="#features" className="hover:text-[#22D6DD] transition">Features</a></li>
-                <li><a href="#screenshots" className="hover:text-[#22D6DD] transition">Screenshots</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Preise</a></li>
+                <li><a href="#features" className="hover:text-[#22D6DD] transition">{t.nav.features}</a></li>
+                <li><a href="#screenshots" className="hover:text-[#22D6DD] transition">{t.nav.screenshots}</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">{t.nav.pricing}</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Dokumentation</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Changelog</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">Roadmap</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-6 text-white">Lizenzen</h3>
+              <h3 className="font-bold text-lg mb-6 text-white">{t.footer.licenses}</h3>
               <ul className="space-y-3 text-slate-400">
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€/Jahr zzgl. MwSt.)</a></li>
@@ -780,11 +697,11 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-6 text-white">Support & Legal</h3>
+              <h3 className="font-bold text-lg mb-6 text-white">{t.footer.supportLegal}</h3>
               <ul className="space-y-3 text-slate-400">
                 <li><Link href="/support" className="hover:text-[#22D6DD] transition">Support Center</Link></li>
                 <li><Link href="/support#faq" className="hover:text-[#22D6DD] transition">FAQ</Link></li>
-                <li><a href="#contact" className="hover:text-[#22D6DD] transition">Kontakt</a></li>
+                <li><a href="#contact" className="hover:text-[#22D6DD] transition">{t.contact.title}</a></li>
                 <li><Link href="/impressum" className="hover:text-[#22D6DD] transition">Impressum</Link></li>
                 <li><Link href="/datenschutz" className="hover:text-[#22D6DD] transition">Datenschutz</Link></li>
                 <li><Link href="/agb" className="hover:text-[#22D6DD] transition">AGB</Link></li>

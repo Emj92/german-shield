@@ -2,18 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData()
+    // JSON-Body statt FormData
+    const body = await request.json()
     
-    const firstName = formData.get('firstName') as string
-    const lastName = formData.get('lastName') as string
-    const company = formData.get('company') as string || '-'
-    const subject = formData.get('subject') as string
-    const email = formData.get('email') as string
-    const message = formData.get('message') as string
+    const { firstName, lastName, company, subject, email, message } = body
 
     // Validierung
     if (!firstName || !lastName || !subject || !email || !message) {
-      return NextResponse.redirect(new URL('https://germanfence.de/?error=missing-fields'))
+      return NextResponse.json(
+        { error: 'Bitte alle Pflichtfelder ausfüllen' },
+        { status: 400 }
+      )
     }
 
     // E-Mail über Resend senden
@@ -21,7 +20,10 @@ export async function POST(request: NextRequest) {
 
     if (!RESEND_API_KEY) {
       console.error('RESEND_API_KEY nicht konfiguriert')
-      return NextResponse.redirect(new URL('https://germanfence.de/?error=config'))
+      return NextResponse.json(
+        { error: 'E-Mail-Service nicht konfiguriert' },
+        { status: 500 }
+      )
     }
 
     const subjectText = {
@@ -56,7 +58,7 @@ export async function POST(request: NextRequest) {
                 </tr>
                 <tr>
                   <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Firma:</td>
-                  <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">${company}</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">${company || '-'}</td>
                 </tr>
                 <tr>
                   <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold;">E-Mail:</td>
@@ -84,15 +86,19 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       console.error('Resend Fehler:', await response.text())
-      return NextResponse.redirect(new URL('https://germanfence.de/?error=send-failed'))
+      return NextResponse.json(
+        { error: 'E-Mail konnte nicht gesendet werden' },
+        { status: 500 }
+      )
     }
 
-    // Erfolg - Weiterleitung zur Startseite mit Erfolgsmeldung
-    return NextResponse.redirect(new URL('https://germanfence.de/?success=message-sent'))
+    return NextResponse.json({ success: true })
 
   } catch (error) {
     console.error('Kontaktformular Fehler:', error)
-    return NextResponse.redirect(new URL('https://germanfence.de/?error=server'))
+    return NextResponse.json(
+      { error: 'Ein unerwarteter Fehler ist aufgetreten' },
+      { status: 500 }
+    )
   }
 }
-
