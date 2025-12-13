@@ -53,7 +53,7 @@ const sidebarItems = [
     items: [
       { title: 'Badge anpassen', href: '#badge' },
       { title: 'Performance', href: '#performance' },
-      { title: 'Lizenz-Verwaltung', href: '#lizenz' },
+      { title: 'API-Key Verwaltung', href: '#apikey' },
     ]
   },
   {
@@ -231,10 +231,10 @@ export default function SupportPage() {
                 <CardContent className="prose prose-slate dark:prose-invert max-w-none">
                   <p>Nach der Installation hast du zwei Optionen:</p>
                   <ul>
-                    <li><strong>Kostenlose Version:</strong> Gib deine E-Mail-Adresse ein und erhalte einen kostenlosen Lizenzschlüssel</li>
-                    <li><strong>PRO Version:</strong> Kaufe eine Lizenz und gib den erhaltenen Schlüssel ein</li>
+                    <li><strong>Kostenlose Version:</strong> Gib deine E-Mail-Adresse ein und erhalte einen kostenlosen API-Key</li>
+                    <li><strong>PRO Version:</strong> Kaufe einen API-Key und gib ihn ein</li>
                   </ul>
-                  <p>Dein Lizenzschlüssel wird automatisch mit deiner Domain verknüpft.</p>
+                  <p>Dein API-Key wird automatisch mit deiner Domain verknüpft.</p>
                 </CardContent>
               </Card>
             </section>

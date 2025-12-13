@@ -340,15 +340,15 @@ class GermanFence_License {
         $license = $this->get_license_data();
         
         if (!$license || !isset($license['valid'])) {
-            return array('is_valid' => false, 'valid' => false, 'message' => 'Keine Lizenz vorhanden');
+            return array('is_valid' => false, 'valid' => false, 'message' => 'Kein API-Key vorhanden');
         }
         
         if (!$license['valid']) {
-            $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
+            $error = isset($license['error']) ? $license['error'] : 'Ungültiger API-Key';
             return array('is_valid' => false, 'valid' => false, 'message' => $error);
         }
         
-        return array('is_valid' => true, 'valid' => true, 'message' => 'Lizenz aktiv');
+        return array('is_valid' => true, 'valid' => true, 'message' => 'API-Key aktiv');
     }
     
     /**
@@ -366,7 +366,7 @@ class GermanFence_License {
         
         if ($license && isset($license['valid']) && $license['valid']) {
             // Erfolg - Domain wurde automatisch beim validate_license() registriert
-            $message = 'Lizenz erfolgreich aktiviert!';
+            $message = 'API-Key erfolgreich aktiviert!';
             
             // Zusatz-Info wenn Domain registriert wurde
             if (isset($license['registered']) && $license['registered']) {
@@ -378,10 +378,10 @@ class GermanFence_License {
                 'message' => $message
             );
         } else {
-            $error = isset($license['error']) ? $license['error'] : 'Ungültige Lizenz';
+            $error = isset($license['error']) ? $license['error'] : 'Ungültiger API-Key';
             return array(
                 'success' => false,
-                'message' => 'Lizenz konnte nicht aktiviert werden: ' . $error
+                'message' => 'API-Key konnte nicht aktiviert werden: ' . $error
             );
         }
     }
@@ -409,7 +409,7 @@ class GermanFence_License {
         
         return array(
             'success' => true,
-            'message' => 'Lizenz erfolgreich deaktiviert'
+            'message' => 'API-Key erfolgreich deaktiviert'
         );
     }
     

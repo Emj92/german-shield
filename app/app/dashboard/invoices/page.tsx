@@ -183,7 +183,7 @@ export default async function InvoicesPage() {
               <CreditCard className="h-12 w-12 text-muted-foreground mb-4" />
               <p className="text-lg font-medium">Kein aktives Abonnement</p>
               <p className="text-sm text-muted-foreground mb-4">
-                Kaufe eine Lizenz, um automatische Verlängerungen zu aktivieren
+                Kaufe einen API-Key, um automatische Verlängerungen zu aktivieren
               </p>
               <Button asChild className="bg-[#22D6DD] hover:bg-[#1EBEC5] text-white">
                 <a href="https://germanfence.de#pricing">

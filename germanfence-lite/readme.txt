@@ -1,19 +1,19 @@
-=== GermanFence - Anti-Spam & Security ===
+=== GermanFence Light - Anti-Spam & Security ===
 Contributors: germanproweb
 Donate link: https://germanfence.de/donate
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.24.4
+Stable tag: 1.24.4-light
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Bestes Anti-Spam Plugin aus Deutschland! Schützt alle Formulare vor Spam mit modernsten Techniken. Made in Germany 🇩🇪
+Kostenlose Anti-Spam Lösung aus Deutschland! Schützt alle Formulare mit Honeypot, Zeitstempel & JS-Check. PRO-Features als Vorschau. Made in Germany 🇩🇪
 
 == Description ==
 
-**GermanFence** ist das ultimative Anti-Spam & Security Plugin - entwickelt und gehostet in Deutschland!
+**GermanFence Light** ist die kostenlose Anti-Spam Lösung aus Deutschland! Die Light-Version enthält alle Basis-Features, PRO-Features (GEO-Blocking, Phrasen-Filter) sind als Vorschau sichtbar.
 
 = 🛡️ Hauptfunktionen =
 

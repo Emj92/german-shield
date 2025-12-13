@@ -64,7 +64,7 @@ export const translations = {
     },
     // Pricing
     pricing: {
-      title: 'Flexible Jahreslizenzen',
+      title: 'Flexible API-Key Pakete',
       subtitle: 'Faire Preise für professionellen Spam-Schutz 🛡️',
       free: 'Kostenlos testen',
       freemium: 'Freemium',
@@ -88,7 +88,7 @@ export const translations = {
     // CTA
     cta: {
       title: 'Bereit, deine Website zu schützen?',
-      subtitle: 'Sichere dir jetzt deine Jahreslizenz und blockiere Spam für immer!',
+      subtitle: 'Sichere dir jetzt deinen API-Key und blockiere Spam für immer!',
       buyNow: 'Jetzt kaufen',
       toPortal: 'Zum Portal',
     },
@@ -113,7 +113,7 @@ export const translations = {
     },
     // Buy Modal
     modal: {
-      license: 'Lizenz',
+      license: 'API-Key',
       net: 'Netto',
       plus: 'plus',
       perYear: '/ Jahr',
@@ -147,7 +147,7 @@ export const translations = {
       by: 'by',
       priceNotice: '💶 Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer',
       product: 'Produkt',
-      licenses: 'Lizenzen',
+      licenses: 'API-Keys',
       supportLegal: 'Support & Legal',
     },
     rating: {
@@ -224,7 +224,7 @@ export const translations = {
     },
     // Pricing
     pricing: {
-      title: 'Flexible Annual Licenses',
+      title: 'Flexible API-Key Packages',
       subtitle: 'Fair prices for professional spam protection 🛡️',
       free: 'Try for Free',
       freemium: 'Freemium',
@@ -248,7 +248,7 @@ export const translations = {
     // CTA
     cta: {
       title: 'Ready to Protect Your Website?',
-      subtitle: 'Get your annual license now and block spam forever!',
+      subtitle: 'Get your API-Key now and block spam forever!',
       buyNow: 'Buy Now',
       toPortal: 'Go to Portal',
     },
@@ -273,7 +273,7 @@ export const translations = {
     },
     // Buy Modal
     modal: {
-      license: 'License',
+      license: 'API-Key',
       net: 'Net',
       plus: 'plus',
       perYear: '/ Year',
@@ -307,7 +307,7 @@ export const translations = {
       by: 'by',
       priceNotice: '💶 All prices are exclusive of VAT',
       product: 'Product',
-      licenses: 'Licenses',
+      licenses: 'API-Keys',
       supportLegal: 'Support & Legal',
     },
     rating: {

@@ -585,7 +585,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />
-                    <span>Bulk-Lizenz-Verwaltung</span>
+                    <span>Bulk API-Key Verwaltung</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#F06292] flex-shrink-0" />

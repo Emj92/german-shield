@@ -143,7 +143,7 @@ export async function GET(request: NextRequest) {
       // Gesamte Registrierungen
       prisma.user.count(),
 
-      // Käufe (Lizenzen die NICHT FREE sind)
+      // Käufe (API-Keys die NICHT FREE sind)
       prisma.license.count({
         where: { packageType: { not: 'FREE' } }
       }),

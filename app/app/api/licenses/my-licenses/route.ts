@@ -10,7 +10,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Hole alle Lizenzen des Users
+    // Hole alle API-Keys des Users
     const licenses = await prisma.license.findMany({
       where: {
         userId: user.userId,

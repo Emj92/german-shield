@@ -65,26 +65,32 @@ class GermanFence_Admin {
         }
         
         try {
-            // Lösche Datenbank-Einträge.
+            // Lösche Datenbank-Einträge
             global $wpdb;
-            $germanfence_table = esc_sql( $wpdb->prefix . 'germanfence_stats' );
+            $table_name = $wpdb->prefix . 'germanfence_stats';
             
-            // Verwende DELETE statt TRUNCATE (TRUNCATE kann Probleme machen).
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Intentional data deletion
-            $wpdb->query( "DELETE FROM `{$germanfence_table}`" );
+            error_log('[GermanFence] Lösche Datenbank-Tabelle: ' . $table_name);
             
-            // Lösche History-Datei.
+            // Verwende DELETE statt TRUNCATE (TRUNCATE kann Probleme machen)
+            $result = $wpdb->query("DELETE FROM $table_name");
+            
+            error_log('[GermanFence] DB-Ergebnis: ' . var_export($result, true));
+            
+            // Lösche History-Datei
             $upload_dir = wp_upload_dir();
             $history_dir = $upload_dir['basedir'] . '/germanfence';
             $history_file = $history_dir . '/history.log';
             
-            if ( file_exists( $history_file ) ) {
-                wp_delete_file( $history_file );
+            if (file_exists($history_file)) {
+                @unlink($history_file);
+                error_log('[GermanFence] History-Datei gelöscht: ' . $history_file);
             }
             
-            wp_send_json_success( array( 'message' => 'Verlauf erfolgreich gelöscht' ) );
-        } catch ( Exception $e ) {
-            wp_send_json_error( array( 'message' => 'Fehler: ' . esc_html( $e->getMessage() ) ) );
+            error_log('[GermanFence] Verlauf erfolgreich gelöscht');
+            wp_send_json_success(array('message' => 'Verlauf erfolgreich gelöscht'));
+        } catch (Exception $e) {
+            error_log('[GermanFence] Exception: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Fehler: ' . $e->getMessage()));
         }
     }
     
@@ -460,8 +466,8 @@ class GermanFence_Admin {
             <div class="germanfence-header">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <h1 style="color: #1d2327; margin: 0;">
-                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-logo.png' ); ?>" alt="GermanFence" class="germanfence-logo-img" style="height: 60px; width: auto; margin-right: 15px;">
-                        GermanFence
+                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-logo.png' ); ?>" alt="GermanFence Light" class="germanfence-logo-img" style="height: 60px; width: auto; margin-right: 15px;">
+                        GermanFence <span style="color: #22D6DD; font-weight: 400;">Light</span>
                         <span class="germanfence-version">v<?php echo esc_html( GERMANFENCE_VERSION ); ?></span>
                     </h1>
                     
@@ -506,7 +512,7 @@ class GermanFence_Admin {
                     );
                     
                     // Täglicher Index basierend auf Datum
-                    $day_of_year = gmdate( 'z' );
+                    $day_of_year = date('z');
                     $quote_index = $day_of_year % count($daily_quotes);
                     $todays_quote = $daily_quotes[$quote_index];
                     ?>
@@ -560,12 +566,12 @@ class GermanFence_Admin {
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
                             <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
+                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&tab=settings' ) ); ?>" 
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
                                style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
                                 <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
-                                Zur Lizenz-Verwaltung →
+                                Zur API-Key Verwaltung →
                             </a>
                         </div>
                     <?php else: ?>
@@ -596,7 +602,7 @@ class GermanFence_Admin {
                                 <span class="dashicons dashicons-chart-line"></span>
                             </div>
                             <div class="stat-content">
-                                <h3><?php echo esc_html( $stats['block_rate'] ); ?>%</h3>
+                                <h3><?php echo $stats['block_rate']; ?>%</h3>
                                 <p>Block-Rate</p>
                             </div>
                         </div>
@@ -637,18 +643,18 @@ class GermanFence_Admin {
                         }
                         ?>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h2 style="margin: 0;">Letzte Anfragen <span style="color: #646970; font-size: 16px; font-weight: 500;">(<?php echo esc_html( $total_requests ); ?> Einträge)</span></h2>
+                            <h2 style="margin: 0;">Letzte Anfragen <span style="color: #646970; font-size: 16px; font-weight: 500;">(<?php echo $total_requests; ?> Einträge)</span></h2>
                             
                             <!-- Filter Buttons -->
                             <div class="stats-filter-buttons" style="display: flex; gap: 10px;">
                                 <button type="button" class="stats-filter-btn active" data-filter="all" style="padding: 8px 16px; border: 2px solid #22D6DD; background: #22D6DD; color: #fff; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    📊 Alle (<?php echo esc_html( $total_requests ); ?>)
+                                    📊 Alle (<?php echo $total_requests; ?>)
                                 </button>
                                 <button type="button" class="stats-filter-btn" data-filter="blocked" style="padding: 8px 16px; border: 2px solid #F06292; background: transparent; color: #F06292; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    🚫 Geblockt (<?php echo esc_html( $blocked_count ); ?>)
+                                    🚫 Geblockt (<?php echo $blocked_count; ?>)
                                 </button>
                                 <button type="button" class="stats-filter-btn" data-filter="legitimate" style="padding: 8px 16px; border: 2px solid #22D6DD; background: transparent; color: #22D6DD; border-radius: 9px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                                    ✅ Legitim (<?php echo esc_html( $legitimate_count ); ?>)
+                                    ✅ Legitim (<?php echo $legitimate_count; ?>)
                                 </button>
                                 <button type="button" id="clear-history-btn" style="padding: 8px 16px; border: none; background: #D81B60; color: #ffffff; border-radius: 9px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2); margin-left: auto; display: inline-flex; align-items: center; gap: 6px;">
                                     <span class="dashicons dashicons-trash" style="font-size: 15px;"></span>
@@ -713,12 +719,12 @@ class GermanFence_Admin {
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
                             <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
+                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
                             </p>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&tab=settings' ) ); ?>" 
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
                                style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
                                 <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
-                                Zur Lizenz-Verwaltung →
+                                Zur API-Key Verwaltung →
                             </a>
                         </div>
                     <?php else: ?>
@@ -804,7 +810,7 @@ class GermanFence_Admin {
                                     foreach ($honeypot_fields as $index => $field_name): 
                                     ?>
                                     <div class="honeypot-field-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #ffffff; border: 1px solid #d9dde1; border-radius: 9px; margin-bottom: 10px;">
-                                        <span style="min-width: 30px; font-weight: 600; color: #646970;">#<?php echo esc_html( $index + 1 ); ?></span>
+                                        <span style="min-width: 30px; font-weight: 600; color: #646970;">#<?php echo $index + 1; ?></span>
                                         <input 
                                             type="text" 
                                             name="honeypot_fields[]" 
@@ -815,7 +821,7 @@ class GermanFence_Admin {
                                         <button 
                                             type="button" 
                                             class="regenerate-honeypot-btn"
-                                            data-index="<?php echo esc_attr( $index ); ?>"
+                                            data-index="<?php echo $index; ?>"
                                             style="padding: 8px 12px; background: #22D6DD; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;"
                                             title="Neu generieren"
                                         >
@@ -1181,7 +1187,7 @@ class GermanFence_Admin {
                                         </tr>
                                         <tr>
                                     <td><strong>Admin URL:</strong></td>
-                                    <td><?php echo esc_url( admin_url( 'admin.php?page=germanfence' ) ); ?></td>
+                                    <td><?php echo admin_url('admin.php?page=germanfence'); ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Form Action:</strong></td>
@@ -1529,14 +1535,14 @@ class GermanFence_Admin {
                 <!-- Einstellungen Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
                     
-                    <!-- LIZENZ-VERWALTUNG Section -->
+                    <!-- API-KEY VERWALTUNG Section -->
                     <div class="germanfence-section">
-                        <h2>🔑 Lizenz-Verwaltung</h2>
+                        <h2>🔑 API-Key Verwaltung</h2>
                         
                                 <?php
                         $license_status = $license_manager->check_license();
                         
-                        // Lizenz aktivieren
+                        // API-Key aktivieren
                         if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
                             $result = $license_manager->activate_license(sanitize_text_field($_POST['license_key']));
                             if ($result['success']) {
@@ -1549,7 +1555,7 @@ class GermanFence_Admin {
                             settings_errors('germanfence_messages');
                         }
                         
-                        // Lizenz deaktivieren (PRO oder FREE) - Plugin komplett sperren
+                        // API-Key deaktivieren (PRO oder FREE) - Plugin komplett sperren
                         if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
                             // Deaktiviere PRO-Lizenz
                         if (isset($_POST['deactivate_license'])) {
@@ -1571,7 +1577,7 @@ class GermanFence_Admin {
                             $is_free_active = $free_manager->is_free_active();
                             $free_email = $free_manager->get_verified_email();
                             
-                            add_settings_error('germanfence_messages', 'germanfence_message', 'Lizenz deaktiviert - Plugin gesperrt. Bitte neue Lizenz aktivieren.', 'success');
+                            add_settings_error('germanfence_messages', 'germanfence_message', 'API-Key deaktiviert - Plugin gesperrt. Bitte neuen API-Key aktivieren.', 'success');
                             settings_errors('germanfence_messages');
                             
                             // WICHTIG: Reload erzwingen damit Plugin gesperrt wird
@@ -1579,7 +1585,7 @@ class GermanFence_Admin {
                         }
                         ?>
                         
-                        <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
+                        <!-- API-KEY VERWALTUNG: 2-Spalten Layout -->
                         <?php if (empty($license_info['has_license']) || empty($is_license_valid)): ?>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
@@ -1594,7 +1600,7 @@ class GermanFence_Admin {
                                 <?php if ($current_key): ?>
                                 <div style="margin: 15px 0;">
                                     <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                        🔑 Dein License-Key<?php 
+                                        🔑 Dein API-Key<?php 
                                         $key_type = 'FREE';
                                         if (strpos($current_key, 'GS-PRO-') === 0) $key_type = 'PRO';
                                         elseif (strpos($current_key, 'GS-SINGLE-') === 0) $key_type = 'SINGLE';
@@ -1602,7 +1608,7 @@ class GermanFence_Admin {
                                         elseif (strpos($current_key, 'GS-AGENCY-') === 0) $key_type = 'AGENCY';
                                         elseif (strpos($current_key, 'GS-FREE-') === 0) $key_type = 'FREE';
                                         else $key_type = 'CUSTOM';
-                                        echo ' (' . esc_html( $key_type ) . ')';
+                                        echo ' (' . $key_type . ')';
                                         ?>:
                                     </p>
                                     <div style="display: flex; gap: 10px; align-items: center;">
@@ -1620,7 +1626,7 @@ class GermanFence_Admin {
                                 <?php endif; ?>
                                 <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
                                     <?php if ($is_license_valid): ?>
-                                        Deine PRO-Lizenz ist aktiv. Du hast Zugriff auf alle Features!
+                                        Dein PRO API-Key ist aktiv. Du hast Zugriff auf alle Features!
                                     <?php else: ?>
                                     Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
                                     <?php endif; ?>
@@ -1628,7 +1634,7 @@ class GermanFence_Admin {
                                 <form method="post">
                                     <?php wp_nonce_field('germanfence_settings', 'germanfence_nonce'); ?>
                                     <button type="submit" name="deactivate_free" class="germanfence-btn-danger">
-                                        <?php echo $is_license_valid ? 'PRO-Lizenz deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
+                                        <?php echo $is_license_valid ? 'PRO API-Key deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
                                     </button>
                                 </form>
                             <?php else: ?>
@@ -1662,7 +1668,7 @@ class GermanFence_Admin {
                                         <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
                                             <input type="checkbox" id="free-agb-checkbox" style="margin-top: 4px; cursor: pointer;">
                                             <span style="font-size: 15px; color: #1d2327;">
-                                                Ich akzeptiere die <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&show=agb' ) ); ?>" style="color: #22D6DD; text-decoration: underline;">AGB</a> und die <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&show=datenschutz' ) ); ?>" style="color: #22D6DD; text-decoration: underline;">Datenschutzerklärung</a>
+                                                Ich akzeptiere die <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #22D6DD; text-decoration: underline;">AGB</a> und die <a href="<?php echo admin_url('admin.php?page=germanfence&show=datenschutz'); ?>" style="color: #22D6DD; text-decoration: underline;">Datenschutzerklärung</a>
                                             </span>
                                         </label>
                                     </div>
@@ -1682,30 +1688,30 @@ class GermanFence_Admin {
                                     <!-- Key Aktivierung -->
                                     <div id="free-key-content" class="germanfence-free-content" style="display: none;">
                                         <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                            Hast du bereits einen License-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY oder manuell generiert)
+                                            Hast du bereits einen API-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY)
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">API-Key:</label>
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
                                             <button type="button" id="activate-free-key-btn" class="germanfence-btn-primary">
                                                 <span class="dashicons dashicons-unlock"></span>
-                                                Lizenz aktivieren
+                                                API-Key aktivieren
                                             </button>
                                         </div>
                                         
                                         <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
-                                            💡 Kostenlose Keys erhältst du nach der E-Mail-Verifizierung. PRO-Keys kannst du auf germanfence.de kaufen oder von einem Admin erhalten.
+                                            💡 Kostenlose API-Keys erhältst du nach der E-Mail-Verifizierung. PRO API-Keys kannst du auf germanfence.de kaufen.
                                         </p>
                                     </div>
                                 </div>
                             <?php endif; ?>
                         </div>
                         
-                        <!-- PRO LIZENZ KAUFEN BOX -->
+                        <!-- PRO API-KEY KAUFEN BOX -->
                         <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
                             <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
                             <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
@@ -1755,7 +1761,7 @@ class GermanFence_Admin {
                         </div><!-- Ende 2-Spalten Layout -->
                         <?php endif; ?>
                         
-                        <!-- PRO LIZENZ AKTIV -->
+                        <!-- PRO API-KEY AKTIV -->
                         <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
                         <div style="background: #E9FBFC; padding: 25px; margin-bottom: 30px; border-radius: 9px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
@@ -1795,7 +1801,7 @@ class GermanFence_Admin {
                             <div style="text-align: center; margin-top: 20px;">
                             <form method="post" style="display: inline;">
                                 <button type="submit" name="deactivate_license" class="germanfence-btn-danger">
-                                    Lizenz deaktivieren
+                                    API-Key deaktivieren
                                 </button>
                             </form>
                             </div>
@@ -1867,7 +1873,7 @@ class GermanFence_Admin {
                                 <h3>Badge anzeigen <?php echo $is_free ? '<span style="color: #22D6DD;">● Aktiv (FREE)</span>' : ''; ?></h3>
                                 <p>Zeigt einen Badge auf der Website, dass sie durch GermanFence geschützt wird.
                                 <?php if (!$has_whitelabel): ?>
-                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single-Lizenz</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
+                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single API-Key</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
                                 <?php else: ?>
                                     <br><strong style="color: #22D6DD;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
                                 <?php endif; ?>
@@ -2003,7 +2009,7 @@ class GermanFence_Admin {
                                 ?>
                                 <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: <?php echo esc_attr($border_radius); ?>px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                                     <span id="badge-icon">
-                                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png' ); ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
+                                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
                                     <span id="badge-text-preview" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
                                 </div>
@@ -2078,7 +2084,7 @@ class GermanFence_Admin {
                                     <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px;">
                                         📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
                                     </p>
-                                    <a href="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'data/av-vertrag.pdf' ); ?>" 
+                                    <a href="<?php echo GERMANFENCE_PLUGIN_URL; ?>data/av-vertrag.pdf" 
                                        target="_blank" 
                                        class="germanfence-btn-secondary"
                                        style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
@@ -2100,11 +2106,11 @@ class GermanFence_Admin {
                             GermanFence by GermanCore
                         </div>
                         <div style="font-size: 15px;">
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&show=agb' ) ); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">AGB</a>
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&show=agb'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">AGB</a>
                             <span style="color: #c3cbd5;">|</span>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&show=datenschutz' ) ); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">Datenschutz</a>
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&show=datenschutz'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">Datenschutz</a>
                             <span style="color: #c3cbd5;">|</span>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=germanfence&show=impressum' ) ); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">Impressum</a>
+                            <a href="<?php echo admin_url('admin.php?page=germanfence&show=impressum'); ?>" style="color: #646970; text-decoration: none; margin: 0 10px;">Impressum</a>
                         </div>
                     </div>
                 </div>

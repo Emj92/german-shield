@@ -139,7 +139,7 @@ export default function UserLicensesContent() {
     }
   }
 
-  const activeLicensesCount = licenses.length // Alle gezeigten Lizenzen sind aktiv
+  const activeLicensesCount = licenses.length // Alle gezeigten API-Keys sind aktiv
   const totalDomains = licenses.reduce((sum, l) => sum + l.activeDomains.length, 0)
 
   if (loading) {
@@ -147,7 +147,7 @@ export default function UserLicensesContent() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22D6DD] mx-auto mb-4"></div>
-          <p className="text-slate-600">Lade Lizenzen...</p>
+          <p className="text-slate-600">Lade API-Keys...</p>
         </div>
       </div>
     )
@@ -196,8 +196,8 @@ export default function UserLicensesContent() {
       )}
 
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Meine Lizenzen</h1>
-        <p className="text-slate-600 mt-2">Verwalte deine GermanFence Lizenzen und aktivierte Domains</p>
+        <h1 className="text-3xl font-bold text-slate-900">Meine API-Keys</h1>
+        <p className="text-slate-600 mt-2">Verwalte deine GermanFence API-Keys und aktivierte Domains</p>
       </div>
 
       {/* Übersicht */}
@@ -206,7 +206,7 @@ export default function UserLicensesContent() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Lizenzen gesamt</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">API-Keys gesamt</p>
                 <p className="text-3xl font-bold text-slate-900 dark:text-white">{licenses.length}</p>
               </div>
             </CardContent>
@@ -214,7 +214,7 @@ export default function UserLicensesContent() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Aktive Lizenzen</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Aktive API-Keys</p>
                 <p className="text-3xl font-bold text-[#22D6DD]">{activeLicensesCount}</p>
               </div>
             </CardContent>
@@ -234,9 +234,9 @@ export default function UserLicensesContent() {
         <Card>
           <CardContent className="py-12 text-center">
             <Key className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Keine Lizenzen vorhanden</h3>
+            <h3 className="text-lg font-semibold mb-2">Keine API-Keys vorhanden</h3>
             <p className="text-slate-600 mb-4">
-              Du hast noch keine Lizenz erworben. Besuche unsere Website, um eine Lizenz zu kaufen.
+              Du hast noch keinen API-Key erworben. Besuche unsere Website, um einen API-Key zu kaufen.
             </p>
             <Button asChild className="bg-[#22D6DD] hover:bg-[#1EBEC5]">
               <a href="https://germanfence.de" target="_blank" rel="noopener noreferrer">
@@ -255,7 +255,7 @@ export default function UserLicensesContent() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <Key className="h-5 w-5 text-[#22D6DD]" />
-                      Lizenzschlüssel
+                      API-Key
                     </CardTitle>
                     <CardDescription className="mt-2">
                       <div className="flex items-center gap-2 mt-1">
@@ -284,7 +284,7 @@ export default function UserLicensesContent() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                {/* Lizenz-Info */}
+                {/* API-Key Info */}
                 <div className="grid grid-cols-3 gap-4 p-3 bg-white rounded-[9px] border border-[#d9dde1]">
                   <div>
                     <p className="text-xs text-slate-500">Gültig bis</p>

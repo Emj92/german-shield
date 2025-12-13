@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getUser } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
-// GET - Spam-Statistiken für die Lizenzen des Users
+// GET - Spam-Statistiken für die API-Keys des Users
 export async function GET() {
   try {
     const user = await getUser()
@@ -10,7 +10,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Hole alle Lizenzen des Users
+    // Hole alle API-Keys des Users
     const licenses = await prisma.license.findMany({
       where: { userId: user.userId },
       include: {

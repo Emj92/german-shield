@@ -566,12 +566,12 @@ class GermanFence_Admin {
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
                             <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
+                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
                             </p>
                             <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
                                style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
                                 <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
-                                Zur Lizenz-Verwaltung →
+                                Zur API-Key Verwaltung →
                             </a>
                         </div>
                     <?php else: ?>
@@ -719,12 +719,12 @@ class GermanFence_Admin {
                             <span style="font-size: 64px;">🔒</span>
                             <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
                             <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere eine Lizenz, um GermanFence zu nutzen.
+                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
                             </p>
                             <a href="<?php echo admin_url('admin.php?page=germanfence&tab=settings'); ?>" 
                                style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
                                 <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
-                                Zur Lizenz-Verwaltung →
+                                Zur API-Key Verwaltung →
                             </a>
                         </div>
                     <?php else: ?>
@@ -1535,14 +1535,14 @@ class GermanFence_Admin {
                 <!-- Einstellungen Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
                     
-                    <!-- LIZENZ-VERWALTUNG Section -->
+                    <!-- API-KEY VERWALTUNG Section -->
                     <div class="germanfence-section">
-                        <h2>🔑 Lizenz-Verwaltung</h2>
+                        <h2>🔑 API-Key Verwaltung</h2>
                         
                                 <?php
                         $license_status = $license_manager->check_license();
                         
-                        // Lizenz aktivieren
+                        // API-Key aktivieren
                         if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
                             $result = $license_manager->activate_license(sanitize_text_field($_POST['license_key']));
                             if ($result['success']) {
@@ -1555,7 +1555,7 @@ class GermanFence_Admin {
                             settings_errors('germanfence_messages');
                         }
                         
-                        // Lizenz deaktivieren (PRO oder FREE) - Plugin komplett sperren
+                        // API-Key deaktivieren (PRO oder FREE) - Plugin komplett sperren
                         if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
                             // Deaktiviere PRO-Lizenz
                         if (isset($_POST['deactivate_license'])) {
@@ -1577,7 +1577,7 @@ class GermanFence_Admin {
                             $is_free_active = $free_manager->is_free_active();
                             $free_email = $free_manager->get_verified_email();
                             
-                            add_settings_error('germanfence_messages', 'germanfence_message', 'Lizenz deaktiviert - Plugin gesperrt. Bitte neue Lizenz aktivieren.', 'success');
+                            add_settings_error('germanfence_messages', 'germanfence_message', 'API-Key deaktiviert - Plugin gesperrt. Bitte neuen API-Key aktivieren.', 'success');
                             settings_errors('germanfence_messages');
                             
                             // WICHTIG: Reload erzwingen damit Plugin gesperrt wird
@@ -1585,7 +1585,7 @@ class GermanFence_Admin {
                         }
                         ?>
                         
-                        <!-- LIZENZ-VERWALTUNG: 2-Spalten Layout -->
+                        <!-- API-KEY VERWALTUNG: 2-Spalten Layout -->
                         <?php if (empty($license_info['has_license']) || empty($is_license_valid)): ?>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                         
@@ -1600,7 +1600,7 @@ class GermanFence_Admin {
                                 <?php if ($current_key): ?>
                                 <div style="margin: 15px 0;">
                                     <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                        🔑 Dein License-Key<?php 
+                                        🔑 Dein API-Key<?php 
                                         $key_type = 'FREE';
                                         if (strpos($current_key, 'GS-PRO-') === 0) $key_type = 'PRO';
                                         elseif (strpos($current_key, 'GS-SINGLE-') === 0) $key_type = 'SINGLE';
@@ -1626,7 +1626,7 @@ class GermanFence_Admin {
                                 <?php endif; ?>
                                 <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
                                     <?php if ($is_license_valid): ?>
-                                        Deine PRO-Lizenz ist aktiv. Du hast Zugriff auf alle Features!
+                                        Dein PRO API-Key ist aktiv. Du hast Zugriff auf alle Features!
                                     <?php else: ?>
                                     Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
                                     <?php endif; ?>
@@ -1634,7 +1634,7 @@ class GermanFence_Admin {
                                 <form method="post">
                                     <?php wp_nonce_field('germanfence_settings', 'germanfence_nonce'); ?>
                                     <button type="submit" name="deactivate_free" class="germanfence-btn-danger">
-                                        <?php echo $is_license_valid ? 'PRO-Lizenz deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
+                                        <?php echo $is_license_valid ? 'PRO API-Key deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
                                     </button>
                                 </form>
                             <?php else: ?>
@@ -1688,30 +1688,30 @@ class GermanFence_Admin {
                                     <!-- Key Aktivierung -->
                                     <div id="free-key-content" class="germanfence-free-content" style="display: none;">
                                         <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                            Hast du bereits einen License-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY oder manuell generiert)
+                                            Hast du bereits einen API-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY)
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">License-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX oder eigener Key" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">API-Key:</label>
+                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
                                             <button type="button" id="activate-free-key-btn" class="germanfence-btn-primary">
                                                 <span class="dashicons dashicons-unlock"></span>
-                                                Lizenz aktivieren
+                                                API-Key aktivieren
                                             </button>
                                         </div>
                                         
                                         <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
-                                            💡 Kostenlose Keys erhältst du nach der E-Mail-Verifizierung. PRO-Keys kannst du auf germanfence.de kaufen oder von einem Admin erhalten.
+                                            💡 Kostenlose API-Keys erhältst du nach der E-Mail-Verifizierung. PRO API-Keys kannst du auf germanfence.de kaufen.
                                         </p>
                                     </div>
                                 </div>
                             <?php endif; ?>
                         </div>
                         
-                        <!-- PRO LIZENZ KAUFEN BOX -->
+                        <!-- PRO API-KEY KAUFEN BOX -->
                         <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
                             <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
                             <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
@@ -1761,7 +1761,7 @@ class GermanFence_Admin {
                         </div><!-- Ende 2-Spalten Layout -->
                         <?php endif; ?>
                         
-                        <!-- PRO LIZENZ AKTIV -->
+                        <!-- PRO API-KEY AKTIV -->
                         <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
                         <div style="background: #E9FBFC; padding: 25px; margin-bottom: 30px; border-radius: 9px;">
                             <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
@@ -1801,7 +1801,7 @@ class GermanFence_Admin {
                             <div style="text-align: center; margin-top: 20px;">
                             <form method="post" style="display: inline;">
                                 <button type="submit" name="deactivate_license" class="germanfence-btn-danger">
-                                    Lizenz deaktivieren
+                                    API-Key deaktivieren
                                 </button>
                             </form>
                             </div>
@@ -1873,7 +1873,7 @@ class GermanFence_Admin {
                                 <h3>Badge anzeigen <?php echo $is_free ? '<span style="color: #22D6DD;">● Aktiv (FREE)</span>' : ''; ?></h3>
                                 <p>Zeigt einen Badge auf der Website, dass sie durch GermanFence geschützt wird.
                                 <?php if (!$has_whitelabel): ?>
-                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single-Lizenz</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
+                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single API-Key</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
                                 <?php else: ?>
                                     <br><strong style="color: #22D6DD;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
                                 <?php endif; ?>

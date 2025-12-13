@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Erstelle FREE-License in DB
-    // FREE-Lizenzen "laufen nie ab" = 100 Jahre in der Zukunft
+    // FREE API-Keys "laufen nie ab" = 100 Jahre in der Zukunft
     const farFuture = new Date();
     farFuture.setFullYear(farFuture.getFullYear() + 100);
     
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
           subject: '🎉 Willkommen bei GermanFence!',
           html: `
             <h2>Willkommen bei GermanFence! 🇩🇪</h2>
-            <p>Deine kostenlose Lizenz wurde erfolgreich aktiviert!</p>
+            <p>Dein kostenloser API-Key wurde erfolgreich aktiviert!</p>
             
             <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin: 20px 0;">
               <strong>Dein License-Key:</strong><br/>

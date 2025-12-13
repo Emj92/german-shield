@@ -71,11 +71,11 @@ function PaymentSuccessContent() {
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Info: Lizenzschlüssel kommt per E-Mail */}
+          {/* Info: API-Key kommt per E-Mail */}
           <div className="bg-white border-2 border-[#22D6DD] rounded-xl p-6 text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Key className="w-5 h-5 text-[#22D6DD]" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Dein Lizenzschlüssel</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Dein API-Key</span>
             </div>
             {licenseKey ? (
               <>
@@ -106,7 +106,7 @@ function PaymentSuccessContent() {
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Per E-Mail zugestellt!</span>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Dein Lizenzschlüssel wurde an deine E-Mail gesendet.<br />
+                  Dein API-Key wurde an deine E-Mail gesendet.<br />
                   Prüfe auch deinen Spam-Ordner.
                 </p>
               </div>
@@ -131,7 +131,7 @@ function PaymentSuccessContent() {
                   gesendet mit:
                 </p>
                 <ul className="text-slate-600 dark:text-slate-400 text-sm mt-2 space-y-1">
-                  <li>✓ Deinem Lizenzschlüssel</li>
+                  <li>✓ Deinem API-Key</li>
                   <li>✓ Link zum Passwort setzen</li>
                   <li>✓ Anleitung zur Installation</li>
                 </ul>
@@ -155,7 +155,7 @@ function PaymentSuccessContent() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#22D6DD] text-white flex items-center justify-center text-sm font-bold">3</span>
-                <span><strong>Lizenz aktivieren:</strong> Gehe zu GermanFence → Lizenz und gib deinen Schlüssel ein.</span>
+                <span><strong>API-Key aktivieren:</strong> Gehe zu GermanFence → Einstellungen und gib deinen API-Key ein.</span>
               </li>
             </ol>
           </div>

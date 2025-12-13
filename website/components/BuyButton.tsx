@@ -100,7 +100,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
           netAmount: taxCalc.netAmount,
           taxAmount: taxCalc.taxAmount,
           taxRate: taxCalc.taxRate,
-          description: `GermanFence ${PACKAGE_NAMES[packageType]} License`,
+          description: `GermanFence ${PACKAGE_NAMES[packageType]} API-Key`,
           package_type: packageType,
           email: email,
           isBusiness,

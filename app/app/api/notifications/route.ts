@@ -56,7 +56,7 @@ export async function GET() {
       })
     }
 
-    // 2. Lizenz-Ablauf Warnungen
+    // 2. API-Key-Ablauf Warnungen
     const licenses = await prisma.license.findMany({
       where: {
         userId: user.userId,
@@ -73,8 +73,8 @@ export async function GET() {
       notifications.push({
         id: `license-${license.id}`,
         type: 'license_expiry',
-        title: 'Lizenz läuft bald ab',
-        message: `Deine ${license.packageType} Lizenz läuft in ${daysLeft} Tagen ab`,
+        title: 'API-Key läuft bald ab',
+        message: `Dein ${license.packageType} API-Key läuft in ${daysLeft} Tagen ab`,
         link: '/dashboard/licenses',
         read: daysLeft > 14, // Als gelesen wenn noch > 14 Tage
         createdAt: new Date(license.expiresAt.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString()

@@ -485,7 +485,7 @@ export default function InfoBannerPage() {
                   <Textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    placeholder="🎉 Noch 2 Wochen: 20% Rabatt auf alle Lizenzen!"
+                    placeholder="🎉 Noch 2 Wochen: 20% Rabatt auf alle API-Keys!"
                     rows={2}
                     required
                   />
