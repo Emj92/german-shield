@@ -378,9 +378,9 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.single}</Badge>
-                <CardTitle className="text-4xl">0,50€/Jahr</CardTitle>
+                <CardTitle className="text-4xl">29€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
-                  1 {t.pricing.website} <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded ml-1">TEST</span>
+                  1 {t.pricing.website}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
@@ -448,7 +448,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={0.50} 
+                  price={29} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />

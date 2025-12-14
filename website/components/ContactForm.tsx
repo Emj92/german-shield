@@ -107,7 +107,7 @@ export function ContactForm() {
             type="text" 
             name="firstName" 
             required
-            className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
             placeholder="Max"
           />
         </div>
@@ -117,7 +117,7 @@ export function ContactForm() {
             type="text" 
             name="lastName" 
             required
-            className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
             placeholder="Mustermann"
           />
         </div>
@@ -130,7 +130,7 @@ export function ContactForm() {
           <input 
             type="text" 
             name="company"
-            className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
             placeholder="My Company GmbH"
           />
         </div>
@@ -139,7 +139,7 @@ export function ContactForm() {
           <select 
             name="subject" 
             required
-            className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
             <option value="">{t.contact.selectPlaceholder}</option>
             <option value="support">{t.contact.support}</option>
@@ -158,7 +158,7 @@ export function ContactForm() {
           type="email" 
           name="email" 
           required
-          className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+          className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           placeholder="max@example.com"
         />
       </div>
@@ -170,13 +170,13 @@ export function ContactForm() {
           name="message" 
           required
           rows={6}
-          className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
+          className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:border-[#22D6DD] focus:outline-none transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
           placeholder={t.contact.messagePlaceholder}
         />
       </div>
 
       {/* Mathe-Captcha */}
-      <div className="p-4 bg-[#F2F5F8] dark:bg-slate-800 rounded-[9px] border border-[#d9dde1] dark:border-slate-700">
+      <div className="p-4 bg-[#FAFAFA] dark:bg-slate-800 rounded-[9px] border border-[#d9dde1] dark:border-slate-700">
         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
           🔒 {t.captcha.label}
         </label>
@@ -193,10 +193,10 @@ export function ContactForm() {
             value={captchaAnswer}
             onChange={(e) => setCaptchaAnswer(e.target.value)}
             required
-            className={`w-24 px-4 py-2 border-2 rounded-lg focus:outline-none transition bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-center font-bold ${
+            className={`w-24 px-4 py-2 border rounded-lg focus:outline-none transition bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-center font-bold ${
               captchaError 
                 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' 
-                : 'border-slate-200 dark:border-slate-600 focus:border-[#22D6DD]'
+                : 'border-slate-300 dark:border-slate-600 focus:border-[#22D6DD]'
             }`}
             placeholder="?"
           />

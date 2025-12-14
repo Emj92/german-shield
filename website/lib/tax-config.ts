@@ -91,10 +91,9 @@ export function validateVatIdFormat(vatId: string, countryCode: string): boolean
 
 /**
  * Paket-Preise (Netto, jährlich)
- * HINWEIS: single auf 0.50€ für Testzwecke
  */
 export const PACKAGE_PRICES = {
-  single: 0.50,
+  single: 29,
   freelancer: 99,
   agency: 299
 }
