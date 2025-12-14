@@ -1651,7 +1651,7 @@ class GermanFence_Admin {
                                         </button>
                                         <button type="button" id="free-key-tab" class="germanfence-free-tab" 
                                             style="flex: 1; padding: 10px; background: transparent; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
-                                            🔑 Mit License-Key
+                                            🔑 Mit API-Key
                                         </button>
                                     </div>
                                     
@@ -1683,7 +1683,7 @@ class GermanFence_Admin {
                                         </div>
                                         
                                         <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
-                                            💡 Du erhältst eine E-Mail mit einem Bestätigungslink. Nach der Verifizierung bekommst du einen License-Key!
+                                            💡 Du erhältst eine E-Mail mit einem Bestätigungslink. Nach der Verifizierung bekommst du einen API-Key!
                                         </p>
                                     </div>
                                     
@@ -1788,7 +1788,7 @@ class GermanFence_Admin {
                             
                             <div style="margin: 15px 0;">
                                 <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                    🔑 Dein License-Key:
+                                    🔑 Dein API-Key:
                                 </p>
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
