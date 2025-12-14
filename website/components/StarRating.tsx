@@ -136,7 +136,8 @@ export function StarRating() {
     setHoverRating(value)
   }
 
-  const displayRating = hoverRating || rating || 0
+  // Zeige: Hover > eigene Bewertung > Durchschnitt (immer sichtbar für neue Besucher)
+  const displayRating = hoverRating || (submitted ? rating : stats.average) || stats.average
 
   // Render Sterne mit halben Sternen
   function renderStar(index: number, size: string, forDisplay: boolean, value: number) {

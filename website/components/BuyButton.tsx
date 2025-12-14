@@ -251,14 +251,14 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={t.modal.emailPlaceholder}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all"
                       required
                     />
                   </div>
                 </div>
 
                 {/* Firmen-Checkbox */}
-                <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-4 bg-[#FAFAFA] dark:bg-slate-800/50 rounded-xl">
                   <input
                     type="checkbox"
                     id="isBusiness"
@@ -288,7 +288,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
                           placeholder="Meine Firma GmbH"
-                          className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all"
+                          className="w-full pl-10 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all"
                           required
                         />
                       </div>
@@ -306,7 +306,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                             id="country"
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all appearance-none"
+                            className="w-full pl-10 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all appearance-none"
                             required
                           >
                             {countries.map(c => (
@@ -330,7 +330,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                           onChange={(e) => setVatId(e.target.value.toUpperCase())}
                           placeholder={`${country}123456789`}
                           className={`w-full px-4 py-3 border rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 outline-none transition-all ${
-                            vatValid ? 'border-green-500' : 'border-slate-200 dark:border-slate-700'
+                            vatValid ? 'border-green-500' : 'border-slate-300 dark:border-slate-700'
                           }`}
                           required
                         />
@@ -353,7 +353,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                           value={street}
                           onChange={(e) => setStreet(e.target.value)}
                           placeholder="Musterstraße 123"
-                          className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all"
+                          className="w-full pl-10 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all"
                           required
                         />
                       </div>
@@ -371,7 +371,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                           value={zipCode}
                           onChange={(e) => setZipCode(e.target.value)}
                           placeholder="12345"
-                          className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all"
+                          className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all"
                           required
                         />
                       </div>
@@ -385,7 +385,7 @@ export function BuyButton({ packageType, price, className, variant = 'default' }
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
                           placeholder="Berlin"
-                          className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-slate-200 dark:focus:border-slate-700 outline-none transition-all"
+                          className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:bg-[#22D6DD]/10 focus:border-[#22D6DD] dark:focus:border-[#22D6DD] outline-none transition-all"
                           required
                         />
                       </div>
