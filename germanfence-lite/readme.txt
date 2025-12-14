@@ -5,11 +5,11 @@ Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.25.0-light
+Stable tag: 1.25.1-light
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Kostenlose Anti-Spam Lösung aus Deutschland! Schützt alle Formulare mit Honeypot, Zeitstempel & JS-Check. PRO-Features als Vorschau. Made in Germany 🇩🇪
+Kostenlose Anti-Spam Lösung aus Deutschland! Schützt alle Formulare mit Honeypot, Zeitstempel & JS-Check. Made in Germany 🇩🇪
 
 == Description ==
 

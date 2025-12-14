@@ -392,8 +392,12 @@ class GermanFence_Admin {
             echo '<div class="notice notice-info" style="margin: 20px 20px 0 0;"><p><strong>GermanFence Debug:</strong> POST-Daten empfangen (' . count($_POST) . ' Felder).</p></div>';
         }
 
-        // Speichern verarbeiten (NOCH OHNE Nonce, um Fehler auszuschließen)
+        // Speichern verarbeiten
         if (isset($_POST['germanfence_save_settings'])) {
+            // Nonce-Verifikation
+            if (!isset($_POST['germanfence_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['germanfence_nonce'])), 'germanfence_settings')) {
+                wp_die('Sicherheitsprüfung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+            }
             GermanFence_Logger::log_save('Save-Button wurde geklickt');
             $this->save_settings();
             $saved = true;
@@ -2127,7 +2131,7 @@ class GermanFence_Admin {
         // Phrasen aus Textarea verarbeiten
         $blocked_phrases = array();
         if (!empty($_POST['blocked_phrases_text'])) {
-            $phrases_text = sanitize_textarea_field($_POST['blocked_phrases_text']);
+            $phrases_text = sanitize_textarea_field(wp_unslash($_POST['blocked_phrases_text']));
             
             // Regex-Modus: Zeilen-getrennt, Normal-Modus: Komma-getrennt
             if (isset($_POST['phrase_regex_mode'])) {
@@ -2142,53 +2146,53 @@ class GermanFence_Admin {
         // Honeypot-Felder verarbeiten
         $honeypot_fields = array();
         if (isset($_POST['honeypot_fields']) && is_array($_POST['honeypot_fields'])) {
-            $honeypot_fields = array_map('sanitize_text_field', $_POST['honeypot_fields']);
+            $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
         
         $settings = array(
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
-            'honeypot_count' => intval($_POST['honeypot_count'] ?? 3),
+            'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),
             'honeypot_fields' => $honeypot_fields,
             'basic_protection_enabled' => isset($_POST['basic_protection_enabled']) ? '1' : '0',
             'rate_limit_enabled' => isset($_POST['rate_limit_enabled']) ? '1' : '0',
             'duplicate_check_enabled' => isset($_POST['duplicate_check_enabled']) ? '1' : '0',
             'http_headers_check' => isset($_POST['http_headers_check']) ? '1' : '0',
             'timestamp_enabled' => isset($_POST['timestamp_enabled']) ? '1' : '0',
-            'timestamp_min' => intval($_POST['timestamp_min'] ?? 3),
-            'timestamp_max' => intval($_POST['timestamp_max'] ?? 3600),
+            'timestamp_min' => intval(wp_unslash($_POST['timestamp_min'] ?? 3)),
+            'timestamp_max' => intval(wp_unslash($_POST['timestamp_max'] ?? 3600)),
             'javascript_check' => isset($_POST['javascript_check']) ? '1' : '0',
             'user_agent_check' => isset($_POST['user_agent_check']) ? '1' : '0',
             'typing_speed_check' => isset($_POST['typing_speed_check']) ? '1' : '0',
             'block_comment_bots' => isset($_POST['block_comment_bots']) ? '1' : '0',
             'test_mode_block_all' => isset($_POST['test_mode_block_all']) ? '1' : '0',
             'url_limit_enabled' => isset($_POST['url_limit_enabled']) ? '1' : '0',
-            'url_limit_max' => intval($_POST['url_limit_max'] ?? 1),
+            'url_limit_max' => intval(wp_unslash($_POST['url_limit_max'] ?? 1)),
             'domain_blocking_enabled' => isset($_POST['domain_blocking_enabled']) ? '1' : '0',
-            'blocked_domains' => sanitize_textarea_field($_POST['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga'),
+            'blocked_domains' => sanitize_textarea_field(wp_unslash($_POST['blocked_domains'] ?? '.xyz, .top, .click, .loan, .gq, .ml, .cf, .tk, .ga')),
             'login_limit_enabled' => isset($_POST['login_limit_enabled']) ? '1' : '0',
-            'login_max_attempts' => intval($_POST['login_max_attempts'] ?? 3),
-            'login_lockout_duration' => intval($_POST['login_lockout_duration'] ?? 30),
+            'login_max_attempts' => intval(wp_unslash($_POST['login_max_attempts'] ?? 3)),
+            'login_lockout_duration' => intval(wp_unslash($_POST['login_lockout_duration'] ?? 30)),
             'geo_blocking_enabled' => isset($_POST['geo_blocking_enabled']) ? '1' : '0',
-            'blocked_countries' => $_POST['blocked_countries'] ?? array(),
+            'blocked_countries' => isset($_POST['blocked_countries']) && is_array($_POST['blocked_countries']) ? array_map('sanitize_text_field', wp_unslash($_POST['blocked_countries'])) : array(),
             'phrase_blocking_enabled' => isset($_POST['phrase_blocking_enabled']) ? '1' : '0',
             'phrase_regex_mode' => isset($_POST['phrase_regex_mode']) ? '1' : '0',
             'blocked_phrases' => $blocked_phrases,
             'badge_enabled' => isset($_POST['badge_enabled']) ? '1' : '0',
-            'badge_display_type' => sanitize_text_field($_POST['badge_display_type'] ?? 'global'),
-            'badge_position' => sanitize_text_field($_POST['badge_position'] ?? 'bottom-right'),
-            'badge_text' => sanitize_text_field($_POST['badge_text'] ?? 'Geschützt durch GermanFence'),
-            'badge_text_color' => sanitize_text_field($_POST['badge_text_color'] ?? '#1d2327'),
-            'badge_border_color' => sanitize_text_field($_POST['badge_border_color'] ?? '#22D6DD'),
-            'badge_background_color' => sanitize_text_field($_POST['badge_background_color'] ?? '#ffffff'),
-            'badge_shadow_color' => sanitize_text_field($_POST['badge_shadow_color'] ?? '#22D6DD'),
-            'badge_border_radius' => intval($_POST['badge_border_radius'] ?? 6),
-            'badge_custom_image' => sanitize_text_field($_POST['badge_custom_image'] ?? ''),
+            'badge_display_type' => sanitize_text_field(wp_unslash($_POST['badge_display_type'] ?? 'global')),
+            'badge_position' => sanitize_text_field(wp_unslash($_POST['badge_position'] ?? 'bottom-right')),
+            'badge_text' => sanitize_text_field(wp_unslash($_POST['badge_text'] ?? 'Geschützt durch GermanFence')),
+            'badge_text_color' => sanitize_text_field(wp_unslash($_POST['badge_text_color'] ?? '#1d2327')),
+            'badge_border_color' => sanitize_text_field(wp_unslash($_POST['badge_border_color'] ?? '#22D6DD')),
+            'badge_background_color' => sanitize_text_field(wp_unslash($_POST['badge_background_color'] ?? '#ffffff')),
+            'badge_shadow_color' => sanitize_text_field(wp_unslash($_POST['badge_shadow_color'] ?? '#22D6DD')),
+            'badge_border_radius' => intval(wp_unslash($_POST['badge_border_radius'] ?? 6)),
+            'badge_custom_image' => sanitize_text_field(wp_unslash($_POST['badge_custom_image'] ?? '')),
             'block_admin_notices' => isset($_POST['block_admin_notices']) ? '1' : '0',
             'block_plugin_ads' => isset($_POST['block_plugin_ads']) ? '1' : '0',
             'block_update_notices' => isset($_POST['block_update_notices']) ? '1' : '0',
             'block_review_requests' => isset($_POST['block_review_requests']) ? '1' : '0',
-            'script_position' => sanitize_text_field($_POST['script_position'] ?? 'footer'),
+            'script_position' => sanitize_text_field(wp_unslash($_POST['script_position'] ?? 'footer')),
             'defer_scripts' => isset($_POST['defer_scripts']) ? '1' : '0',
             'block_comment_bots' => isset($_POST['block_comment_bots']) ? '1' : '0',
             'block_wp_update_emails' => isset($_POST['block_wp_update_emails']) ? '1' : '0',
