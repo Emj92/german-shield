@@ -95,7 +95,6 @@ export async function POST(request: NextRequest) {
         data: {
           userId: user.userId,
           invoiceNumber: `UPG-${Date.now()}`,
-          packageType: targetPackage,
           netAmount: netUpgradeFee,
           taxAmount: taxAmount,
           grossAmount: grossUpgradeFee,
@@ -116,10 +115,10 @@ export async function POST(request: NextRequest) {
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
-        packageType: targetPackage,
-        netAmount: PACKAGE_PRICES[targetPackage],
-        taxAmount: PACKAGE_PRICES[targetPackage] * taxRate,
-        grossAmount: PACKAGE_PRICES[targetPackage] * (1 + taxRate),
+        packageType: targetPackage as 'SINGLE' | 'FREELANCER' | 'AGENCY',
+        netAmount: PACKAGE_PRICES[targetPackage as PackageType],
+        taxAmount: PACKAGE_PRICES[targetPackage as PackageType] * taxRate,
+        grossAmount: PACKAGE_PRICES[targetPackage as PackageType] * (1 + taxRate),
       },
     })
 

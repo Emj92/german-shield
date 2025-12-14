@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (metadata?.type === 'upgrade') {
       console.log('🚀 Processing upgrade payment')
       
-      const { userId, subscriptionId, targetPackage, netAmount, taxAmount, grossAmount } = metadata
+      const { subscriptionId, targetPackage, netAmount, taxAmount, grossAmount } = metadata
 
       // Update subscription
       await prisma.subscription.update({
@@ -69,18 +69,17 @@ export async function POST(request: NextRequest) {
       })
 
       // Update license package type
-      const subscription = await prisma.subscription.findUnique({
+      const updatedSubscription = await prisma.subscription.findUnique({
         where: { id: subscriptionId },
-        include: { license: true },
       })
 
-      if (subscription?.license) {
+      if (updatedSubscription?.licenseId) {
         const maxDomains = targetPackage === 'SINGLE' ? 1 : 
                           targetPackage === 'FREELANCER' ? 5 : 
                           targetPackage === 'AGENCY' ? 25 : 1
 
         await prisma.license.update({
-          where: { id: subscription.license.id },
+          where: { id: updatedSubscription.licenseId },
           data: {
             packageType: targetPackage,
             maxDomains,
