@@ -4,9 +4,10 @@ import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, TrendingUp, X, Sparkles } from 'lucide-react'
+import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
+import { SubscriptionActions } from '@/components/SubscriptionActions'
 
 async function getInvoices(userId: string) {
   return await prisma.invoice.findMany({
@@ -153,16 +154,11 @@ export default async function InvoicesPage() {
               </div>
 
               {/* Aktionen */}
-              <div className="flex gap-3 pt-4 border-t border-[#d9dde1]">
-                <Button className="flex-1 bg-[#22D6DD] text-white hover:bg-[#22D6DD] border-[#22D6DD] transition-transform hover:-translate-y-0.5">
-                  <TrendingUp className="mr-2 h-4 w-4" />
-                  Paket upgraden
-                </Button>
-                <Button className="flex-1 bg-[#F06292] text-white hover:bg-[#F06292] border-[#F06292] transition-transform hover:-translate-y-0.5">
-                  <X className="mr-2 h-4 w-4" />
-                  Abo kündigen
-                </Button>
-              </div>
+              <SubscriptionActions
+                subscriptionId={activeSubscription.id}
+                currentPackage={activeSubscription.packageType as 'SINGLE' | 'FREELANCER' | 'AGENCY'}
+                currentPrice={activeSubscription.netAmount}
+              />
 
               {activeSubscription.status === 'CANCELLED' && activeSubscription.endDate && (
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-[9px] p-4 flex items-start gap-3">
