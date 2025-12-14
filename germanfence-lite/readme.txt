@@ -5,7 +5,7 @@ Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.25.2-light
+Stable tag: 1.25.3-light
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
