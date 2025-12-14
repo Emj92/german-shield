@@ -208,7 +208,7 @@ class GermanFence_Free_License {
         // WordPress speichert manchmal als String '1' oder als Boolean true
         $is_active = ($verified === true || $verified === '1' || $verified === 1);
         
-        GermanFence_Logger::log('[FREE-LICENSE] Prüfe Status: ' . ($is_active ? 'AKTIV' : 'INAKTIV') . ' (Wert: ' . var_export($verified, true) . ')');
+        GermanFence_Logger::log('[FREE-LICENSE] Prüfe Status: ' . ($is_active ? 'AKTIV' : 'INAKTIV'));
         
         return $is_active;
     }
