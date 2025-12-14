@@ -4,10 +4,18 @@ import { DashboardLayout } from '@/components/dashboard-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react'
+import { Download, FileText, CreditCard, Calendar, CheckCircle2, XCircle, AlertCircle, Sparkles, Eye } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { SubscriptionActions } from '@/components/SubscriptionActions'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 async function getInvoices(userId: string) {
   return await prisma.invoice.findMany({
@@ -77,6 +85,7 @@ export default async function InvoicesPage() {
   ])
 
   const activeSubscription = subscriptions.find(s => s.status === 'ACTIVE')
+  const cancelledSubscription = subscriptions.find(s => s.status === 'CANCELLED')
   const currentPackage = currentLicense?.packageType as PackageType | null
 
   return (
@@ -89,11 +98,56 @@ export default async function InvoicesPage() {
           </p>
         </div>
 
-        {/* Aktives Abo */}
+        {/* Abos */}
         <h2 className="text-xl font-semibold flex items-center gap-2">
           <CreditCard className="h-5 w-5 text-[#22D6DD]" />
           Abos
         </h2>
+        
+        {/* Gekündigtes Abo */}
+        {cancelledSubscription && (
+          <Card className="border-[#d9dde1]">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    GermanFence {PACKAGE_NAMES[cancelledSubscription.packageType]}
+                  </CardTitle>
+                  <CardDescription>
+                    Gekündigt zum {cancelledSubscription.endDate ? new Date(cancelledSubscription.endDate).toLocaleDateString('de-DE') : 'unbekannt'}
+                  </CardDescription>
+                </div>
+                <Badge className={STATUS_COLORS.CANCELLED}>
+                  {STATUS_LABELS.CANCELLED}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-[9px] p-4 flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-medium text-yellow-900 dark:text-yellow-200">Abo läuft aus</div>
+                  <div className="text-sm text-yellow-800 dark:text-yellow-300">
+                    Dein Abo ist noch aktiv bis zum {cancelledSubscription.endDate ? new Date(cancelledSubscription.endDate).toLocaleDateString('de-DE') : 'unbekannt'}. 
+                    Danach verlierst du den Zugriff auf Premium-Features.
+                  </div>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground">Preis:</span>
+                  <span className="ml-2 font-semibold">{cancelledSubscription.grossAmount.toFixed(2)} {cancelledSubscription.currency} / Jahr</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Startdatum:</span>
+                  <span className="ml-2">{new Date(cancelledSubscription.startDate).toLocaleDateString('de-DE')}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Aktives Abo */}
         {activeSubscription ? (
           <Card className="border-[#d9dde1]">
             <CardHeader>
@@ -429,95 +483,109 @@ export default async function InvoicesPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4">
-              {invoices.map((invoice) => (
-                <Card key={invoice.id}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle>Rechnung #{invoice.invoiceNumber}</CardTitle>
-                        <CardDescription>
-                          Ausgestellt am {new Date(invoice.issuedAt).toLocaleDateString('de-DE')}
-                        </CardDescription>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold">
-                          {invoice.grossAmount.toFixed(2)} {invoice.currency}
-                        </div>
-                        <Badge className={
-                          invoice.status === 'PAID' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                            : invoice.status === 'PENDING'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                        }>
-                          {invoice.status === 'PAID' ? (
-                            <><CheckCircle2 className="mr-1 h-3 w-3" /> Bezahlt</>
-                          ) : invoice.status === 'PENDING' ? (
-                            <><AlertCircle className="mr-1 h-3 w-3" /> Ausstehend</>
-                          ) : invoice.status === 'OVERDUE' ? (
-                            <><XCircle className="mr-1 h-3 w-3" /> Überfällig</>
-                          ) : (
-                            <><XCircle className="mr-1 h-3 w-3" /> Storniert</>
-                          )}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {invoice.description && (
-                        <p className="text-sm text-muted-foreground">{invoice.description}</p>
-                      )}
-                      
-                      {/* Steuer-Details */}
-                      {invoice.taxAmount > 0 && (
-                        <div className="text-sm space-y-1">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Netto:</span>
-                            <span>{invoice.netAmount.toFixed(2)}€</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{invoice.taxLabel} ({invoice.taxRate}%):</span>
-                            <span>{invoice.taxAmount.toFixed(2)}€</span>
-                          </div>
-                          <div className="flex justify-between font-semibold pt-1 border-t border-[#d9dde1]">
-                            <span>Gesamt:</span>
-                            <span>{invoice.grossAmount.toFixed(2)}€</span>
-                          </div>
-                        </div>
-                      )}
+            <Card>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-white border-b border-[#d9dde1]">
+                        <TableHead className="font-semibold">Datum</TableHead>
+                        <TableHead className="font-semibold">Rechnungsnummer</TableHead>
+                        <TableHead className="font-semibold">Betrag</TableHead>
+                        <TableHead className="font-semibold">Status</TableHead>
+                        <TableHead className="font-semibold text-right">Aktionen</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {invoices.map((invoice) => (
+                        <TableRow key={invoice.id} className="hover:bg-[#F2F5F8]">
+                          {/* Datum */}
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4 text-[#22D6DD] flex-shrink-0" />
+                              <span className="font-medium">
+                                {new Date(invoice.issuedAt).toLocaleDateString('de-DE')}
+                              </span>
+                            </div>
+                          </TableCell>
 
-                      {invoice.taxExempt && (
-                        <div className="flex items-center gap-2 text-xs text-green-600">
-                          <CheckCircle2 className="h-4 w-4" />
-                          Reverse Charge - Steuerbefreit
-                        </div>
-                      )}
+                          {/* Rechnungsnummer */}
+                          <TableCell>
+                            <div className="font-mono text-sm">
+                              {invoice.invoiceNumber}
+                            </div>
+                            {invoice.description && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                {invoice.description}
+                              </div>
+                            )}
+                          </TableCell>
 
-                      {/* Firmen-Details */}
-                      {invoice.isBusiness && (
-                        <div className="text-xs text-muted-foreground pt-2 border-t border-[#d9dde1]">
-                          <div className="font-medium">{invoice.companyName}</div>
-                          {invoice.vatId && <div>USt-IdNr.: {invoice.vatId}</div>}
-                          <div>{invoice.street}, {invoice.zipCode} {invoice.city}</div>
-                        </div>
-                      )}
+                          {/* Betrag */}
+                          <TableCell>
+                            <div className="font-semibold">
+                              {invoice.grossAmount.toFixed(2)} {invoice.currency}
+                            </div>
+                            {invoice.taxAmount > 0 && (
+                              <div className="text-xs text-muted-foreground">
+                                Netto: {invoice.netAmount.toFixed(2)}€
+                              </div>
+                            )}
+                          </TableCell>
 
-                      {/* Download Button - Link zur PDF-Route */}
-                      <div className="pt-3">
-                        <Button variant="outline" size="sm" asChild className="border-[#22D6DD] text-[#22D6DD] bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-0.5">
-                          <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" rel="noopener noreferrer">
-                            <Download className="mr-2 h-4 w-4" />
-                            Rechnung anzeigen
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                          {/* Status */}
+                          <TableCell>
+                            <Badge className={
+                              invoice.status === 'PAID' 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                                : invoice.status === 'PENDING'
+                                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                            }>
+                              {invoice.status === 'PAID' ? (
+                                <><CheckCircle2 className="mr-1 h-3 w-3 inline" /> Bezahlt</>
+                              ) : invoice.status === 'PENDING' ? (
+                                <><AlertCircle className="mr-1 h-3 w-3 inline" /> Ausstehend</>
+                              ) : invoice.status === 'OVERDUE' ? (
+                                <><XCircle className="mr-1 h-3 w-3 inline" /> Überfällig</>
+                              ) : (
+                                <><XCircle className="mr-1 h-3 w-3 inline" /> Storniert</>
+                              )}
+                            </Badge>
+                          </TableCell>
+
+                          {/* Aktionen */}
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                asChild
+                                className="h-8 w-8 p-0 hover:bg-[#22D6DD]/10 hover:text-[#22D6DD]"
+                              >
+                                <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" rel="noopener noreferrer">
+                                  <Eye className="h-4 w-4" />
+                                </a>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                asChild
+                                className="h-8 w-8 p-0 hover:bg-[#22D6DD]/10 hover:text-[#22D6DD]"
+                              >
+                                <a href={`/api/invoices/${invoice.id}/pdf?download=true`} download>
+                                  <Download className="h-4 w-4" />
+                                </a>
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>
