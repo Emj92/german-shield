@@ -315,7 +315,7 @@ class GermanFence_License {
         // Formatiere Ablaufdatum
         $expires_formatted = '-';
         if ($expires_at) {
-            $expires_formatted = date('d.m.Y', strtotime($expires_at));
+            $expires_formatted = gmdate('d.m.Y', strtotime($expires_at));
         }
         
         return array(

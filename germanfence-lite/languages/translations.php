@@ -238,7 +238,7 @@ class GermanFence_Translations {
 /**
  * Helper function
  */
-function gf__($text) {
+function germanfence__($text) {
     return GermanFence_Translations::get($text);
 }
 
