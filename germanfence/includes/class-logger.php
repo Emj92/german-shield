@@ -24,7 +24,10 @@ class GermanFence_Logger {
         $context_str = !empty($context) ? ' | Context: ' . json_encode($context) : '';
         $log_entry = "[{$timestamp}] {$message}{$context_str}\n";
         
-        error_log($log_entry, 3, self::$log_file);
+        // Nur bei WP_DEBUG loggen
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log($log_entry, 3, self::$log_file);
+        }
     }
     
     public static function log_admin($message, $context = array()) {

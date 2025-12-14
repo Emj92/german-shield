@@ -43,6 +43,7 @@ class GermanFence_Free_License {
         }
         
         // Prüfen ob E-Mail bereits lokal registriert
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
         $existing = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE email = %s",
             $email
@@ -137,6 +138,7 @@ class GermanFence_Free_License {
     public function verify_token($token) {
         global $wpdb;
         
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE verification_token = %s",
             $token
@@ -207,8 +209,6 @@ class GermanFence_Free_License {
         
         // WordPress speichert manchmal als String '1' oder als Boolean true
         $is_active = ($verified === true || $verified === '1' || $verified === 1);
-        
-        GermanFence_Logger::log('[FREE-LICENSE] Prüfe Status: ' . ($is_active ? 'AKTIV' : 'INAKTIV') . ' (Wert: ' . var_export($verified, true) . ')');
         
         return $is_active;
     }
@@ -332,6 +332,7 @@ class GermanFence_Free_License {
         }
         
         // Erst lokal prüfen ob Key existiert (für FREE-Keys)
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE license_key = %s AND is_verified = 1",
             $key
@@ -491,6 +492,7 @@ class GermanFence_Free_License {
         $verified_option = get_option('germanfence_free_verified', 'NICHT GESETZT');
         $email_option = get_option('germanfence_free_email', 'NICHT GESETZT');
         
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
         $users = $wpdb->get_results("SELECT * FROM {$this->table_name}");
         
         return array(

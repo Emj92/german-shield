@@ -214,7 +214,7 @@ class GermanFence_Security {
         );
         
         // Log auch in WordPress Error-Log
-        error_log('German Shield Security Event: ' . $event_type . ' - ' . $details);
+        // Log wird weg gelassen - sollte kein Debug-Output in Production sein
     }
     
     /**

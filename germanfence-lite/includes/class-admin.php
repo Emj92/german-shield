@@ -43,23 +43,18 @@ class GermanFence_Admin {
      * AJAX Handler: History löschen
      */
     public function ajax_clear_history() {
-        error_log('[GermanFence] ajax_clear_history aufgerufen');
-        
-        // Nonce prüfen - OHNE check_ajax_referer (das wirft Exception)
+        // Nonce prüfen
         if (!isset($_POST['nonce'])) {
-            error_log('[GermanFence] Nonce fehlt in POST');
             wp_send_json_error(array('message' => 'Nonce fehlt'));
             return;
         }
         
         if (!wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
-            error_log('[GermanFence] Nonce-Validierung fehlgeschlagen');
             wp_send_json_error(array('message' => 'Sicherheitsprüfung fehlgeschlagen'));
             return;
         }
         
         if (!current_user_can('manage_options')) {
-            error_log('[GermanFence] User hat keine Berechtigung');
             wp_send_json_error(array('message' => 'Keine Berechtigung'));
             return;
         }
@@ -67,14 +62,11 @@ class GermanFence_Admin {
         try {
             // Lösche Datenbank-Einträge
             global $wpdb;
-            $table_name = $wpdb->prefix . 'germanfence_stats';
+            $table_name = esc_sql($wpdb->prefix . 'germanfence_stats');
             
-            error_log('[GermanFence] Lösche Datenbank-Tabelle: ' . $table_name);
-            
-            // Verwende DELETE statt TRUNCATE (TRUNCATE kann Probleme machen)
-            $result = $wpdb->query("DELETE FROM $table_name");
-            
-            error_log('[GermanFence] DB-Ergebnis: ' . var_export($result, true));
+            // Verwende DELETE statt TRUNCATE
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table_name is escaped with esc_sql()
+            $wpdb->query("DELETE FROM `{$table_name}`");
             
             // Lösche History-Datei
             $upload_dir = wp_upload_dir();
@@ -83,16 +75,10 @@ class GermanFence_Admin {
             
             if (file_exists($history_file)) {
                 wp_delete_file($history_file);
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                    error_log('[GermanFence] History-Datei gelöscht: ' . $history_file);
-                }
             }
             
-            error_log('[GermanFence] Verlauf erfolgreich gelöscht');
             wp_send_json_success(array('message' => 'Verlauf erfolgreich gelöscht'));
         } catch (Exception $e) {
-            error_log('[GermanFence] Exception: ' . $e->getMessage());
             wp_send_json_error(array('message' => 'Fehler: ' . $e->getMessage()));
         }
     }
