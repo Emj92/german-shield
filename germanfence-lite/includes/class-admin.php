@@ -470,8 +470,8 @@ class GermanFence_Admin {
                         
                         <!-- Language Switcher -->
                         <button id="germanfence-language-toggle" class="header-control-btn" title="Sprache wechseln">
-                            <span class="language-flag" style="font-size: 16px;">🇩🇪</span>
-                            <span class="language-code" style="font-size: 15px; font-weight: 700; margin-left: 3px;">DE</span>
+                            <span class="language-flag" style="font-size: 16px; display: inline-block;">🇩🇪</span>
+                            <span class="language-code" style="font-size: 15px; font-weight: 700; margin-left: 3px; display: inline-block;">EN</span>
                         </button>
                     </div>
                     
@@ -534,13 +534,12 @@ class GermanFence_Admin {
                     💬 WP-Optimierung
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>" data-tab="security">
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_license_valid) ? 'disabled' : ''; ?>>
                     🔥 Sicherheit & Firewall
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="settings" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" data-tab="settings">
                     ⚙️ Einstellungen
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
             </div>
             

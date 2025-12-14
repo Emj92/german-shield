@@ -64,7 +64,7 @@
                 'Phrasen-Blocking': 'Phrasen-Blocking',
                 'Badge': 'Badge',
                 'WordPress Spam': 'WordPress Spam',
-                'Lizenz': 'Lizenz',
+                'API-Key': 'API-Key',
                 'Blockierte Anfragen': 'Blockierte Anfragen',
                 'Legitime Anfragen': 'Legitime Anfragen',
                 'Block-Rate': 'Block-Rate',
@@ -88,7 +88,7 @@
                 'Phrasen-Blocking': 'Phrase Blocking',
                 'Badge': 'Badge',
                 'WordPress Spam': 'WordPress Spam',
-                'Lizenz': 'License',
+                'API-Key': 'API-Key',
                 'Blockierte Anfragen': 'Blocked Requests',
                 'Legitime Anfragen': 'Legitimate Requests',
                 'Block-Rate': 'Block Rate',
@@ -375,7 +375,7 @@
                 
                 // Disabled-Check: Blockiere deaktivierte Tabs
                 if ($tab.hasClass('disabled') || $tab.prop('disabled')) {
-                    showToast('⚠️ Bitte aktiviere zuerst eine Lizenz', 'error');
+                    showToast('⚠️ Bitte aktiviere zuerst einen API-Key', 'error');
                     return;
                 }
                 
@@ -606,7 +606,7 @@
             });
         });
         
-        // 11. Free License Registration
+        // 11. Free API-Key Registration
         $('#register-free-btn').on('click', function() {
             var $btn = $(this);
             var $input = $('#free-email-input');
@@ -806,7 +806,7 @@
             return r + ', ' + g + ', ' + b;
         }
         
-        // Free-License Tab-Switching
+        // Free-API-Key Tab-Switching
         $('.germanfence-free-tab').on('click', function() {
             $('.germanfence-free-tab').removeClass('active').css({
                 'color': '#646970',
@@ -827,13 +827,13 @@
             }
         });
         
-        // Free-License Key-Aktivierung
+        // Free-API-Key-Aktivierung
         $('#activate-free-key-btn').on('click', function() {
             var $btn = $(this);
             var key = $('#free-key-input').val().trim();
             
             if (!key) {
-                showToast('Bitte License-Key eingeben', 'error');
+                showToast('Bitte API-Key eingeben', 'error');
                 return;
             }
             
@@ -871,7 +871,7 @@
             'color': '#22D6DD'
         });
         
-        // Premium-Lizenz-Aktivierung (AJAX + Auto-Reload)
+        // Premium-API-Key-Aktivierung (AJAX + Auto-Reload)
         $('#premium-license-form').on('submit', function(e) {
             e.preventDefault();
             
@@ -880,7 +880,7 @@
             var licenseKey = $('#premium-license-key').val().trim();
             
             if (!licenseKey) {
-                showToast('Bitte Lizenzschlüssel eingeben', 'error');
+                showToast('Bitte API-Key eingeben', 'error');
                 return;
             }
             
@@ -896,19 +896,19 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        showToast(response.data || 'Lizenz erfolgreich aktiviert!', 'success');
+                        showToast(response.data || 'API-Key erfolgreich aktiviert!', 'success');
                         setTimeout(function() {
                             window.location.reload();
                         }, 1000);
                     } else {
                         showToast(response.data || 'Aktivierung fehlgeschlagen', 'error');
-                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Lizenz aktivieren');
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> API-Key aktivieren');
                     }
                 },
                 error: function(xhr) {
                     log('AJAX Error:', xhr.responseText);
                     showToast('Verbindungsfehler', 'error');
-                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Lizenz aktivieren');
+                    $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> API-Key aktivieren');
                 }
             });
         });
@@ -1075,16 +1075,16 @@
             window.history.replaceState({}, '', cleanUrl);
         }
         
-        // Lizenz aktiviert
+        // API-Key aktiviert
         if (urlParams.get('license_activated') === '1') {
-            showToast('✅ Lizenz erfolgreich aktiviert!', 'success');
+            showToast('✅ API-Key erfolgreich aktiviert!', 'success');
             var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
             window.history.replaceState({}, '', cleanUrl);
         }
         
-        // Lizenz deaktiviert
+        // API-Key deaktiviert
         if (urlParams.get('license_deactivated') === '1') {
-            showToast('🔓 Lizenz deaktiviert', 'success');
+            showToast('🔓 API-Key deaktiviert', 'success');
             var cleanUrl = window.location.href.split('?')[0] + '?page=germanfence&tab=license';
             window.history.replaceState({}, '', cleanUrl);
         }

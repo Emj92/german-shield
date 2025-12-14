@@ -22,7 +22,7 @@ class GermanFence_Translations {
             'Phrasen-Blocking' => 'Phrase Blocking',
             'Badge' => 'Badge',
             'Einstellungen' => 'Settings',
-            'Lizenz' => 'License',
+            'Lizenz' => 'API-Key',
             
             // Dashboard
             'Spam geblockt (Heute)' => 'Spam Blocked (Today)',
@@ -74,8 +74,8 @@ class GermanFence_Translations {
             // Phrase Blocking
             'Phrasen-Blocking' => 'Phrase Blocking',
             'PRO-Feature' => 'PRO Feature',
-            'ist nur mit einer aktiven Lizenz verfügbar.' => 'is only available with an active license.',
-            'Jetzt Lizenz aktivieren' => 'Activate License Now',
+            'ist nur mit einer aktiven API verfügbar.' => 'is only available with an active API.',
+            'Jetzt API-Key aktivieren' => 'Activate API-Key Now',
             
             // Badge
             'Badge-Einstellungen' => 'Badge Settings',
@@ -89,12 +89,12 @@ class GermanFence_Translations {
             'Hell (Standard)' => 'Light (Default)',
             'Dunkel' => 'Dark',
             
-            // License
-            'Lizenz-Verwaltung' => 'License Management',
-            'Lizenzschlüssel' => 'License Key',
-            'Lizenz aktivieren' => 'Activate License',
+            // API-Key
+            'API-Key-Verwaltung' => 'API-Key Management',
+            'API-Key' => 'API-Key',
+            'API-Key aktivieren' => 'Activate API-Key',
             'Gültig bis' => 'Valid until',
-            'Lizenztyp' => 'License Type',
+            'API-Typ' => 'API Type',
             
             // Buttons & Actions
             'Speichern' => 'Save',
@@ -108,8 +108,8 @@ class GermanFence_Translations {
             // Messages
             'Einstellungen gespeichert' => 'Settings saved',
             'Fehler beim Speichern' => 'Error saving',
-            'Lizenz aktiviert' => 'License activated',
-            'Ungültiger Lizenzschlüssel' => 'Invalid license key',
+            'API-Key aktiviert' => 'API-Key activated',
+            'Ungültiger API-Key' => 'Invalid API-Key',
             
             // Stats
             'Heute' => 'Today',
@@ -132,7 +132,7 @@ class GermanFence_Translations {
             'Details' => 'Details',
             'Kostenlose Version aktivieren' => 'Activate Free Version',
             'Per E-Mail' => 'Via Email',
-            'Mit License-Key' => 'With License Key',
+            'Mit API-Key' => 'With API-Key',
             'E-Mail-Adresse:' => 'Email Address:',
             'Bestätigungsmail senden' => 'Send Confirmation Email',
             'Jetzt PRO kaufen' => 'Buy PRO Now',
@@ -140,9 +140,9 @@ class GermanFence_Translations {
             'Exklusive PRO-Features:' => 'Exclusive PRO Features:',
             '14 Tage 100% Geld-zurück-Garantie' => '14 Days 100% Money-Back Guarantee',
             'Kostenlose Version deaktivieren' => 'Deactivate Free Version',
-            'PRO-Lizenz deaktivieren' => 'Deactivate PRO License',
-            'Lizenz deaktivieren' => 'Deactivate License',
-            'Dein License-Key' => 'Your License Key',
+            'PRO-API deaktivieren' => 'Deactivate PRO API',
+            'API deaktivieren' => 'Deactivate API',
+            'Dein API-Key' => 'Your API-Key',
             'Kopieren' => 'Copy',
             'Verifizierte E-Mail:' => 'Verified Email:',
             'Kostenlose Version aktiviert' => 'Free Version Activated',
@@ -200,10 +200,10 @@ class GermanFence_Translations {
             'Möchtest du wirklich den kompletten Anfragen-Verlauf löschen?' => 'Do you really want to delete the complete request history?',
             'Verlauf erfolgreich gelöscht' => 'History successfully deleted',
             
-            // License
-            'Zur Lizenz-Verwaltung' => 'To License Management',
-            'Lizenz aktiviert' => 'License Activated',
-            'Lizenz deaktiviert' => 'License Deactivated',
+            // API-Key
+            'Zur API-Key-Verwaltung' => 'To API-Key Management',
+            'API-Key aktiviert' => 'API-Key Activated',
+            'API-Key deaktiviert' => 'API-Key Deactivated',
         )
     );
     
