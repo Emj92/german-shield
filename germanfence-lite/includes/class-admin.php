@@ -1148,18 +1148,13 @@ class GermanFence_Admin {
                         <?php if (!empty($_POST)): ?>
                         <div style="background: rgba(34, 214, 221, 0.1); padding: 20px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #22D6DD;">
                             <h3 style="margin-top: 0;">📝 Empfangene POST-Daten</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 15px; max-height: 300px;"><?php 
-                                $post_data = $_POST;
-                                unset($post_data['germanfence_nonce']);
-                                unset($post_data['_wp_http_referer']);
-                                echo esc_html(print_r($post_data, true)); 
-                            ?></pre>
-                            </div>
+                            <p style="color: #646970;">Debug-Information wurde entfernt.</p>
+                        </div>
                         <?php endif; ?>
                         
                         <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #c3cbd5;">
                             <h3 style="margin-top: 0; color: #1d2327;">💾 Gespeicherte Einstellungen</h3>
-                            <pre style="background: #ffffff; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 15px; max-height: 400px; border: 1px solid #c3cbd5;"><?php echo esc_html(print_r($settings, true)); ?></pre>
+                            <p style="color: #646970;">Debug-Information wurde entfernt.</p>
                         </div>
                         
                         <div style="background: #F2F5F8; padding: 20px; border-radius: 9px; border: 1px solid #c3cbd5;">
