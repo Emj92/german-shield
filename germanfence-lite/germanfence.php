@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: GermanFence Light
- * Plugin URI: https://germanfence.de
+ * Plugin URI:  https://portal.germanfence.de/login
  * Description: Kostenlose Anti-Spam Lösung aus Deutschland! Schützt alle Formulare vor Spam mit Honeypot, Zeitstempel-Validierung und JavaScript-Check. PRO-Features (GEO-Blocking, Phrasen-Filter) als Vorschau enthalten. Made in Germany 🇩🇪
  * Version: 1.7.2
  * Author: GermanFence Team
