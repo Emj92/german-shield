@@ -232,6 +232,7 @@ class GermanFence_Security {
         if (is_admin() && defined('DOING_AJAX') && DOING_AJAX) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking if nonce exists, not verifying it
             // AJAX-Calls sollten Nonce haben
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking if nonce exists, not verifying it
             if (!isset($_REQUEST['nonce']) && !isset($_REQUEST['_wpnonce'])) {
                 // Manche WordPress Core AJAX-Calls haben keine Nonce, erlauben
                 return true;

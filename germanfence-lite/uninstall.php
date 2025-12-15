@@ -32,11 +32,11 @@ $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_t
 
 // Delete database tables.
 $germanfence_stats_table = esc_sql( $wpdb->prefix . 'germanfence_stats' );
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name with esc_sql()
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared -- Safe table name with esc_sql(), table names cannot use placeholders
 $wpdb->query( "DROP TABLE IF EXISTS `" . $germanfence_stats_table . "`" );
 
 $germanfence_free_table = esc_sql( $wpdb->prefix . 'germanfence_free_users' );
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name with esc_sql()
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared -- Safe table name with esc_sql(), table names cannot use placeholders
 $wpdb->query( "DROP TABLE IF EXISTS `" . $germanfence_free_table . "`" );
 
 // Clear any cached data.

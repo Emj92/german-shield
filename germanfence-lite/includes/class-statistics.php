@@ -227,15 +227,15 @@ class GermanFence_Statistics {
         $safe_table = esc_sql( $this->table_name );
 
         // Total blocked.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Statistics query, table name escaped with esc_sql()
         $total_blocked = $wpdb->get_var( "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'blocked'" );
 
         // Total legitimate.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $total_legitimate = $wpdb->get_var( "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'legitimate'" );
 
         // Today's blocks.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $today_blocked = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'blocked' AND DATE(created_at) = %s",
@@ -244,7 +244,7 @@ class GermanFence_Statistics {
         );
 
         // Today's legitimate.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $today_legitimate = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'legitimate' AND DATE(created_at) = %s",
@@ -257,11 +257,11 @@ class GermanFence_Statistics {
         $block_rate = $total > 0 ? round( ( $total_blocked / $total ) * 100, 1 ) : 0;
 
         // Recent blocks.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $recent_blocks = $wpdb->get_results( "SELECT * FROM `" . $safe_table . "` WHERE type = 'blocked' ORDER BY created_at DESC LIMIT 10" );
 
         // Recent all.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $recent_all = $wpdb->get_results( "SELECT * FROM `" . $safe_table . "` ORDER BY created_at DESC LIMIT 50" );
 
         return array(
@@ -287,7 +287,7 @@ class GermanFence_Statistics {
         $safe_table = esc_sql( $this->table_name );
 
         if ( 'all' === $type ) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
             return $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM `" . $safe_table . "` ORDER BY created_at DESC LIMIT %d",
@@ -296,7 +296,7 @@ class GermanFence_Statistics {
             );
         }
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM `" . $safe_table . "` WHERE type = %s ORDER BY created_at DESC LIMIT %d",
@@ -317,7 +317,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $blocked = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'blocked' AND created_at BETWEEN %s AND %s",
@@ -326,7 +326,7 @@ class GermanFence_Statistics {
             )
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $legitimate = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $safe_table . "` WHERE type = 'legitimate' AND created_at BETWEEN %s AND %s",
@@ -350,7 +350,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->get_results(
             "SELECT SUBSTRING_INDEX(reason, ':', 1) as block_type, COUNT(*) as count FROM `" . $safe_table . "` WHERE type = 'blocked' GROUP BY block_type ORDER BY count DESC"
         );
@@ -365,7 +365,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->get_results(
             "SELECT country, COUNT(*) as count FROM `" . $safe_table . "` WHERE type = 'blocked' AND country IS NOT NULL GROUP BY country ORDER BY count DESC LIMIT 10"
         );
@@ -381,7 +381,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT DATE(created_at) as date, SUM(CASE WHEN type = 'blocked' THEN 1 ELSE 0 END) as blocked, SUM(CASE WHEN type = 'legitimate' THEN 1 ELSE 0 END) as legitimate FROM `" . $safe_table . "` WHERE created_at >= DATE_SUB(NOW(), INTERVAL %d DAY) GROUP BY DATE(created_at) ORDER BY date ASC",
@@ -400,7 +400,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT ip_address, COUNT(*) as count, MAX(created_at) as last_attempt FROM `" . $safe_table . "` WHERE type = 'blocked' GROUP BY ip_address ORDER BY count DESC LIMIT %d",
@@ -481,7 +481,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         return $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM `" . $safe_table . "` WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
@@ -497,7 +497,7 @@ class GermanFence_Statistics {
         global $wpdb;
         $safe_table = esc_sql( $this->table_name );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared -- Table name escaped with esc_sql()
         $wpdb->query( "TRUNCATE TABLE `" . $safe_table . "`" );
 
         delete_transient( 'germanfence_blocks_today' );

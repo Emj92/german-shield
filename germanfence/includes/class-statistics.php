@@ -222,19 +222,19 @@ class GermanFence_Statistics {
         global $wpdb;
         
         // Total blocked
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $total_blocked = $wpdb->get_var(
             "SELECT COUNT(*) FROM `" . $this->table_name . "` WHERE type = 'blocked'"
         );
         
         // Total legitimate
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $total_legitimate = $wpdb->get_var(
             "SELECT COUNT(*) FROM `" . $this->table_name . "` WHERE type = 'legitimate'"
         );
         
         // Today's blocks
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $today_blocked = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
@@ -245,7 +245,7 @@ class GermanFence_Statistics {
         );
         
         // Today's legitimate
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $today_legitimate = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
@@ -260,7 +260,7 @@ class GermanFence_Statistics {
         $block_rate = $total > 0 ? round(($total_blocked / $total) * 100, 1) : 0;
         
         // Recent blocks
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $recent_blocks = $wpdb->get_results(
             "SELECT * FROM `" . $this->table_name . "` 
             WHERE type = 'blocked' 
@@ -269,7 +269,7 @@ class GermanFence_Statistics {
         );
         
         // Recent all (für Filter)
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $recent_all = $wpdb->get_results(
             "SELECT * FROM `" . $this->table_name . "` 
             ORDER BY created_at DESC 
@@ -294,7 +294,7 @@ class GermanFence_Statistics {
         global $wpdb;
         
         if ($type === 'all') {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
             return $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM `" . $this->table_name . "` 
@@ -305,7 +305,7 @@ class GermanFence_Statistics {
             );
         }
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         return $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM `" . $this->table_name . "` 
@@ -324,7 +324,7 @@ class GermanFence_Statistics {
     public function get_stats_by_date_range($start_date, $end_date) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $blocked = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
@@ -335,7 +335,7 @@ class GermanFence_Statistics {
             )
         );
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $legitimate = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
@@ -358,7 +358,7 @@ class GermanFence_Statistics {
     public function get_stats_by_block_type() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $results = $wpdb->get_results(
             "SELECT 
                 SUBSTRING_INDEX(reason, ':', 1) as block_type,
@@ -378,7 +378,7 @@ class GermanFence_Statistics {
     public function get_stats_by_country() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $results = $wpdb->get_results(
             "SELECT 
                 country,
@@ -399,7 +399,7 @@ class GermanFence_Statistics {
     public function get_daily_stats($days = 30) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $results = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT 
@@ -423,7 +423,7 @@ class GermanFence_Statistics {
     public function get_top_blocked_ips($limit = 10) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $results = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT 
@@ -518,7 +518,7 @@ class GermanFence_Statistics {
     public function clear_old_stats($days = 90) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $deleted = $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM `" . $this->table_name . "` 
@@ -536,7 +536,7 @@ class GermanFence_Statistics {
     public function clear_all_stats() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $wpdb->query("TRUNCATE TABLE `" . $this->table_name . "`");
         
         // Clear transients

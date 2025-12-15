@@ -53,6 +53,7 @@ class GermanFence_Ajax {
                 }
                 // Blockierte Länder (JSON Array)
                 elseif ($field === 'blocked_countries') {
+                    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON decoded and sanitized below
                     $value = wp_unslash($_POST['value']);
                     GermanFence_Logger::log('[AJAX] Länder-JSON empfangen: ' . $value);
                     

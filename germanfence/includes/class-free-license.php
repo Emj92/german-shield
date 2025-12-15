@@ -43,7 +43,7 @@ class GermanFence_Free_License {
         }
         
         // Prüfen ob E-Mail bereits lokal registriert
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $existing = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM `" . $this->table_name . "` WHERE email = %s",
             $email
@@ -64,6 +64,7 @@ class GermanFence_Free_License {
         $license_key = 'GS-FREE-' . strtoupper(substr(bin2hex(random_bytes(8)), 0, 12));
         
         // In Datenbank speichern
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table for free license management
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -138,7 +139,7 @@ class GermanFence_Free_License {
     public function verify_token($token) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM `" . $this->table_name . "` WHERE verification_token = %s",
             $token
@@ -167,6 +168,7 @@ class GermanFence_Free_License {
         }
         
         // Verifizieren
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table for free license management
         $result = $wpdb->update(
             $this->table_name,
             array(
@@ -230,7 +232,7 @@ class GermanFence_Free_License {
             wp_send_json_error('Keine Berechtigung');
         }
         
-        $email = sanitize_email($_POST['email'] ?? '');
+        $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
         
         $result = $this->register_email($email);
         
@@ -251,7 +253,7 @@ class GermanFence_Free_License {
             wp_send_json_error('Keine Berechtigung');
         }
         
-        $key = sanitize_text_field($_POST['license_key'] ?? '');
+        $key = isset($_POST['license_key']) ? sanitize_text_field(wp_unslash($_POST['license_key'])) : '';
         
         $result = $this->activate_with_key($key);
         
@@ -285,8 +287,10 @@ class GermanFence_Free_License {
      * Handle Verification in Admin
      */
     public function handle_verification() {
-        if (isset($_GET['page']) && $_GET['page'] === 'germanfence' && isset($_GET['verify_token'])) {
-            $token = sanitize_text_field($_GET['verify_token']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verification token from email link
+        if (isset($_GET['page']) && sanitize_text_field(wp_unslash($_GET['page'])) === 'germanfence' && isset($_GET['verify_token'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verification token from email link
+            $token = sanitize_text_field(wp_unslash($_GET['verify_token']));
             $result = $this->verify_token($token);
             
             if ($result['success']) {
@@ -332,7 +336,7 @@ class GermanFence_Free_License {
         }
         
         // Erst lokal prüfen ob Key existiert (für FREE-Keys)
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $user = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM `" . $this->table_name . "` WHERE license_key = %s AND is_verified = 1",
             $key
@@ -492,7 +496,7 @@ class GermanFence_Free_License {
         $verified_option = get_option('germanfence_free_verified', 'NICHT GESETZT');
         $email_option = get_option('germanfence_free_email', 'NICHT GESETZT');
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
         $users = $wpdb->get_results("SELECT * FROM `" . $this->table_name . "`");
         
         return array(

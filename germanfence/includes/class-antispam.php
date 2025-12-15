@@ -114,6 +114,7 @@ class GermanFence_AntiSpam {
             $_SESSION[$this->session_key] = wp_generate_password(32, false);
         }
         
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Session data set by plugin, not user input
         return $_SESSION[$this->session_key];
     }
     
