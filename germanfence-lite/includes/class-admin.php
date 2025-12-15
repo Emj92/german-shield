@@ -2160,15 +2160,30 @@ class GermanFence_Admin {
             $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
+        
+        // Checkbox-Werte vorab auslesen (Nonce wurde oben bereits verifiziert)
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $honeypot_enabled = isset($_POST['honeypot_enabled']) ? '1' : '0';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $basic_protection_enabled = isset($_POST['basic_protection_enabled']) ? '1' : '0';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $rate_limit_enabled = isset($_POST['rate_limit_enabled']) ? '1' : '0';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $duplicate_check_enabled = isset($_POST['duplicate_check_enabled']) ? '1' : '0';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $http_headers_check = isset($_POST['http_headers_check']) ? '1' : '0';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $timestamp_enabled = isset($_POST['timestamp_enabled']) ? '1' : '0';
+        
         $settings = array(
-            'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            'honeypot_enabled' => $honeypot_enabled,
             'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),
             'honeypot_fields' => $honeypot_fields,
-            'basic_protection_enabled' => isset($_POST['basic_protection_enabled']) ? '1' : '0', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-            'rate_limit_enabled' => isset($_POST['rate_limit_enabled']) ? '1' : '0',
-            'duplicate_check_enabled' => isset($_POST['duplicate_check_enabled']) ? '1' : '0',
-            'http_headers_check' => isset($_POST['http_headers_check']) ? '1' : '0',
-            'timestamp_enabled' => isset($_POST['timestamp_enabled']) ? '1' : '0',
+            'basic_protection_enabled' => $basic_protection_enabled,
+            'rate_limit_enabled' => $rate_limit_enabled,
+            'duplicate_check_enabled' => $duplicate_check_enabled,
+            'http_headers_check' => $http_headers_check,
+            'timestamp_enabled' => $timestamp_enabled,
             'timestamp_min' => intval(wp_unslash($_POST['timestamp_min'] ?? 3)),
             'timestamp_max' => intval(wp_unslash($_POST['timestamp_max'] ?? 3600)),
             'javascript_check' => isset($_POST['javascript_check']) ? '1' : '0',
