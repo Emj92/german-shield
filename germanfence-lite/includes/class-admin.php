@@ -2144,6 +2144,7 @@ class GermanFence_Admin {
             $phrases_text = sanitize_textarea_field(wp_unslash($_POST['blocked_phrases_text']));
             
             // Regex-Modus: Zeilen-getrennt, Normal-Modus: Komma-getrennt
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
             if (isset($_POST['phrase_regex_mode'])) {
                 $phrases_array = explode("\n", $phrases_text);
             } else {
