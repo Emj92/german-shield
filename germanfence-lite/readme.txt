@@ -3,7 +3,7 @@ Contributors: germanproweb
 Donate link: https://germanfence.de/donate
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 1.7.2
 License: GPL-2.0-or-later
@@ -230,7 +230,7 @@ No external services are used in the free version without your consent.
 == Support ==
 
 **Free Support:**
-- WordPress.org Forum: https://wordpress.org/support/plugin/germanfence
+- WordPress.org Forum: https://wordpress.org/support/plugin/germanfence-light
 
 **Premium Support:**
 - Email: support@germanfence.de
