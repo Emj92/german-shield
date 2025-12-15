@@ -314,11 +314,11 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'FREE' ? (
-                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] hover:bg-[#22D6DD]/10 cursor-default">
+                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] cursor-default">
                     Dein aktuelles Paket
                   </Button>
                 ) : (
-                  <Button asChild variant="outline" className="w-full border-slate-300 text-slate-700">
+                  <Button asChild variant="outline" className="w-full border-slate-300 text-slate-700 hover:bg-transparent">
                     <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
                       <Download className="mr-2 h-4 w-4" />
                       Kostenlos
@@ -357,11 +357,11 @@ export default async function InvoicesPage() {
                   </li>
                 </ul>
                 {currentPackage === 'SINGLE' ? (
-                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] hover:bg-[#22D6DD]/10 cursor-default">
+                  <Button disabled className="w-full bg-[#22D6DD]/10 text-[#22D6DD] border-[#22D6DD] cursor-default">
                     Dein aktuelles Paket
                   </Button>
                 ) : (
-                  <Button asChild variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-[#22D6DD]/10">
+                  <Button asChild variant="outline" className="w-full border-[#22D6DD] text-[#22D6DD] hover:bg-transparent">
                     <Link href="https://germanfence.de#pricing">
                       {isUpgrade(currentPackage, 'SINGLE') ? 'Jetzt upgraden' : 'Jetzt kaufen'}
                     </Link>
