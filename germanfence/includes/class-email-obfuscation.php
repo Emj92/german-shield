@@ -225,6 +225,7 @@ class GermanFence_Email_Obfuscation {
         $found_emails = array();
         $pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b/';
         
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Scanning for emails in posts
         $posts = $wpdb->get_results("
             SELECT post_content 
             FROM {$wpdb->posts} 

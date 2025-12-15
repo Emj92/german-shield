@@ -109,6 +109,7 @@ class GermanFence_FormStats {
         // Fluent Forms
         if (defined('FLUENTFORM_VERSION')) {
             global $wpdb;
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting forms from third-party plugin
             $count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fluentform_forms WHERE status = 'published'");
             if ($count > 0) {
                 $forms[] = array(
@@ -135,6 +136,7 @@ class GermanFence_FormStats {
         global $wpdb;
         
         // Hole alle VERÖFFENTLICHTEN Posts/Pages mit Elementor Data
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting forms from third-party plugin
         $posts = $wpdb->get_results("
             SELECT DISTINCT pm.post_id, pm.meta_value 
             FROM {$wpdb->postmeta} pm

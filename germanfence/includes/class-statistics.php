@@ -234,9 +234,10 @@ class GermanFence_Statistics {
         );
         
         // Today's blocks
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $today_blocked = $wpdb->get_var(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'blocked' 
                 AND DATE(created_at) = %s",
@@ -245,9 +246,10 @@ class GermanFence_Statistics {
         );
         
         // Today's legitimate
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $today_legitimate = $wpdb->get_var(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'legitimate' 
                 AND DATE(created_at) = %s",
@@ -294,9 +296,10 @@ class GermanFence_Statistics {
         global $wpdb;
         
         if ($type === 'all') {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             return $wpdb->get_results(
                 $wpdb->prepare(
+                    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                     "SELECT * FROM `" . $this->table_name . "` 
                     ORDER BY created_at DESC 
                     LIMIT %d",
@@ -305,9 +308,10 @@ class GermanFence_Statistics {
             );
         }
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return $wpdb->get_results(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT * FROM `" . $this->table_name . "` 
                 WHERE type = %s 
                 ORDER BY created_at DESC 
@@ -324,9 +328,10 @@ class GermanFence_Statistics {
     public function get_stats_by_date_range($start_date, $end_date) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $blocked = $wpdb->get_var(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'blocked' 
                 AND created_at BETWEEN %s AND %s",
@@ -335,9 +340,10 @@ class GermanFence_Statistics {
             )
         );
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $legitimate = $wpdb->get_var(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'legitimate' 
                 AND created_at BETWEEN %s AND %s",
@@ -358,8 +364,9 @@ class GermanFence_Statistics {
     public function get_stats_by_block_type() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
             "SELECT 
                 SUBSTRING_INDEX(reason, ':', 1) as block_type,
                 COUNT(*) as count
@@ -378,8 +385,9 @@ class GermanFence_Statistics {
     public function get_stats_by_country() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
             "SELECT 
                 country,
                 COUNT(*) as count
@@ -399,9 +407,10 @@ class GermanFence_Statistics {
     public function get_daily_stats($days = 30) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT 
                     DATE(created_at) as date,
                     SUM(CASE WHEN type = 'blocked' THEN 1 ELSE 0 END) as blocked,
@@ -423,9 +432,10 @@ class GermanFence_Statistics {
     public function get_top_blocked_ips($limit = 10) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "SELECT 
                     ip_address,
                     COUNT(*) as count,
@@ -518,9 +528,10 @@ class GermanFence_Statistics {
     public function clear_old_stats($days = 90) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $deleted = $wpdb->query(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
                 "DELETE FROM `" . $this->table_name . "` 
                 WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
                 $days

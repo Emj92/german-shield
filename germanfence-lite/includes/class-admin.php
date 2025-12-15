@@ -1569,10 +1569,11 @@ class GermanFence_Admin {
                             $result = $license_manager->deactivate_license();
                         }
                         
-                            // Deaktiviere FREE-Lizenz
+                        // Deaktiviere FREE-Lizenz
+                        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Checking if button was clicked
                         if (isset($_POST['deactivate_free'])) {
                             $result = $free_manager->deactivate_free();
-                            }
+                        }
                             
                             // Lösche BEIDE Lizenzen komplett, damit Plugin gesperrt wird
                             $license_manager->deactivate_license();
@@ -2149,11 +2150,13 @@ class GermanFence_Admin {
         
         // Honeypot-Felder verarbeiten
         $honeypot_fields = array();
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
         if (isset($_POST['honeypot_fields']) && is_array($_POST['honeypot_fields'])) {
             $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
         
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified above, all $_POST checks below are safe
         $settings = array(
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
             'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),
@@ -2202,6 +2205,7 @@ class GermanFence_Admin {
             'block_wp_update_emails' => isset($_POST['block_wp_update_emails']) ? '1' : '0',
             'telemetry_enabled' => isset($_POST['telemetry_enabled']) ? '1' : '0',
         );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
         
         // FREE Version: Badge MUSS aktiviert sein (Zwingend)
         $license = GermanFence_License::get_instance();

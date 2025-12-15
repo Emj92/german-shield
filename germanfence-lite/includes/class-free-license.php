@@ -43,8 +43,9 @@ class GermanFence_Free_License {
         }
         
         // Prüfen ob E-Mail bereits lokal registriert
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $existing = $wpdb->get_row($wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
             "SELECT * FROM `" . $this->table_name . "` WHERE email = %s",
             $email
         ));
@@ -139,8 +140,9 @@ class GermanFence_Free_License {
     public function verify_token($token) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $user = $wpdb->get_row($wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
             "SELECT * FROM `" . $this->table_name . "` WHERE verification_token = %s",
             $token
         ));
@@ -338,8 +340,9 @@ class GermanFence_Free_License {
         }
         
         // Erst lokal prüfen ob Key existiert (für FREE-Keys)
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $user = $wpdb->get_row($wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name set in constructor, cannot use placeholder
             "SELECT * FROM `" . $this->table_name . "` WHERE license_key = %s AND is_verified = 1",
             $key
         ));
