@@ -1534,7 +1534,7 @@ class GermanFence_Admin {
                         
                         // API-Key aktivieren
                         if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
-                            $result = $license_manager->activate_license(sanitize_text_field($_POST['license_key']));
+                            $result = $license_manager->activate_license(sanitize_text_field(wp_unslash($_POST['license_key'])));
                             if ($result['success']) {
                                 add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
                                 $license_info = $license_manager->get_license_info();
@@ -2143,6 +2143,7 @@ class GermanFence_Admin {
         }
         
         // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified above, all $_POST checks below are safe
+        
         $settings = array(
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
             'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),

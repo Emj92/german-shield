@@ -109,11 +109,8 @@ class GermanFence_FormStats {
         // Fluent Forms
         if (defined('FLUENTFORM_VERSION')) {
             global $wpdb;
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting forms from third-party plugin
-            $count = $wpdb->get_var(
-                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Using $wpdb->prefix which is safe
-                "SELECT COUNT(*) FROM {$wpdb->prefix}fluentform_forms WHERE status = 'published'"
-            );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Counting forms from third-party plugin, using $wpdb->prefix which is safe
+            $count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fluentform_forms WHERE status = 'published'");
             if ($count > 0) {
                 $forms[] = array(
                     'name' => 'Fluent Forms',
@@ -139,16 +136,15 @@ class GermanFence_FormStats {
         global $wpdb;
         
         // Hole alle VERÖFFENTLICHTEN Posts/Pages mit Elementor Data
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting forms from third-party plugin
-        $posts = $wpdb->get_results(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Using $wpdb->postmeta and $wpdb->posts which are safe
-            "SELECT DISTINCT pm.post_id, pm.meta_value 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Counting forms from third-party plugin, using $wpdb->postmeta and $wpdb->posts which are safe
+        $posts = $wpdb->get_results("
+            SELECT DISTINCT pm.post_id, pm.meta_value 
             FROM {$wpdb->postmeta} pm
             INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
             WHERE pm.meta_key = '_elementor_data'
             AND p.post_status = 'publish'
-            AND p.post_type IN ('page', 'post')"
-        );
+            AND p.post_type IN ('page', 'post')
+        ");
         
         $form_count = 0;
         
