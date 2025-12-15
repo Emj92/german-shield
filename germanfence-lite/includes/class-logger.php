@@ -26,6 +26,7 @@ class GermanFence_Logger {
         
         // Nur bei WP_DEBUG loggen
         if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only logs when WP_DEBUG is enabled
             error_log($log_entry, 3, self::$log_file);
         }
     }

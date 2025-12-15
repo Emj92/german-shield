@@ -559,7 +559,7 @@ class GermanFence_Statistics {
             );
         }
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared -- $this->table_name is safe, $where is prepared above
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $this->table_name is safe (set in constructor with $wpdb->prefix), $where is prepared above with $wpdb->prepare()
         $results = $wpdb->get_results(
             "SELECT * FROM {$this->table_name}{$where} ORDER BY created_at DESC",
             ARRAY_A
