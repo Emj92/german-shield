@@ -531,7 +531,7 @@ class GermanFence_Statistics {
             $where = $wpdb->prepare( ' WHERE created_at BETWEEN %s AND %s', $start_date, $end_date );
         }
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Safe table name and prepared where clause
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Safe table name with esc_sql(), $where is prepared with $wpdb->prepare() above
         $results = $wpdb->get_results( "SELECT * FROM `{$safe_table}`{$where} ORDER BY created_at DESC", ARRAY_A );
 
         if ( empty( $results ) ) {

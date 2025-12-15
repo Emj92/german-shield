@@ -389,8 +389,11 @@ class GermanFence_Admin {
         $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'dashboard';
 
         // DEBUG: Zeige rohe POST-Daten oben (nur temporär)
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Debug output only, no data processing
         if (!empty($_POST)) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Debug output only
             GermanFence_Logger::log_admin('POST-Daten empfangen', array('count' => count($_POST), 'keys' => array_keys($_POST)));
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Debug output only
             echo '<div class="notice notice-info" style="margin: 20px 20px 0 0;"><p><strong>GermanFence Debug:</strong> POST-Daten empfangen (' . count($_POST) . ' Felder).</p></div>';
         }
 
@@ -1563,8 +1566,10 @@ class GermanFence_Admin {
                         }
                         
                         // API-Key deaktivieren (PRO oder FREE) - Plugin komplett sperren
+                        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Checking if button was clicked
                         if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
                             // Deaktiviere PRO-Lizenz
+                            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Checking if button was clicked
                         if (isset($_POST['deactivate_license'])) {
                             $result = $license_manager->deactivate_license();
                         }
@@ -2152,6 +2157,7 @@ class GermanFence_Admin {
         $honeypot_fields = array();
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
         if (isset($_POST['honeypot_fields']) && is_array($_POST['honeypot_fields'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
             $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
