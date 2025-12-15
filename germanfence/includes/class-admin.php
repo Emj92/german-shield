@@ -2121,6 +2121,7 @@ class GermanFence_Admin {
         $blocked_phrases = array();
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
         if (!empty($_POST['blocked_phrases_text'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
             $phrases_text = sanitize_textarea_field(wp_unslash($_POST['blocked_phrases_text']));
             
             // Regex-Modus: Zeilen-getrennt, Normal-Modus: Komma-getrennt
