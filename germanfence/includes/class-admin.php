@@ -2141,9 +2141,11 @@ class GermanFence_Admin {
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
         $settings = array(
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
             'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),
             'honeypot_fields' => $honeypot_fields,
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above
             'basic_protection_enabled' => isset($_POST['basic_protection_enabled']) ? '1' : '0',
             'rate_limit_enabled' => isset($_POST['rate_limit_enabled']) ? '1' : '0',
             'duplicate_check_enabled' => isset($_POST['duplicate_check_enabled']) ? '1' : '0',
