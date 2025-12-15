@@ -188,7 +188,7 @@ class GermanFence_Telemetry {
      * Hasht User-Agent
      */
     private function hash_user_agent() {
-        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
         
         if (empty($user_agent)) {
             return null;

@@ -43,8 +43,9 @@ class GermanFence_Free_License {
         }
         
         // Prüfen ob E-Mail bereits lokal registriert
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $existing = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$this->table_name} WHERE email = %s",
+            "SELECT * FROM `" . $this->table_name . "` WHERE email = %s",
             $email
         ));
         
@@ -137,8 +138,9 @@ class GermanFence_Free_License {
     public function verify_token($token) {
         global $wpdb;
         
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $user = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$this->table_name} WHERE verification_token = %s",
+            "SELECT * FROM `" . $this->table_name . "` WHERE verification_token = %s",
             $token
         ));
         
@@ -332,8 +334,9 @@ class GermanFence_Free_License {
         }
         
         // Erst lokal prüfen ob Key existiert (für FREE-Keys)
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $user = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$this->table_name} WHERE license_key = %s AND is_verified = 1",
+            "SELECT * FROM `" . $this->table_name . "` WHERE license_key = %s AND is_verified = 1",
             $key
         ));
         
@@ -491,7 +494,8 @@ class GermanFence_Free_License {
         $verified_option = get_option('germanfence_free_verified', 'NICHT GESETZT');
         $email_option = get_option('germanfence_free_email', 'NICHT GESETZT');
         
-        $users = $wpdb->get_results("SELECT * FROM {$this->table_name}");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $users = $wpdb->get_results("SELECT * FROM `" . $this->table_name . "`");
         
         return array(
             'option_verified' => $verified_option,

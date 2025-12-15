@@ -313,7 +313,7 @@ class GermanFence_AntiSpam {
      * Check User-Agent - Erweiterte Bot-Erkennung
      */
     public function check_user_agent() {
-        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
         
         if (empty($user_agent)) {
             return array(
@@ -401,7 +401,7 @@ class GermanFence_AntiSpam {
         
         // Prüfe auf verdächtige Referer
         if (isset($_SERVER['HTTP_REFERER'])) {
-            $referer = $_SERVER['HTTP_REFERER'];
+            $referer = sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER']));
             $site_url = get_site_url();
             
             // Referer sollte von eigener Seite sein oder leer

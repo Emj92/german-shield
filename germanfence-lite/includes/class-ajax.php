@@ -22,8 +22,8 @@ class GermanFence_Ajax {
      */
     public function auto_save() {
         try {
-            // Nonce prüfen (ohne die)
-            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
+            // Nonce prüfen
+            if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'germanfence_admin')) {
                 GermanFence_Logger::log('[AJAX] Nonce ungültig!');
                 wp_send_json_error('Ungültiger Nonce');
                 return;
@@ -42,18 +42,18 @@ class GermanFence_Ajax {
             
             // Update einzelnes Feld
             if (isset($_POST['field']) && isset($_POST['value'])) {
-                $field = sanitize_text_field($_POST['field']);
+                $field = sanitize_text_field(wp_unslash($_POST['field']));
                 
                 // Phrasen sind ein Array
                 if ($field === 'blocked_phrases_text' || $field === 'blocked_phrases') {
-                    $value = sanitize_textarea_field($_POST['value']);
+                    $value = sanitize_textarea_field(wp_unslash($_POST['value']));
                     $phrases = array_filter(array_map('trim', explode(',', $value)));
                     $settings['blocked_phrases'] = $phrases;
                     GermanFence_Logger::log('[AJAX] Phrasen aktualisiert: ' . count($phrases) . ' Phrasen');
                 }
                 // Blockierte Länder (JSON Array)
                 elseif ($field === 'blocked_countries') {
-                    $value = stripslashes($_POST['value']);
+                    $value = wp_unslash($_POST['value']);
                     GermanFence_Logger::log('[AJAX] Länder-JSON empfangen: ' . $value);
                     
                     $countries = json_decode($value, true);
@@ -65,7 +65,7 @@ class GermanFence_Ajax {
                         GermanFence_Logger::log('[AJAX] Länder geleert (JSON Error: ' . json_last_error_msg() . ')');
                     }
                 } else {
-                    $value = sanitize_text_field($_POST['value']);
+                    $value = sanitize_text_field(wp_unslash($_POST['value']));
                     
                     // Boolean-Werte - SPEICHERE explizit '0' für false, NICHT unset!
                     if ($value === 'true' || $value === '1') {

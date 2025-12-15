@@ -22,7 +22,8 @@ class GermanFence_Admin {
     
     public function remove_admin_footer() {
         // Prüfen ob wir auf einer GermanFence-Seite sind
-        if (isset($_GET['page']) && strpos($_GET['page'], 'germanfence') !== false) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter for admin styling only
+        if (isset($_GET['page']) && strpos(sanitize_text_field(wp_unslash($_GET['page'])), 'germanfence') !== false) {
             add_filter('admin_footer_text', '__return_false');
             add_filter('update_footer', '__return_false');
         }
@@ -49,7 +50,7 @@ class GermanFence_Admin {
             return;
         }
         
-        if (!wp_verify_nonce($_POST['nonce'], 'germanfence_admin')) {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'germanfence_admin')) {
             wp_send_json_error(array('message' => 'Sicherheitsprüfung fehlgeschlagen'));
             return;
         }
@@ -384,7 +385,8 @@ class GermanFence_Admin {
         $saved = false;
         
         // Aktiven Tab aus URL-Parameter holen
-        $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'dashboard';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Tab parameter for UI display only
+        $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'dashboard';
 
         // DEBUG: Zeige rohe POST-Daten oben (nur temporär)
         if (!empty($_POST)) {
@@ -436,8 +438,10 @@ class GermanFence_Admin {
         GermanFence_Logger::log_admin('[LICENSE-CHECK] Package: ' . $package_type . ', Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', PRO License: ' . ($is_license_valid ? 'JA' : 'NEIN'));
 
         // Rechtstexte anzeigen wenn ?show=agb/datenschutz/impressum
-        if (isset($_GET['show']) && in_array($_GET['show'], array('agb', 'datenschutz', 'impressum'))) {
-            $legal_page = sanitize_text_field($_GET['show']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Show parameter for legal page display only
+        if (isset($_GET['show']) && in_array(sanitize_text_field(wp_unslash($_GET['show'])), array('agb', 'datenschutz', 'impressum'), true)) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Show parameter for legal page display only
+            $legal_page = sanitize_text_field(wp_unslash($_GET['show']));
             $legal_file = GERMANFENCE_PLUGIN_DIR . 'includes/legal/' . $legal_page . '.php';
             
             if (file_exists($legal_file)) {

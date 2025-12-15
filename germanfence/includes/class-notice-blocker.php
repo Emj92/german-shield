@@ -15,7 +15,8 @@ class GermanFence_Notice_Blocker {
         $this->settings = get_option('germanfence_settings', array());
         
         // AUF GermanFence-Seiten: IMMER alle WP Core Meldungen blockieren!
-        if (isset($_GET['page']) && strpos($_GET['page'], 'germanfence') !== false) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter for admin styling only
+        if (isset($_GET['page']) && strpos(sanitize_text_field(wp_unslash($_GET['page'])), 'germanfence') !== false) {
             add_action('admin_print_styles', array($this, 'block_all_wp_notices_on_germanfence'), 999);
             return;
         }

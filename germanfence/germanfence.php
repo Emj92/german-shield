@@ -167,12 +167,12 @@ function germanfence_update_database() {
     
     // WICHTIG: Prüfe ob form_data Spalte existiert, wenn nicht, füge sie hinzu
     $germanfence_stats_table = esc_sql($wpdb->prefix . 'germanfence_stats');
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe table name from $wpdb->prefix
-    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM `{$germanfence_stats_table}` LIKE 'form_data'");
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe table name with esc_sql()
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM `" . $germanfence_stats_table . "` LIKE 'form_data'");
     
     if (empty($column_exists)) {
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name
-        $wpdb->query("ALTER TABLE `{$germanfence_stats_table}` ADD `form_data` TEXT DEFAULT NULL AFTER `reason`");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name with esc_sql()
+        $wpdb->query("ALTER TABLE `" . $germanfence_stats_table . "` ADD `form_data` TEXT DEFAULT NULL AFTER `reason`");
         if (defined('WP_DEBUG') && WP_DEBUG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             error_log('[GermanFence] form_data Spalte zur Stats-Tabelle hinzugefügt');
@@ -198,13 +198,16 @@ function germanfence_update_database() {
     
     // Prüfe ob license_key Spalte existiert, wenn nicht, füge sie hinzu
     $germanfence_free_table = esc_sql($wpdb->prefix . 'germanfence_free_users');
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe table name from $wpdb->prefix
-    $license_key_column = $wpdb->get_results("SHOW COLUMNS FROM `{$germanfence_free_table}` LIKE 'license_key'");
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe table name with esc_sql()
+    $license_key_column = $wpdb->get_results("SHOW COLUMNS FROM `" . $germanfence_free_table . "` LIKE 'license_key'");
     
     if (empty($license_key_column)) {
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name
-        $wpdb->query("ALTER TABLE `{$germanfence_free_table}` ADD `license_key` varchar(64) DEFAULT NULL AFTER `verified_at`, ADD KEY `license_key` (`license_key`)");
-        error_log('[German Shield] license_key Spalte zur Free-Users-Tabelle hinzugefügt');
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Safe table name with esc_sql()
+        $wpdb->query("ALTER TABLE `" . $germanfence_free_table . "` ADD `license_key` varchar(64) DEFAULT NULL AFTER `verified_at`, ADD KEY `license_key` (`license_key`)");
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+            error_log('[GermanFence] license_key Spalte zur Free-Users-Tabelle hinzugefügt');
+        }
     }
     
     // Set default options

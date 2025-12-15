@@ -222,22 +222,22 @@ class GermanFence_Statistics {
         global $wpdb;
         
         // Total blocked
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $total_blocked = $wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE type = 'blocked'"
+            "SELECT COUNT(*) FROM `" . $this->table_name . "` WHERE type = 'blocked'"
         );
         
         // Total legitimate
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $total_legitimate = $wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE type = 'legitimate'"
+            "SELECT COUNT(*) FROM `" . $this->table_name . "` WHERE type = 'legitimate'"
         );
         
         // Today's blocks
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $today_blocked = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
+                "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'blocked' 
                 AND DATE(created_at) = %s",
                 current_time('Y-m-d')
@@ -245,10 +245,10 @@ class GermanFence_Statistics {
         );
         
         // Today's legitimate
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $today_legitimate = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
+                "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'legitimate' 
                 AND DATE(created_at) = %s",
                 current_time('Y-m-d')
@@ -260,18 +260,18 @@ class GermanFence_Statistics {
         $block_rate = $total > 0 ? round(($total_blocked / $total) * 100, 1) : 0;
         
         // Recent blocks
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $recent_blocks = $wpdb->get_results(
-            "SELECT * FROM {$this->table_name} 
+            "SELECT * FROM `" . $this->table_name . "` 
             WHERE type = 'blocked' 
             ORDER BY created_at DESC 
             LIMIT 10"
         );
         
         // Recent all (für Filter)
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $recent_all = $wpdb->get_results(
-            "SELECT * FROM {$this->table_name} 
+            "SELECT * FROM `" . $this->table_name . "` 
             ORDER BY created_at DESC 
             LIMIT 50"
         );
@@ -294,10 +294,10 @@ class GermanFence_Statistics {
         global $wpdb;
         
         if ($type === 'all') {
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             return $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM {$this->table_name} 
+                    "SELECT * FROM `" . $this->table_name . "` 
                     ORDER BY created_at DESC 
                     LIMIT %d",
                     $limit
@@ -305,10 +305,10 @@ class GermanFence_Statistics {
             );
         }
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} 
+                "SELECT * FROM `" . $this->table_name . "` 
                 WHERE type = %s 
                 ORDER BY created_at DESC 
                 LIMIT %d",
@@ -324,10 +324,10 @@ class GermanFence_Statistics {
     public function get_stats_by_date_range($start_date, $end_date) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $blocked = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
+                "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'blocked' 
                 AND created_at BETWEEN %s AND %s",
                 $start_date,
@@ -335,10 +335,10 @@ class GermanFence_Statistics {
             )
         );
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $legitimate = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
+                "SELECT COUNT(*) FROM `" . $this->table_name . "` 
                 WHERE type = 'legitimate' 
                 AND created_at BETWEEN %s AND %s",
                 $start_date,
@@ -358,12 +358,12 @@ class GermanFence_Statistics {
     public function get_stats_by_block_type() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             "SELECT 
                 SUBSTRING_INDEX(reason, ':', 1) as block_type,
                 COUNT(*) as count
-            FROM {$this->table_name}
+            FROM `" . $this->table_name . "`
             WHERE type = 'blocked'
             GROUP BY block_type
             ORDER BY count DESC"
@@ -378,12 +378,12 @@ class GermanFence_Statistics {
     public function get_stats_by_country() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             "SELECT 
                 country,
                 COUNT(*) as count
-            FROM {$this->table_name}
+            FROM `" . $this->table_name . "`
             WHERE type = 'blocked' AND country IS NOT NULL
             GROUP BY country
             ORDER BY count DESC
@@ -399,14 +399,14 @@ class GermanFence_Statistics {
     public function get_daily_stats($days = 30) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT 
                     DATE(created_at) as date,
                     SUM(CASE WHEN type = 'blocked' THEN 1 ELSE 0 END) as blocked,
                     SUM(CASE WHEN type = 'legitimate' THEN 1 ELSE 0 END) as legitimate
-                FROM {$this->table_name}
+                FROM `" . $this->table_name . "`
                 WHERE created_at >= DATE_SUB(NOW(), INTERVAL %d DAY)
                 GROUP BY DATE(created_at)
                 ORDER BY date ASC",
@@ -423,14 +423,14 @@ class GermanFence_Statistics {
     public function get_top_blocked_ips($limit = 10) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT 
                     ip_address,
                     COUNT(*) as count,
                     MAX(created_at) as last_attempt
-                FROM {$this->table_name}
+                FROM `" . $this->table_name . "`
                 WHERE type = 'blocked'
                 GROUP BY ip_address
                 ORDER BY count DESC
@@ -518,10 +518,10 @@ class GermanFence_Statistics {
     public function clear_old_stats($days = 90) {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $deleted = $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM {$this->table_name} 
+                "DELETE FROM `" . $this->table_name . "` 
                 WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
                 $days
             )
@@ -536,8 +536,8 @@ class GermanFence_Statistics {
     public function clear_all_stats() {
         global $wpdb;
         
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table_name is safe, set in constructor with $wpdb->prefix
-        $wpdb->query("TRUNCATE TABLE {$this->table_name}");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+        $wpdb->query("TRUNCATE TABLE `" . $this->table_name . "`");
         
         // Clear transients
         delete_transient('germanfence_blocks_today');

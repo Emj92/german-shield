@@ -75,6 +75,7 @@ class GermanFence_Security {
             '\$_REQUEST\[',
         );
         
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Security scanner checks all input
         $check_vars = array_merge($_GET, $_POST, $_REQUEST);
         
         foreach ($check_vars as $key => $value) {
@@ -202,11 +203,12 @@ class GermanFence_Security {
         global $wpdb;
         $table = $wpdb->prefix . 'germanfence_stats';
         
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table for security logging
         $wpdb->insert(
             $table,
             array(
                 'type' => 'security_event',
-                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : 'unknown',
                 'reason' => $event_type . ': ' . $details,
                 'created_at' => current_time('mysql')
             ),
@@ -228,6 +230,7 @@ class GermanFence_Security {
         
         // Prüfe Nonce wenn im Admin
         if (is_admin() && defined('DOING_AJAX') && DOING_AJAX) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking if nonce exists, not verifying it
             // AJAX-Calls sollten Nonce haben
             if (!isset($_REQUEST['nonce']) && !isset($_REQUEST['_wpnonce'])) {
                 // Manche WordPress Core AJAX-Calls haben keine Nonce, erlauben

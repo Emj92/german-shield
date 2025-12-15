@@ -133,6 +133,7 @@ class GermanFence_FormDetector {
             return true;
         }
         
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Contact Form 7 handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -170,6 +171,7 @@ class GermanFence_FormDetector {
         }
         
         // Add POST data
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Elementor Pro handles nonce verification
         $form_data = array_merge($form_data, $_POST);
         
         $validation = $this->perform_validation($form_data);
@@ -202,6 +204,7 @@ class GermanFence_FormDetector {
     }
     
     public function validate_divi_form($options, $contact_email, $contact_name) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Divi handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -228,6 +231,7 @@ class GermanFence_FormDetector {
     public function validate_gravity_form($validation_result) {
         $form = $validation_result['form'];
         
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Gravity Forms handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -261,6 +265,7 @@ class GermanFence_FormDetector {
     }
     
     public function validate_wpforms($fields, $entry, $form_data) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WPForms handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -307,6 +312,7 @@ class GermanFence_FormDetector {
     }
     
     public function validate_ninja_forms($form_data) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Ninja Forms handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -338,6 +344,7 @@ class GermanFence_FormDetector {
     }
     
     public function validate_formidable($errors, $values) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Formidable Forms handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -368,6 +375,7 @@ class GermanFence_FormDetector {
     }
     
     public function validate_fluent_forms($insertData, $data, $form) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Fluent Forms handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {

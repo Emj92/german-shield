@@ -118,6 +118,7 @@ class GermanFence {
             return $commentdata; // Kommentar-Schutz deaktiviert
         }
         
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress comment form handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if ( ! $validation['valid'] ) {
@@ -128,6 +129,7 @@ class GermanFence {
     }
     
     public function validate_cf7_submission($result, $tag) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Contact Form 7 handles nonce verification
         $validation = $this->perform_validation($_POST);
         
         if (!$validation['valid']) {
@@ -139,6 +141,7 @@ class GermanFence {
     }
     
     public function ajax_validate() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Public AJAX endpoint for form validation
         $validation = $this->perform_validation($_POST);
         wp_send_json($validation);
     }
@@ -325,11 +328,11 @@ class GermanFence {
         $ip = '';
         
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
+            $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_CLIENT_IP']));
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']));
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $ip = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']));
         }
         
         return $ip;
