@@ -1,11 +1,11 @@
-=== German Shield - Premium WordPress Anti-Spam & Security ===
+=== GermanFence - Premium WordPress Anti-Spam & Security ===
 Contributors: germanproweb
-Donate link: https://german-shield.com/donate
+Donate link: https://germanfence.de/donate
 Tags: antispam, spam protection, security, firewall, contact form, geo blocking
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.6.6
+Stable tag: 1.7.2
 License: GPLv2 or later + Proprietary
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Bestes WordPress Anti-Spam Plugin aus Deutschland! Schützt alle Formulare vor S
 
 == Description ==
 
-**German Shield** ist das ultimative WordPress Anti-Spam & Security Plugin - entwickelt und gehostet in Deutschland!
+**GermanFence** ist das ultimative WordPress Anti-Spam & Security Plugin - entwickelt und gehostet in Deutschland!
 
 = 🛡️ Hauptfunktionen =
 
@@ -57,7 +57,7 @@ Funktioniert automatisch mit:
 
 1. Lade das Plugin hoch oder installiere es über WordPress
 2. Aktiviere das Plugin
-3. Gehe zu "German Shield" im Admin-Menü
+3. Gehe zu "GermanFence" im Admin-Menü
 4. Konfiguriere die Einstellungen nach deinen Wünschen
 5. Fertig! Alle Formulare sind automatisch geschützt
 
@@ -77,11 +77,11 @@ Premium-Features (GEO-Blocking, Phrasen-Blocking, erweiterte Stats) erfordern ei
 
 = Funktioniert es mit meinem Theme/Page Builder? =
 
-Ja! German Shield arbeitet auf Formular-Ebene und ist kompatibel mit allen Themes und Page Buildern.
+Ja! GermanFence arbeitet auf Formular-Ebene und ist kompatibel mit allen Themes und Page Buildern.
 
 = Wird es meine Seite verlangsamen? =
 
-Nein! German Shield ist extrem performant und verursacht keine messbaren Verzögerungen.
+Nein! GermanFence ist extrem performant und verursacht keine messbaren Verzögerungen.
 
 = Ist es DSGVO-konform? =
 
@@ -89,7 +89,7 @@ Ja! Alle Daten werden lokal in deiner WordPress-Datenbank gespeichert. Bei Nutzu
 
 = Funktioniert es mit Caching-Plugins? =
 
-Ja! German Shield ist vollständig Cache-kompatibel.
+Ja! GermanFence ist vollständig Cache-kompatibel.
 
 = Brauche ich eine Lizenz? =
 
@@ -114,6 +114,15 @@ Siehe LICENSE.txt für Details.
 7. Statistik-Filter
 
 == Changelog ==
+
+= 1.7.2 =
+* SICHERHEIT: Alle WordPress Coding Standards erfüllt
+* FIX: SQL-Queries mit Prepared Statements abgesichert
+* FIX: Input Sanitization für alle $_POST, $_GET, $_SERVER Zugriffe
+* FIX: Output Escaping für alle dynamischen Ausgaben
+* FIX: Nonce Verification für alle Admin-Aktionen
+* IMPROVED: Lizenz-System auf "API-Key" umbenannt
+* IMPROVED: Branding von "German Shield" zu "GermanFence" aktualisiert
 
 = 1.6.1 =
 * Badge-Farben Live-Preview funktioniert
@@ -212,14 +221,14 @@ See LICENSE.txt for complete terms.
 This plugin may connect to external services:
 
 **GEO-IP Service (Optional, Premium only):**
-- Service: German Shield API
+- Service: GermanFence API
 - Purpose: IP Geolocation for country blocking
 - Privacy: Only anonymized IPs sent, German servers
-- Terms: https://german-shield.com/terms
-- Privacy: https://german-shield.com/privacy
+- Terms: https://germanfence.de/terms
+- Privacy: https://germanfence.de/privacy
 
 **License Validation (Optional, Premium only):**
-- Service: German Shield License API
+- Service: GermanFence License API
 - Purpose: Validate license keys, activate premium features
 - Privacy: Domain, email, license key sent
 - Frequency: On activation and periodic checks
@@ -229,16 +238,16 @@ No external services are used in the free version without your consent.
 == Support ==
 
 **Free Support:**
-- WordPress.org Forum: https://wordpress.org/support/plugin/german-shield
+- WordPress.org Forum: https://wordpress.org/support/plugin/germanfence
 
 **Premium Support:**
-- Email: support@german-shield.com
+- Email: support@germanfence.de
 - Priority response for license holders
 
 **Documentation:**
-- https://german-shield.com/docs
+- https://germanfence.de/docs
 
 **Commercial Licensing:**
-- Email: license@german-shield.com
-- Website: https://german-shield.com/licensing
+- Email: license@germanfence.de
+- Website: https://germanfence.de/licensing
 

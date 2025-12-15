@@ -3,9 +3,9 @@ Contributors: germanproweb
 Donate link: https://germanfence.de/donate
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.25.3-light
+Stable tag: 1.7.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,7 +57,7 @@ Funktioniert automatisch mit:
 
 1. Lade das Plugin hoch oder installiere es über WordPress
 2. Aktiviere das Plugin
-3. Gehe zu "German Shield" im Admin-Menü
+3. Gehe zu "GermanFence" im Admin-Menü
 4. Konfiguriere die Einstellungen nach deinen Wünschen
 5. Fertig! Alle Formulare sind automatisch geschützt
 
@@ -77,11 +77,11 @@ Premium-Features (GEO-Blocking, Phrasen-Blocking, erweiterte Stats) erfordern ei
 
 = Funktioniert es mit meinem Theme/Page Builder? =
 
-Ja! German Shield arbeitet auf Formular-Ebene und ist kompatibel mit allen Themes und Page Buildern.
+Ja! GermanFence arbeitet auf Formular-Ebene und ist kompatibel mit allen Themes und Page Buildern.
 
 = Wird es meine Seite verlangsamen? =
 
-Nein! German Shield ist extrem performant und verursacht keine messbaren Verzögerungen.
+Nein! GermanFence ist extrem performant und verursacht keine messbaren Verzögerungen.
 
 = Ist es DSGVO-konform? =
 
@@ -89,7 +89,7 @@ Ja! Alle Daten werden lokal in deiner WordPress-Datenbank gespeichert. Bei Nutzu
 
 = Funktioniert es mit Caching-Plugins? =
 
-Ja! German Shield ist vollständig Cache-kompatibel.
+Ja! GermanFence ist vollständig Cache-kompatibel.
 
 = Brauche ich eine Lizenz? =
 
@@ -114,6 +114,15 @@ Siehe LICENSE.txt für Details.
 7. Statistik-Filter
 
 == Changelog ==
+
+= 1.7.2 =
+* SICHERHEIT: Alle WordPress Coding Standards erfüllt
+* FIX: SQL-Queries mit Prepared Statements abgesichert
+* FIX: Input Sanitization für alle $_POST, $_GET, $_SERVER Zugriffe
+* FIX: Output Escaping für alle dynamischen Ausgaben
+* FIX: Nonce Verification für alle Admin-Aktionen
+* IMPROVED: Lizenz-System auf "API-Key" umbenannt
+* IMPROVED: Branding von "German Shield" zu "GermanFence" aktualisiert
 
 = 1.6.1 =
 * Badge-Farben Live-Preview funktioniert
@@ -187,39 +196,31 @@ Wichtiges Update: Badge-Speicherung gefixt + Split-Lizenz für Commercial Use
 
 == License ==
 
-This plugin uses a **Split License Model**:
+This plugin is licensed under GNU General Public License v2 or later.
 
-**Source Code:**
-Licensed under GNU General Public License v2 or later.
-You are free to modify and redistribute the code.
-
-**Commercial Use:**
-Resale, bundling, white-labeling, or SaaS usage requires a separate Commercial License.
-
-**Branding & Trademarks:**
-"German Shield" name, logo, and branding are proprietary and NOT covered by GPL.
+**Free to use for:**
+- Personal websites
+- Client projects
+- Commercial websites
 
 **Premium Features:**
-API access, GEO-Blocking, Phrase-Blocking, and support require a valid license key.
+GEO-Blocking, Phrase-Blocking, and priority support require a valid license key from https://germanfence.de
 
 See LICENSE.txt for complete terms.
-
-**For Personal & Client Projects:** Free under GPL!
-**For Commercial Products:** Contact license@german-shield.com
 
 == Third-Party Services ==
 
 This plugin may connect to external services:
 
 **GEO-IP Service (Optional, Premium only):**
-- Service: German Shield API
+- Service: GermanFence API
 - Purpose: IP Geolocation for country blocking
 - Privacy: Only anonymized IPs sent, German servers
-- Terms: https://german-shield.com/terms
-- Privacy: https://german-shield.com/privacy
+- Terms: https://germanfence.de/terms
+- Privacy: https://germanfence.de/privacy
 
 **License Validation (Optional, Premium only):**
-- Service: German Shield License API
+- Service: GermanFence License API
 - Purpose: Validate license keys, activate premium features
 - Privacy: Domain, email, license key sent
 - Frequency: On activation and periodic checks
@@ -229,16 +230,12 @@ No external services are used in the free version without your consent.
 == Support ==
 
 **Free Support:**
-- WordPress.org Forum: https://wordpress.org/support/plugin/german-shield
+- WordPress.org Forum: https://wordpress.org/support/plugin/germanfence
 
 **Premium Support:**
-- Email: support@german-shield.com
+- Email: support@germanfence.de
 - Priority response for license holders
 
 **Documentation:**
-- https://german-shield.com/docs
-
-**Commercial Licensing:**
-- Email: license@german-shield.com
-- Website: https://german-shield.com/licensing
+- https://germanfence.de/docs
 
