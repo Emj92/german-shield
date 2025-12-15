@@ -2159,6 +2159,7 @@ class GermanFence_Admin {
         $honeypot_fields = array();
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if (isset($_POST['honeypot_fields']) && is_array($_POST['honeypot_fields'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing
             $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
