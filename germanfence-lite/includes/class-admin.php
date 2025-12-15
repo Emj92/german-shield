@@ -2154,14 +2154,12 @@ class GermanFence_Admin {
         }
         
         // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified above, all $_POST checks below are safe
-        
         // Honeypot-Felder verarbeiten
         $honeypot_fields = array();
         if (isset($_POST['honeypot_fields']) && is_array($_POST['honeypot_fields'])) {
             $honeypot_fields = array_map('sanitize_text_field', wp_unslash($_POST['honeypot_fields']));
             $honeypot_fields = array_filter($honeypot_fields); // Leere entfernen
         }
-        
         $settings = array(
             'honeypot_enabled' => isset($_POST['honeypot_enabled']) ? '1' : '0',
             'honeypot_count' => intval(wp_unslash($_POST['honeypot_count'] ?? 3)),
