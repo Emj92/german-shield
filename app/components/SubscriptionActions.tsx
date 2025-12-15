@@ -23,9 +23,9 @@ interface SubscriptionActionsProps {
 }
 
 const PACKAGES = {
-  SINGLE: { name: 'Single', price: 29, domains: 1, color: 'bg-blue-500' },
-  FREELANCER: { name: 'Freelancer', price: 79, domains: 5, color: 'bg-purple-500' },
-  AGENCY: { name: 'Agency', price: 149, domains: 20, color: 'bg-orange-500' },
+  SINGLE: { name: 'Single', price: 39, domains: 1, color: 'bg-blue-500' },
+  FREELANCER: { name: 'Freelancer', price: 129, domains: 5, color: 'bg-purple-500' },
+  AGENCY: { name: 'Agency', price: 249, domains: 20, color: 'bg-orange-500' },
 }
 
 const PACKAGE_ORDER: PackageType[] = ['SINGLE', 'FREELANCER', 'AGENCY']

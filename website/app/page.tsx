@@ -378,7 +378,7 @@ export default function Home() {
             <Card className="border-2 flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.single}</Badge>
-                <CardTitle className="text-4xl">29€/Jahr</CardTitle>
+                <CardTitle className="text-4xl">39€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   1 {t.pricing.website}
                 </CardDescription>
@@ -448,7 +448,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="single" 
-                  price={29} 
+                  price={39} 
                   variant="outline"
                   className="w-full border-[#22D6DD] text-[#22D6DD] hover:border-[#22D6DD] hover:text-[#22D6DD] transition-transform hover:-translate-y-1"
                 />
@@ -464,7 +464,7 @@ export default function Home() {
               </div>
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.freelancer}</Badge>
-                <CardTitle className="text-4xl">99€/Jahr</CardTitle>
+                <CardTitle className="text-4xl">129€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   5 {t.pricing.websites}
                 </CardDescription>
@@ -522,7 +522,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
-                  price={99}
+                  price={129}
                   className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
@@ -532,7 +532,7 @@ export default function Home() {
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader className="text-center">
                 <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">{t.pricing.agency}</Badge>
-                <CardTitle className="text-4xl">199€/Jahr</CardTitle>
+                <CardTitle className="text-4xl">249€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   25 {t.pricing.websites}
                 </CardDescription>
@@ -594,7 +594,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={299}
+                  price={249}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
@@ -689,8 +689,8 @@ export default function Home() {
               <h3 className="font-bold text-lg mb-6 text-white">{t.footer.licenses}</h3>
               <ul className="space-y-3 text-slate-400">
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (99€/Jahr zzgl. MwSt.)</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (199€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (129€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (249€/Jahr zzgl. MwSt.)</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">WordPress.org</a></li>
                 <li><Link href="/login" className="hover:text-[#22D6DD] transition">Dashboard</Link></li>

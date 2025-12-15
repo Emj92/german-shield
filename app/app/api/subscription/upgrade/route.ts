@@ -7,9 +7,9 @@ const MOLLIE_API_KEY = process.env.MOLLIE_API_KEY!
 type PackageType = 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
 const PACKAGE_PRICES = {
-  SINGLE: 29,
-  FREELANCER: 79,
-  AGENCY: 149,
+  SINGLE: 39,
+  FREELANCER: 129,
+  AGENCY: 249,
 }
 
 export async function POST(request: NextRequest) {
