@@ -11,15 +11,21 @@ export async function PUT(request: NextRequest) {
     }
 
     const data = await request.json()
-    const { name } = data
+    const { name, company, street, zip, city, country, phone, website, vatId } = data
 
     // User aktualisieren
     await prisma.user.update({
       where: { id: user.userId },
       data: {
         name: name || null,
-        // TODO: Weitere Felder im User-Schema hinzufügen:
-        // company, street, zip, city, country, phone, website, vatId
+        company: company || null,
+        street: street || null,
+        zipCode: zip || null,
+        city: city || null,
+        country: country || 'DE',
+        phone: phone || null,
+        website: website || null,
+        vatId: vatId || null,
       },
     })
 
@@ -50,7 +56,14 @@ export async function GET() {
       select: {
         name: true,
         email: true,
-        // Weitere Felder wenn im Schema vorhanden
+        company: true,
+        street: true,
+        zipCode: true,
+        city: true,
+        country: true,
+        phone: true,
+        website: true,
+        vatId: true,
       }
     })
 

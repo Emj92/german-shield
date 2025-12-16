@@ -153,6 +153,12 @@ interface InvoiceData {
   user: {
     email: string
     name?: string | null
+    company?: string | null
+    street?: string | null
+    zipCode?: string | null
+    city?: string | null
+    country?: string | null
+    vatId?: string | null
   }
 }
 
@@ -204,24 +210,29 @@ export function InvoicePDF({ invoice }: { invoice: InvoiceData }) {
           <View style={styles.addressBox}>
             <Text style={styles.addressLabel}>Rechnungsempfänger</Text>
             <View style={styles.addressContent}>
-              {invoice.isBusiness && invoice.companyName ? (
-                <>
-                  <Text>{invoice.companyName}</Text>
-                  {invoice.user.name && <Text>{invoice.user.name}</Text>}
-                </>
-              ) : (
-                <Text>{invoice.user.name || invoice.user.email}</Text>
+              {/* Priorisiere User-Account-Daten, dann Invoice-Daten */}
+              {(invoice.user.company || invoice.companyName) && (
+                <Text>{invoice.user.company || invoice.companyName}</Text>
               )}
-              {invoice.street && <Text>{invoice.street}</Text>}
-              {invoice.zipCode && invoice.city && (
-                <Text>{invoice.zipCode} {invoice.city}</Text>
+              {invoice.user.name && <Text>{invoice.user.name}</Text>}
+              {!invoice.user.name && !invoice.user.company && (
+                <Text>{invoice.user.email}</Text>
               )}
-              {invoice.country && invoice.country !== 'DE' && (
-                <Text>{invoice.country}</Text>
+              <Text> </Text>
+              {(invoice.user.street || invoice.street) && (
+                <Text>{invoice.user.street || invoice.street}</Text>
+              )}
+              {((invoice.user.zipCode || invoice.zipCode) && (invoice.user.city || invoice.city)) && (
+                <Text>{invoice.user.zipCode || invoice.zipCode} {invoice.user.city || invoice.city}</Text>
+              )}
+              {(invoice.user.country || invoice.country) && (invoice.user.country || invoice.country) !== 'DE' && (
+                <Text>{invoice.user.country || invoice.country}</Text>
               )}
               <Text> </Text>
               <Text>{invoice.user.email}</Text>
-              {invoice.vatId && <Text>USt-IdNr.: {invoice.vatId}</Text>}
+              {(invoice.user.vatId || invoice.vatId) && (
+                <Text>USt-IdNr.: {invoice.user.vatId || invoice.vatId}</Text>
+              )}
             </View>
           </View>
         </View>

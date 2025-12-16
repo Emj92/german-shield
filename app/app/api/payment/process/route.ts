@@ -89,13 +89,36 @@ export async function POST(request: NextRequest) {
           role: 'USER',
           emailVerified: false,
           verificationToken,
-          verificationTokenExpiry
+          verificationTokenExpiry,
+          // Rechnungsadresse aus Kaufdialog speichern
+          company: isBusiness ? companyName : null,
+          street: street || null,
+          zipCode: zipCode || null,
+          city: city || null,
+          country: country || 'DE',
+          vatId: isBusiness ? vatId : null,
         }
       })
 
       console.log('✅ Shadow account created:', user.id)
     } else {
       console.log('✅ User already exists:', user.id)
+      
+      // User existiert bereits - Rechnungsadresse aktualisieren falls angegeben
+      if (isBusiness || street || city) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            company: isBusiness && companyName ? companyName : user.company,
+            street: street || user.street,
+            zipCode: zipCode || user.zipCode,
+            city: city || user.city,
+            country: country || user.country,
+            vatId: isBusiness && vatId ? vatId : user.vatId,
+          }
+        })
+        console.log('✅ User billing address updated')
+      }
     }
 
     // 2. Erstelle License

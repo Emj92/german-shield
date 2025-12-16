@@ -26,6 +26,16 @@ model User {
   // Account-Status
   suspended     Boolean   @default(false)
   
+  // Rechnungsadresse (GoBD) - wird aus Kaufdialog befüllt
+  company       String?   // Firmenname
+  street        String?   // Straße + Hausnummer
+  zipCode       String?   // PLZ
+  city          String?   // Stadt
+  country       String    @default("DE") // Land (ISO-Code)
+  vatId         String?   // USt-IdNr.
+  phone         String?   // Telefon
+  website       String?   // Website
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   

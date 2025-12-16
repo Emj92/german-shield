@@ -27,7 +27,13 @@ export async function GET(
         user: {
           select: {
             email: true,
-            name: true
+            name: true,
+            company: true,
+            street: true,
+            zipCode: true,
+            city: true,
+            country: true,
+            vatId: true,
           }
         }
       }

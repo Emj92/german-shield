@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -38,6 +38,32 @@ export default function SettingsContent({ user }: SettingsContentProps) {
     website: '',
     vatId: '',
   })
+
+  // Lade User-Daten beim Mount
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/user/settings')
+        const data = await res.json()
+        if (data.success && data.settings) {
+          setFormData({
+            name: data.settings.name || '',
+            company: data.settings.company || '',
+            street: data.settings.street || '',
+            zip: data.settings.zipCode || '',
+            city: data.settings.city || '',
+            country: data.settings.country || 'Deutschland',
+            phone: data.settings.phone || '',
+            website: data.settings.website || '',
+            vatId: data.settings.vatId || '',
+          })
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error)
+      }
+    }
+    loadSettings()
+  }, [])
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message })
@@ -224,15 +250,28 @@ export default function SettingsContent({ user }: SettingsContentProps) {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="country">Land</Label>
-              <Input
-                id="country"
-                name="country"
-                placeholder="Deutschland"
-                value={formData.country}
-                onChange={handleChange}
-              />
+            {/* Land und USt-ID nebeneinander (50/50) */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="country">Land</Label>
+                <Input
+                  id="country"
+                  name="country"
+                  placeholder="Deutschland"
+                  value={formData.country}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="vatId">USt-IdNr. (optional)</Label>
+                <Input
+                  id="vatId"
+                  name="vatId"
+                  placeholder="DE123456789"
+                  value={formData.vatId}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -278,18 +317,6 @@ export default function SettingsContent({ user }: SettingsContentProps) {
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="vatId">USt-IdNr. (optional)</Label>
-              <Input
-                id="vatId"
-                name="vatId"
-                placeholder="DE123456789"
-                value={formData.vatId}
-                onChange={handleChange}
-              />
-              <p className="text-xs text-slate-500">Für Rechnungen innerhalb der EU</p>
             </div>
           </CardContent>
         </Card>
