@@ -167,37 +167,41 @@ export default function SettingsContent({ user }: SettingsContentProps) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="company">Firma / Unternehmen (optional)</Label>
-              <div className="relative">
-                <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  id="company"
-                  name="company"
-                  placeholder="Meine Firma GmbH"
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="pl-10"
-                />
+            {/* Firma und Straße nebeneinander (50/50) */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="company">Firma / Unternehmen (optional)</Label>
+                <div className="relative">
+                  <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input
+                    id="company"
+                    name="company"
+                    placeholder="Meine Firma GmbH"
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="street">Straße + Hausnummer</Label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input
+                    id="street"
+                    name="street"
+                    placeholder="Musterstraße 123"
+                    value={formData.street}
+                    onChange={handleChange}
+                    className="pl-10"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="street">Straße + Hausnummer</Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  id="street"
-                  name="street"
-                  placeholder="Musterstraße 123"
-                  value={formData.street}
-                  onChange={handleChange}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
+            {/* PLZ und Stadt nebeneinander (50/50) */}
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="zip">PLZ</Label>
                 <Input
@@ -208,7 +212,7 @@ export default function SettingsContent({ user }: SettingsContentProps) {
                   onChange={handleChange}
                 />
               </div>
-              <div className="space-y-2 col-span-2">
+              <div className="space-y-2">
                 <Label htmlFor="city">Stadt</Label>
                 <Input
                   id="city"
