@@ -85,7 +85,17 @@ export async function POST(request: NextRequest) {
       if (!mollieResponse.ok) {
         const error = await mollieResponse.json()
         console.error('Mollie API Error:', error)
-        return NextResponse.json({ error: 'Zahlung konnte nicht erstellt werden' }, { status: 500 })
+        console.error('Mollie Request Details:', {
+          grossUpgradeFee: grossUpgradeFee.toFixed(2),
+          netUpgradeFee,
+          taxAmount,
+          targetPackage,
+          currentPackage
+        })
+        return NextResponse.json({ 
+          error: 'Zahlung konnte nicht erstellt werden',
+          details: error.detail || error.title || 'Unbekannter Fehler'
+        }, { status: 500 })
       }
 
       const payment = await mollieResponse.json()

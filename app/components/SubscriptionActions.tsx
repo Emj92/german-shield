@@ -25,8 +25,11 @@ interface SubscriptionActionsProps {
 const PACKAGES = {
   SINGLE: { name: 'Single', price: 39, domains: 1, color: 'bg-blue-500' },
   FREELANCER: { name: 'Freelancer', price: 0.50, domains: 5, color: 'bg-[#22D6DD]' }, // TEST
-  AGENCY: { name: 'Agency', price: 0.80, domains: 20, color: 'bg-[#F06292]' }, // TEST - Pink wie auf Homepage
+  AGENCY: { name: 'Agency', price: 0.80, domains: 25, color: 'bg-[#F06292]' }, // TEST - Pink wie auf Homepage
 }
+
+// Hilfsfunktion für deutsche Preisformatierung
+const formatPrice = (price: number) => price.toFixed(2).replace('.', ',')
 
 const PACKAGE_ORDER: PackageType[] = ['SINGLE', 'FREELANCER', 'AGENCY']
 
@@ -152,7 +155,7 @@ export function SubscriptionActions({ subscriptionId, currentPackage, currentPri
             <div className="bg-[#F2F5F8] rounded-[9px] p-4 border border-[#d9dde1]">
               <div className="text-sm font-medium text-muted-foreground mb-1">Aktuelles Paket</div>
               <div className="text-lg font-bold">
-                GermanFence {PACKAGES[currentPackage].name} - {currentPrice}€/Jahr
+                GermanFence {PACKAGES[currentPackage].name} - {formatPrice(currentPrice)}€/Jahr
               </div>
             </div>
 
@@ -188,7 +191,7 @@ export function SubscriptionActions({ subscriptionId, currentPackage, currentPri
                         </div>
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {PACKAGES[pkg].domains} Domain{PACKAGES[pkg].domains > 1 ? 's' : ''} • {PACKAGES[pkg].price}€/Jahr
+                        {PACKAGES[pkg].domains} Domains • {formatPrice(PACKAGES[pkg].price)}€/Jahr
                       </div>
                     </button>
                   )
