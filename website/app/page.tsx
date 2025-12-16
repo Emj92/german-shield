@@ -654,7 +654,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="pt-20 pb-5 px-6 bg-slate-900 text-white">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
+          <div className="grid md:grid-cols-[1fr_1fr_1.2fr_1fr] gap-8 mb-12">
             <div>
               <div className="flex items-center mb-6">
                 <Image src="/germanfence_icon.png" alt="GermanFence" width={64} height={64} />
