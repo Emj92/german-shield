@@ -15,11 +15,15 @@ const PACKAGE_PRICES = {
 export async function POST(request: NextRequest) {
   try {
     const user = await getUser()
+    console.log('User:', user)
+    
     if (!user) {
       return NextResponse.json({ error: 'Nicht authentifiziert' }, { status: 401 })
     }
 
-    const { subscriptionId, targetPackage, upgradeFee } = await request.json()
+    const body = await request.json()
+    console.log('Request body:', body)
+    const { subscriptionId, targetPackage, upgradeFee } = body
 
     if (!subscriptionId || !targetPackage || upgradeFee === undefined) {
       return NextResponse.json({ error: 'Fehlende Parameter' }, { status: 400 })
@@ -107,11 +111,13 @@ export async function POST(request: NextRequest) {
           invoiceNumber: `UPG-${Date.now()}`,
           netAmount: netUpgradeFee,
           taxAmount: taxAmount,
+          taxRate: 19, // 19% MwSt
           grossAmount: grossUpgradeFee,
           currency: 'EUR',
           status: 'PENDING',
           issuedAt: new Date(),
           molliePaymentId: payment.id,
+          description: `Upgrade: ${currentPackage} → ${targetPackage}`,
         },
       })
 
@@ -135,8 +141,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Upgrade error:', error)
+    console.error('Full error details:', JSON.stringify(error, Object.getOwnPropertyNames(error)))
     return NextResponse.json(
-      { error: 'Interner Serverfehler' },
+      { 
+        error: 'Interner Serverfehler',
+        details: error instanceof Error ? error.message : 'Unbekannter Fehler'
+      },
       { status: 500 }
     )
   }
