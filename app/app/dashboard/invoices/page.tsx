@@ -587,6 +587,32 @@ export default async function InvoicesPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* GoBD-Disclaimer */}
+          {invoices.length > 0 && (
+            <Card className="mt-6 border-[#22D6DD]/30 bg-[#22D6DD]/5">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <svg className="h-5 w-5 text-[#22D6DD]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-sm text-slate-900 dark:text-white mb-1">
+                      GoBD-konforme Rechnungen
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Alle Rechnungen werden gemäß den <strong>Grundsätzen zur ordnungsmäßigen Führung und Aufbewahrung von Büchern</strong> (GoBD) erstellt. 
+                      Rechnungsnummern sind fortlaufend und lückenlos. Jede Rechnung ist nach Erstellung unveränderbar und revisionssicher archiviert. 
+                      Für die Einhaltung steuerrechtlicher Vorschriften in Ihrem Unternehmen sind Sie als Betreiber selbst verantwortlich. 
+                      Bei Fragen wenden Sie sich bitte an Ihren Steuerberater.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </DashboardLayout>

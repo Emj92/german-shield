@@ -11,12 +11,35 @@ function generateLicenseKey(packageType: string): string {
   return `${prefix}-${random}`
 }
 
-function generateInvoiceNumber(): string {
+// GoBD-konforme Rechnungsnummer: Jahr + fortlaufende Nummer
+async function generateInvoiceNumber(): Promise<string> {
   const date = new Date()
   const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0')
-  return `INV-${year}${month}-${random}`
+  
+  // Hole die letzte Rechnung des aktuellen Jahres
+  const lastInvoice = await prisma.invoice.findFirst({
+    where: {
+      invoiceNumber: {
+        startsWith: `${year}-`
+      }
+    },
+    orderBy: {
+      sequentialNumber: 'desc'
+    }
+  })
+  
+  // Nächste fortlaufende Nummer
+  let nextNumber = 1
+  if (lastInvoice) {
+    // Extrahiere die Nummer aus "2025-00001"
+    const match = lastInvoice.invoiceNumber.match(/-(\d+)$/)
+    if (match) {
+      nextNumber = parseInt(match[1]) + 1
+    }
+  }
+  
+  // Format: 2025-00001 (5-stellig, führende Nullen)
+  return `${year}-${String(nextNumber).padStart(5, '0')}`
 }
 
 export async function POST(request: NextRequest) {
@@ -127,8 +150,8 @@ export async function POST(request: NextRequest) {
       console.log('✅ Subscription created:', subscription.id)
     }
 
-    // 4. Erstelle Invoice/Rechnung
-    const invoiceNumber = generateInvoiceNumber()
+    // 4. Erstelle Invoice/Rechnung (GoBD-konform)
+    const invoiceNumber = await generateInvoiceNumber()
     const taxLabel = country === 'DE' ? 'MwSt.' :
                      country === 'AT' ? 'MwSt.' :
                      country === 'CH' ? 'MwSt.' :
@@ -162,14 +185,44 @@ export async function POST(request: NextRequest) {
         description: `GermanFence ${packageType} License - Jahr 1`,
         molliePaymentId,
         subscriptionId: subscription?.id,
-        paidAt: new Date()
+        paidAt: new Date(),
+        isLocked: false, // Wird nach PDF-Generierung gesperrt
+      }
+    })
+
+    // GoBD: Audit-Log erstellen
+    await prisma.invoiceAuditLog.create({
+      data: {
+        invoiceId: invoice.id,
+        action: 'CREATED',
+        changes: {
+          invoiceNumber,
+          grossAmount,
+          packageType,
+          status: 'PAID'
+        },
+        performedBy: 'SYSTEM',
+        timestamp: new Date()
       }
     })
 
     // PDF-URL setzen (zeigt auf die PDF-Route)
     await prisma.invoice.update({
       where: { id: invoice.id },
-      data: { pdfUrl: `/api/invoices/${invoice.id}/pdf` }
+      data: { 
+        pdfUrl: `/api/invoices/${invoice.id}/pdf`,
+        isLocked: true // GoBD: Nach Erstellung gesperrt
+      }
+    })
+
+    // GoBD: Audit-Log für PDF-Generierung
+    await prisma.invoiceAuditLog.create({
+      data: {
+        invoiceId: invoice.id,
+        action: 'PDF_GENERATED',
+        performedBy: 'SYSTEM',
+        timestamp: new Date()
+      }
     })
 
     console.log('✅ Invoice created:', invoiceNumber)

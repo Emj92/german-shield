@@ -145,9 +145,10 @@ model TelemetryEvent {
 
 // Invoice Model (Rechnungen für User)
 model Invoice {
-  id            String   @id @default(cuid())
-  userId        String
-  invoiceNumber String   @unique
+  id              String   @id @default(cuid())
+  userId          String
+  invoiceNumber   String   @unique
+  sequentialNumber Int     @default(autoincrement()) // GoBD: Fortlaufende Nummer
   
   // Beträge
   netAmount     Float    // Nettobetrag
@@ -178,11 +179,17 @@ model Invoice {
   molliePaymentId String?
   subscriptionId  String? // Verknüpfung zur Subscription
   
+  // GoBD: Unveränderbarkeit & Revisionssicherheit
+  isLocked      Boolean  @default(false) // Nach Versand gesperrt
+  pdfHash       String?  // SHA-256 Hash des PDFs
+  auditLog      InvoiceAuditLog[] // Änderungsprotokoll
+  
   // Zeitstempel
   issuedAt      DateTime @default(now())
   dueAt         DateTime?
   paidAt        DateTime?
   createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   subscription Subscription? @relation(fields: [subscriptionId], references: [id])
@@ -190,7 +197,25 @@ model Invoice {
   @@index([userId])
   @@index([invoiceNumber])
   @@index([subscriptionId])
+  @@index([sequentialNumber])
   @@map("invoices")
+}
+
+// GoBD: Audit-Log für Rechnungsänderungen
+model InvoiceAuditLog {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  action      String   // "CREATED", "UPDATED", "CANCELLED", "PDF_GENERATED"
+  changes     Json?    // Was wurde geändert
+  performedBy String?  // User ID oder "SYSTEM"
+  timestamp   DateTime @default(now())
+  ipAddress   String?
+  
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  @@index([invoiceId])
+  @@index([timestamp])
+  @@map("invoice_audit_logs")
 }
 
 enum InvoiceStatus {
