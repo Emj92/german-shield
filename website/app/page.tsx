@@ -463,8 +463,8 @@ export default function Home() {
                 </Badge>
               </div>
               <CardHeader className="text-center">
-                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.freelancer}</Badge>
-                <CardTitle className="text-4xl">129€/Jahr</CardTitle>
+                <Badge className="w-fit mb-4 bg-[#22D6DD]/10 text-[#22D6DD] mx-auto">{t.pricing.freelancer} (TEST)</Badge>
+                <CardTitle className="text-4xl">0,50€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   5 {t.pricing.websites}
                 </CardDescription>
@@ -522,7 +522,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="freelancer" 
-                  price={129}
+                  price={0.50}
                   className="w-full bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white transition-transform hover:-translate-y-1"
                 />
               </CardContent>
@@ -689,7 +689,7 @@ export default function Home() {
               <h3 className="font-bold text-lg mb-6 text-white">{t.footer.licenses}</h3>
               <ul className="space-y-3 text-slate-400">
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (129€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (249€/Jahr zzgl. MwSt.)</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">WordPress.org</a></li>
