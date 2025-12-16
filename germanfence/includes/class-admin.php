@@ -1196,6 +1196,7 @@ class GermanFence_Admin {
                             <p style="margin: 0; color: #50575e;">Zeitpunkt: <?php echo current_time('d.m.Y H:i:s'); ?></p>
                         </div>
                         <?php endif; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
                 

@@ -688,7 +688,8 @@ class GermanFence_Admin {
                                         <td><?php echo esc_html($entry->ip_address); ?></td>
                                         <td>
                                             <?php if ($entry->country): ?>
-                                                <span style="font-size: 18px; margin-right: 5px;"><?php echo esc_html( $this->get_flag_emoji($entry->country) ); ?></span>
+                                                <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Flag emoji from internal method ?>
+                                                <span style="font-size: 18px; margin-right: 5px;"><?php echo $this->get_flag_emoji($entry->country); ?></span>
                                                 <span><?php echo esc_html($entry->country); ?></span>
                                             <?php else: ?>
                                                 <span style="color: #999;">-</span>
