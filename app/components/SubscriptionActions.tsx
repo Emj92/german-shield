@@ -24,8 +24,8 @@ interface SubscriptionActionsProps {
 
 const PACKAGES = {
   SINGLE: { name: 'Single', price: 39, domains: 1, color: 'bg-blue-500' },
-  FREELANCER: { name: 'Freelancer', price: 0.50, domains: 5, color: 'bg-[#22D6DD]' }, // TEST
-  AGENCY: { name: 'Agency', price: 0.80, domains: 25, color: 'bg-[#F06292]' }, // TEST - Pink wie auf Homepage
+  FREELANCER: { name: 'Freelancer', price: 1.00, domains: 5, color: 'bg-[#22D6DD]' }, // TEST - min 1€ für Mollie
+  AGENCY: { name: 'Agency', price: 2.50, domains: 25, color: 'bg-[#F06292]' }, // TEST - Pink wie auf Homepage
 }
 
 // Hilfsfunktion für deutsche Preisformatierung

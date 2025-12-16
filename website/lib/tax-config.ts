@@ -94,8 +94,8 @@ export function validateVatIdFormat(vatId: string, countryCode: string): boolean
  */
 export const PACKAGE_PRICES = {
   single: 39,
-  freelancer: 0.50, // TEST
-  agency: 0.80 // TEST
+  freelancer: 1.00, // TEST - min 1€ für Mollie
+  agency: 2.50 // TEST
 }
 
 export const PACKAGE_NAMES = {

@@ -8,8 +8,8 @@ type PackageType = 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
 const PACKAGE_PRICES = {
   SINGLE: 39,
-  FREELANCER: 0.50, // TEST
-  AGENCY: 0.80, // TEST
+  FREELANCER: 1.00, // TEST - min 1€ für Mollie
+  AGENCY: 2.50, // TEST
 }
 
 export async function POST(request: NextRequest) {

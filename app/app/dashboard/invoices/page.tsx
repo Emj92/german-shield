@@ -381,7 +381,7 @@ export default async function InvoicesPage() {
               )}
               <CardHeader className="text-center pb-2">
                 <Badge className="w-fit mb-2 bg-[#22D6DD]/20 text-[#22D6DD] mx-auto">Freelancer (TEST)</Badge>
-                <CardTitle className="text-2xl">0,50€/Jahr</CardTitle>
+                <CardTitle className="text-2xl">1,00€/Jahr</CardTitle>
                 <CardDescription className="text-sm">
                   5 Websites
                 </CardDescription>
@@ -423,7 +423,7 @@ export default async function InvoicesPage() {
             <Card className={`border-2 flex flex-col h-full ${currentPackage === 'AGENCY' ? 'border-[#F06292] bg-[#F06292]/5' : 'border-[#F06292]'}`}>
               <CardHeader className="text-center pb-2">
                 <Badge className="w-fit mb-2 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency (TEST)</Badge>
-                <CardTitle className="text-2xl">0,80€/Jahr</CardTitle>
+                <CardTitle className="text-2xl">2,50€/Jahr</CardTitle>
                 <CardDescription className="text-sm">
                   25 Websites
                 </CardDescription>
