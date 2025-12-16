@@ -380,8 +380,8 @@ export default async function InvoicesPage() {
                 </div>
               )}
               <CardHeader className="text-center pb-2">
-                <Badge className="w-fit mb-2 bg-[#22D6DD]/20 text-[#22D6DD] mx-auto">Freelancer</Badge>
-                <CardTitle className="text-2xl">129€/Jahr</CardTitle>
+                <Badge className="w-fit mb-2 bg-[#22D6DD]/20 text-[#22D6DD] mx-auto">Freelancer (TEST)</Badge>
+                <CardTitle className="text-2xl">0,50€/Jahr</CardTitle>
                 <CardDescription className="text-sm">
                   5 Websites
                 </CardDescription>

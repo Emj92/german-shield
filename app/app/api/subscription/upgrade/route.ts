@@ -8,7 +8,7 @@ type PackageType = 'SINGLE' | 'FREELANCER' | 'AGENCY'
 
 const PACKAGE_PRICES = {
   SINGLE: 39,
-  FREELANCER: 129,
+  FREELANCER: 0.50, // TEST
   AGENCY: 249,
 }
 
