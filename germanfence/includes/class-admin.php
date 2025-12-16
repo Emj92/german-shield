@@ -1203,17 +1203,24 @@ class GermanFence_Admin {
                 <!-- Sicherheit Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
                     
+                    <?php 
+                    // Security Tab: PRO-only - zeige Inhalte mit Schloss wenn nur Free-Lizenz
+                    $security_locked = !$is_license_valid;
+                    $security_disabled = $security_locked ? 'disabled' : '';
+                    ?>
+                    
                     <!-- WORDPRESS FIREWALL Section -->
-                    <div class="germanfence-section">
-                        <h2>🛡️ WordPress Firewall</h2>
+                    <div class="germanfence-section" style="<?php echo $security_locked ? 'opacity: 0.7;' : ''; ?>">
+                        <h2>🛡️ WordPress Firewall <?php if ($security_locked): ?><span style="color: #D81B60; font-size: 14px;">🔒</span><?php endif; ?></h2>
                         <p class="description" style="margin-bottom: 20px;">
                             Schütze deine WordPress-Installation mit zusätzlichen Firewall-Regeln.
                         </p>
                         
                             <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?> <?php echo esc_attr($security_disabled); ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
                                 </label>
                                 <div class="setting-info">
                                 <h3>XML-RPC deaktivieren</h3>
@@ -1222,9 +1229,10 @@ class GermanFence_Admin {
                             </div>
                             
                             <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?> <?php echo esc_attr($security_disabled); ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
                                 </label>
                                 <div class="setting-info">
                                 <h3>Datei-Editor deaktivieren</h3>
@@ -1233,9 +1241,10 @@ class GermanFence_Admin {
                             </div>
                             
                             <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?> <?php echo esc_attr($security_disabled); ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
                                 </label>
                                 <div class="setting-info">
                                 <h3>WordPress-Version verstecken</h3>
@@ -1244,9 +1253,10 @@ class GermanFence_Admin {
                         </div>
                             
                             <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?> <?php echo esc_attr($security_disabled); ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
                                 </label>
                                 <div class="setting-info">
                                 <h3>REST API User-Enumeration blockieren</h3>
@@ -1256,16 +1266,17 @@ class GermanFence_Admin {
                             </div>
                     
                     <!-- BRUTE-FORCE SCHUTZ Section -->
-                    <div class="germanfence-section">
-                        <h2>🔐 Brute-Force Schutz</h2>
+                    <div class="germanfence-section" style="<?php echo $security_locked ? 'opacity: 0.7;' : ''; ?>">
+                        <h2>🔐 Brute-Force Schutz <?php if ($security_locked): ?><span style="color: #D81B60; font-size: 14px;">🔒</span><?php endif; ?></h2>
                         <p class="description" style="margin-bottom: 20px;">
                             Schütze dein WordPress-Login vor automatisierten Angriffen durch Login-Versuchs-Limitierung.
                         </p>
                             
                             <div class="germanfence-setting">
-                                <label class="germanfence-toggle">
-                                <input type="checkbox" name="login_limit_enabled" value="1" <?php checked(isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1'); ?>>
+                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
+                                <input type="checkbox" name="login_limit_enabled" value="1" <?php checked(isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1'); ?> <?php echo esc_attr($security_disabled); ?>>
                                     <span class="toggle-slider"></span>
+                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
                                 </label>
                                 <div class="setting-info">
                                 <h3>Login-Limitierung aktivieren</h3>
@@ -1273,7 +1284,7 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                         
-                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
+                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px; <?php echo $security_locked ? 'opacity: 0.6; pointer-events: none;' : ''; ?>">
                             <div class="setting-row" style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 10px;"><strong>Maximale Login-Versuche:</strong></label>
                                 <div style="display: flex; align-items: center; gap: 15px;">
