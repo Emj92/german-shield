@@ -531,8 +531,8 @@ export default function Home() {
             {/* AGENCY */}
             <Card className="border-2 border-[#F06292] flex flex-col h-full">
               <CardHeader className="text-center">
-                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">{t.pricing.agency}</Badge>
-                <CardTitle className="text-4xl">249€/Jahr</CardTitle>
+                <Badge className="w-fit mb-4 bg-[#F06292]/10 text-[#F06292] mx-auto">{t.pricing.agency} (TEST)</Badge>
+                <CardTitle className="text-4xl">0,80€/Jahr</CardTitle>
                 <CardDescription className="text-lg mt-2">
                   25 {t.pricing.websites}
                 </CardDescription>
@@ -594,7 +594,7 @@ export default function Home() {
                 </ul>
                 <BuyButton 
                   packageType="agency" 
-                  price={249}
+                  price={0.80}
                   variant="outline"
                   className="w-full border-2 border-[#F06292] text-[#F06292] hover:border-[#F06292] hover:text-[#F06292] transition-transform hover:-translate-y-1"
                 />
@@ -690,7 +690,7 @@ export default function Home() {
               <ul className="space-y-3 text-slate-400">
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Single (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
                 <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Freelancer (0,50€/Jahr zzgl. MwSt.) TEST</a></li>
-                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (249€/Jahr zzgl. MwSt.)</a></li>
+                <li><a href="#pricing" className="hover:text-[#22D6DD] transition">Agency (0,80€/Jahr zzgl. MwSt.) TEST</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">ThemeForest</a></li>
                 <li><a href="#" className="hover:text-[#22D6DD] transition">WordPress.org</a></li>
                 <li><Link href="/login" className="hover:text-[#22D6DD] transition">Dashboard</Link></li>

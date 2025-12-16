@@ -9,7 +9,7 @@ type PackageType = 'SINGLE' | 'FREELANCER' | 'AGENCY'
 const PACKAGE_PRICES = {
   SINGLE: 39,
   FREELANCER: 0.50, // TEST
-  AGENCY: 249,
+  AGENCY: 0.80, // TEST
 }
 
 export async function POST(request: NextRequest) {

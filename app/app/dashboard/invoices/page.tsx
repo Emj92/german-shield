@@ -422,8 +422,8 @@ export default async function InvoicesPage() {
             {/* AGENCY */}
             <Card className={`border-2 flex flex-col h-full ${currentPackage === 'AGENCY' ? 'border-[#F06292] bg-[#F06292]/5' : 'border-[#F06292]'}`}>
               <CardHeader className="text-center pb-2">
-                <Badge className="w-fit mb-2 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency</Badge>
-                <CardTitle className="text-2xl">249€/Jahr</CardTitle>
+                <Badge className="w-fit mb-2 bg-[#F06292]/10 text-[#F06292] mx-auto">Agency (TEST)</Badge>
+                <CardTitle className="text-2xl">0,80€/Jahr</CardTitle>
                 <CardDescription className="text-sm">
                   25 Websites
                 </CardDescription>
