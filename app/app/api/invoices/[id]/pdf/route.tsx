@@ -62,7 +62,10 @@ export async function GET(
       })
     }
 
-    return new NextResponse(pdfBuffer, {
+    // Buffer zu Uint8Array konvertieren für NextResponse
+    const pdfBytes = new Uint8Array(pdfBuffer)
+
+    return new NextResponse(pdfBytes, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `inline; filename="Rechnung-${invoice.invoiceNumber}.pdf"`,
