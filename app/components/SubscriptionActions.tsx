@@ -24,8 +24,8 @@ interface SubscriptionActionsProps {
 
 const PACKAGES = {
   SINGLE: { name: 'Single', price: 39, domains: 1, color: 'bg-blue-500' },
-  FREELANCER: { name: 'Freelancer', price: 0.50, domains: 5, color: 'bg-purple-500' }, // TEST
-  AGENCY: { name: 'Agency', price: 0.80, domains: 20, color: 'bg-orange-500' }, // TEST
+  FREELANCER: { name: 'Freelancer', price: 0.50, domains: 5, color: 'bg-[#22D6DD]' }, // TEST
+  AGENCY: { name: 'Agency', price: 0.80, domains: 20, color: 'bg-[#F06292]' }, // TEST - Pink wie auf Homepage
 }
 
 const PACKAGE_ORDER: PackageType[] = ['SINGLE', 'FREELANCER', 'AGENCY']
@@ -43,7 +43,8 @@ export function SubscriptionActions({ subscriptionId, currentPackage, currentPri
   const calculateUpgradePrice = (targetPackage: PackageType) => {
     const targetPrice = PACKAGES[targetPackage].price
     const difference = targetPrice - currentPrice
-    return difference > 0 ? difference : 0
+    // Runden auf 2 Nachkommastellen um Floating-Point-Fehler zu vermeiden
+    return difference > 0 ? Math.round(difference * 100) / 100 : 0
   }
 
   const handleUpgrade = async () => {
@@ -181,7 +182,7 @@ export function SubscriptionActions({ subscriptionId, currentPackage, currentPri
                         </Badge>
                         <div className="text-right">
                           <div className="text-lg font-bold text-[#22D6DD]">
-                            +{upgradePrice}€
+                            +{upgradePrice.toFixed(2).replace('.', ',')}€
                           </div>
                           <div className="text-xs text-muted-foreground">Upgrade-Gebühr</div>
                         </div>
@@ -213,7 +214,7 @@ export function SubscriptionActions({ subscriptionId, currentPackage, currentPri
               ) : (
                 <>
                   Jetzt upgraden
-                  {selectedPackage && ` für ${calculateUpgradePrice(selectedPackage)}€`}
+                  {selectedPackage && ` für ${calculateUpgradePrice(selectedPackage).toFixed(2).replace('.', ',')}€`}
                 </>
               )}
             </Button>
