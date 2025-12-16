@@ -281,7 +281,7 @@ export function InvoicePDF({ invoice }: { invoice: InvoiceData }) {
 
         {/* Payment Notice */}
         {invoice.paidAt && (
-          <View style={{ marginTop: 20, padding: 10, backgroundColor: '#f0fdf4', borderWidth: 1, borderColor: '#22D6DD' }}>
+          <View style={{ marginTop: 20, padding: 10, backgroundColor: '#F4FDFD', borderWidth: 1, borderColor: '#22D6DD' }}>
             <Text style={{ fontSize: 10, color: '#22D6DD', fontWeight: 'bold' }}>
               ✓ Rechnung vollständig bezahlt am {formatGermanDate(invoice.paidAt)}
             </Text>
