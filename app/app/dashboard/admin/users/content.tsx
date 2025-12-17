@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Search, Mail, AlertCircle, CheckCircle2, Trash2, Ban } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Search, Mail, AlertCircle, CheckCircle2, Trash2, Ban, X } from 'lucide-react'
 import {
   Table,
   TableBody,
@@ -37,10 +38,23 @@ interface User {
   }[]
 }
 
+interface DeleteModal {
+  show: boolean
+  userId: string
+  email: string
+}
+
+interface Notification {
+  type: 'success' | 'error'
+  message: string
+}
+
 export default function AdminUsersContent() {
   const [users, setUsers] = useState<User[]>([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
+  const [deleteModal, setDeleteModal] = useState<DeleteModal>({ show: false, userId: '', email: '' })
+  const [notification, setNotification] = useState<Notification | null>(null)
 
   useEffect(() => {
     fetchUsers()
@@ -58,16 +72,34 @@ export default function AdminUsersContent() {
     }
   }
 
-  const handleDeleteUser = async (userId: string, email: string) => {
-    if (!confirm(`Benutzer "${email}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`)) return
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message })
+    setTimeout(() => setNotification(null), 5000)
+  }
+
+  const openDeleteModal = (userId: string, email: string) => {
+    setDeleteModal({ show: true, userId, email })
+  }
+
+  const closeDeleteModal = () => {
+    setDeleteModal({ show: false, userId: '', email: '' })
+  }
+
+  const handleDeleteUser = async () => {
+    const { userId, email } = deleteModal
+    closeDeleteModal()
     
     try {
       const res = await fetch(`/api/admin/users/${userId}`, { method: 'DELETE' })
       if (res.ok) {
+        showNotification('success', `Benutzer "${email}" gelöscht!`)
         fetchUsers()
+      } else {
+        showNotification('error', 'Fehler beim Löschen')
       }
     } catch (error) {
       console.error('Failed to delete user:', error)
+      showNotification('error', 'Fehler beim Löschen')
     }
   }
 
@@ -114,6 +146,46 @@ export default function AdminUsersContent() {
 
   return (
     <div className="p-12 space-y-6">
+      {/* Notification Toast */}
+      {notification && (
+        <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
+          notification.type === 'success' 
+            ? 'bg-[#22D6DD] text-white' 
+            : 'bg-[#EC4899] text-white'
+        }`}>
+          {notification.type === 'success' ? (
+            <CheckCircle2 className="h-5 w-5" />
+          ) : (
+            <X className="h-5 w-5" />
+          )}
+          <span className="font-medium">{notification.message}</span>
+          <button onClick={() => setNotification(null)} className="ml-2 hover:opacity-70">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={closeDeleteModal} />
+          <div className="relative bg-white rounded-xl p-6 shadow-2xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">Benutzer löschen?</h3>
+            <p className="text-slate-600 mb-4">
+              Möchtest du den Benutzer <strong>{deleteModal.email}</strong> wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={closeDeleteModal}>
+                Abbrechen
+              </Button>
+              <Button onClick={handleDeleteUser} className="bg-[#D81B60] hover:bg-[#D81B60]/90 text-white">
+                Löschen
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Benutzerverwaltung</h1>
         <p className="text-slate-600 mt-2">Übersicht aller Benutzer und ihrer Lizenzen</p>
@@ -252,7 +324,7 @@ export default function AdminUsersContent() {
                               <Ban className={`h-4 w-4 ${user.suspended ? 'text-orange-500' : ''}`} />
                             </button>
                             <button
-                              onClick={() => handleDeleteUser(user.id, user.email)}
+                              onClick={() => openDeleteModal(user.id, user.email)}
                               className="p-2 text-slate-500"
                               title="Löschen"
                             >

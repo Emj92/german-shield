@@ -30,6 +30,12 @@ interface Notification {
   message: string
 }
 
+interface DeleteModal {
+  show: boolean
+  licenseId: string
+  licenseKey: string
+}
+
 export default function AdminLicensesContent() {
   const [email, setEmail] = useState('')
   const [packageType, setPackageType] = useState<PackageType>('SINGLE')
@@ -41,6 +47,7 @@ export default function AdminLicensesContent() {
   const [searchQuery, setSearchQuery] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [notification, setNotification] = useState<Notification | null>(null)
+  const [deleteModal, setDeleteModal] = useState<DeleteModal>({ show: false, licenseId: '', licenseKey: '' })
 
   // Load all licenses on mount
   useEffect(() => {
@@ -136,10 +143,17 @@ export default function AdminLicensesContent() {
     }
   }
 
-  const handleDeleteLicense = async (licenseId: string, licenseKey: string) => {
-    if (!confirm(`Lizenz ${licenseKey} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden!`)) {
-      return
-    }
+  const openDeleteModal = (licenseId: string, licenseKey: string) => {
+    setDeleteModal({ show: true, licenseId, licenseKey })
+  }
+
+  const closeDeleteModal = () => {
+    setDeleteModal({ show: false, licenseId: '', licenseKey: '' })
+  }
+
+  const handleDeleteLicense = async () => {
+    const { licenseId } = deleteModal
+    closeDeleteModal()
 
     try {
       const res = await fetch('/api/admin/licenses/delete', {
@@ -185,6 +199,27 @@ export default function AdminLicensesContent() {
           <button onClick={() => setNotification(null)} className="ml-2 hover:opacity-70">
             <X className="h-4 w-4" />
           </button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={closeDeleteModal} />
+          <div className="relative bg-white rounded-xl p-6 shadow-2xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">Lizenz löschen?</h3>
+            <p className="text-slate-600 mb-4">
+              Möchtest du die Lizenz <strong className="font-mono text-xs">{deleteModal.licenseKey}</strong> wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={closeDeleteModal}>
+                Abbrechen
+              </Button>
+              <Button onClick={handleDeleteLicense} className="bg-[#D81B60] hover:bg-[#D81B60]/90 text-white">
+                Löschen
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -378,7 +413,7 @@ export default function AdminLicensesContent() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteLicense(license.id, license.licenseKey)}
+                            onClick={() => openDeleteModal(license.id, license.licenseKey)}
                             className="h-8 w-8 p-0 hover:bg-transparent transition-transform hover:-translate-y-0.5"
                             title="Löschen"
                           >
