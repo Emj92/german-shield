@@ -545,7 +545,7 @@ class GermanFence_Admin {
                     💬 WP-Optimierung
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>" data-tab="security">
                     🔥 Sicherheit & Firewall
                     <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>

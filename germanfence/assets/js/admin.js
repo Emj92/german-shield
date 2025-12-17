@@ -194,6 +194,10 @@
             setTimeout(function() {
                 translateUI('en');
             }, 100);
+        } else {
+            // Deutsch: Flagge auch als Bild setzen
+            $('#germanfence-language-toggle .language-flag').html('<img src="https://flagcdn.com/w20/de.png" width="20" height="15" alt="DE" style="vertical-align: middle;">');
+            $('#germanfence-language-toggle .language-code').text('DE');
         }
         
         // 2. Toast Notification
