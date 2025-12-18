@@ -97,8 +97,6 @@ class GermanFence_Free_License {
      */
     private function send_verification_email($email, $token, $license_key = '') {
         $verification_url = admin_url('admin.php?page=germanfence&tab=license&verify_token=' . $token);
-        $portal_url = 'https://portal.germanfence.de/login';
-        $password_reset_url = 'https://portal.germanfence.de/register?email=' . urlencode($email) . '&setPassword=true';
         
         $subject = '🛡️ GermanFence - E-Mail bestätigen';
         
@@ -119,10 +117,8 @@ class GermanFence_Free_License {
         }
         
         $message .= "🌐 PORTAL-ZUGANG:\n\n";
-        $message .= "Ab jetzt kannst du dich im GermanFence Portal einloggen:\n";
-        $message .= "👉 " . $portal_url . "\n\n";
-        $message .= "Falls du noch kein Passwort gesetzt hast, kannst du es hier erstellen:\n";
-        $message .= "👉 " . $password_reset_url . "\n\n";
+        $message .= "Nach der Bestätigung erhältst du eine weitere E-Mail\n";
+        $message .= "mit dem Link um dein Portal-Passwort zu setzen.\n\n";
         $message .= "══════════════════════════════════════════\n\n";
         $message .= "Viel Erfolg mit GermanFence!\n";
         $message .= "Dein GermanFence Team 🇩🇪\n\n";

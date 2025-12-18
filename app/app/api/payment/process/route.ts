@@ -104,19 +104,36 @@ export async function POST(request: NextRequest) {
     } else {
       console.log('✅ User already exists:', user.id)
       
-      // User existiert bereits - Rechnungsadresse aktualisieren falls angegeben
-      if (isBusiness || street || city) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            company: isBusiness && companyName ? companyName : user.company,
-            street: street || user.street,
-            zipCode: zipCode || user.zipCode,
-            city: city || user.city,
-            country: country || user.country,
-            vatId: isBusiness && vatId ? vatId : user.vatId,
-          }
-        })
+      // Generiere neuen Verification Token falls User noch kein Passwort hat oder Token abgelaufen ist
+      const needsNewToken = !user.password || user.password === '' || 
+                           !user.verificationToken || 
+                           (user.verificationTokenExpiry && user.verificationTokenExpiry < new Date())
+      
+      const newToken = needsNewToken ? 
+        Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) : 
+        user.verificationToken
+      const newTokenExpiry = needsNewToken ? 
+        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) : 
+        user.verificationTokenExpiry
+      
+      // User existiert bereits - Rechnungsadresse und ggf. Token aktualisieren
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          company: isBusiness && companyName ? companyName : user.company,
+          street: street || user.street,
+          zipCode: zipCode || user.zipCode,
+          city: city || user.city,
+          country: country || user.country,
+          vatId: isBusiness && vatId ? vatId : user.vatId,
+          verificationToken: newToken,
+          verificationTokenExpiry: newTokenExpiry,
+        }
+      })
+      
+      if (needsNewToken) {
+        console.log('✅ User updated with new verification token')
+      } else {
         console.log('✅ User billing address updated')
       }
     }

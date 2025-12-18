@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { Resend } from 'resend';
+import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -70,9 +71,15 @@ export async function POST(request: NextRequest) {
       where: { email: email.toLowerCase() }
     });
 
-    // Wenn User nicht existiert, erstelle Shadow-Account
+    // Wenn User nicht existiert, erstelle Shadow-Account mit verificationToken
+    let isNewUser = false;
     if (!user) {
       console.log(`[FREE-LICENSE-API] Erstelle Shadow-User für ${email}`);
+      
+      // Generiere Token für Passwort-Setup
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+      const tokenExpiry = new Date();
+      tokenExpiry.setDate(tokenExpiry.getDate() + 7); // 7 Tage gültig
       
       user = await prisma.user.create({
         data: {
@@ -80,11 +87,14 @@ export async function POST(request: NextRequest) {
           name: email.split('@')[0], // Name aus E-Mail ableiten
           password: '', // Kein Passwort für Shadow-Accounts
           role: 'USER',
-          emailVerified: true // Als verifiziert markieren
+          emailVerified: true, // Als verifiziert markieren
+          verificationToken: verificationToken,
+          verificationTokenExpiry: tokenExpiry
         }
       });
       
-      console.log(`[FREE-LICENSE-API] Shadow-User erstellt: ${user.id}`);
+      isNewUser = true;
+      console.log(`[FREE-LICENSE-API] Shadow-User erstellt: ${user.id} mit Token für Passwort-Setup`);
     }
 
     // Erstelle FREE-License in DB
@@ -113,8 +123,10 @@ export async function POST(request: NextRequest) {
     console.log(`[FREE-LICENSE-API] ✅ FREE-License erstellt: ${license.id} für User ${user.id} (${email})`);
 
     // Optional: Willkommens-E-Mail senden (nur wenn neuer User)
-    if (user.createdAt.getTime() === license.createdAt.getTime()) {
+    if (isNewUser && user.verificationToken) {
       try {
+        const passwordSetupUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://portal.germanfence.de'}/set-password?token=${user.verificationToken}`;
+        
         await resend.emails.send({
           from: 'GermanFence <noreply@germanfence.de>',
           to: email,
@@ -128,15 +140,22 @@ export async function POST(request: NextRequest) {
               <code style="font-size: 16px; background: white; padding: 8px; border-radius: 9px; display: inline-block; margin-top: 10px;">${licenseKey}</code>
             </div>
 
-            <p><strong>Portal-Zugang:</strong><br/>
-            Du kannst dich jetzt im GermanFence Portal einloggen:<br/>
-            <a href="https://portal.germanfence.de/login">https://portal.germanfence.de/login</a></p>
+            <h3>🔐 Portal-Zugang einrichten</h3>
+            <p>Um dich im GermanFence Portal einloggen zu können, musst du zuerst ein Passwort setzen:</p>
+            
+            <div style="text-align: center; margin: 25px 0;">
+              <a href="${passwordSetupUrl}" style="display: inline-block; padding: 14px 28px; background: #22D6DD; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px;">
+                🔐 Passwort setzen
+              </a>
+            </div>
+
+            <p style="color: #666; font-size: 13px;">Der Link ist 7 Tage gültig.</p>
 
             <p>Bei Fragen stehen wir dir gerne zur Verfügung!<br/>
             Dein GermanFence Team 🛡️</p>
           `
         });
-        console.log(`[FREE-LICENSE-API] Willkommens-E-Mail gesendet an ${email}`);
+        console.log(`[FREE-LICENSE-API] Willkommens-E-Mail mit Passwort-Setup-Link gesendet an ${email}`);
       } catch (emailError) {
         console.error('[FREE-LICENSE-API] E-Mail-Fehler:', emailError);
         // Fehler nicht durchreichen, da License trotzdem erstellt wurde
@@ -147,7 +166,8 @@ export async function POST(request: NextRequest) {
       success: true, 
       message: 'FREE-License erfolgreich registriert',
       licenseId: license.id,
-      userId: user.id
+      userId: user.id,
+      passwordSetupToken: isNewUser ? user.verificationToken : null
     });
 
   } catch (error) {

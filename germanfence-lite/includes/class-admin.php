@@ -545,9 +545,9 @@ class GermanFence_Admin {
                     💬 WP-Optimierung
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>" data-tab="security">
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     🔥 Sicherheit & Firewall
-                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" data-tab="settings">
                     ⚙️ Einstellungen
@@ -1209,6 +1209,21 @@ class GermanFence_Admin {
                 <!-- Sicherheit Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
                     
+                    <?php if (!$is_free_active && !$is_license_valid): ?>
+                        <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px;">
+                            <span style="font-size: 64px;">🔒</span>
+                            <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
+                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
+                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
+                            </p>
+                            <a href="<?php echo esc_url( admin_url('admin.php?page=germanfence&tab=settings') ); ?>" 
+                               style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
+                                <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
+                                Zur API-Key Verwaltung →
+                            </a>
+                        </div>
+                    <?php else: ?>
+                    
                     <?php 
                     // Security Tab: PRO-only - zeige Teaser wenn nicht lizenziert
                     $security_locked = !$is_license_valid;
@@ -1541,6 +1556,7 @@ class GermanFence_Admin {
                             </div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Einstellungen Tab -->
