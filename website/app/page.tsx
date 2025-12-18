@@ -55,7 +55,7 @@ export default function Home() {
             <a href="https://germanfence.de/downloads/germanfence-plugin.zip" download>
               <Button className="bg-[#22D6DD] text-white hover:bg-[#22D6DD] hover:text-white">
                 <Download className="mr-2 h-4 w-4" />
-                Download
+                Download Pro-Version
               </Button>
             </a>
             <div className="flex items-center gap-1 ml-2 border-l border-slate-200 dark:border-slate-700 pl-4">

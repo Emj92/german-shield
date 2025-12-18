@@ -315,7 +315,7 @@ class GermanFence_Free_License {
     }
     
     /**
-     * Aktiviert Lizenz mit Key (FREE, PRO, manuell generiert - alle Formate)
+     * Aktiviert Lizenz mit Key - LITE VERSION: Nur FREE-Keys erlaubt!
      */
     public function activate_with_key($key) {
         global $wpdb;
@@ -327,10 +327,20 @@ class GermanFence_Free_License {
             return array('success' => false, 'message' => 'Ungültiger License-Key (zu kurz)');
         }
         
-        // Akzeptiere ALLE Key-Formate:
-        // - GS-FREE-XXXX (Free-Keys)
-        // - GS-PRO-XXXX, GS-SINGLE-XXXX, GS-FREELANCER-XXXX, GS-AGENCY-XXXX (Pro-Keys)
-        // - Beliebige andere alphanumerische Keys mit Bindestrichen
+        // LITE VERSION: PRO-Keys sind NICHT erlaubt!
+        $is_pro_key = (strpos($key, 'GS-PRO-') === 0 || 
+                      strpos($key, 'GS-SINGLE-') === 0 || 
+                      strpos($key, 'GS-FREELANCER-') === 0 || 
+                      strpos($key, 'GS-AGENCY-') === 0);
+        
+        if ($is_pro_key) {
+            return array(
+                'success' => false, 
+                'message' => '⚠️ PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte deinstalliere GermanFence Lite und lade die PRO-Version von germanfence.de herunter.'
+            );
+        }
+        
+        // Nur FREE-Keys und Custom-Keys erlauben
         if (!preg_match('/^[A-Z0-9][A-Z0-9\-]{6,}[A-Z0-9]$/', $key)) {
             return array('success' => false, 'message' => 'Ungültiges Key-Format. Nur Buchstaben, Zahlen und Bindestriche erlaubt.');
         }
@@ -344,19 +354,15 @@ class GermanFence_Free_License {
         ));
         
         // Wenn lokal gefunden, E-Mail übernehmen
-        // Wenn NICHT lokal gefunden, versuche von API zu holen (PRO-Keys)
         $email = '';
         if ($user) {
             $email = $user->email;
         }
         
-        // Key-Typ bestimmen
+        // Key-Typ bestimmen (nur FREE oder CUSTOM in Lite)
         $key_type = 'CUSTOM';
         if (strpos($key, 'GS-FREE-') === 0) {
             $key_type = 'FREE';
-        } elseif (strpos($key, 'GS-PRO-') === 0 || strpos($key, 'GS-SINGLE-') === 0 || 
-                  strpos($key, 'GS-FREELANCER-') === 0 || strpos($key, 'GS-AGENCY-') === 0) {
-            $key_type = 'PRO';
         }
         
         // Key aktivieren
@@ -364,57 +370,20 @@ class GermanFence_Free_License {
         update_option('germanfence_free_verified', '1');
         update_option('germanfence_free_license_key', $key);
         
-        // Bei PRO-Keys auch in die Premium-Settings speichern
-        if ($key_type === 'PRO') {
-            $settings = get_option('germanfence_settings', array());
-            $settings['license_key'] = $key;
-            update_option('germanfence_settings', $settings);
-            
-            // License-Cache leeren für Revalidierung
-            delete_transient('germanfence_license_data');
-            
-            // SOFORT API-Validierung durchführen um Features zu laden
-            require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php';
-            $license = new GermanFence_License();
-            $validation = $license->validate_license($key);
-            
-            // Email aus API-Response holen wenn nicht lokal gefunden
-            if (empty($email) && isset($validation['license']['userEmail'])) {
-                $email = $validation['license']['userEmail'];
-            }
-            
-            GermanFence_Logger::log('[LICENSE] API-Validierung nach Aktivierung: ' . json_encode($validation));
-        }
-        
         // Cache leeren
         wp_cache_delete('germanfence_free_verified', 'options');
         wp_cache_delete('germanfence_free_email', 'options');
         wp_cache_delete('germanfence_free_license_key', 'options');
         
-        GermanFence_Logger::log('[LICENSE] Mit Key aktiviert: ' . $key . ' | Typ: ' . $key_type . ' | E-Mail: ' . $email);
+        GermanFence_Logger::log('[LICENSE-LITE] Mit Key aktiviert: ' . $key . ' | Typ: ' . $key_type . ' | E-Mail: ' . $email);
         
         // Registriere FREE-License auch im Portal (damit sie in der DB erscheint)
         if ($key_type === 'FREE') {
             $this->sync_license_to_portal($email, $key, $this->get_current_domain());
         }
         
-        // Erfolgs-Nachricht mit Lizenztyp
-        $type_names = array(
-            'FREE' => 'FREE',
-            'PRO' => 'PRO',
-            'SINGLE' => 'SINGLE',
-            'FREELANCER' => 'FREELANCER',
-            'AGENCY' => 'AGENCY',
-            'CUSTOM' => 'CUSTOM'
-        );
-        
-        // Detaillierter Typ für spezielle Keys
-        $detailed_type = $key_type;
-        if (strpos($key, 'GS-SINGLE-') === 0) $detailed_type = 'SINGLE';
-        elseif (strpos($key, 'GS-FREELANCER-') === 0) $detailed_type = 'FREELANCER';
-        elseif (strpos($key, 'GS-AGENCY-') === 0) $detailed_type = 'AGENCY';
-        
-        $type_display = isset($type_names[$detailed_type]) ? $type_names[$detailed_type] : $detailed_type;
+        // Erfolgs-Nachricht (nur FREE oder CUSTOM in Lite)
+        $type_display = ($key_type === 'FREE') ? 'FREE' : 'CUSTOM';
         $success_msg = '✅ ' . $type_display . '-Lizenz erfolgreich aktiviert!';
         
         return array('success' => true, 'message' => $success_msg);

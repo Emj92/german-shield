@@ -547,7 +547,7 @@ class GermanFence_Admin {
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
                     🔥 Sicherheit & Firewall
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
+                    <span class="lock-badge">🔒</span>
                 </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" data-tab="settings">
                     ⚙️ Einstellungen
@@ -1569,17 +1569,38 @@ class GermanFence_Admin {
                                 <?php
                         $license_status = $license_manager->check_license();
                         
-                        // API-Key aktivieren
+                        // API-Key aktivieren - LITE VERSION: Nur FREE-Keys erlaubt!
                         if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
-                            $result = $license_manager->activate_license(sanitize_text_field(wp_unslash($_POST['license_key'])));
-                            if ($result['success']) {
-                                add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
-                                $license_info = $license_manager->get_license_info();
-                                $license_status = $license_manager->check_license();
+                            $input_key = strtoupper(trim(sanitize_text_field(wp_unslash($_POST['license_key']))));
+                            
+                            // Prüfe ob es ein PRO-Key ist (nicht erlaubt in Lite)
+                            $is_pro_key = (strpos($input_key, 'GS-PRO-') === 0 || 
+                                          strpos($input_key, 'GS-SINGLE-') === 0 || 
+                                          strpos($input_key, 'GS-FREELANCER-') === 0 || 
+                                          strpos($input_key, 'GS-AGENCY-') === 0);
+                            
+                            if ($is_pro_key) {
+                                // PRO-Key in Lite-Version nicht erlaubt - Toast anzeigen
+                                echo '<script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        if (typeof GermanFence !== "undefined" && GermanFence.showToast) {
+                                            GermanFence.showToast("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.", "error", 8000);
+                                        } else {
+                                            alert("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.");
+                                        }
+                                    });
+                                </script>';
                             } else {
-                                add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'error');
+                                $result = $license_manager->activate_license($input_key);
+                                if ($result['success']) {
+                                    add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
+                                    $license_info = $license_manager->get_license_info();
+                                    $license_status = $license_manager->check_license();
+                                } else {
+                                    add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'error');
+                                }
+                                settings_errors('germanfence_messages');
                             }
-                            settings_errors('germanfence_messages');
                         }
                         
                         // API-Key deaktivieren (PRO oder FREE) - Plugin komplett sperren
@@ -1718,30 +1739,33 @@ class GermanFence_Admin {
                                     <!-- Key Aktivierung -->
                                     <div id="free-key-content" class="germanfence-free-content" style="display: none;">
                                         <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                            Hast du bereits einen API-Key? Gib ihn hier ein! (FREE, PRO, SINGLE, FREELANCER, AGENCY)
+                                            Hier kannst du deinen <strong>FREE API-Key</strong> eingeben:
                                         </p>
                                         
                                         <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">API-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-XXXX-XXXXXXXXXXXX" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">FREE API-Key:</label>
+                                            <input type="text" id="free-key-input" placeholder="GS-FREE-XXXXXXXXXXXX" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
                                         </div>
                                         
                                         <div style="text-align: center; margin-top: auto;">
                                             <button type="button" id="activate-free-key-btn" class="germanfence-btn-primary">
                                                 <span class="dashicons dashicons-unlock"></span>
-                                                API-Key aktivieren
+                                                FREE API-Key aktivieren
                                             </button>
                                         </div>
                                         
-                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
-                                            💡 Kostenlose API-Keys erhältst du nach der E-Mail-Verifizierung. PRO API-Keys kannst du auf germanfence.de kaufen.
-                                        </p>
+                                        <div style="margin: 20px 0 0 0; padding: 15px; background: rgba(216, 27, 96, 0.08); border-radius: 9px; border: 1px solid rgba(216, 27, 96, 0.2);">
+                                            <p style="margin: 0; color: #D81B60; font-size: 14px; line-height: 1.5;">
+                                                <strong>💎 Du hast eine PRO-Version gekauft?</strong><br>
+                                                PRO-Keys funktionieren nur mit der PRO-Version. Bitte deinstalliere GermanFence Lite und lade die <a href="https://germanfence.de" target="_blank" style="color: #D81B60; font-weight: 600;">PRO-Version von germanfence.de</a> herunter.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             <?php endif; ?>
                         </div>
                         
-                        <!-- PRO API-KEY KAUFEN BOX -->
+                        <!-- PRO VERSION HINWEIS BOX -->
                         <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
                             <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
                             <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
@@ -1772,9 +1796,9 @@ class GermanFence_Admin {
                                 </ul>
                             </div>
                             
-                            <div style="background: #ffffff; padding: 12px; border-radius: 9px; margin-bottom: 15px; text-align: center; border: 1px solid #d9dde1;">
-                                <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                    ✅ 14 Tage 100% Geld-zurück-Garantie
+                            <div style="background: rgba(216, 27, 96, 0.08); padding: 15px; border-radius: 9px; margin-bottom: 15px; border: 1px solid rgba(216, 27, 96, 0.2);">
+                                <p style="margin: 0; color: #D81B60; font-size: 14px; line-height: 1.5;">
+                                    <strong>⚠️ Wichtig:</strong> Um PRO-Features zu nutzen, musst du die <strong>PRO-Version</strong> von GermanFence installieren. Diese Lite-Version unterstützt nur FREE API-Keys.
                                 </p>
                             </div>
                             
@@ -1783,7 +1807,7 @@ class GermanFence_Admin {
                                    class="germanfence-btn-primary" 
                                    style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; text-decoration: none !important; gap: 8px !important;">
                                     <span class="dashicons dashicons-cart" style="font-size: 18px;"></span>
-                                    Jetzt PRO kaufen
+                                    PRO-Version kaufen & downloaden
                             </a>
                             </div>
                         </div>
@@ -1883,35 +1907,26 @@ class GermanFence_Admin {
                         <h2 style="margin-top: 40px;">⭐ Badge - "Diese Seite wird geschützt"</h2>
                         
                         <?php 
-                        $license = GermanFence_License::get_instance();
-                        $package_type = $license->get_package_type();
-                        $is_free = ($package_type === 'FREE');
-                        $has_whitelabel = $license->has_feature('whiteLabel');
+                        // Lite-Version: Badge ist IMMER Pflicht (Free oder keine Lizenz)
+                        // Nur PRO-Lizenzen dürfen Badge ausschalten, aber PRO geht nicht in Lite
+                        $is_lite_free = true; // In Lite-Version ist Badge immer Pflicht
                         ?>
                         
                         <div class="germanfence-setting">
-                            <label class="germanfence-toggle <?php echo $is_free ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="badge_enabled" value="1" 
-                                    <?php checked($is_free || (isset($settings['badge_enabled']) && $settings['badge_enabled'] === '1')); ?>
-                                    <?php echo $is_free ? 'disabled onclick="return false;"' : ''; ?>>
+                            <label class="germanfence-toggle germanfence-toggle-locked">
+                                <input type="checkbox" name="badge_enabled" value="1" checked disabled onclick="return false;">
                                 <span class="toggle-slider"></span>
-                                <?php if ($is_free): ?>
-                                    <span class="toggle-lock-icon">🔒</span>
-                                <?php endif; ?>
+                                <span class="toggle-lock-icon">🔒</span>
                             </label>
                             <div class="setting-info">
-                                <h3>Badge anzeigen <?php echo $is_free ? '<span style="color: #22D6DD;">● Aktiv (FREE)</span>' : ''; ?></h3>
+                                <h3>Badge anzeigen <span style="color: #22D6DD;">● Pflicht (Lite)</span></h3>
                                 <p>Zeigt einen Badge auf der Website, dass sie durch GermanFence geschützt wird.
-                                <?php if (!$has_whitelabel): ?>
-                                    <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist ab der <strong>Single API-Key</strong> verfügbar. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ Jetzt upgraden</a>
-                                <?php else: ?>
-                                    <br><strong style="color: #22D6DD;">✓ White Label verfügbar:</strong> Du kannst den Badge ausblenden.
-                                <?php endif; ?>
+                                <br><strong style="color: #22D6DD;">🏷️ White Label:</strong> Badge ausblenden ist nur mit der <strong>PRO-Version</strong> möglich. <a href="https://germanfence.de/#pricing" target="_blank" style="color: #22D6DD; text-decoration: none;">→ PRO-Version kaufen</a>
                                 </p>
                             </div>
                         </div>
                         
-                        <div class="germanfence-subsetting" id="badge-settings" style="<?php echo (!$is_free && (!isset($settings['badge_enabled']) || $settings['badge_enabled'] !== '1')) ? 'display:none;' : ''; ?>">
+                        <div class="germanfence-subsetting" id="badge-settings">
                             <h3>Badge-Einstellungen</h3>
                             
                             <!-- Anzeige-Bereich & Position nebeneinander -->
@@ -2246,13 +2261,9 @@ class GermanFence_Admin {
         );
         // phpcs:enable WordPress.Security.NonceVerification.Missing
         
-        // FREE Version: Badge MUSS aktiviert sein (Zwingend)
-        $license = GermanFence_License::get_instance();
-        $package_type = $license->get_package_type();
-        if ($package_type === 'FREE') {
-            $settings['badge_enabled'] = '1'; // Badge immer an bei FREE
-            GermanFence_Logger::log_save('FREE Version: Badge zwingend aktiviert');
-        }
+        // LITE Version: Badge MUSS IMMER aktiviert sein (Pflicht)
+        $settings['badge_enabled'] = '1'; // Badge immer an in Lite-Version
+        GermanFence_Logger::log_save('LITE Version: Badge zwingend aktiviert');
         
         GermanFence_Logger::log_save('Einstellungen vorbereitet', $settings);
         
