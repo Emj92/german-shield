@@ -1348,18 +1348,17 @@ class GermanFence_Admin {
                 </div>
                 
                     <!-- EMAIL OBFUSCATION Section -->
-                    <div class="germanfence-section" style="opacity: 0.6; pointer-events: none;">
+                    <div class="germanfence-section">
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
                             <h2 style="margin: 0;">📧 E-Mail-Schutz (Obfuscation)</h2>
-                            <span style="background: linear-gradient(135deg, #22D6DD, #EC4899); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">🚀 Coming Soon</span>
                         </div>
                         <p class="description" style="margin-bottom: 20px;">
-                            Schütze E-Mail-Adressen auf deiner Website vor Spam-Bots durch intelligente Verschleierung. <strong>Diese Funktion wird in einem kommenden Update verfügbar sein.</strong>
+                            Schütze E-Mail-Adressen auf deiner Website vor Spam-Bots durch intelligente Verschleierung.
                         </p>
                         
                         <div class="germanfence-setting">
                             <label class="germanfence-toggle">
-                                <input type="checkbox" name="email_obfuscation_enabled" value="1" disabled>
+                                <input type="checkbox" name="email_obfuscation_enabled" value="1" <?php checked(isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1'); ?>>
                                 <span class="toggle-slider"></span>
                             </label>
                             <div class="setting-info">
