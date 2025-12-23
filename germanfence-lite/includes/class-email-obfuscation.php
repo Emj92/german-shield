@@ -43,6 +43,9 @@ class GermanFence_Email_Obfuscation {
         $this->email_scripts = array();
         $this->processed_ids = array();
         
+        // Schritt 0: Emails in data-Attributen entfernen/maskieren (Elementor, etc.)
+        $html = $this->clean_data_attributes($html);
+        
         // Schritt 1: Alle mailto-Links ersetzen
         $html = $this->replace_mailto_links($html, $method);
         
@@ -56,6 +59,31 @@ class GermanFence_Email_Obfuscation {
         }
         
         return $html;
+    }
+    
+    /**
+     * Entfernt/maskiert Emails in data-* Attributen (z.B. Elementor data-text)
+     * Diese werden oft von Page Buildern als versteckter Text gerendert
+     */
+    private function clean_data_attributes($html) {
+        // Pattern für data-* Attribute mit Emails
+        $email_pattern = '/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/';
+        
+        // Finde alle Tags mit data-* Attributen
+        $pattern = '/(<[^>]+\s)(data-[a-z-]+\s*=\s*["\'])([^"\']*@[^"\']*)(["\'])([^>]*>)/is';
+        
+        return preg_replace_callback($pattern, function($m) use ($email_pattern) {
+            $before = $m[1];
+            $attr_start = $m[2];
+            $attr_value = $m[3];
+            $attr_end = $m[4];
+            $after = $m[5];
+            
+            // Ersetze Emails im Attribut-Wert mit Platzhalter
+            $cleaned_value = preg_replace($email_pattern, '[E-Mail]', $attr_value);
+            
+            return $before . $attr_start . $cleaned_value . $attr_end . $after;
+        }, $html);
     }
     
     /**
@@ -81,7 +109,7 @@ class GermanFence_Email_Obfuscation {
     }
     
     /**
-     * Ersetzt Plain-Text E-Mails (nur zwischen HTML-Tags)
+     * Ersetzt Plain-Text E-Mails (nur zwischen HTML-Tags, NICHT in Attributen)
      */
     private function replace_plaintext_emails($html, $method) {
         // Teile HTML in Segmente: Tags und Text
@@ -103,14 +131,22 @@ class GermanFence_Email_Obfuscation {
             if (preg_match('/<\/textarea>/i', $part)) $in_textarea = false;
             if (preg_match('/<input\b/i', $part)) $in_input = true;
             
-            // Wenn es ein HTML-Tag ist oder wir in geschützten Bereichen sind, nicht ändern
-            if (strpos($part, '<') === 0 || $in_script || $in_style || $in_textarea || $in_input) {
+            // Wenn es ein HTML-Tag ist, prüfe ob es bereits geschützte Emails enthält
+            if (strpos($part, '<') === 0) {
+                // Überspringe Tags komplett - keine Emails in Attributen ersetzen!
                 $result .= $part;
-                $in_input = false; // Input ist self-closing
+                $in_input = false;
                 continue;
             }
             
-            // Nur reinen Text verarbeiten
+            // In geschützten Bereichen nicht ändern
+            if ($in_script || $in_style || $in_textarea || $in_input) {
+                $result .= $part;
+                $in_input = false;
+                continue;
+            }
+            
+            // Nur reinen Text verarbeiten (zwischen Tags)
             $email_pattern = '/\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\b/';
             
             $part = preg_replace_callback($email_pattern, function($m) use ($method) {
