@@ -1012,13 +1012,7 @@ class GermanFence_Admin {
                     <?php endif; ?>
                 </div>
                 
-                <!-- GEO Blocking Tab (NEU: Separates System) -->
-                <?php
-                $geo = new GermanFence_GeoBlocking();
-                $geo->render_tab($settings, $license_info, $is_license_valid);
-                ?>
-                
-                <!-- Phrase Blocking Tab REMOVED - Now integrated in Geo Tab -->
+                <!-- GEO Blocking & Phrase Blocking removed from Lite version (WordPress.org compliance) -->
                 
                 <!-- WordPress Spam Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'notices' ? 'active' : ''; ?>" id="tab-notices">
