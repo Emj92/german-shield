@@ -133,10 +133,9 @@ class GermanFence_Security {
      */
     private function calculate_integrity_hash() {
         $files_to_check = array(
-            GERMANFENCE_PLUGIN_DIR . 'german-shield.php',
-            GERMANFENCE_PLUGIN_DIR . 'includes/class-german-shield.php',
+            GERMANFENCE_PLUGIN_DIR . 'germanfence.php',
+            GERMANFENCE_PLUGIN_DIR . 'includes/class-germanfence.php',
             GERMANFENCE_PLUGIN_DIR . 'includes/class-antispam.php',
-            GERMANFENCE_PLUGIN_DIR . 'includes/class-geo-blocking.php',
         );
         
         $combined_hash = '';

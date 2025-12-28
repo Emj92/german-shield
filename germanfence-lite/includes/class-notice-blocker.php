@@ -35,7 +35,7 @@ class GermanFence_Notice_Blocker {
      * Blockiert ALLE WP Core Meldungen auf GermanFence Admin-Seiten
      */
     public function block_all_wp_notices_on_germanfence() {
-        echo '<style type="text/css">
+        $css = '
             /* ALLE WP Core Notices auf GermanFence-Seiten blockieren */
             .wp-core-ui .notice,
             .wp-core-ui .notice.is-dismissible,
@@ -50,7 +50,8 @@ class GermanFence_Notice_Blocker {
             div.notice:not([class*="germanfence"]) {
                 display: none !important;
             }
-        </style>';
+        ';
+        wp_add_inline_style('wp-admin', $css);
     }
     
     public function add_blocking_css() {
@@ -111,8 +112,7 @@ class GermanFence_Notice_Blocker {
         }
         
         if ( ! empty( $css ) ) {
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS is generated internally
-            echo '<style type="text/css">' . $css . '</style>';
+            wp_add_inline_style('wp-admin', $css);
         }
     }
 }

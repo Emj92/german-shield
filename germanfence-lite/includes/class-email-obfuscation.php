@@ -21,10 +21,17 @@ class GermanFence_Email_Obfuscation {
     public function __construct() {
         add_shortcode('germanfence_email', array($this, 'email_shortcode'));
         add_action('template_redirect', array($this, 'start_buffer'), 0);
+        add_action('shutdown', array($this, 'end_buffer'), 999);
     }
     
     public function start_buffer() {
         ob_start(array($this, 'process_html'));
+    }
+    
+    public function end_buffer() {
+        if (ob_get_level() > 0) {
+            ob_end_flush();
+        }
     }
     
     /**

@@ -128,38 +128,35 @@ class GermanFence_Badge {
                 </a>
             </div>
         </template>
-        
-        <script>
+        <?php
+        // Inline JS für Badge-Platzierung
+        $badge_js = "
         (function() {
-            const positionType = '<?php echo esc_js($position_type); ?>'; // 'above' oder 'below'
+            const positionType = '" . esc_js($position_type) . "';
             
             function addBadgeToForms() {
                 const template = document.getElementById('germanfence-badge-template');
                 if (!template) return;
                 
-                // Suche alle Formular-Wrapper
                 const formSelectors = [
-                    '.wpcf7',                    // Contact Form 7
-                    '.wpforms-container',        // WPForms
-                    '.gform_wrapper',            // Gravity Forms
-                    '.nf-form-wrap',             // Ninja Forms
-                    'form.elementor-form',       // Elementor Forms
-                    'form[data-germanfence]'   // Custom Forms mit Marker
+                    '.wpcf7',
+                    '.wpforms-container',
+                    '.gform_wrapper',
+                    '.nf-form-wrap',
+                    'form.elementor-form',
+                    'form[data-germanfence]'
                 ];
                 
                 formSelectors.forEach(function(selector) {
                     const containers = document.querySelectorAll(selector);
                     
                     containers.forEach(function(container) {
-                        // Prüfe ob Badge schon vorhanden
                         if (container.querySelector('.germanfence-badge-form-local')) {
                             return;
                         }
                         
-                        // Clone Badge aus Template
                         const badge = template.content.cloneNode(true);
                         
-                        // Füge Badge hinzu
                         if (positionType === 'above') {
                             container.insertBefore(badge, container.firstChild);
                         } else {
@@ -168,10 +165,8 @@ class GermanFence_Badge {
                     });
                 });
                 
-                // Fallback: Normale Forms ohne spezielle Wrapper
-                const normalForms = document.querySelectorAll('form:not([class*="comment"]):not([role="search"])');
+                const normalForms = document.querySelectorAll('form:not([class*=\"comment\"]):not([role=\"search\"])');
                 normalForms.forEach(function(form) {
-                    // Nur wenn noch nicht in einem der oberen Container
                     const isInFormContainer = formSelectors.some(function(sel) {
                         return form.closest(sel) !== null;
                     });
@@ -188,7 +183,6 @@ class GermanFence_Badge {
                 });
             }
             
-            // Beim Laden ausführen
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(addBadgeToForms, 500);
@@ -197,11 +191,11 @@ class GermanFence_Badge {
                 setTimeout(addBadgeToForms, 500);
             }
             
-            // Auch nach 2s nochmal (für dynamisch geladene Formulare)
             setTimeout(addBadgeToForms, 2000);
         })();
-        </script>
-        <?php
+        ";
+        wp_add_inline_script('jquery', $badge_js);
+        ?><?php
     }
     
     private function get_badge_css($display_type = 'global') {

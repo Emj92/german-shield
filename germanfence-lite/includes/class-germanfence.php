@@ -37,8 +37,7 @@ class GermanFence {
     private function load_dependencies() {
         $this->admin = new GermanFence_Admin();
         $this->antispam = new GermanFence_AntiSpam();
-        $this->geo_blocking = new GermanFence_GeoBlocking();
-        $this->phrase_blocking = new GermanFence_PhraseBlocking();
+        // GEO-Blocking & Phrase-Blocking removed from Lite version (WordPress.org compliance)
         $this->statistics = new GermanFence_Statistics();
         $this->form_detector = new GermanFence_FormDetector();
         $this->telemetry = new GermanFence_Telemetry();

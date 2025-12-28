@@ -288,8 +288,8 @@ class GermanFence_FormDetector {
     public function protect_ninja_forms($form_settings, $form_id) {
         // Add hidden fields via JavaScript (Ninja Forms uses AJAX)
         add_action('wp_footer', function() {
-            ?>
-            <script>
+            $protection_fields = esc_js( $this->antispam->get_protection_fields() );
+            $ninja_js = "
             jQuery(document).ready(function($) {
                 if (typeof Marionette !== 'undefined') {
                     var germanfenceController = Marionette.Object.extend({
@@ -297,15 +297,15 @@ class GermanFence_FormDetector {
                             this.listenTo(Backbone.Radio.channel('forms'), 'render:view', this.addProtection);
                         },
                         addProtection: function(view) {
-                            var protectionFields = '<?php echo esc_js( $this->antispam->get_protection_fields() ); ?>';
+                            var protectionFields = '" . $protection_fields . "';
                             view.$el.find('form').append(protectionFields);
                         }
                     });
                     new germanfenceController();
                 }
             });
-            </script>
-            <?php
+            ";
+            wp_add_inline_script('jquery', $ninja_js);
         });
         
         return $form_settings;

@@ -2,8 +2,8 @@
 /**
  * Plugin Name: GermanFence Light
  * Plugin URI:  https://portal.germanfence.de/login
- * Description: Kostenlose Anti-Spam Lösung aus Deutschland! Schützt alle Formulare vor Spam mit Honeypot, Zeitstempel-Validierung und JavaScript-Check. PRO-Features (GEO-Blocking, Phrasen-Filter) als Vorschau enthalten. Made in Germany 🇩🇪
- * Version: 1.7.7
+ * Description: Free Anti-Spam solution from Germany! Protects all forms with honeypot, timestamp validation & JavaScript check. Made in Germany 🇩🇪
+ * Version: 1.7.8
  * Author: GermanFence Team
  * Author URI: https://germanfence.de
  * License: GPL-2.0-or-later
@@ -43,14 +43,16 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GERMANFENCE_VERSION', '1.7.7');
+define('GERMANFENCE_VERSION', '1.7.8');
 define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
 
 // Include required files
-// Load translations first
-require_once GERMANFENCE_PLUGIN_DIR . 'languages/translations.php';
+// Load translations first (if exists)
+if (file_exists(GERMANFENCE_PLUGIN_DIR . 'languages/translations.php')) {
+    require_once GERMANFENCE_PLUGIN_DIR . 'languages/translations.php';
+}
 
 // Security-Klasse temporär deaktiviert - zu aggressiv
 // Load core classes (License zuerst!)
@@ -59,8 +61,7 @@ require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php'; // Zuerst la
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-germanfence.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-admin.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-antispam.php';
-require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-geo-blocking.php';
-require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-phrase-blocking.php';
+// GEO-Blocking & Phrase-Blocking removed from Lite version (WordPress.org compliance)
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-statistics.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-detector.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-stats.php';

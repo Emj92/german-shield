@@ -533,19 +533,13 @@ class GermanFence_Admin {
                     📊 Dashboard
                     <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="antispam" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'antispam' ? 'active' : ''; ?>" data-tab="antispam">
                     🛡️ Formular-Schutz
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'geo' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="geo" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
-                    🌍 Geo & Content-Filter
-                    <?php if (!$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
-                </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="notices" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?>" data-tab="notices">
                     💬 WP-Optimierung
-                    <?php if (!$is_free_active && !$is_license_valid): ?><span class="lock-badge">🔒</span><?php endif; ?>
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>" data-tab="security" <?php echo (!$is_free_active && !$is_license_valid) ? 'disabled' : ''; ?>>
+                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>" data-tab="security">
                     🔥 Sicherheit & Firewall
                     <span class="lock-badge">🔒</span>
                 </button>
@@ -1135,10 +1129,10 @@ class GermanFence_Admin {
                                 <tr>
                                     <td><strong>Nonce gültig:</strong></td>
                                     <td><?php 
-                                        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Debug output only, nonce verified above
+                                        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Debug output only, nonce verified above
                                         if (isset($_POST['germanfence_nonce'])) {
-                                            // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Debug output only, nonce verified above
-                                            echo wp_verify_nonce($_POST['germanfence_nonce'], 'germanfence_settings') ? '✅ JA' : '❌ NEIN (FEHLER!)';
+                                            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Debug output only, nonce verified above
+                                            echo wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['germanfence_nonce'])), 'germanfence_settings') ? '✅ JA' : '❌ NEIN (FEHLER!)';
                                         } else {
                                             echo '⚠️ Nicht geprüft';
                                         }
@@ -1225,9 +1219,9 @@ class GermanFence_Admin {
                     <?php else: ?>
                     
                     <?php 
-                    // Security Tab: PRO-only - zeige Teaser wenn nicht lizenziert
-                    $security_locked = !$is_license_valid;
-                    $security_disabled = $security_locked ? 'disabled' : '';
+                    // Security Tab: Fully functional in Lite version (WordPress.org compliance)
+                    $security_locked = false;
+                    $security_disabled = '';
                     ?>
                     
                     
@@ -1306,7 +1300,7 @@ class GermanFence_Admin {
                                 </div>
                             </div>
                         
-                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px; <?php echo $security_locked ? 'opacity: 0.6; pointer-events: none;' : ''; ?>">
+                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
                             <div class="setting-row" style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 10px;"><strong>Maximale Login-Versuche:</strong></label>
                                 <div style="display: flex; align-items: center; gap: 15px;">
@@ -1431,8 +1425,8 @@ class GermanFence_Admin {
                     </div>
                     
                     <!-- .HTACCESS GENERATOR Section -->
-                    <div class="germanfence-section" style="<?php echo $security_locked ? 'opacity: 0.7; pointer-events: none;' : ''; ?>">
-                        <h2>📄 .htaccess Sicherheits-Regeln <?php if ($security_locked): ?><span style="color: #D81B60; font-size: 14px;">🔒</span><?php endif; ?></h2>
+                    <div class="germanfence-section">
+                        <h2>📄 .htaccess Sicherheits-Regeln</h2>
                         <p class="description" style="margin-bottom: 20px;">
                             Professionelle .htaccess-Regeln für Speed & Security. Code wird automatisch bei Auswahl generiert.
                         </p>
@@ -1580,7 +1574,7 @@ class GermanFence_Admin {
                             
                             if ($is_pro_key) {
                                 // PRO-Key in Lite-Version nicht erlaubt - Toast anzeigen
-                                echo '<script>
+                                $pro_key_js = '
                                     document.addEventListener("DOMContentLoaded", function() {
                                         if (typeof GermanFence !== "undefined" && GermanFence.showToast) {
                                             GermanFence.showToast("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.", "error", 8000);
@@ -1588,7 +1582,8 @@ class GermanFence_Admin {
                                             alert("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.");
                                         }
                                     });
-                                </script>';
+                                ';
+                                wp_add_inline_script('jquery', $pro_key_js);
                             } else {
                                 $result = $license_manager->activate_license($input_key);
                                 if ($result['success']) {
@@ -1631,7 +1626,8 @@ class GermanFence_Admin {
                             settings_errors('germanfence_messages');
                             
                             // WICHTIG: Reload erzwingen damit Plugin gesperrt wird
-                            echo '<script>setTimeout(function(){ window.location.reload(); }, 1000);</script>';
+                            $reload_js = 'setTimeout(function(){ window.location.reload(); }, 1000);';
+                            wp_add_inline_script('jquery', $reload_js);
                         }
                         ?>
                         
@@ -1763,53 +1759,7 @@ class GermanFence_Admin {
                                 </div>
                             <?php endif; ?>
                         </div>
-                        
-                        <!-- PRO VERSION HINWEIS BOX -->
-                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
-                            <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">💎 GermanFence PRO - Maximaler Schutz</h3>
-                            <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
-                                Upgrade jetzt auf PRO und schalte leistungsstarke Anti-Spam Features frei! Perfekt für professionelle Websites, die maximalen Schutz benötigen.
-                            </p>
-                            
-                            <div style="background: #ffffff; padding: 20px; border-radius: 9px; margin-bottom: 20px; border: 1px solid #d9dde1;">
-                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px; font-weight: 600;">🚀 Exklusive PRO-Features:</h4>
-                                <ul style="margin: 0; padding: 0 0 0 20px; list-style: none;">
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>GEO-Blocking</strong> – Blockiere Spam aus beliebigen Ländern
-                                    </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Phrasen-Blocking</strong> – Intelligente Keyword & Regex-Filter
-                                    </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>URL-Limit</strong> – SEO-Spam effektiv blockieren
-                                    </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Domain-Blocking</strong> – Spam-Domains gezielt sperren
-                                    </li>
-                                    <li style="margin-bottom: 8px; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Erweiterte Statistiken</strong> – Detaillierte Spam-Analyse
-                                    </li>
-                                    <li style="margin-bottom: 0; color: #1d2327; font-size: 15px;">
-                                        <span style="color: #22D6DD; font-weight: 600;">✓</span> <strong>Priority Support</strong> – Schnelle Hilfe bei Fragen
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div style="background: rgba(216, 27, 96, 0.08); padding: 15px; border-radius: 9px; margin-bottom: 15px; border: 1px solid rgba(216, 27, 96, 0.2);">
-                                <p style="margin: 0; color: #D81B60; font-size: 14px; line-height: 1.5;">
-                                    <strong>⚠️ Wichtig:</strong> Um PRO-Features zu nutzen, musst du die <strong>PRO-Version</strong> von GermanFence installieren. Diese Lite-Version unterstützt nur FREE API-Keys.
-                                </p>
-                            </div>
-                            
-                            <div style="text-align: center; margin-top: auto;">
-                                <a href="https://germanfence.de/#pricing" target="_blank" 
-                                   class="germanfence-btn-primary" 
-                                   style="display: inline-flex !important; align-items: center !important; height: 44px !important; padding: 0 24px !important; text-decoration: none !important; gap: 8px !important;">
-                                    <span class="dashicons dashicons-cart" style="font-size: 18px;"></span>
-                                    PRO-Version kaufen & downloaden
-                            </a>
-                            </div>
-                        </div>
+
                         
                         </div><!-- Ende 2-Spalten Layout -->
                         <?php endif; ?>
