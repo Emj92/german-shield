@@ -183,15 +183,10 @@ class GermanFence_Security {
     
     /**
      * Verify license for protected features
+     * Lite Version: Always returns true (no license check needed)
      */
     public static function check_license_for_feature($feature) {
-        $license_manager = new GermanFence_License();
-        $license_info = $license_manager->get_license_info();
-        
-        if (!$license_info['is_valid']) {
-            return false;
-        }
-        
+        // Lite Version: Keine Lizenzprüfung - immer aktiv
         return true;
     }
     

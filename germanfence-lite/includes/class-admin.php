@@ -201,7 +201,7 @@ class GermanFence_Admin {
         GermanFence_Logger::log_admin('add_admin_menu() wird aufgerufen');
         
         // Hauptmenü mit eigenem Logo (nur Icon)
-        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png';
+        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png';
         add_menu_page(
             'GermanFence',
             'GermanFence',
@@ -260,10 +260,10 @@ class GermanFence_Admin {
         
         add_submenu_page(
             'germanfence',
-            'Sicherheit',
-            '🔒 Sicherheit',
+            'Pro Version',
+            '⭐ Pro Version',
             'manage_options',
-            'germanfence&tab=security',
+            'germanfence&tab=pro',
             array($this, 'render_admin_page')
         );
         
@@ -420,25 +420,11 @@ class GermanFence_Admin {
         $detected_forms = $form_stats->get_detected_forms();
         GermanFence_Logger::log_admin('Formulare erkannt', array('total' => $detected_forms['total']));
         
-        $license_manager = new GermanFence_License();
-        $license_info = $license_manager->get_license_info();
-        $license_status = $license_manager->check_license();
-        
-        // WICHTIG: Prüfe ob es eine ECHTE PRO-Lizenz ist (nicht FREE!)
-        $package_type = isset($license_info['package_type']) ? $license_info['package_type'] : 'FREE';
-        $is_pro_license = in_array($package_type, array('SINGLE', 'FREELANCER', 'AGENCY'));
-        $is_license_valid = !empty($license_status['valid']) && $is_pro_license;
-
-        $free_manager = new GermanFence_Free_License();
-        
-        // WICHTIG: Immer frisch aus DB laden, nicht cachen
-        wp_cache_delete('germanfence_free_verified', 'options');
-        wp_cache_delete('germanfence_free_email', 'options');
-        
-        $is_free_active = $free_manager->is_free_active();
-        $free_email = $free_manager->get_verified_email();
-        
-        GermanFence_Logger::log_admin('[LICENSE-CHECK] Package: ' . $package_type . ', Free aktiv: ' . ($is_free_active ? 'JA' : 'NEIN') . ', Email: ' . $free_email . ', PRO License: ' . ($is_license_valid ? 'JA' : 'NEIN'));
+        // Lite Version - keine Lizenzprüfung nötig
+        $is_license_valid = false;
+        $is_free_active = true; // Lite ist immer aktiv
+        $free_email = '';
+        $package_type = 'LITE';
 
         // Rechtstexte anzeigen wenn ?show=agb/datenschutz/impressum
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Show parameter for legal page display only
@@ -539,12 +525,11 @@ class GermanFence_Admin {
                 <button class="germanfence-tab <?php echo $active_tab === 'notices' ? 'active' : ''; ?>" data-tab="notices">
                     💬 WP-Optimierung
                 </button>
-                <button class="germanfence-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>" data-tab="security">
-                    🔥 Sicherheit & Firewall
-                    <span class="lock-badge">🔒</span>
-                </button>
                 <button class="germanfence-tab <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" data-tab="settings">
                     ⚙️ Einstellungen
+                </button>
+                <button class="germanfence-tab <?php echo $active_tab === 'pro' ? 'active' : ''; ?>" data-tab="pro">
+                    ⭐ Pro Version
                 </button>
             </div>
             
@@ -1194,617 +1179,144 @@ class GermanFence_Admin {
                     </div>
                 </div>
                 
-                <!-- Sicherheit Tab -->
-                <div class="germanfence-tab-content <?php echo $active_tab === 'security' ? 'active' : ''; ?>" id="tab-security">
+                <!-- Pro Version Tab -->
+                <div class="germanfence-tab-content <?php echo $active_tab === 'pro' ? 'active' : ''; ?>" id="tab-pro">
                     
-                    <?php if (!$is_free_active && !$is_license_valid): ?>
-                        <div style="background: linear-gradient(135deg, rgba(216, 27, 96, 0.1) 0%, rgba(216, 27, 96, 0.05) 100%); padding: 40px; border-radius: 9px; border: 2px solid #D81B60; text-align: center; margin: 20px;">
-                            <span style="font-size: 64px;">🔒</span>
-                            <h2 style="margin: 20px 0 10px 0; color: #D81B60;">Plugin nicht aktiviert</h2>
-                            <p style="margin: 0 0 25px 0; color: #1d2327; font-size: 15px;">
-                                Bitte verifiziere deine E-Mail oder aktiviere einen API-Key, um GermanFence zu nutzen.
-                            </p>
-                            <a href="<?php echo esc_url( admin_url('admin.php?page=germanfence&tab=settings') ); ?>" 
-                               style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #D81B60; color: #ffffff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(216, 27, 96, 0.2);">
-                                <span class="dashicons dashicons-admin-network" style="font-size: 20px;"></span>
-                                Zur API-Key Verwaltung →
+                    <!-- Pro Features Hero Section -->
+                    <div style="background: linear-gradient(135deg, #22D6DD 0%, #1ab3ba 100%); padding: 60px 40px; border-radius: 9px; text-align: center; margin-bottom: 30px; color: #ffffff;">
+                        <span style="font-size: 72px;">⭐</span>
+                        <h2 style="margin: 20px 0 15px 0; color: #ffffff; font-size: 32px;">Brauchst du mehr Schutz?</h2>
+                        <p style="margin: 0 0 30px 0; font-size: 18px; opacity: 0.95;">
+                            Upgrade zur Pro-Version und erhalte Zugriff auf erweiterte Sicherheits-Features!
+                        </p>
+                        <a href="https://germanfence.de/#pricing" target="_blank" 
+                           style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; background: #ffffff; color: #22D6DD; text-decoration: none; border-radius: 9px; font-weight: 700; font-size: 17px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.2)';"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';">
+                            <span style="font-size: 20px;">🚀</span>
+                            Jetzt Pro-Version holen
                             </a>
                         </div>
-                    <?php else: ?>
-                    
-                    <?php 
-                    // Security Tab: Fully functional in Lite version (WordPress.org compliance)
-                    $security_locked = false;
-                    $security_disabled = '';
-                    ?>
                     
                     
-                    <!-- WORDPRESS FIREWALL Section -->
-                    <div class="germanfence-section" style="<?php echo $security_locked ? 'opacity: 0.7;' : ''; ?>">
-                        <h2>🛡️ WordPress Firewall <?php if ($security_locked): ?><span style="color: #D81B60; font-size: 14px;">🔒</span><?php endif; ?></h2>
-                        <p class="description" style="margin-bottom: 20px;">
-                            Schütze deine WordPress-Installation mit zusätzlichen Firewall-Regeln.
-                        </p>
+                    <!-- Pro Features Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px;">
                         
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="block_xmlrpc" value="1" <?php checked(isset($settings['block_xmlrpc']) && $settings['block_xmlrpc'] === '1'); ?> <?php echo esc_attr( $security_disabled ); ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
-                                </label>
-                                <div class="setting-info">
-                                <h3>XML-RPC deaktivieren</h3>
-                                <p>Blockiert XML-RPC Zugriffe (häufig für Brute-Force-Attacken missbraucht)</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="disable_file_editing" value="1" <?php checked(isset($settings['disable_file_editing']) && $settings['disable_file_editing'] === '1'); ?> <?php echo esc_attr( $security_disabled ); ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
-                                </label>
-                                <div class="setting-info">
-                                <h3>Datei-Editor deaktivieren</h3>
-                                <p>Verhindert das Bearbeiten von Theme- und Plugin-Dateien im WordPress-Admin</p>
-                                </div>
-                            </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="hide_wp_version" value="1" <?php checked(isset($settings['hide_wp_version']) && $settings['hide_wp_version'] === '1'); ?> <?php echo esc_attr( $security_disabled ); ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
-                                </label>
-                                <div class="setting-info">
-                                <h3>WordPress-Version verstecken</h3>
-                                <p>Entfernt die WordPress-Version aus dem HTML-Head</p>
-                            </div>
-                        </div>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="disable_rest_api_users" value="1" <?php checked(isset($settings['disable_rest_api_users']) && $settings['disable_rest_api_users'] === '1'); ?> <?php echo esc_attr( $security_disabled ); ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
-                                </label>
-                                <div class="setting-info">
-                                <h3>REST API User-Enumeration blockieren</h3>
-                                <p>Verhindert das Auslesen von Benutzernamen über die REST API</p>
-                            </div>
-                                </div>
-                            </div>
-                    
-                    <!-- BRUTE-FORCE SCHUTZ Section -->
-                    <div class="germanfence-section" style="<?php echo $security_locked ? 'opacity: 0.7;' : ''; ?>">
-                        <h2>🔐 Brute-Force Schutz <?php if ($security_locked): ?><span style="color: #D81B60; font-size: 14px;">🔒</span><?php endif; ?></h2>
-                        <p class="description" style="margin-bottom: 20px;">
-                            Schütze dein WordPress-Login vor automatisierten Angriffen durch Login-Versuchs-Limitierung.
-                        </p>
-                            
-                            <div class="germanfence-setting">
-                                <label class="germanfence-toggle <?php echo $security_locked ? 'germanfence-toggle-locked' : ''; ?>">
-                                <input type="checkbox" name="login_limit_enabled" value="1" <?php checked(isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1'); ?> <?php echo esc_attr( $security_disabled ); ?>>
-                                    <span class="toggle-slider"></span>
-                                    <?php if ($security_locked): ?><span class="toggle-lock-icon">🔒</span><?php endif; ?>
-                                </label>
-                                <div class="setting-info">
-                                <h3>Login-Limitierung aktivieren</h3>
-                                <p>Blockiert IP-Adressen nach zu vielen fehlgeschlagenen Login-Versuchen</p>
-                                </div>
-                            </div>
-                        
-                        <div class="germanfence-subsetting" id="login-limit-settings" style="<?php echo (isset($settings['login_limit_enabled']) && $settings['login_limit_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
-                            <div class="setting-row" style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 10px;"><strong>Maximale Login-Versuche:</strong></label>
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <input 
-                                        type="number" 
-                                        name="login_max_attempts"
-                                        min="1" 
-                                        max="10" 
-                                        value="<?php echo esc_attr($settings['login_max_attempts'] ?? 3); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
-                                        <?php echo esc_attr( $security_disabled ); ?>
-                                    >
-                                    <span style="color: #646970;">Versuche</span>
-                                </div>
-                                <p class="description" style="margin-top: 5px;">
-                                    Nach dieser Anzahl fehlgeschlagener Versuche wird die IP gesperrt. Empfohlen: 3-5
-                                </p>
-                        </div>
-                        
-                            <div class="setting-row">
-                                <label style="display: block; margin-bottom: 10px;"><strong>Sperrzeit:</strong></label>
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <input 
-                                        type="number" 
-                                        name="login_lockout_duration"
-                                        min="5" 
-                                        max="1440" 
-                                        value="<?php echo esc_attr($settings['login_lockout_duration'] ?? 30); ?>"
-                                        style="width: 100px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
-                                        <?php echo esc_attr( $security_disabled ); ?>
-                                    >
-                                    <span style="color: #646970;">Minuten</span>
-                                </div>
-                                <p class="description" style="margin-top: 5px;">
-                                    Dauer der Sperre nach fehlgeschlagenen Versuchen. Empfohlen: 30-60 Minuten
+                        <!-- GEO-Blocking Feature -->
+                        <div class="germanfence-section" style="position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; background: #D81B60; color: #fff; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;">PRO</div>
+                            <h3 style="margin: 0 0 10px 0; color: #1d2327; font-size: 18px;">🌍 GEO-Blocking</h3>
+                            <p style="margin: 0 0 15px 0; color: #646970; font-size: 15px;">
+                                Blockiere oder erlaube gezielt bestimmte Länder. Perfekt gegen internationale Spam-Angriffe.
                             </p>
+                            <ul style="margin: 0; padding-left: 20px; color: #646970;">
+                                <li>Whitelist oder Blacklist Modus</li>
+                                <li>Über 250 Länder verfügbar</li>
+                                <li>Automatische IP-Erkennung</li>
+                            </ul>
+                            </div>
+                            
+                        <!-- Phrase Blocking Feature -->
+                        <div class="germanfence-section" style="position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; background: #D81B60; color: #fff; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;">PRO</div>
+                            <h3 style="margin: 0 0 10px 0; color: #1d2327; font-size: 18px;">📝 Phrasen-Blocking</h3>
+                            <p style="margin: 0 0 15px 0; color: #646970; font-size: 15px;">
+                                Blockiere Formulare mit bestimmten Wörtern oder Phrasen automatisch.
+                            </p>
+                            <ul style="margin: 0; padding-left: 20px; color: #646970;">
+                                <li>Unbegrenzte Phrasen</li>
+                                <li>Regex-Unterstützung</li>
+                                <li>Case-insensitive Matching</li>
+                            </ul>
+                            </div>
+                        
+                        <!-- Advanced Firewall Feature -->
+                        <div class="germanfence-section" style="position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; background: #D81B60; color: #fff; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;">PRO</div>
+                            <h3 style="margin: 0 0 10px 0; color: #1d2327; font-size: 18px;">🔥 WordPress Firewall</h3>
+                            <p style="margin: 0 0 15px 0; color: #646970; font-size: 15px;">
+                                Erweiterte Firewall-Regeln für maximalen Schutz deiner WordPress-Installation.
+                            </p>
+                            <ul style="margin: 0; padding-left: 20px; color: #646970;">
+                                <li>XML-RPC Blocking</li>
+                                <li>Brute-Force Schutz</li>
+                                <li>Login-Limitierung</li>
+                            </ul>
                         </div>
-                    </div>
+                        
+                        <!-- Priority Support Feature -->
+                        <div class="germanfence-section" style="position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; background: #D81B60; color: #fff; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;">PRO</div>
+                            <h3 style="margin: 0 0 10px 0; color: #1d2327; font-size: 18px;">💬 Priority Support</h3>
+                            <p style="margin: 0 0 15px 0; color: #646970; font-size: 15px;">
+                                Erhalte bevorzugten Support direkt vom GermanFence Team.
+                            </p>
+                            <ul style="margin: 0; padding-left: 20px; color: #646970;">
+                                <li>E-Mail Support innerhalb 24h</li>
+                                <li>Direkte Hilfe bei Problemen</li>
+                                <li>Individuelle Konfiguration</li>
+                            </ul>
                 </div>
                 
-                    <!-- EMAIL OBFUSCATION Section -->
-                    <div class="germanfence-section">
-                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-                            <h2 style="margin: 0;">📧 E-Mail-Schutz (Obfuscation)</h2>
                         </div>
-                        <p class="description" style="margin-bottom: 20px;">
-                            Schütze E-Mail-Adressen auf deiner Website vor Spam-Bots durch intelligente Verschleierung.
-                        </p>
-                        
-                        <div class="germanfence-setting">
-                            <label class="germanfence-toggle">
-                                <input type="checkbox" name="email_obfuscation_enabled" value="1" <?php checked(isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1'); ?>>
-                                <span class="toggle-slider"></span>
-                            </label>
-                            <div class="setting-info">
-                                <h3>E-Mail-Schutz aktivieren</h3>
-                                <p>Verschleiert automatisch alle E-Mail-Adressen auf deiner Website (Posts, Pages, Widgets, Impressum, Datenschutz)</p>
-                            </div>
-                        </div>
-                        
-                        <div class="germanfence-subsetting" id="email-obfuscation-settings" style="<?php echo (isset($settings['email_obfuscation_enabled']) && $settings['email_obfuscation_enabled'] === '1') ? '' : 'display:none;'; ?> margin-top: 20px;">
-                            
-                            <!-- 2-Spalten Layout: Links Methode, Rechts Zähler -->
-                            <div style="display: grid; grid-template-columns: 1fr 200px; gap: 30px; align-items: start;">
-                                
-                                <!-- Linke Spalte: Verschlüsselungsmethode -->
-                                <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #1d2327;">🔐 Verschlüsselungsmethode</h3>
-                                    
-                                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
-                                            <input type="radio" name="email_obfuscation_method" value="javascript" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'javascript'); ?>>
-                                            <strong>JavaScript (Empfohlen)</strong>
-                                            <span style="color: #646970;">– Beste Schutz-Stufe, Base64-kodiert</span>
-                                        </label>
-                                        
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
-                                            <input type="radio" name="email_obfuscation_method" value="entities" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'entities'); ?>>
-                                            <strong>HTML-Entities</strong>
-                                            <span style="color: #646970;">– Mittlerer Schutz, ohne JavaScript</span>
-                                        </label>
-                                        
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
-                                            <input type="radio" name="email_obfuscation_method" value="css" <?php checked($settings['email_obfuscation_method'] ?? 'javascript', 'css'); ?>>
-                                            <strong>CSS-Umkehrung</strong>
-                                            <span style="color: #646970;">– Guter Schutz, ohne JavaScript</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <!-- Shortcode Hinweis (inline) -->
-                                    <p style="margin: 20px 0 0 0; color: #646970; font-size: 15px;">
-                                        💡 <strong>Shortcode:</strong> 
-                                        <code style="background: #F2F5F8; padding: 4px 8px; border-radius: 4px; font-family: monospace; color: #D63638;">[germanfence_email]info@example.com[/germanfence_email]</code>
-                                    </p>
-                                </div>
-                                
-                                <!-- Rechte Spalte: Email-Zähler -->
-                                <div style="text-align: center; padding: 20px 0;">
-                                    <?php 
-                                    if (class_exists('GermanFence_Email_Obfuscation')) {
-                                        $email_obfuscation = new GermanFence_Email_Obfuscation();
-                                        $email_stats = $email_obfuscation->count_emails_on_site();
-                                        $total = $email_stats['total'];
-                                        $unique = $email_stats['unique'];
-                                    } else {
-                                        $total = 0;
-                                        $unique = 0;
-                                    }
-                                    ?>
-                                    <div style="font-size: 48px; font-weight: 700; color: #22D6DD; line-height: 1;">
-                                        <?php echo esc_html($total); ?>
-                                    </div>
-                                    <div style="font-size: 15px; color: #22D6DD; font-weight: 600; margin-top: 5px;">
-                                        📧 E-Mails gefunden
-                                    </div>
-                                    <div style="font-size: 15px; color: #646970; margin-top: 5px;">
-                                        (<?php echo esc_html($unique); ?> verschiedene)
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
-                    <!-- .HTACCESS GENERATOR Section -->
-                    <div class="germanfence-section">
-                        <h2>📄 .htaccess Sicherheits-Regeln</h2>
-                        <p class="description" style="margin-bottom: 20px;">
-                            Professionelle .htaccess-Regeln für Speed & Security. Code wird automatisch bei Auswahl generiert.
+                    <!-- Pricing Section -->
+                    <div class="germanfence-section" style="text-align: center; background: linear-gradient(135deg, rgba(34, 214, 221, 0.1) 0%, rgba(34, 214, 221, 0.05) 100%); border: 2px solid #22D6DD;">
+                        <h2 style="margin: 0 0 15px 0; color: #1d2327; font-size: 24px;">🚀 Bereit für mehr Schutz?</h2>
+                        <p style="margin: 0 0 25px 0; color: #646970; font-size: 16px;">
+                            Die Pro-Version startet bereits ab <strong style="color: #22D6DD; font-size: 20px;">29€/Jahr</strong>
                         </p>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                                <!-- Linke Spalte: Optionen -->
-                                <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">🔒 Sicherheit:</h3>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-nuisance" checked>
-                                            <span style="font-size: 15px;">🚫 Nuisance Requests blockieren</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-8g-firewall">
-                                            <span style="font-size: 15px;">🔥 8G Firewall (Komplettschutz)</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-8g-addon">
-                                            <span style="font-size: 15px;">🔒 8G Addon (Rogue PHP Files)</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-reallylongrequest">
-                                            <span style="font-size: 15px;">🛑 ReallyLongRequest Bandit</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-wp-files" checked>
-                                            <span style="font-size: 15px;">🔐 WordPress-Dateien schützen</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-xmlrpc" checked>
-                                            <span style="font-size: 15px;">🛡️ XML-RPC blockieren</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-author-scan" checked>
-                                            <span style="font-size: 15px;">👤 Autoren-Scans blockieren</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-security-headers" checked>
-                                            <span style="font-size: 15px;">🔐 Security Headers (HSTS, CSP)</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <h3 style="margin: 20px 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">⚡ Performance:</h3>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-caching" checked>
-                                            <span style="font-size: 15px;">⚡ Browser Caching (1 Jahr)</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-compression" checked>
-                                            <span style="font-size: 15px;">📦 GZIP Komprimierung</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-cors">
-                                            <span style="font-size: 15px;">🌐 CORS für Fonts/Assets</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-bottom: 12px;">
-                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" class="htaccess-option" id="htaccess-hotlink">
-                                            <span style="font-size: 15px;">🖼️ Hotlink Protection</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div style="margin-top: 20px; padding: 15px; background: #fff8e1; border-radius: 9px;">
-                                        <p style="margin: 0; font-size: 15px; color: #856404;">
-                                            💡 <strong>Tipp:</strong> Die 8G Firewall enthält umfassenden Schutz gegen SQL-Injection, XSS, Bots und mehr.
-                                        </p>
-                                    </div>
+                        <a href="https://germanfence.de/#pricing" target="_blank" 
+                           class="germanfence-btn-primary" 
+                           style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 17px; text-decoration: none;">
+                            <span>⭐</span>
+                            Jetzt upgraden
+                        </a>
                                 </div>
-                                
-                                <!-- Rechte Spalte: Code-Feld -->
-                                <div>
-                                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #1d2327;">Generierter Code:</h3>
-                                    <textarea id="htaccess-output" readonly 
-                                        style="width: 100%; height: 450px; font-family: monospace; font-size: 12px; padding: 15px; border: 1px solid #d9dde1; border-radius: 9px; background: #ffffff; resize: vertical;"
-                                        placeholder="Wähle Sicherheitsregeln aus - Code wird automatisch generiert..."
-                                    ></textarea>
-                                    
-                                    <button type="button" id="copy-htaccess-btn" class="germanfence-btn-primary" style="margin-top: 13px; width: 100%;">
-                                        <span class="dashicons dashicons-clipboard"></span>
-                                        Code kopieren
-                                    </button>
-                                    
-                                    <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px;">
-                                        ⚠️ <strong>Wichtig:</strong> Backup deiner .htaccess erstellen! Füge den Code am <strong>Anfang</strong> deiner .htaccess ein.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
                 </div>
                 
                 <!-- Einstellungen Tab -->
                 <div class="germanfence-tab-content <?php echo $active_tab === 'settings' ? 'active' : ''; ?>" id="tab-settings">
                     
-                    <!-- API-KEY VERWALTUNG Section -->
-                    <div class="germanfence-section">
-                        <h2>🔑 API-Key Verwaltung</h2>
+                    <!-- Pro Features Promotion (Lite Version) -->
+                    <div class="germanfence-section" style="background: linear-gradient(135deg, rgba(34, 214, 221, 0.1) 0%, rgba(34, 214, 221, 0.05) 100%); border: 2px solid #22D6DD; text-align: center;">
+                        <span style="font-size: 48px;">⭐</span>
+                        <h2 style="margin: 15px 0 10px 0; color: #1d2327; font-size: 24px;">Brauchst du mehr Schutz?</h2>
+                        <p style="margin: 0 0 20px 0; color: #646970; font-size: 16px;">
+                            Willst du gewisse Länder blockieren? Phrasen filtern? Erweiterte Firewall-Regeln nutzen?<br>
+                            <strong style="color: #22D6DD;">Upgrade zur Pro-Version ab 29€/Jahr!</strong>
+                        </p>
                         
-                                <?php
-                        $license_status = $license_manager->check_license();
-                        
-                        // API-Key aktivieren - LITE VERSION: Nur FREE-Keys erlaubt!
-                        if (isset($_POST['activate_license']) && !empty($_POST['license_key'])) {
-                            $input_key = strtoupper(trim(sanitize_text_field(wp_unslash($_POST['license_key']))));
-                            
-                            // Prüfe ob es ein PRO-Key ist (nicht erlaubt in Lite)
-                            $is_pro_key = (strpos($input_key, 'GS-PRO-') === 0 || 
-                                          strpos($input_key, 'GS-SINGLE-') === 0 || 
-                                          strpos($input_key, 'GS-FREELANCER-') === 0 || 
-                                          strpos($input_key, 'GS-AGENCY-') === 0);
-                            
-                            if ($is_pro_key) {
-                                // PRO-Key in Lite-Version nicht erlaubt - Toast anzeigen
-                                $pro_key_js = '
-                                    document.addEventListener("DOMContentLoaded", function() {
-                                        if (typeof GermanFence !== "undefined" && GermanFence.showToast) {
-                                            GermanFence.showToast("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.", "error", 8000);
-                                        } else {
-                                            alert("PRO-Keys können in der Lite-Version nicht aktiviert werden. Bitte lade die PRO-Version von germanfence.de herunter.");
-                                        }
-                                    });
-                                ';
-                                wp_add_inline_script('jquery', $pro_key_js);
-                            } else {
-                                $result = $license_manager->activate_license($input_key);
-                                if ($result['success']) {
-                                    add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'success');
-                                    $license_info = $license_manager->get_license_info();
-                                    $license_status = $license_manager->check_license();
-                                } else {
-                                    add_settings_error('germanfence_messages', 'germanfence_message', $result['message'], 'error');
-                                }
-                                settings_errors('germanfence_messages');
-                            }
-                        }
-                        
-                        // API-Key deaktivieren (PRO oder FREE) - Plugin komplett sperren
-                        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Checking if button was clicked
-                        if (isset($_POST['deactivate_license']) || isset($_POST['deactivate_free'])) {
-                            // Deaktiviere PRO-Lizenz
-                            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Checking if button was clicked
-                        if (isset($_POST['deactivate_license'])) {
-                            $result = $license_manager->deactivate_license();
-                        }
-                        
-                        // Deaktiviere FREE-Lizenz
-                        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Checking if button was clicked
-                        if (isset($_POST['deactivate_free'])) {
-                            $result = $free_manager->deactivate_free();
-                        }
-                            
-                            // Lösche BEIDE Lizenzen komplett, damit Plugin gesperrt wird
-                            $license_manager->deactivate_license();
-                            $free_manager->deactivate_free();
-                            
-                            // Status neu laden
-                            $license_info = $license_manager->get_license_info();
-                            $license_status = $license_manager->check_license();
-                            $is_free_active = $free_manager->is_free_active();
-                            $free_email = $free_manager->get_verified_email();
-                            
-                            add_settings_error('germanfence_messages', 'germanfence_message', 'API-Key deaktiviert - Plugin gesperrt. Bitte neuen API-Key aktivieren.', 'success');
-                            settings_errors('germanfence_messages');
-                            
-                            // WICHTIG: Reload erzwingen damit Plugin gesperrt wird
-                            $reload_js = 'setTimeout(function(){ window.location.reload(); }, 1000);';
-                            wp_add_inline_script('jquery', $reload_js);
-                        }
-                        ?>
-                        
-                        <!-- API-KEY VERWALTUNG: 2-Spalten Layout -->
-                        <?php if (empty($license_info['has_license']) || empty($is_license_valid)): ?>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-                        
-                        <!-- FREE VERSION BOX -->
-                        <div style="background: #ffffff; padding: 25px; display: flex; flex-direction: column; border-radius: 9px; border: 1px solid #d9dde1;">
-                            <?php if ($is_free_active): ?>
-                                <?php $current_key = $free_manager->get_license_key(); ?>
-                                <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">✅ Kostenlose Version aktiviert</h3>
-                                <p style="margin: 0 0 10px 0; color: #1d2327; font-size: 15px;">
-                                    <strong>Verifizierte E-Mail:</strong> <?php echo esc_html($free_email); ?>
-                                </p>
-                                <?php if ($current_key): ?>
-                                <div style="margin: 15px 0;">
-                                    <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                        🔑 Dein API-Key<?php 
-                                        $key_type = 'FREE';
-                                        if (strpos($current_key, 'GS-PRO-') === 0) $key_type = 'PRO';
-                                        elseif (strpos($current_key, 'GS-SINGLE-') === 0) $key_type = 'SINGLE';
-                                        elseif (strpos($current_key, 'GS-FREELANCER-') === 0) $key_type = 'FREELANCER';
-                                        elseif (strpos($current_key, 'GS-AGENCY-') === 0) $key_type = 'AGENCY';
-                                        elseif (strpos($current_key, 'GS-FREE-') === 0) $key_type = 'FREE';
-                                        else $key_type = 'CUSTOM';
-                                        echo ' (' . esc_html( $key_type ) . ')';
-                                        ?>:
-                                    </p>
-                                    <div style="display: flex; gap: 10px; align-items: center;">
-                                        <input type="text" value="<?php echo esc_attr($current_key); ?>" readonly 
-                                            class="germanfence-input" style="flex: 1; font-family: monospace; border-radius: 9px !important;">
-                                        <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($current_key); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                            style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
-                                            📋 Kopieren
-                                        </button>
+                        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 25px;">
+                            <div style="background: #fff; padding: 15px 20px; border-radius: 9px; border: 1px solid #d9dde1;">
+                                <span style="font-size: 24px;">🌍</span>
+                                <p style="margin: 5px 0 0 0; font-weight: 600; color: #1d2327;">GEO-Blocking</p>
                                     </div>
-                                    <p style="margin: 8px 0 0 0; color: #646970; font-size: 15px;">
-                                        💡 Nutze diesen Key um GermanFence auf weiteren Domains zu aktivieren!
-                                    </p>
-                                </div>
-                                <?php endif; ?>
-                                <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                    <?php if ($is_license_valid): ?>
-                                        Dein PRO API-Key ist aktiv. Du hast Zugriff auf alle Features!
-                                    <?php else: ?>
-                                    Du nutzt die kostenlose Version von GermanFence mit Basis-Funktionen.
-                                    <?php endif; ?>
-                                </p>
-                                <form method="post">
-                                    <?php wp_nonce_field('germanfence_settings', 'germanfence_nonce'); ?>
-                                    <button type="submit" name="deactivate_free" class="germanfence-btn-danger">
-                                        <?php echo $is_license_valid ? 'PRO API-Key deaktivieren' : 'Kostenlose Version deaktivieren'; ?>
-                                    </button>
-                                </form>
-                            <?php else: ?>
-                                <div style="flex: 1;">
-                                    <h3 style="margin: 0 0 15px 0; color: #1d2327; font-size: 18px; font-weight: 600;">🆓 Kostenlose Version aktivieren</h3>
-                                    
-                                    <!-- Tabs: E-Mail vs Key -->
-                                    <div style="display: flex; gap: 10px; margin-bottom: 20px; border: 1px solid #d9dde1; border-radius: 9px; padding: 5px; background: #F2F5F8;">
-                                        <button type="button" id="free-email-tab" class="germanfence-free-tab active" 
-                                            style="flex: 1; padding: 10px; background: #ffffff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #22D6DD;">
-                                            📧 Per E-Mail
-                                        </button>
-                                        <button type="button" id="free-key-tab" class="germanfence-free-tab" 
-                                            style="flex: 1; padding: 10px; background: transparent; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #646970;">
-                                            🔑 Mit API-Key
-                                        </button>
+                            <div style="background: #fff; padding: 15px 20px; border-radius: 9px; border: 1px solid #d9dde1;">
+                                <span style="font-size: 24px;">📝</span>
+                                <p style="margin: 5px 0 0 0; font-weight: 600; color: #1d2327;">Phrasen-Filter</p>
+                                        </div>
+                            <div style="background: #fff; padding: 15px 20px; border-radius: 9px; border: 1px solid #d9dde1;">
+                                <span style="font-size: 24px;">🔥</span>
+                                <p style="margin: 5px 0 0 0; font-weight: 600; color: #1d2327;">Firewall</p>
+                                    </div>
+                            <div style="background: #fff; padding: 15px 20px; border-radius: 9px; border: 1px solid #d9dde1;">
+                                <span style="font-size: 24px;">💬</span>
+                                <p style="margin: 5px 0 0 0; font-weight: 600; color: #1d2327;">Priority Support</p>
+                                        </div>
                                     </div>
                                     
-                                    <!-- E-Mail Aktivierung -->
-                                    <div id="free-email-content" class="germanfence-free-content">
-                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                            Gib deine E-Mail-Adresse ein und bestätige sie, um GermanFence kostenlos zu nutzen!
-                                        </p>
-                                        
-                                        <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">E-Mail-Adresse:</label>
-                                            <input type="email" id="free-email-input" placeholder="deine@email.de" class="germanfence-input" style="border-radius: 9px !important;">
+                        <a href="https://germanfence.de/#pricing" target="_blank"
+                           class="germanfence-btn-primary"
+                           style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; font-size: 17px; text-decoration: none;">
+                            <span>🚀</span>
+                            Jetzt Pro-Version holen
+                        </a>
                                         </div>
                                         
-                                    <div style="margin-bottom: 20px;">
-                                        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
-                                            <input type="checkbox" id="free-agb-checkbox" style="margin-top: 4px; cursor: pointer;">
-                                            <span style="font-size: 15px; color: #1d2327;">
-                                                Ich akzeptiere die <a href="<?php echo esc_url( admin_url('admin.php?page=germanfence&show=agb') ); ?>" style="color: #22D6DD; text-decoration: underline;">AGB</a> und die <a href="<?php echo esc_url( admin_url('admin.php?page=germanfence&show=datenschutz') ); ?>" style="color: #22D6DD; text-decoration: underline;">Datenschutzerklärung</a>
-                                            </span>
-                                        </label>
-                                    </div>
-                                        
-                                        <div style="text-align: center; margin-top: auto;">
-                                            <button type="button" id="register-free-btn" class="germanfence-btn-primary">
-                                                <span class="dashicons dashicons-email-alt"></span>
-                                                Bestätigungsmail senden
-                                            </button>
-                                        </div>
-                                        
-                                        <p style="margin: 15px 0 0 0; color: #646970; font-size: 15px; text-align: center;">
-                                            💡 Du erhältst eine E-Mail mit einem Bestätigungslink. Nach der Verifizierung bekommst du einen API-Key!
-                                        </p>
-                                    </div>
-                                    
-                                    <!-- Key Aktivierung -->
-                                    <div id="free-key-content" class="germanfence-free-content" style="display: none;">
-                                        <p style="margin: 0 0 20px 0; color: #1d2327; font-size: 15px;">
-                                            Hier kannst du deinen <strong>FREE API-Key</strong> eingeben:
-                                        </p>
-                                        
-                                        <div style="margin-bottom: 20px;">
-                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px; color: #1d2327;">FREE API-Key:</label>
-                                            <input type="text" id="free-key-input" placeholder="GS-FREE-XXXXXXXXXXXX" class="germanfence-input" style="font-family: monospace; text-transform: uppercase; border-radius: 9px !important;">
-                                        </div>
-                                        
-                                        <div style="text-align: center; margin-top: auto;">
-                                            <button type="button" id="activate-free-key-btn" class="germanfence-btn-primary">
-                                                <span class="dashicons dashicons-unlock"></span>
-                                                FREE API-Key aktivieren
-                                            </button>
-                                        </div>
-                                        
-                                        <div style="margin: 20px 0 0 0; padding: 15px; background: rgba(216, 27, 96, 0.08); border-radius: 9px; border: 1px solid rgba(216, 27, 96, 0.2);">
-                                            <p style="margin: 0; color: #D81B60; font-size: 14px; line-height: 1.5;">
-                                                <strong>💎 Du hast eine PRO-Version gekauft?</strong><br>
-                                                PRO-Keys funktionieren nur mit der PRO-Version. Bitte deinstalliere GermanFence Lite und lade die <a href="https://germanfence.de" target="_blank" style="color: #D81B60; font-weight: 600;">PRO-Version von germanfence.de</a> herunter.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                        
-                        </div><!-- Ende 2-Spalten Layout -->
-                        <?php endif; ?>
-                        
-                        <!-- PRO API-KEY AKTIV -->
-                        <?php if (!empty($license_info['has_license']) && !empty($is_license_valid)): ?>
-                        <div style="background: #E9FBFC; padding: 25px; margin-bottom: 30px; border-radius: 9px;">
-                            <h3 style="margin: 0 0 15px 0; color: #22D6DD; font-size: 18px;">✅ GermanFence PRO aktiviert</h3>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
-                                <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Paket:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['package_type']); ?></p>
-                                </div>
-                                <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Gültig bis:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['expires_at']); ?></p>
-                                </div>
-                                <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Domains:</p>
-                                    <p style="margin: 0; color: #1d2327; font-size: 15px; font-weight: 600;"><?php echo esc_html($license_info['active_domains']); ?> / <?php echo esc_html($license_info['max_domains']); ?></p>
-                                </div>
-                                <div>
-                                    <p style="margin: 0 0 5px 0; color: #646970; font-size: 15px;">Status:</p>
-                                    <p style="margin: 0; color: #22D6DD; font-size: 15px; font-weight: 600;">✓ Aktiv</p>
-                                </div>
-                            </div>
-                            
-                            <div style="margin: 15px 0;">
-                                <p style="margin: 0 0 8px 0; color: #1d2327; font-size: 15px; font-weight: 600;">
-                                    🔑 Dein API-Key:
-                                </p>
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="text" value="<?php echo esc_attr($license_info['license_key']); ?>" readonly 
-                                        class="germanfence-input" style="flex: 1; font-family: monospace; border-radius: 9px !important;">
-                                    <button type="button" onclick="navigator.clipboard.writeText('<?php echo esc_js($license_info['license_key']); ?>'); this.innerHTML='✅ Kopiert!'; setTimeout(() => this.innerHTML='📋 Kopieren', 2000);" 
-                                        style="padding: 12px 16px; background: #22D6DD; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-weight: 600; height: 44px;">
-                                        📋 Kopieren
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div style="text-align: center; margin-top: 20px;">
-                            <form method="post" style="display: inline;">
-                                <button type="submit" name="deactivate_license" class="germanfence-btn-danger">
-                                    API-Key deaktivieren
-                                </button>
-                            </form>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                </div>
+                    <?php
+                    // Lite Version: Keine Lizenzprüfung nötig - Plugin ist immer aktiv
+                    ?>
                     
                     <!-- Performance-Optimierung Section -->
                     <div class="germanfence-section">
@@ -1829,15 +1341,15 @@ class GermanFence_Admin {
                                 <h3 style="margin-top: 0; color: #1d2327;">📍 Script-Ladeposition</h3>
                                 <div style="margin-top: 15px;">
                                     <label style="display: block; margin-bottom: 10px; cursor: pointer; font-size: 15px;">
-                                        <input type="radio" name="script_position" value="header" <?php checked($settings['script_position'] ?? 'footer', 'header'); ?>>
+                                        <input type="radio" name="script_position" value="header" <?php checked(isset($settings['script_position']) ? $settings['script_position'] : 'footer', 'header'); ?>>
                                         <strong>Header</strong> - Früh geladen
                                     </label>
                                     <label style="display: block; margin-bottom: 10px; cursor: pointer; font-size: 15px;">
-                                        <input type="radio" name="script_position" value="footer" <?php checked($settings['script_position'] ?? 'footer', 'footer'); ?>>
+                                        <input type="radio" name="script_position" value="footer" <?php checked(isset($settings['script_position']) ? $settings['script_position'] : 'footer', 'footer'); ?>>
                                         <strong>Footer</strong> - ⚡ Empfohlen
                                     </label>
                                     <label style="display: block; cursor: pointer; font-size: 15px;">
-                                        <input type="radio" name="script_position" value="body" <?php checked($settings['script_position'] ?? 'footer', 'body'); ?>>
+                                        <input type="radio" name="script_position" value="body" <?php checked(isset($settings['script_position']) ? $settings['script_position'] : 'footer', 'body'); ?>>
                                         <strong>Body</strong> - Gute Balance
                                     </label>
                                 </div>
@@ -1850,9 +1362,8 @@ class GermanFence_Admin {
                         <h2 style="margin-top: 40px;">⭐ Badge - "Diese Seite wird geschützt"</h2>
                         
                         <?php 
-                        // Lite-Version: Badge ist IMMER Pflicht (Free oder keine Lizenz)
-                        // Nur PRO-Lizenzen dürfen Badge ausschalten, aber PRO geht nicht in Lite
-                        $is_lite_free = true; // In Lite-Version ist Badge immer Pflicht
+                        // Lite-Version: Badge ist IMMER Pflicht
+                        $is_lite_free = true;
                         ?>
                         
                         <div class="germanfence-setting">
@@ -1876,19 +1387,19 @@ class GermanFence_Admin {
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Anzeige-Bereich:</strong></label>
-                                    <select name="badge_display_type" style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
-                                        <option value="global" <?php selected($settings['badge_display_type'] ?? 'global', 'global'); ?>>Auf gesamter Website</option>
-                                        <option value="forms" <?php selected($settings['badge_display_type'] ?? '', 'forms'); ?>>Nur bei Formularen</option>
+                                    <select name="badge_display_type" style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
+                                        <option value="global" <?php selected(isset($settings['badge_display_type']) ? $settings['badge_display_type'] : 'global', 'global'); ?>>Auf gesamter Website</option>
+                                        <option value="forms" <?php selected(isset($settings['badge_display_type']) ? $settings['badge_display_type'] : '', 'forms'); ?>>Nur bei Formularen</option>
                                     </select>
                                 </div>
                                 
                                 <div class="setting-row">
                                     <label><strong>Position:</strong></label>
-                                    <select name="badge_position" style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
-                                        <option value="bottom-right" <?php selected($settings['badge_position'] ?? 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
-                                        <option value="bottom-left" <?php selected($settings['badge_position'] ?? '', 'bottom-left'); ?>>Unten Links</option>
-                                        <option value="top-right" <?php selected($settings['badge_position'] ?? '', 'top-right'); ?>>Oben Rechts</option>
-                                        <option value="top-left" <?php selected($settings['badge_position'] ?? '', 'top-left'); ?>>Oben Links</option>
+                                    <select name="badge_position" style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;">
+                                        <option value="bottom-right" <?php selected(isset($settings['badge_position']) ? $settings['badge_position'] : 'bottom-right', 'bottom-right'); ?>>Unten Rechts</option>
+                                        <option value="bottom-left" <?php selected(isset($settings['badge_position']) ? $settings['badge_position'] : '', 'bottom-left'); ?>>Unten Links</option>
+                                        <option value="top-right" <?php selected(isset($settings['badge_position']) ? $settings['badge_position'] : '', 'top-right'); ?>>Oben Rechts</option>
+                                        <option value="top-left" <?php selected(isset($settings['badge_position']) ? $settings['badge_position'] : '', 'top-left'); ?>>Oben Links</option>
                                     </select>
                                 </div>
                             </div>
@@ -1897,15 +1408,15 @@ class GermanFence_Admin {
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                                 <div class="setting-row">
                                     <label><strong>Badge-Text:</strong></label>
-                                    <input type="text" name="badge_text" value="<?php echo esc_attr($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?>" 
-                                        style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
+                                    <input type="text" name="badge_text" value="<?php echo esc_attr(isset($settings['badge_text']) ? $settings['badge_text'] : 'Geschützt durch GermanFence'); ?>" 
+                                        style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="Geschützt durch GermanFence">
                                 </div>
                                 
                                 <div class="setting-row">
                                     <label><strong>Eigenes Icon/Logo (URL):</strong></label>
-                                    <input type="text" name="badge_custom_image" value="<?php echo esc_attr($settings['badge_custom_image'] ?? ''); ?>" 
-                                        style="width: 500px; max-width: 100%; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
+                                    <input type="text" name="badge_custom_image" value="<?php echo esc_attr(isset($settings['badge_custom_image']) ? $settings['badge_custom_image'] : ''); ?>" 
+                                        style="width: 100%; max-width: 500px; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-size: 15px;"
                                         placeholder="https://example.com/logo.png">
                                 </div>
                             </div>
@@ -1915,9 +1426,9 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Text-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <input type="color" name="badge_text_color" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
+                                        <input type="color" name="badge_text_color" value="<?php echo esc_attr(isset($settings['badge_text_color']) ? $settings['badge_text_color'] : '#1d2327'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
-                                        <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>" 
+                                        <input type="text" name="badge_text_color_hex" value="<?php echo esc_attr(isset($settings['badge_text_color']) ? $settings['badge_text_color'] : '#1d2327'); ?>" 
                                             style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#1d2327">
                                     </div>
@@ -1926,9 +1437,9 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Rahmen-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <input type="color" name="badge_border_color" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                        <input type="color" name="badge_border_color" value="<?php echo esc_attr(isset($settings['badge_border_color']) ? $settings['badge_border_color'] : '#22D6DD'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
-                                        <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>" 
+                                        <input type="text" name="badge_border_color_hex" value="<?php echo esc_attr(isset($settings['badge_border_color']) ? $settings['badge_border_color'] : '#22D6DD'); ?>" 
                                             style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#22D6DD">
                                     </div>
@@ -1939,9 +1450,9 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Hintergrund-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <input type="color" name="badge_background_color" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                        <input type="color" name="badge_background_color" value="<?php echo esc_attr(isset($settings['badge_background_color']) ? $settings['badge_background_color'] : '#ffffff'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
-                                        <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>" 
+                                        <input type="text" name="badge_background_color_hex" value="<?php echo esc_attr(isset($settings['badge_background_color']) ? $settings['badge_background_color'] : '#ffffff'); ?>" 
                                             style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#ffffff">
                                     </div>
@@ -1950,9 +1461,9 @@ class GermanFence_Admin {
                                 <div class="setting-row">
                                     <label><strong>Schatten-Farbe:</strong></label>
                                     <div style="display: flex; gap: 10px; align-items: center;">
-                                        <input type="color" name="badge_shadow_color" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
+                                        <input type="color" name="badge_shadow_color" value="<?php echo esc_attr(isset($settings['badge_shadow_color']) ? $settings['badge_shadow_color'] : '#22D6DD'); ?>" 
                                             style="width: 60px; height: 44px; border: 1px solid #d9dde1; border-radius: 9px; cursor: pointer;">
-                                        <input type="text" name="badge_shadow_color_hex" value="<?php echo esc_attr($settings['badge_shadow_color'] ?? '#22D6DD'); ?>" 
+                                        <input type="text" name="badge_shadow_color_hex" value="<?php echo esc_attr(isset($settings['badge_shadow_color']) ? $settings['badge_shadow_color'] : '#22D6DD'); ?>" 
                                             style="flex: 1; padding: 10px; border: 1px solid #d9dde1; border-radius: 9px; font-family: monospace; font-size: 15px;"
                                             placeholder="#22D6DD">
                                     </div>
@@ -1968,11 +1479,11 @@ class GermanFence_Admin {
                                         id="badge-border-radius-slider"
                                         min="0" 
                                         max="30" 
-                                        value="<?php echo esc_attr($settings['badge_border_radius'] ?? 6); ?>"
+                                        value="<?php echo esc_attr(isset($settings['badge_border_radius']) ? $settings['badge_border_radius'] : 6); ?>"
                                         style="flex: 1; max-width: 300px;"
                                     >
                                     <span id="badge-border-radius-value" style="font-size: 18px; font-weight: 600; color: #22D6DD; min-width: 60px;">
-                                        <?php echo esc_html($settings['badge_border_radius'] ?? 6); ?>px
+                                        <?php echo esc_html(isset($settings['badge_border_radius']) ? $settings['badge_border_radius'] : 6); ?>px
                                     </span>
                                 </div>
                                 <p class="description" style="margin-top: 5px; color: #646970;">
@@ -1983,8 +1494,8 @@ class GermanFence_Admin {
                             <h3 style="margin-top: 30px;">Vorschau</h3>
                             <div style="padding: 20px; text-align: center;">
                                 <?php 
-                                $shadow_color = $settings['badge_shadow_color'] ?? '#22D6DD';
-                                $border_radius = $settings['badge_border_radius'] ?? 6;
+                                $shadow_color = isset($settings['badge_shadow_color']) ? $settings['badge_shadow_color'] : '#22D6DD';
+                                $border_radius = isset($settings['badge_border_radius']) ? $settings['badge_border_radius'] : 6;
                                 // Konvertiere Hex zu RGB für Shadow
                                 $hex = ltrim($shadow_color, '#');
                                 if (strlen($hex) == 3) {
@@ -1995,11 +1506,11 @@ class GermanFence_Admin {
                                 $b = hexdec(substr($hex, 4, 2));
                                 $shadow_rgb = "$r, $g, $b";
                                 ?>
-                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: <?php echo esc_attr($border_radius); ?>px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
+                                <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr(isset($settings['badge_background_color']) ? $settings['badge_background_color'] : '#ffffff'); ?>; padding: 10px 16px; border-radius: <?php echo esc_attr($border_radius); ?>px; border: 1px solid <?php echo esc_attr(isset($settings['badge_border_color']) ? $settings['badge_border_color'] : '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                                     <span id="badge-icon">
-                                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png' ); ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
+                                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png' ); ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
-                                    <span id="badge-text-preview" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
+                                    <span id="badge-text-preview" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr(isset($settings['badge_text_color']) ? $settings['badge_text_color'] : '#1d2327'); ?>;"><?php echo esc_html(isset($settings['badge_text']) ? $settings['badge_text'] : 'Geschützt durch GermanFence'); ?></span>
                                 </div>
                             </div>
                         </div>

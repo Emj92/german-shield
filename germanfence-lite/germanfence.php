@@ -3,12 +3,12 @@
  * Plugin Name: GermanFence Light
  * Plugin URI:  https://portal.germanfence.de/login
  * Description: Free Anti-Spam solution from Germany! Protects all forms with honeypot, timestamp validation & JavaScript check. Made in Germany 🇩🇪
- * Version: 1.7.8
+ * Version: 1.9.0
  * Author: GermanFence Team
  * Author URI: https://germanfence.de
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: germanfence-light
+ * Text Domain: germanfence-lite
  * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.4
@@ -43,34 +43,26 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GERMANFENCE_VERSION', '1.7.8');
+define('GERMANFENCE_VERSION', '1.9.0');
 define('GERMANFENCE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GERMANFENCE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GERMANFENCE_PLUGIN_FILE', __FILE__);
 
 // Include required files
-// Load translations first (if exists)
-if (file_exists(GERMANFENCE_PLUGIN_DIR . 'languages/translations.php')) {
-    require_once GERMANFENCE_PLUGIN_DIR . 'languages/translations.php';
-}
+// Translations removed from Lite version (not needed for WordPress.org)
 
-// Security-Klasse temporär deaktiviert - zu aggressiv
-// Load core classes (License zuerst!)
+// Load core classes for Lite Version
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-logger.php';
-require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-license.php'; // Zuerst laden!
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-germanfence.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-admin.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-antispam.php';
-// GEO-Blocking & Phrase-Blocking removed from Lite version (WordPress.org compliance)
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-statistics.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-detector.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-form-stats.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-badge.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-notice-blocker.php';
-require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-free-license.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-email-obfuscation.php';
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-ajax.php';
-// Updater entfernt für WordPress.org Lite Version
 require_once GERMANFENCE_PLUGIN_DIR . 'includes/class-telemetry.php';
 
 // Initialize the plugin IMMEDIATELY (for AJAX handlers)
@@ -90,12 +82,6 @@ function germanfence_init() {
     
     // Initialize Notice Blocker
     new GermanFence_Notice_Blocker();
-    
-    // Initialize License Manager
-    new GermanFence_License();
-    
-    // Initialize Free License Manager
-    new GermanFence_Free_License();
 
     // Initialize Email Obfuscation
     new GermanFence_Email_Obfuscation();

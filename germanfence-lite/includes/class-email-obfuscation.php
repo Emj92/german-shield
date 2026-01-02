@@ -179,9 +179,28 @@ class GermanFence_Email_Obfuscation {
     
     /**
      * ROT13 Encoding (Buchstaben um 13 Stellen verschieben)
+     * Eigene Implementierung für WordPress.org Compliance
      */
     private function rot13_encode($str) {
-        return str_rot13($str);
+        $result = '';
+        for ($i = 0; $i < strlen($str); $i++) {
+            $char = $str[$i];
+            $ord = ord($char);
+            
+            // A-Z (65-90)
+            if ($ord >= 65 && $ord <= 90) {
+                $result .= chr((($ord - 65 + 13) % 26) + 65);
+            }
+            // a-z (97-122)
+            elseif ($ord >= 97 && $ord <= 122) {
+                $result .= chr((($ord - 97 + 13) % 26) + 97);
+            }
+            // Alle anderen Zeichen unverändert
+            else {
+                $result .= $char;
+            }
+        }
+        return $result;
     }
     
     /**
