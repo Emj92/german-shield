@@ -3,7 +3,7 @@ Contributors: germanproweb
 Donate link: https://germanfence.de
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 6.7
 Requires PHP: 7.4
 Stable tag: 1.9.3
 License: GPL-2.0-or-later
@@ -107,6 +107,18 @@ See LICENSE.txt for details.
 
 == Changelog ==
 
+= 1.9.3 =
+* NEW: GDPR-compliant telemetry with DPA (Data Processing Agreement) consent
+* NEW: Anonymous spam pattern sharing for better protection (opt-in)
+* IMPROVED: Badge logo updated to new design
+* IMPROVED: Statistics now show country flags via CDN
+* IMPROVED: DPA consent required before telemetry activation
+* FIX: All font sizes standardized to 15px (design consistency)
+* FIX: Nonce verification warnings resolved
+* FIX: Checkbox design with accent color #22D6DD
+* REMOVED: All license checking (Lite version is completely free)
+* REMOVED: Pro features (Security/Firewall) - available in Pro version only
+
 = 1.7.8 =
 * SECURITY: WordPress.org compliance fixes
 * FIX: Proper input sanitization for all $_SESSION, $_POST, $_GET
@@ -190,8 +202,8 @@ See LICENSE.txt for details.
 
 == Upgrade Notice ==
 
-= 1.7.8 =
-Important update: WordPress.org compliance fixes for plugin directory approval
+= 1.9.3 =
+Major update: Lite version now completely free with optional GDPR-compliant telemetry. All license checks removed.
 
 == License ==
 
