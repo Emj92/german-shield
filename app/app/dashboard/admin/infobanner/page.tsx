@@ -286,7 +286,7 @@ export default function InfoBannerPage() {
             <Button 
               onClick={() => { setShowNotificationForm(!showNotificationForm); setShowBannerForm(false) }}
               variant={showNotificationForm ? 'default' : 'outline'}
-              className={showNotificationForm ? 'bg-[#EC4899] hover:bg-[#EC4899]/90' : 'border-[#EC4899] text-[#EC4899] hover:bg-[#EC4899]/10'}
+              className={showNotificationForm ? 'bg-[#EC4899] hover:bg-[#EC4899] hover:-translate-y-0.5 transition-transform' : 'border-[#EC4899] text-[#EC4899] hover:bg-transparent hover:-translate-y-0.5 transition-transform'}
             >
               <Bell className="h-4 w-4 mr-2" />
               Neue Nachricht

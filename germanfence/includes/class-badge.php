@@ -75,7 +75,7 @@ class GermanFence_Badge {
                 <?php if ($custom_image): ?>
                     <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php else: ?>
-                    <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
+                    <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png' ); ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                 <?php endif; ?>
                 <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
             </a>
@@ -122,7 +122,7 @@ class GermanFence_Badge {
                     <?php if ($custom_image): ?>
                         <img src="<?php echo esc_url($custom_image); ?>" alt="Shield" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php else: ?>
-                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
+                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png' ); ?>" alt="GermanFence" class="<?php echo esc_attr($icon_class); ?>" style="width: 24px; height: 24px; object-fit: contain;">
                     <?php endif; ?>
                     <span class="<?php echo esc_attr($text_class); ?>" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($text_color); ?>; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"><?php echo esc_html($text); ?></span>
                 </a>

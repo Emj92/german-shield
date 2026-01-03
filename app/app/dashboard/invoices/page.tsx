@@ -86,6 +86,9 @@ export default async function InvoicesPage() {
 
   const activeSubscription = subscriptions.find(s => s.status === 'ACTIVE')
   const cancelledSubscription = subscriptions.find(s => s.status === 'CANCELLED')
+  
+  // Aktuelles Paket: Basiert auf aktiver License
+  // getCurrentLicense filtert bereits nach status: 'ACTIVE'
   const currentPackage = currentLicense?.packageType as PackageType | null
 
   return (

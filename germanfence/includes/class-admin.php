@@ -201,7 +201,7 @@ class GermanFence_Admin {
         GermanFence_Logger::log_admin('add_admin_menu() wird aufgerufen');
         
         // Hauptmenü mit eigenem Logo (nur Icon)
-        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png';
+        $icon_url = GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png';
         add_menu_page(
             'GermanFence',
             'GermanFence',
@@ -2029,7 +2029,7 @@ class GermanFence_Admin {
                                 ?>
                                 <div id="badge-preview" style="display: inline-flex; align-items: center; gap: 8px; background: <?php echo esc_attr($settings['badge_background_color'] ?? '#ffffff'); ?>; padding: 10px 16px; border-radius: <?php echo esc_attr($border_radius); ?>px; border: 1px solid <?php echo esc_attr($settings['badge_border_color'] ?? '#22D6DD'); ?>; box-shadow: 0 2px 8px rgba(<?php echo esc_attr($shadow_rgb); ?>, 0.2);">
                                     <span id="badge-icon">
-                                        <img src="<?php echo GERMANFENCE_PLUGIN_URL . 'assets/images/germanfence-icon.png'; ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
+                                        <img src="<?php echo esc_url( GERMANFENCE_PLUGIN_URL . 'assets/images/logo_klein.png' ); ?>" alt="GermanFence" style="width: 24px; height: 24px; object-fit: contain;">
                                     </span>
                                     <span id="badge-text-preview" style="font-size: 15px; font-weight: 600; color: <?php echo esc_attr($settings['badge_text_color'] ?? '#1d2327'); ?>;"><?php echo esc_html($settings['badge_text'] ?? 'Geschützt durch GermanFence'); ?></span>
                                 </div>
