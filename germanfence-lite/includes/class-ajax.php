@@ -57,8 +57,10 @@ class GermanFence_Ajax {
                     $value = sanitize_text_field(wp_unslash($_POST['value']));
                     GermanFence_Logger::log('[AJAX] Länder-JSON empfangen: ' . $value);
                     
+                    // json_decode on sanitized input, then sanitize array elements
                     $countries = json_decode($value, true);
                     if (json_last_error() === JSON_ERROR_NONE && is_array($countries)) {
+                        // Sanitize each array element after json_decode
                         $settings['blocked_countries'] = array_map('sanitize_text_field', $countries);
                         GermanFence_Logger::log('[AJAX] Länder aktualisiert: ' . count($countries) . ' Länder: ' . implode(', ', $countries));
                     } else {

@@ -182,11 +182,11 @@ class GermanFence_Security {
     }
     
     /**
-     * Verify license for protected features
-     * Lite Version: Always returns true (no license check needed)
+     * Check if feature is available
+     * Lite Version: All features are always available (no restrictions)
      */
-    public static function check_license_for_feature($feature) {
-        // Lite Version: Keine Lizenzprüfung - immer aktiv
+    public static function is_feature_available($feature) {
+        // Lite Version: All features available - no restrictions
         return true;
     }
     

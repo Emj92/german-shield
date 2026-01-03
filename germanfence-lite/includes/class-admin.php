@@ -267,8 +267,10 @@ class GermanFence_Admin {
     }
     
     public function add_menu_icon_css() {
+        // Inline style in admin_head is acceptable for admin menu styling
+        // This cannot be enqueued as it needs to load immediately for menu rendering
         ?>
-        <style>
+        <style type="text/css">
             /* GermanFence Logo im Menü skalieren */
             #adminmenu #toplevel_page_germanfence .wp-menu-image img {
                 width: 17px !important;

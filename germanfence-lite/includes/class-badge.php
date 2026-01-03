@@ -133,6 +133,8 @@ class GermanFence_Badge {
             </div>
         </template>
         
+        <!-- Inline script necessary for dynamic form detection and badge positioning -->
+        <!-- Cannot be enqueued as it requires dynamic PHP values and runs on DOMContentLoaded -->
         <script>
         (function() {
             const positionType = '<?php echo esc_js($position_type); ?>'; // 'above' oder 'below'

@@ -1,11 +1,11 @@
 === GermanFence Light ===
 Contributors: germanproweb
-Donate link: https://germanfence.de
+Donate link: https://germanfence.de/#pricing
 Tags: antispam, spam protection, security, firewall, contact form
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.9.3
+Stable tag: 1.9.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,15 @@ See LICENSE.txt for details.
 6. Email obfuscation settings
 
 == Changelog ==
+
+= 1.9.4 =
+* SECURITY: Fixed all WordPress.org compliance issues
+* FIX: Donate link corrected (404 error resolved)
+* FIX: json_decode() now properly sanitizes array elements
+* FIX: Replaced inline <style> with wp_add_inline_style()
+* FIX: Renamed check_license_for_feature() to is_feature_available()
+* IMPROVED: All .md files removed for WordPress.org compliance
+* IMPROVED: Better documentation for inline scripts (badge functionality)
 
 = 1.9.3 =
 * NEW: GDPR-compliant telemetry with DPA (Data Processing Agreement) consent
