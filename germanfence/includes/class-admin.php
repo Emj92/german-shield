@@ -2047,12 +2047,19 @@ class GermanFence_Admin {
                         <?php 
                         $telemetry = new GermanFence_Telemetry();
                         $is_telemetry_enabled = $telemetry->is_enabled();
+                        $dpa_accepted = get_option('germanfence_dpa_accepted', false);
+                        $dpa_accepted_at = get_option('germanfence_dpa_accepted_at', '');
+                        $dpa_version = '1.0';
+                        $dpa_url = 'https://germanfence.de/av-vertrag.pdf';
                         ?>
                         
                         <div style="background: #fff; padding: 25px;">
                             <div class="germanfence-setting" style="border: none; padding: 0; margin-bottom: 20px;">
                                 <label class="germanfence-toggle">
-                                    <input type="checkbox" name="telemetry_enabled" value="1" <?php checked($is_telemetry_enabled); ?>>
+                                    <input type="checkbox" name="telemetry_enabled" value="1" 
+                                           id="telemetry_toggle"
+                                           <?php checked($is_telemetry_enabled); ?>
+                                           <?php echo !$dpa_accepted ? 'data-needs-dpa="1"' : ''; ?>>
                                     <span class="toggle-slider"></span>
                                 </label>
                                 <div class="setting-info">
@@ -2060,6 +2067,50 @@ class GermanFence_Admin {
                                     <p style="margin: 0;">Sende anonymisierte Spam-Daten zur Muster-Erkennung</p>
                                 </div>
                             </div>
+                            
+                            <!-- AV-Vertrag Zustimmung (erscheint wenn Telemetrie aktiviert werden soll) -->
+                            <div id="dpa-consent-box" style="<?php echo ($is_telemetry_enabled || $dpa_accepted) ? 'display: none;' : ''; ?> background: linear-gradient(135deg, rgba(34, 214, 221, 0.1) 0%, rgba(34, 214, 221, 0.05) 100%); border: 2px solid #22D6DD; border-radius: 9px; padding: 25px; margin-bottom: 20px;">
+                                <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+                                    <span>📋</span> AV-Vertrag Zustimmung erforderlich
+                                </h4>
+                                <p style="margin: 0 0 20px 0; color: #646970; font-size: 15px; line-height: 1.6;">
+                                    Zur Aktivierung der Telemetrie ist die Zustimmung zum Auftragsverarbeitungsvertrag (AV-Vertrag) gem. Art. 28 DSGVO erforderlich.
+                                </p>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <a href="<?php echo esc_url($dpa_url); ?>" target="_blank" 
+                                       style="display: inline-flex; align-items: center; gap: 8px; color: #22D6DD; text-decoration: none; font-weight: 600;">
+                                        <span class="dashicons dashicons-pdf" style="font-size: 18px;"></span>
+                                        AV-Vertrag lesen (PDF)
+                                    </a>
+                                </div>
+                                
+                                <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 15px; background: #fff; border-radius: 9px; border: 1px solid #d9dde1;">
+                                    <input type="checkbox" name="dpa_accepted" id="dpa_checkbox" value="1" 
+                                           style="margin-top: 3px; width: 18px; height: 18px; accent-color: #22D6DD;">
+                                    <span style="color: #1d2327; font-size: 14px; line-height: 1.5;">
+                                        Ich habe den <a href="<?php echo esc_url($dpa_url); ?>" target="_blank" style="color: #22D6DD; text-decoration: underline;">AV-Vertrag (PDF)</a> gelesen und akzeptiere diesen. 
+                                        Ich beauftrage GermanFence mit der Verarbeitung der oben genannten anonymisierten Telemetrie-Daten.
+                                    </span>
+                                </label>
+                                <input type="hidden" name="dpa_version" value="<?php echo esc_attr($dpa_version); ?>">
+                            </div>
+                            
+                            <?php if ($dpa_accepted): ?>
+                            <!-- AV-Vertrag bereits akzeptiert -->
+                            <div style="background: rgba(34, 214, 221, 0.1); border: 1px solid #22D6DD; border-radius: 9px; padding: 15px; margin-bottom: 20px;">
+                                <p style="margin: 0; color: #1d2327; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #22D6DD;">✓</span>
+                                    <strong>AV-Vertrag akzeptiert</strong> 
+                                    <?php if ($dpa_accepted_at): ?>
+                                    <span style="color: #646970; font-weight: normal;">am <?php echo esc_html(date_i18n('d.m.Y H:i', strtotime($dpa_accepted_at))); ?></span>
+                                    <?php endif; ?>
+                                </p>
+                                <p style="margin: 8px 0 0 0; font-size: 13px; color: #646970;">
+                                    <a href="<?php echo esc_url($dpa_url); ?>" target="_blank" style="color: #22D6DD;">AV-Vertrag erneut herunterladen</a>
+                                </p>
+                            </div>
+                            <?php endif; ?>
                             
                             <div style="padding: 20px 0;">
                                 <h4 style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px;">🔒 Was wird gesendet?</h4>
@@ -2096,27 +2147,40 @@ class GermanFence_Admin {
                                         <li>Zweck: <strong>Ausschließlich Gefahrenabwehr</strong> und Spam-Muster-Erkennung</li>
                                         <li>Keine Weitergabe an Dritte</li>
                                         <li>Jederzeit widerrufbar (Toggle aus = sofort gestoppt)</li>
-                                        <li>Auftragsverarbeitungsvertrag verfügbar (siehe unten)</li>
                                     </ul>
-                                </div>
-                                
-                                <div style="padding: 15px 0 10px 0; background: #ffffff; text-align: center;">
-                                    <p style="margin: 0 0 15px 0; color: #1d2327; font-size: 15px;">
-                                        📄 <strong>Auftragsverarbeitungsvertrag (AV-Vertrag)</strong>
-                                    </p>
-                                    <a href="<?php echo GERMANFENCE_PLUGIN_URL; ?>data/av-vertrag.pdf" 
-                                       target="_blank" 
-                                       class="germanfence-btn-secondary"
-                                       style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #22D6DD; color: #fff; text-decoration: none; border-radius: 9px; font-weight: 600; font-size: 15px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                                        <span class="dashicons dashicons-download" style="font-size: 18px;"></span>
-                                        AV-Vertrag herunterladen (PDF)
-                                    </a>
-                                    <p style="margin: 10px 0 0 0; color: #646970; font-size: 15px;">
-                                        Rechtlich verbindlicher Vertrag zur Auftragsverarbeitung gem. Art. 28 DSGVO
-                                    </p>
                                 </div>
                             </div>
                         </div>
+                        
+                        <script>
+                        jQuery(document).ready(function($) {
+                            var $toggle = $('#telemetry_toggle');
+                            var $dpaBox = $('#dpa-consent-box');
+                            var $dpaCheckbox = $('#dpa_checkbox');
+                            var dpaAccepted = <?php echo $dpa_accepted ? 'true' : 'false'; ?>;
+                            
+                            // Zeige DPA-Box wenn Toggle aktiviert wird und noch nicht akzeptiert
+                            $toggle.on('change', function() {
+                                if (this.checked && !dpaAccepted) {
+                                    $dpaBox.slideDown(200);
+                                    // Fokus auf Checkbox
+                                    setTimeout(function() {
+                                        $dpaCheckbox.focus();
+                                    }, 250);
+                                }
+                            });
+                            
+                            // Verhindere Aktivierung ohne DPA-Zustimmung
+                            $('form').on('submit', function(e) {
+                                if ($toggle.is(':checked') && !dpaAccepted && !$dpaCheckbox.is(':checked')) {
+                                    e.preventDefault();
+                                    alert('Bitte akzeptieren Sie den AV-Vertrag, um die Telemetrie zu aktivieren.');
+                                    $dpaCheckbox.focus();
+                                    return false;
+                                }
+                            });
+                        });
+                        </script>
                     </div>
                 </div>
                 
@@ -2239,6 +2303,34 @@ class GermanFence_Admin {
         );
         // phpcs:enable WordPress.Security.NonceVerification.Missing
         
+        // DPA-Zustimmung speichern wenn Checkbox aktiviert
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce already verified above
+        if (isset($_POST['dpa_accepted']) && $_POST['dpa_accepted'] === '1') {
+            $dpa_version = isset($_POST['dpa_version']) ? sanitize_text_field(wp_unslash($_POST['dpa_version'])) : '1.0';
+            update_option('germanfence_dpa_accepted', true);
+            update_option('germanfence_dpa_accepted_at', current_time('mysql'));
+            update_option('germanfence_dpa_version', $dpa_version);
+            
+            // Speichere auch IP für Audit
+            $ip = '';
+            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_CLIENT_IP']));
+            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']));
+            } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+                $ip = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']));
+            }
+            update_option('germanfence_dpa_ip', $ip);
+            
+            GermanFence_Logger::log_save('DPA/AV-Vertrag akzeptiert - Version: ' . $dpa_version);
+        }
+        
+        // Wenn Telemetrie deaktiviert wird, DPA-Zustimmung widerrufen
+        if (empty($settings['telemetry_enabled']) || $settings['telemetry_enabled'] !== '1') {
+            // Optional: DPA-Zustimmung bei Deaktivierung widerrufen
+            // update_option('germanfence_dpa_accepted', false);
+        }
+        
         // FREE Version: Badge MUSS aktiviert sein (Zwingend)
         $license = GermanFence_License::get_instance();
         $package_type = $license->get_package_type();
@@ -2263,21 +2355,22 @@ class GermanFence_Admin {
     }
     
     private function get_flag_emoji($code) {
-        // Konvertiere Ländercode zu Unicode Flaggen-Emoji (keine externen Requests)
+        // Verwende CDN-basierte Flaggen-Bilder für bessere Kompatibilität
         $code = strtoupper($code);
-        if ($code === 'LOCAL') {
+        if ($code === 'LOCAL' || $code === 'XX') {
             return '🏠';
         }
         
-        // Konvertiere Ländercode zu Unicode Regional Indicator Symbols
         if (strlen($code) !== 2) {
             return '🌍';
         }
         
-        $first = mb_chr(0x1F1E6 + (ord($code[0]) - ord('A')));
-        $second = mb_chr(0x1F1E6 + (ord($code[1]) - ord('A')));
-        
-        return $first . $second;
+        $code_lower = strtolower($code);
+        return '<img src="https://flagcdn.com/w20/' . esc_attr($code_lower) . '.png" 
+                     srcset="https://flagcdn.com/w40/' . esc_attr($code_lower) . '.png 2x" 
+                     width="20" height="15" 
+                     alt="' . esc_attr($code) . '" 
+                     style="vertical-align: middle; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">';
     }
     
     private function get_country_list() {

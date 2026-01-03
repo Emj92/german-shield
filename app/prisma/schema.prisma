@@ -577,3 +577,43 @@ enum SubscriptionStatus {
   SUSPENDED   // Pausiert
   EXPIRED     // Abgelaufen
 }
+
+// ============================================
+// AV-VERTRAG ZUSTIMMUNGEN (DSGVO Art. 28)
+// ============================================
+
+// DPA Consent Model (Auftragsverarbeitungs-Vertrag Zustimmungen)
+model DpaConsent {
+  id              String   @id @default(cuid())
+  
+  // Identifikation (kann User oder Installation sein)
+  userId          String?  // Portal-User (wenn eingeloggt)
+  installationId  String?  // Plugin-Installation (für Plugin-basierte Zustimmung)
+  email           String?  // E-Mail für Bestätigung
+  
+  // Vertrag-Details
+  dpaVersion      String   // Version des AV-Vertrags (z.B. "1.0")
+  dpaUrl          String   // URL zum PDF des AV-Vertrags
+  
+  // Zustimmung
+  consentedAt     DateTime @default(now())
+  ipAddress       String?  // IP-Adresse bei Zustimmung
+  userAgent       String?  // Browser/User-Agent
+  
+  // Audit-Felder
+  consentMethod   String   @default("checkbox") // "checkbox", "api", "manual"
+  
+  // Widerruf
+  revokedAt       DateTime?
+  revokeReason    String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([installationId])
+  @@index([email])
+  @@index([dpaVersion])
+  @@index([consentedAt])
+  @@map("dpa_consents")
+}
